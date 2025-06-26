@@ -1,4 +1,31 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="456" height="456" fill="#512BD4" />
+    <!-- Bakgrund -->
+    <rect width="456" height="456" fill="#2E7D32" rx="80"/>
+    
+    <!-- Kalkylator -->
+    <rect x="120" y="120" width="120" height="160" fill="#ffffff" rx="12"/>
+    <rect x="130" y="130" width="100" height="30" fill="#f0f0f0" rx="4"/>
+    
+    <!-- Kalkylator knappar -->
+    <circle cx="145" cy="180" r="8" fill="#e0e0e0"/>
+    <circle cx="170" cy="180" r="8" fill="#e0e0e0"/>
+    <circle cx="195" cy="180" r="8" fill="#e0e0e0"/>
+    <circle cx="220" cy="180" r="8" fill="#e0e0e0"/>
+    
+    <circle cx="145" cy="205" r="8" fill="#e0e0e0"/>
+    <circle cx="170" cy="205" r="8" fill="#e0e0e0"/>
+    <circle cx="195" cy="205" r="8" fill="#e0e0e0"/>
+    <circle cx="220" cy="205" r="8" fill="#4CAF50"/>
+    
+    <circle cx="145" cy="230" r="8" fill="#e0e0e0"/>
+    <circle cx="170" cy="230" r="8" fill="#e0e0e0"/>
+    <circle cx="195" cy="230" r="8" fill="#e0e0e0"/>
+    <circle cx="220" cy="230" r="8" fill="#4CAF50"/>
+    
+    <!-- Pengar symbol -->
+    <text x="320" y="200" font-family="Arial" font-size="60" fill="#FFD700">💰</text>
+    
+    <!-- Klocka symbol -->
+    <text x="180" y="350" font-family="Arial" font-size="40" fill="#ffffff">⏰</text>
 </svg>
