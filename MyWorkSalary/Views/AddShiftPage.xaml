@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MyWorkSalary.Views.AddShiftPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Lägg till pass">
+    <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
+
+        <Label Text="Lägg till arbetspass"
+               FontSize="24"
+               HorizontalOptions="Center" />
+
+        <Label Text="Här kommer formuläret för att lägga till pass"
+               HorizontalOptions="Center" />
+
+    </VerticalStackLayout>
+</ContentPage>

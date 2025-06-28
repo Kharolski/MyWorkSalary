@@ -42,4 +42,13 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+
+    <!-- Våra nya färger -->
+    <Color x:Key="AppBackground">#F5F5F5</Color>
+    <Color x:Key="TabBarBackground">#E0E0E0</Color>
+    <Color x:Key="TabTextColor">#424242</Color>
+    <Color x:Key="CardBackground">#FFFFFF</Color>
+
+    <Color x:Key="TabSelected">#2196F3</Color>    <!-- Blå för vald tab -->
+    <Color x:Key="TabUnselected">#757575</Color>  <!-- Mörkare grå för ej vald -->
 </ResourceDictionary>
