@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MyWorkSalary.Views.Pages.AddShiftPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Lägg till pass">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Header -->
+            <Label Text="📝 Nytt arbetspass"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,10" />
+
+            <!-- Aktivt jobb info -->
+            <Frame BackgroundColor="LightBlue" Padding="15" CornerRadius="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="📋 Jobb"
+                           FontSize="14"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding ActiveJobTitle}"
+                           FontSize="16" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Datum -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="📅 Datum"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <DatePicker Date="{Binding SelectedDate}"
+                            BackgroundColor="White"
+                            Format="dddd d MMMM yyyy" />
+            </VerticalStackLayout>
+
+            <!-- Starttid -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="🕐 Starttid"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <TimePicker Time="{Binding StartTime}"
+                            BackgroundColor="White"
+                            Format="HH:mm" />
+            </VerticalStackLayout>
+
+            <!-- Sluttid -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="🕐 Sluttid"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <TimePicker Time="{Binding EndTime}"
+                            BackgroundColor="White"
+                            Format="HH:mm" />
+                <Label Text="💡 Tips: Om passet går över midnatt kommer sluttiden att räknas som nästa dag"
+                       FontSize="12"
+                       TextColor="Gray"
+                       Margin="0,5,0,0" />
+            </VerticalStackLayout>
+
+            <!-- Passtyp -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="📋 Typ av pass"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <Picker ItemsSource="{Binding ShiftTypes}"
+                        SelectedItem="{Binding SelectedShiftType}"
+                        BackgroundColor="White"
+                        Title="Välj passtyp" />
+            </VerticalStackLayout>
+
+            <!-- Anteckningar (valfritt) -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="📝 Anteckningar (valfritt)"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <Editor Text="{Binding Notes}"
+                        Placeholder="T.ex. övertid, speciella omständigheter..."
+                        BackgroundColor="White"
+                        HeightRequest="80" />
+            </VerticalStackLayout>
+
+            <!-- Beräknad information (visas när användaren fyllt i tider) -->
+            <Frame BackgroundColor="LightGreen" 
+                   Padding="15" 
+                   CornerRadius="10"
+                   IsVisible="{Binding ShowCalculation}">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="📊 Beräkning"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding CalculatedHours, StringFormat='Totalt: {0:F1} timmar'}"
+                           FontSize="14" />
+                    <Label Text="{Binding CalculatedPay, StringFormat='Beräknad lön: {0:C}'}"
+                           FontSize="14"
+                           IsVisible="{Binding ShowPay}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Knappar -->
+            <StackLayout Orientation="Horizontal" 
+                         Spacing="10" 
+                         HorizontalOptions="FillAndExpand"
+                         Margin="0,20,0,0">
+
+                <!-- Avbryt -->
+                <Button Text="Avbryt"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="Gray"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="0,15"
+                        HorizontalOptions="FillAndExpand" />
+
+                <!-- Spara -->
+                <Button Text="💾 Spara pass"
+                        Command="{Binding SaveCommand}"
+                        BackgroundColor="{StaticResource SalaryPrimary}"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="0,15"
+                        HorizontalOptions="FillAndExpand"
+                        IsEnabled="{Binding CanSave}" />
+
+            </StackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

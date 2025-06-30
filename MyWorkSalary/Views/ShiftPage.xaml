@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Name="ShiftPageRef"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyWorkSalary.Views.ShiftPage"
+             Title="Arbetspass">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Header med aktivt jobb -->
+            <Frame BackgroundColor="LightBlue" Padding="15" CornerRadius="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="📋 Aktivt jobb"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding ActiveJobTitle}"
+                           FontSize="18" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Lägg till pass knapp -->
+            <Button Text="➕ Lägg till nytt pass"
+                    Command="{Binding AddShiftCommand}"
+                    BackgroundColor="{StaticResource SalaryPrimary}"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Padding="0,15"
+                    FontSize="16" />
+
+            <!-- Lista med pass -->
+            <Label Text="📅 Mina arbetspass"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   Margin="0,10,0,0" />
+
+            <!-- Meddelande när inga pass finns -->
+            <Frame BackgroundColor="LightGray"
+                   Padding="20"
+                   CornerRadius="10"
+                   IsVisible="{Binding NoShiftsVisible}">
+                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Label Text="📝"
+                           FontSize="40"
+                           HorizontalOptions="Center" />
+                    <Label Text="Inga arbetspass registrerade än"
+                           FontSize="16"
+                           HorizontalOptions="Center" />
+                    <Label Text="Tryck på knappen ovan för att lägga till ditt första pass"
+                           FontSize="14"
+                           TextColor="Gray"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- GRUPPERAD LISTA MED PASS -->
+            <CollectionView ItemsSource="{Binding GroupedWorkShifts}"
+                            IsVisible="{Binding HasShifts}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout Spacing="10" Margin="0,0,0,20">
+
+                            <!-- MÅNADS-HEADER -->
+                            <Frame BackgroundColor="{StaticResource SalarySecondary}"
+                                   Padding="15,10"
+                                   CornerRadius="8">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding MonthYear, StringFormat='{0}'}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="White" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding TotalHours, StringFormat='({0:F1}h)'}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           TextColor="White" />
+                                </Grid>
+                            </Frame>
+
+                            <!-- PASS I DENNA MÅNAD MED SWIPE -->
+                            <CollectionView ItemsSource="{Binding .}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- SWIPE VIEW WRAPPER -->
+                                        <SwipeView>
+                                            <!-- SWIPE ACTIONS (höger swipe) -->
+                                            <SwipeView.RightItems>
+                                                <SwipeItems>
+                                                    <SwipeItem Text="🗑️ Radera"
+                                                               BackgroundColor="Red"
+                                                               Command="{Binding Source={x:Reference ShiftPageRef}, Path=BindingContext.DeleteShiftCommand}"
+                                                               CommandParameter="{Binding .}" />
+                                                </SwipeItems>
+                                            </SwipeView.RightItems>
+
+                                            <!-- BEFINTLIGT PASS-KORT -->
+                                            <Grid Padding="0,2">
+                                                <Frame BackgroundColor="White"
+                                                       Padding="15"
+                                                       CornerRadius="8"
+                                                       HasShadow="True"
+                                                       Margin="10,0">
+
+                                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
+
+                                                        <!-- PASS-TYP IKON -->
+                                                        <Label Grid.Row="0" Grid.Column="0"
+                                                               Text="{Binding ., Converter={StaticResource ShiftTypeToIconConverter}}"
+                                                               FontSize="16"
+                                                               VerticalOptions="Center"
+                                                               Margin="0,0,10,0" />
+
+                                                        <!-- DATUM OCH VECKODAG -->
+                                                        <Label Grid.Row="0" Grid.Column="1"
+                                                               Text="{Binding ., Converter={StaticResource ShiftToDateStringConverter}}"
+                                                               FontSize="16"
+                                                               FontAttributes="Bold" />
+
+                                                        <!-- TIMMAR -->
+                                                        <Label Grid.Row="0" Grid.Column="2"
+                                                               Text="{Binding TotalHours, StringFormat='{0:F1}h'}"
+                                                               FontSize="16"
+                                                               FontAttributes="Bold"
+                                                               TextColor="{StaticResource SalaryPrimary}" />
+
+                                                        <!-- ARBETSTIDER -->
+                                                        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                                               Text="{Binding ., Converter={StaticResource ShiftToTimeStringConverter}}"
+                                                               FontSize="14"
+                                                               TextColor="Gray"
+                                                               Margin="0,2,0,0" />
+
+                                                        <!-- LÖN OCH OB -->
+                                                        <VerticalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                                                             Spacing="2"
+                                                                             Margin="0,5,0,0">
+
+                                                            <!-- Total lön -->
+                                                            <Label Text="{Binding TotalPay, StringFormat='{0:C}'}"
+                                                                   FontSize="14"
+                                                                   TextColor="Green"
+                                                                   IsVisible="{Binding TotalPay, Converter={StaticResource IsGreaterThanZeroConverter}}" />
+
+                                                            <!-- OB-tillägg -->
+                                                            <Label Text="{Binding OBPay, StringFormat='OB-tillägg: {0:C}'}"
+                                                                   FontSize="12"
+                                                                   TextColor="Orange"
+                                                                   IsVisible="{Binding OBPay, Converter={StaticResource IsGreaterThanZeroConverter}}" />
+
+                                                        </VerticalStackLayout>
+
+                                                    </Grid>
+                                                </Frame>
+                                            </Grid>
+                                        </SwipeView>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

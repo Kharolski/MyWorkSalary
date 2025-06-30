@@ -4,13 +4,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Lönerapporter">
     <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
-
         <Label Text="Lönerapporter"
                FontSize="24"
                HorizontalOptions="Center" />
 
         <Label Text="Här kommer månadsrapporter och statistik"
                HorizontalOptions="Center" />
+
+        <!-- TEST KNAPP -->
+        <Button Text="🧪 Testa AddShiftPage"
+                Clicked="OnTestAddShiftClicked"
+                BackgroundColor="Orange"
+                TextColor="White"
+                CornerRadius="8"
+                Padding="0,15" />
 
     </VerticalStackLayout>
 </ContentPage>

@@ -1,5 +1,6 @@
 ﻿using SQLite;
 using MyWorkSalary.Models;
+using System.Globalization;
 
 namespace MyWorkSalary.Services
 {
@@ -44,9 +45,7 @@ namespace MyWorkSalary.Services
                 else
                 {
                     // Befintligt jobb - UPDATE
-                    System.Diagnostics.Debug.WriteLine($"UPPDATERAR jobb: {jobProfile.JobTitle} (ID: {jobProfile.Id})");
                     var result = _database.Update(jobProfile);
-                    System.Diagnostics.Debug.WriteLine($"Update påverkade {result} rader");
                 }
             }
             catch (Exception ex)
@@ -61,51 +60,6 @@ namespace MyWorkSalary.Services
             return _database.Delete<JobProfile>(id);
         }
 
-        // FÖR DEBUG TEST
-        public void DeleteAllJobProfiles()
-        {
-            try
-            {
-                System.Diagnostics.Debug.WriteLine("=== STARTAR RADERING ===");
-
-                // Använd SQL direkt - fungerar alltid
-                var result = _database.Execute("DELETE FROM JobProfile");
-                System.Diagnostics.Debug.WriteLine($"SQL DELETE påverkade {result} rader");
-
-                // Kolla resultat
-                var remaining = GetJobProfiles();
-                System.Diagnostics.Debug.WriteLine($"Efter radering: {remaining.Count()} jobb kvar");
-
-                System.Diagnostics.Debug.WriteLine("=== RADERING KLAR ===");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"FEL vid radering: {ex.Message}");
-            }
-        }
-
-        // FÖR DEBUG TEST
-        public void ForceDeleteAllJobs()
-        {
-            try
-            {
-                System.Diagnostics.Debug.WriteLine("=== FORCE DELETE ===");
-
-                // Använd SQL direkt
-                var result = _database.Execute("DELETE FROM JobProfile");
-                System.Diagnostics.Debug.WriteLine($"SQL DELETE påverkade {result} rader");
-
-                // Kolla resultat
-                var remaining = GetJobProfiles();
-                System.Diagnostics.Debug.WriteLine($"Efter SQL DELETE: {remaining.Count()} jobb kvar");
-
-                System.Diagnostics.Debug.WriteLine("=== FORCE DELETE KLAR ===");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"FEL vid force delete: {ex.Message}");
-            }
-        }
         #endregion
 
         #region OBRate Methods
@@ -127,7 +81,7 @@ namespace MyWorkSalary.Services
         }
         #endregion
 
-        #region WorkShift Methods
+        #region Shift Methods
         public List<WorkShift> GetWorkShifts(int jobProfileId)
         {
             return _database.Table<WorkShift>()
@@ -149,11 +103,40 @@ namespace MyWorkSalary.Services
             if (workShift.Id != 0)
             {
                 workShift.ModifiedDate = DateTime.Now;
-                return _database.Update(workShift);
+                var result = _database.Update(workShift);
+                return result;
             }
             else
             {
-                return _database.Insert(workShift);
+                var result = _database.Insert(workShift);
+                return result;
+            }
+        }
+
+        public async Task<(bool Success, string Message)> SaveWorkShiftWithValidation(WorkShift workShift)
+        {
+            // Kontrollera överlapp
+            var overlappingShift = GetOverlappingShift(workShift);
+            if (overlappingShift != null)
+            {
+                var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
+                var message = $"Passet överlappar med befintligt pass:\n\n" +
+                             $"📅 {overlappingShift.StartTime.ToString("dddd d MMMM", swedishCulture)}\n" +
+                             $"🕐 {overlappingShift.StartTime:HH:mm} → {overlappingShift.EndTime:HH:mm}\n\n" +
+                             $"Ändra tiden för att undvika överlapp.";
+
+                return (false, message);
+            }
+
+            // Spara om ingen överlapp
+            try
+            {
+                SaveWorkShift(workShift);
+                return (true, "Passet har sparats!");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Fel vid sparande: {ex.Message}");
             }
         }
 
@@ -161,6 +144,7 @@ namespace MyWorkSalary.Services
         {
             return _database.Delete<WorkShift>(id);
         }
+
         #endregion
 
         #region Database Management
@@ -175,6 +159,49 @@ namespace MyWorkSalary.Services
             _database.DeleteAll<OBRate>();
             _database.DeleteAll<JobProfile>();
         }
+        #endregion
+
+        #region Validering
+        public bool HasOverlappingShift(WorkShift newShift)
+        {
+            var existingShifts = GetWorkShifts(newShift.JobProfileId);
+
+            foreach (var existing in existingShifts)
+            {
+                // Skippa om vi uppdaterar samma pass
+                if (existing.Id == newShift.Id)
+                    continue;
+
+                // Kontrollera överlapp
+                if (newShift.StartTime < existing.EndTime && newShift.EndTime > existing.StartTime)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public WorkShift? GetOverlappingShift(WorkShift newShift)
+        {
+            var existingShifts = GetWorkShifts(newShift.JobProfileId);
+
+            foreach (var existing in existingShifts)
+            {
+                // Skippa om vi uppdaterar samma pass
+                if (existing.Id == newShift.Id)
+                    continue;
+
+                // Kontrollera överlapp
+                if (newShift.StartTime < existing.EndTime && newShift.EndTime > existing.StartTime)
+                {
+                    return existing;
+                }
+            }
+
+            return null;
+        }
+
         #endregion
     }
 }

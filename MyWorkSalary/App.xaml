@@ -23,6 +23,13 @@
             <converters:BoolToJobSubTextColorConverter x:Key="BoolToJobSubTextColorConverter" />
             <converters:BoolToRadioSymbolConverter x:Key="BoolToRadioSymbolConverter" />
 
+            <!-- Shift Converters från ShiftConverters.cs -->
+            <converters:ShiftTypeToIconConverter x:Key="ShiftTypeToIconConverter" />
+            <converters:ShiftToDateStringConverter x:Key="ShiftToDateStringConverter" />
+            <converters:ShiftToTimeStringConverter x:Key="ShiftToTimeStringConverter" />
+            <converters:IsGreaterThanZeroConverter x:Key="IsGreaterThanZeroConverter" />
+            
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

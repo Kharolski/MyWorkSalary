@@ -26,7 +26,6 @@ namespace MyWorkSalary.ViewModels
             AddJobCommand = new Command(OnAddJob);
             EditActiveJobCommand = new Command(OnEditActiveJob);
             DeleteActiveJobCommand = new Command(OnDeleteActiveJob);
-            DeleteAllJobsCommand = new Command(OnDeleteAllJobs); // FÖR DEBUG TEST
 
             LoadJobs();
         }
@@ -69,32 +68,9 @@ namespace MyWorkSalary.ViewModels
         public ICommand AddJobCommand { get; }
         public ICommand EditActiveJobCommand { get; }
         public ICommand DeleteActiveJobCommand { get; }
-        public ICommand DeleteAllJobsCommand { get; } // FÖR DEBUG TEST
         #endregion
 
         #region Methods
-        // FÖR DEBUG TEST
-        private async void OnDeleteAllJobs()
-        {
-            var result = await Shell.Current.DisplayAlert(
-                "Varning",
-                "Vill du verkligen radera ALLA jobb? Detta kan inte ångras!",
-                "Ja, radera allt",
-                "Avbryt");
-
-            if (result)
-            {
-                System.Diagnostics.Debug.WriteLine("Användaren bekräftade radering");
-
-                // Prova båda metoderna
-                _databaseService.DeleteAllJobProfiles();
-                _databaseService.ForceDeleteAllJobs();
-
-                LoadJobs();
-                await Shell.Current.DisplayAlert("Klart", "Alla jobb har raderats!", "OK");
-            }
-        }
-
         private void LoadJobs()
         {
             System.Diagnostics.Debug.WriteLine("LoadJobs() körs!");

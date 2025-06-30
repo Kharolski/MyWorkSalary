@@ -28,12 +28,16 @@ namespace MyWorkSalary
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<AddJobViewModel>();
             builder.Services.AddTransient<EditJobViewModel>();
+            builder.Services.AddTransient<ShiftPageViewModel>();
+            builder.Services.AddTransient<AddShiftViewModel>();
 
             // Registrera Views
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<SettingsPage>();
             builder.Services.AddTransient<AddJobPage>();
             builder.Services.AddTransient<EditJobPage>();
+            builder.Services.AddTransient<ShiftPage>();
+            builder.Services.AddTransient<AddShiftPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

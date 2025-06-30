@@ -146,13 +146,6 @@
                     <Label Text="Kommer snart..."
                            Style="{StaticResource SecondaryLabel}" />
 
-                    <!-- Debug knapp -->
-                    <Button Text="🗑️ RENSA ALLA JOBB (DEBUG)"
-                            Command="{Binding DeleteAllJobsCommand}"
-                            BackgroundColor="Red"
-                            TextColor="White"
-                            HorizontalOptions="Center"
-                            Margin="0,10,0,0" />
                 </VerticalStackLayout>
             </Frame>
 

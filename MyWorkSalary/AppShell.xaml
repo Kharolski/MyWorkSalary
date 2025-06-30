@@ -17,8 +17,8 @@
         <ShellContent
             Title="Pass"
             Icon="{FontImageSource Glyph='⏰', FontFamily='Arial', Size=20}"
-            ContentTemplate="{DataTemplate views:AddShiftPage}"
-            Route="AddShiftPage" />
+            ContentTemplate="{DataTemplate views:ShiftPage}"
+            Route="ShiftPage" />
 
         <ShellContent
             Title="Lön"

@@ -11,6 +11,7 @@ namespace MyWorkSalary
             // Registrera routes för navigation
             Routing.RegisterRoute(nameof(AddJobPage), typeof(AddJobPage));
             Routing.RegisterRoute(nameof(EditJobPage), typeof(EditJobPage));
+            Routing.RegisterRoute(nameof(AddShiftPage), typeof(AddShiftPage));
         }
     }
 }
