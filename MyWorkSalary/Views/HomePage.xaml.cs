@@ -1,15 +1,27 @@
-﻿namespace MyWorkSalary.Views;
+﻿using MyWorkSalary.ViewModels;
 
-public partial class HomePage : ContentPage
+namespace MyWorkSalary.Views
 {
-
-    public HomePage()
+    public partial class HomePage : ContentPage
     {
-        InitializeComponent();
-    }
+        private readonly HomeViewModel _viewModel;
 
-    private async void OnSetupJobClicked(object sender, EventArgs e)
-    {
-        await DisplayAlert("Info", "Här kommer vi skapa jobb-setup senare!", "OK");
+        public HomePage(HomeViewModel viewModel)
+        {
+            InitializeComponent();
+            _viewModel = viewModel;
+            BindingContext = _viewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Uppdatera data när sidan visas
+            Dispatcher.Dispatch(() =>
+            {
+                _viewModel.RefreshData();
+            });
+        }
     }
 }

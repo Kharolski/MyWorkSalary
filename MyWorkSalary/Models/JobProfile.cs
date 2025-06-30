@@ -1,41 +1,50 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using SQLite;
 
 namespace MyWorkSalary.Models
 {
-    public class JobProfile
+    public class JobProfile : INotifyPropertyChanged
     {
+        #region Database Properties
+
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
         [Required]
-        public string JobTitle { get; set; } = string.Empty;        // "Undersköterska"
+        public string JobTitle { get; set; } = string.Empty;
 
         [Required]
-        public string Workplace { get; set; } = string.Empty;       // "Karolinska sjukhuset"
+        public string Workplace { get; set; } = string.Empty;
 
         public EmploymentType EmploymentType { get; set; }
 
-        // Grundlön
-        public decimal? MonthlySalary { get; set; }         // För fast anställda
-        public decimal? HourlyRate { get; set; }            // För vikarier
+        #endregion
 
-        // Arbetstid
-        public decimal ExpectedHoursPerMonth { get; set; }  // Flexibelt för alla typer
+        #region Salary Properties
 
-        // Löneperiod
+        public decimal? MonthlySalary { get; set; }
+        public decimal? HourlyRate { get; set; }
+        public decimal ExpectedHoursPerMonth { get; set; }
+
+        #endregion
+
+        #region Pay Period Properties
+
         public PayPeriodType PayPeriodType { get; set; } = PayPeriodType.CalendarMonth;
-        public int PayPeriodStartDay { get; set; } = 25;    // Bra att du ändrade till 25!
+        public int PayPeriodStartDay { get; set; } = 25;
 
-        // Skattinställningar 
+        #endregion
+
+        #region Tax Properties
+
         public TaxCalculationMethod TaxMethod { get; set; } = TaxCalculationMethod.Manual;
-
-        // Manuell metod
-        public decimal ManualTaxRate { get; set; } = 0.33m;  // 33% default
-
-        // Automatisk metod (från lönespec)
+        public decimal ManualTaxRate { get; set; } = 0.33m;
         public decimal? LastMonthGrossPay { get; set; }
         public decimal? LastMonthTaxDeduction { get; set; }
 
-        // Beräknad skattesats som används
+        [Ignore]
         public decimal EffectiveTaxRate => TaxMethod switch
         {
             TaxCalculationMethod.FromPayslip when LastMonthGrossPay > 0 && LastMonthTaxDeduction > 0
@@ -43,31 +52,69 @@ namespace MyWorkSalary.Models
             _ => ManualTaxRate
         };
 
-        // OB-satser
+        #endregion
+
+        #region Ignored Properties
+
+        [Ignore]
         public List<OBRate> OBRates { get; set; } = new();
 
-        // Metadata
+        #endregion
+
+        #region Metadata Properties
+
         public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public bool IsActive { get; set; } = true;
+        public DateTime? ModifiedDate { get; set; }
+
+        // IsActive med INotifyPropertyChanged
+        private bool _isActive = true;
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged Implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
+
+    #region Enums
 
     public enum EmploymentType
     {
-        Permanent,      // Fast anställd
-        Temporary,      // Vikarie/timanställd  
-        OnCall          // Behovsanställd
+        Permanent,
+        Temporary,
+        OnCall
     }
 
     public enum PayPeriodType
     {
-        CalendarMonth,  // 1-31 (eller 1-30, 1-28)
-        CustomPeriod    // t.ex. 20-20
+        CalendarMonth,
+        CustomPeriod
     }
 
-    // NYTT: Enum för skattberäkning
     public enum TaxCalculationMethod
     {
-        Manual,        // Användaren anger procent direkt
-        FromPayslip    // Beräknas från lönespec-data
+        Manual,
+        FromPayslip
     }
+
+    #endregion
 }

@@ -2,35 +2,40 @@
 <ContentPage x:Class="MyWorkSalary.Views.HomePage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Hem"
-             BackgroundColor="{StaticResource AppBackground}">
+             Title="Hem">
+    <!-- BackgroundColor kommer från Page Style -->
+
     <ScrollView>
         <VerticalStackLayout Spacing="25" Padding="30,20" VerticalOptions="Center">
 
-            <!-- Vit kort-stil för innehållet -->
-            <Frame BackgroundColor="{StaticResource CardBackground}"
-                   CornerRadius="10"
-                   HasShadow="True"
-                   Padding="20">
+            <!-- Välkomst-kort -->
+            <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">
-                    <Label x:Name="WelcomeLabel"
-                           Text="My Work Salary"
-                           FontSize="28"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center" />
+                    <Label Text="{Binding WelcomeText}"
+                           Style="{StaticResource TitleLabel}" />
 
-                    <Label Text="Välkommen till din löneapp!"
-                           FontSize="16"
-                           TextColor="#666666"
-                           HorizontalOptions="Center" />
+                    <!-- Visa när inget jobb finns -->
+                    <StackLayout IsVisible="{Binding ShowSetupButton}">
+                        <Label Text="Välkommen till din löneapp!"
+                               Style="{StaticResource SecondaryLabel}"
+                               HorizontalOptions="Center" />
 
-                    <Button x:Name="SetupJobBtn"
-                            Text="Skapa ditt första jobb"
-                            BackgroundColor="#2196F3"
-                            TextColor="White"
-                            CornerRadius="8"
-                            Clicked="OnSetupJobClicked"
-                            HorizontalOptions="Center" />
+                        <Button Text="Skapa ditt första jobb"
+                                Command="{Binding SetupJobCommand}"
+                                HorizontalOptions="Center" />
+                    </StackLayout>
+
+                    <!-- Visa när jobb finns -->
+                    <StackLayout IsVisible="{Binding HasActiveJob}">
+                        <Label Text="{Binding ActiveJob.Workplace}"
+                               Style="{StaticResource SecondaryLabel}"
+                               HorizontalOptions="Center" />
+
+                        <Label Text="Vad vill du göra idag?"
+                               FontSize="16"
+                               HorizontalOptions="Center"
+                               Margin="0,10,0,0" />
+                    </StackLayout>
                 </VerticalStackLayout>
             </Frame>
 

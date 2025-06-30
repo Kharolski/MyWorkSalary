@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MyWorkSalary.Views.Pages.AddJobPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Lägg till nytt jobb">
+    <!-- BackgroundColor kommer från Page Style -->
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <!-- Grundläggande info -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="📋 Grundläggande information"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource SalaryPrimary}" />
+
+                    <Label Text="Jobbtitel *"
+                           Style="{StaticResource SecondaryLabel}" />
+                    <Entry Text="{Binding JobTitle}"
+                           Placeholder="t.ex. Undersköterska" />
+
+                    <Label Text="Arbetsplats *"
+                           Style="{StaticResource SecondaryLabel}" />
+                    <Entry Text="{Binding Workplace}"
+                           Placeholder="t.ex. Ljungby Kommun" />
+
+                    <Label Text="Anställningstyp"
+                           Style="{StaticResource SecondaryLabel}" />
+                    <Picker ItemsSource="{Binding EmploymentTypes}"
+                            SelectedItem="{Binding SelectedEmploymentType}"
+                            BackgroundColor="{StaticResource SalaryCardBackground}"
+                            TextColor="{StaticResource TextPrimary}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Lön -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="💰 Löneinformation"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource SalaryPrimary}" />
+
+                    <Label Text="Lönetyp"
+                           Style="{StaticResource SecondaryLabel}" />
+                    <Picker ItemsSource="{Binding SalaryTypes}"
+                            SelectedItem="{Binding SelectedSalaryType}"
+                            BackgroundColor="{StaticResource SalaryCardBackground}"
+                            TextColor="{StaticResource TextPrimary}" />
+
+                    <!-- Månadslön -->
+                    <StackLayout IsVisible="{Binding IsMonthlySalary}">
+                        <Label Text="Månadslön (kr)"
+                               Style="{StaticResource SecondaryLabel}" />
+                        <Entry Text="{Binding MonthlySalary}"
+                               Keyboard="Numeric"
+                               Placeholder="t.ex. 28500" />
+                    </StackLayout>
+
+                    <!-- Timlön -->
+                    <StackLayout IsVisible="{Binding IsHourlySalary}">
+                        <Label Text="Timlön (kr)"
+                               Style="{StaticResource SecondaryLabel}" />
+                        <Entry Text="{Binding HourlyRate}"
+                               Keyboard="Numeric"
+                               Placeholder="t.ex. 185" />
+                    </StackLayout>
+
+                    <Label Text="Förväntade timmar per månad"
+                           Style="{StaticResource SecondaryLabel}" />
+                    <Entry Text="{Binding ExpectedHoursPerMonth}"
+                           Keyboard="Numeric"
+                           Placeholder="t.ex. 165" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Skatt -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🏛️ Skatteinformation"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource SalaryPrimary}" />
+
+                    <Label Text="Skattesats (%)"
+                           Style="{StaticResource SecondaryLabel}" />
+                    <Entry Text="{Binding TaxRate}"
+                           Keyboard="Numeric"
+                           Placeholder="t.ex. 33" />
+
+                    <Label Text="💡 Tips: Kolla din senaste lönespec för exakt skattesats"
+                           FontSize="12"
+                           TextColor="{StaticResource TextHint}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Knappar -->
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="10"
+                         Margin="0,20,0,0">
+                <Button Text="Avbryt"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource SecondaryButton}"
+                        HorizontalOptions="FillAndExpand" />
+                <Button Text="Spara jobb"
+                        Command="{Binding SaveCommand}"
+                        HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

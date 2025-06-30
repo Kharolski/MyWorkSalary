@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MyWorkSalary.Views.Pages.EditJobPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Redigera jobb">
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <!-- Header -->
+            <Label Text="Redigera jobb"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,20" />
+
+            <!-- Grundläggande info -->
+            <Frame BackgroundColor="LightBlue" Padding="15" CornerRadius="10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="📋 Grundläggande information"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <Label Text="Jobbtitel *" FontSize="14" />
+                    <Entry Text="{Binding JobTitle}"
+                           Placeholder="t.ex. Undersköterska" />
+
+                    <Label Text="Arbetsplats *" FontSize="14" />
+                    <Entry Text="{Binding Workplace}"
+                           Placeholder="t.ex. Ljungby Kommun" />
+
+                    <Label Text="Anställningstyp" FontSize="14" />
+                    <Picker ItemsSource="{Binding EmploymentTypes}"
+                            SelectedItem="{Binding SelectedEmploymentType}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Lön -->
+            <Frame BackgroundColor="LightGreen" Padding="15" CornerRadius="10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="💰 Löneinformation"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <Label Text="Lönetyp" FontSize="14" />
+                    <Picker ItemsSource="{Binding SalaryTypes}"
+                            SelectedItem="{Binding SelectedSalaryType}" />
+
+                    <!-- Månadslön -->
+                    <StackLayout IsVisible="{Binding IsMonthlySalary}">
+                        <Label Text="Månadslön (kr)" FontSize="14" />
+                        <Entry Text="{Binding MonthlySalary}"
+                               Keyboard="Numeric"
+                               Placeholder="t.ex. 28500" />
+                    </StackLayout>
+
+                    <!-- Timlön -->
+                    <StackLayout IsVisible="{Binding IsHourlySalary}">
+                        <Label Text="Timlön (kr)" FontSize="14" />
+                        <Entry Text="{Binding HourlyRate}"
+                               Keyboard="Numeric"
+                               Placeholder="t.ex. 185" />
+                    </StackLayout>
+
+                    <Label Text="Förväntade timmar per månad" FontSize="14" />
+                    <Entry Text="{Binding ExpectedHoursPerMonth}"
+                           Keyboard="Numeric"
+                           Placeholder="t.ex. 165" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Skatt -->
+            <Frame BackgroundColor="LightYellow" Padding="15" CornerRadius="10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🏛️ Skatteinformation"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+
+                    <Label Text="Skattesats (%)" FontSize="14" />
+                    <Entry Text="{Binding TaxRate}"
+                           Keyboard="Numeric"
+                           Placeholder="t.ex. 33" />
+
+                    <Label Text="💡 Tips: Kolla din senaste lönespec för exakt skattesats"
+                           FontSize="12"
+                           TextColor="Gray" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Knappar -->
+            <StackLayout Orientation="Horizontal" 
+                         HorizontalOptions="FillAndExpand" 
+                         Spacing="10" 
+                         Margin="0,20,0,0">
+                <Button Text="Avbryt"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="Gray"
+                        TextColor="White"
+                        HorizontalOptions="FillAndExpand" />
+                <Button Text="Spara ändringar"
+                        Command="{Binding SaveCommand}"
+                        BackgroundColor="Orange"
+                        TextColor="White"
+                        HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

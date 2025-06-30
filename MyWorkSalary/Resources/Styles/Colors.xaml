@@ -4,51 +4,42 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
-
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#ac99ea</Color>
-    <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
-
+    <!-- Grundfärger -->
     <Color x:Key="White">White</Color>
-    <Color x:Key="Black">Black</Color>
-    <Color x:Key="Magenta">#D600AA</Color>
-    <Color x:Key="MidnightBlue">#190649</Color>
-    <Color x:Key="OffBlack">#1f1f1f</Color>
 
-    <Color x:Key="Gray100">#E1E1E1</Color>
-    <Color x:Key="Gray200">#C8C8C8</Color>
-    <Color x:Key="Gray300">#ACACAC</Color>
-    <Color x:Key="Gray400">#919191</Color>
-    <Color x:Key="Gray500">#6E6E6E</Color>
-    <Color x:Key="Gray600">#404040</Color>
-    <Color x:Key="Gray900">#212121</Color>
-    <Color x:Key="Gray950">#141414</Color>
+    <!-- Bakgrunder (samma värde för konsistens) -->
+    <Color x:Key="AppBackground">#FAFAFA</Color>                <!-- För HomePage -->
+    <Color x:Key="BackgroundPrimary">#EAEAEA</Color>            <!-- För Style.xaml -->
 
-    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
-    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
-    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
-    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
-    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
+    <!-- MyWorkSalary färger -->
+    <!-- Huvudfärger -->
+    <Color x:Key="SalaryPrimary">#2E7D32</Color>                <!-- Professionell grön -->
+    <Color x:Key="SalaryPrimaryDark">#1B5E20</Color>            <!-- Mörkare grön för dark mode -->
+    <Color x:Key="SalarySecondary">#1976D2</Color>              <!-- Blå accent -->
 
-    <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}"/>
-    <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}"/>
-    <SolidColorBrush x:Key="Gray300Brush" Color="{StaticResource Gray300}"/>
-    <SolidColorBrush x:Key="Gray400Brush" Color="{StaticResource Gray400}"/>
-    <SolidColorBrush x:Key="Gray500Brush" Color="{StaticResource Gray500}"/>
-    <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
-    <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
-    <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+    <!-- Status färger -->
+    <Color x:Key="Success">#4CAF50</Color>                      <!-- Grön för positiva belopp -->
+    <Color x:Key="Warning">#FF9800</Color>                      <!-- Orange för varningar -->
+    <Color x:Key="Error">#F44336</Color>                        <!-- Röd för fel -->
 
-    <!-- Våra nya färger -->
-    <Color x:Key="AppBackground">#F5F5F5</Color>
-    <Color x:Key="TabBarBackground">#E0E0E0</Color>
-    <Color x:Key="TabTextColor">#424242</Color>
-    <Color x:Key="CardBackground">#FFFFFF</Color>
+    <!-- Text färger -->
+    <Color x:Key="TextPrimary">#212121</Color>                  <!-- Mörk text -->
+    <Color x:Key="TextSecondary">#757575</Color>                <!-- Grå text -->
+    <Color x:Key="TextHint">#BDBDBD</Color>                     <!-- Placeholder -->
+    <Color x:Key="ActiveJobBlue">#2986cc</Color>
 
-    <Color x:Key="TabSelected">#2196F3</Color>    <!-- Blå för vald tab -->
-    <Color x:Key="TabUnselected">#757575</Color>  <!-- Mörkare grå för ej vald -->
+    <!-- Bakgrunder -->
+    <Color x:Key="SalaryCardBackground">#FFFFFF</Color>         <!-- Vit kort -->
+    <Color x:Key="BackgroundDark">#121212</Color>               <!-- Mörk bakgrund -->
+
+    <!-- Knapp färger -->
+    <Color x:Key="ButtonPrimary">#2E7D32</Color>                <!-- Grön primär knapp -->
+    <Color x:Key="ButtonCancel">#E57373</Color>                 <!-- Ljusröd för avbryt -->
+    <Color x:Key="ButtonCancelText">#FFFFFF</Color>             <!-- Vit text för avbryt -->
+    <Color x:Key="ButtonDanger">#F44336</Color>                 <!-- Röd för farliga åtgärder -->
+
+    <!-- Tab färger -->
+    <Color x:Key="SalaryTabSelected">#2E7D32</Color>            <!-- Grön för vald tab -->
+    <Color x:Key="SalaryTabUnselected">#757575</Color>          <!-- Grå för ej vald -->
+
 </ResourceDictionary>
