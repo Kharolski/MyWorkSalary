@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SQLite;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyWorkSalary.Models
 {
     public class OBRate
     {
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
         public int JobProfileId { get; set; }               // Kopplar till JobProfile

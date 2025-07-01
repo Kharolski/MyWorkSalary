@@ -30,6 +30,7 @@ namespace MyWorkSalary
             builder.Services.AddTransient<EditJobViewModel>();
             builder.Services.AddTransient<ShiftPageViewModel>();
             builder.Services.AddTransient<AddShiftViewModel>();
+            builder.Services.AddTransient<AddOBRateViewModel>();
 
             // Registrera Views
             builder.Services.AddTransient<HomePage>();
@@ -38,6 +39,7 @@ namespace MyWorkSalary
             builder.Services.AddTransient<EditJobPage>();
             builder.Services.AddTransient<ShiftPage>();
             builder.Services.AddTransient<AddShiftPage>();
+            builder.Services.AddTransient<AddOBRatePage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

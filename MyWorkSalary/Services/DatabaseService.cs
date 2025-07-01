@@ -33,6 +33,11 @@ namespace MyWorkSalary.Services
             return _database.Table<JobProfile>().FirstOrDefault(x => x.Id == id);
         }
 
+        public JobProfile GetActiveJob()
+        {
+            return _database.Table<JobProfile>().FirstOrDefault(x => x.IsActive);
+        }
+
         public void SaveJobProfile(JobProfile jobProfile)
         {
             try
@@ -66,19 +71,27 @@ namespace MyWorkSalary.Services
         public List<OBRate> GetOBRates(int jobProfileId)
         {
             return _database.Table<OBRate>()
-                           .Where(x => x.JobProfileId == jobProfileId)
-                           .ToList();
+                   .Where(x => x.JobProfileId == jobProfileId)
+                   .ToList();
         }
 
         public int SaveOBRate(OBRate obRate)
         {
-            return _database.InsertOrReplace(obRate);
+            if (obRate.Id != 0)
+            {
+                return _database.Update(obRate);
+            }
+            else
+            {
+                return _database.Insert(obRate);
+            }
         }
 
         public int DeleteOBRate(int id)
         {
             return _database.Delete<OBRate>(id);
         }
+
         #endregion
 
         #region Shift Methods

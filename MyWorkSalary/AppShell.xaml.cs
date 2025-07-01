@@ -12,6 +12,7 @@ namespace MyWorkSalary
             Routing.RegisterRoute(nameof(AddJobPage), typeof(AddJobPage));
             Routing.RegisterRoute(nameof(EditJobPage), typeof(EditJobPage));
             Routing.RegisterRoute(nameof(AddShiftPage), typeof(AddShiftPage));
+            Routing.RegisterRoute(nameof(AddOBRatePage), typeof(AddOBRatePage));
         }
     }
 }

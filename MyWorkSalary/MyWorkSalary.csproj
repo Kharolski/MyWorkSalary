@@ -74,6 +74,9 @@
 	  <MauiXaml Update="Views\Pages\AddJobPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\AddOBRatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\AddShiftPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

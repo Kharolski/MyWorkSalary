@@ -6,15 +6,20 @@
 
     <!-- Grundfärger -->
     <Color x:Key="White">White</Color>
+    <Color x:Key="Black">Black</Color>
 
-    <!-- Bakgrunder (samma värde för konsistens) -->
+    <!-- Bakgrunder -->
     <Color x:Key="AppBackground">#FAFAFA</Color>                <!-- För HomePage -->
     <Color x:Key="BackgroundPrimary">#EAEAEA</Color>            <!-- För Style.xaml -->
+
+    <!-- Mörka bakgrunder -->
+    <Color x:Key="BackgroundDark">#2C2C2C</Color>
+    <Color x:Key="SurfaceDark">#1E1E1E</Color>
 
     <!-- MyWorkSalary färger -->
     <!-- Huvudfärger -->
     <Color x:Key="SalaryPrimary">#2E7D32</Color>                <!-- Professionell grön -->
-    <Color x:Key="SalaryPrimaryDark">#1B5E20</Color>            <!-- Mörkare grön för dark mode -->
+    <Color x:Key="SalaryPrimaryDark">#4CAF50</Color>            <!-- Mörkare grön för dark mode -->
     <Color x:Key="SalarySecondary">#1976D2</Color>              <!-- Blå accent -->
 
     <!-- Status färger -->
@@ -26,11 +31,16 @@
     <Color x:Key="TextPrimary">#212121</Color>                  <!-- Mörk text -->
     <Color x:Key="TextSecondary">#757575</Color>                <!-- Grå text -->
     <Color x:Key="TextHint">#BDBDBD</Color>                     <!-- Placeholder -->
+
+    <!-- Mörka text-färger -->
+    <Color x:Key="TextPrimaryDark">#FFFFFF</Color>
+    <Color x:Key="TextSecondaryDark">#B0B0B0</Color>
+    
     <Color x:Key="ActiveJobBlue">#2986cc</Color>
 
     <!-- Bakgrunder -->
     <Color x:Key="SalaryCardBackground">#FFFFFF</Color>         <!-- Vit kort -->
-    <Color x:Key="BackgroundDark">#121212</Color>               <!-- Mörk bakgrund -->
+    <Color x:Key="SalaryCardBackgroundDark">#1E1E1E</Color>     <!-- Mörk bakgrund -->
 
     <!-- Knapp färger -->
     <Color x:Key="ButtonPrimary">#2E7D32</Color>                <!-- Grön primär knapp -->

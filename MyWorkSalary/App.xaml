@@ -28,7 +28,8 @@
             <converters:ShiftToDateStringConverter x:Key="ShiftToDateStringConverter" />
             <converters:ShiftToTimeStringConverter x:Key="ShiftToTimeStringConverter" />
             <converters:IsGreaterThanZeroConverter x:Key="IsGreaterThanZeroConverter" />
-            
+
+            <converters:OBTimeRangeConverter x:Key="OBTimeRangeConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

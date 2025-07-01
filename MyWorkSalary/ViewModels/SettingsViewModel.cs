@@ -27,7 +27,11 @@ namespace MyWorkSalary.ViewModels
             EditActiveJobCommand = new Command(OnEditActiveJob);
             DeleteActiveJobCommand = new Command(OnDeleteActiveJob);
 
+            AddOBRateCommand = new Command(OnAddOBRate, () => HasActiveJob);
+            DeleteOBRateCommand = new Command<OBRate>(OnDeleteOBRate);
+
             LoadJobs();
+            LoadOBRates();
         }
         #endregion
 
@@ -61,6 +65,10 @@ namespace MyWorkSalary.ViewModels
 
         public bool HasActiveJob => ActiveJob != null;
         public bool HasMultipleJobs => AllJobs?.Count > 1;
+
+        // Property för OB-regler
+        public ObservableCollection<OBRate> OBRates { get; } = new ObservableCollection<OBRate>();
+        public bool HasOBRates => OBRates?.Count > 0;
         #endregion
 
         #region Commands
@@ -68,15 +76,17 @@ namespace MyWorkSalary.ViewModels
         public ICommand AddJobCommand { get; }
         public ICommand EditActiveJobCommand { get; }
         public ICommand DeleteActiveJobCommand { get; }
+
+        public ICommand AddOBRateCommand { get; }
+        public ICommand DeleteOBRateCommand { get; }
+
         #endregion
 
         #region Methods
         private void LoadJobs()
         {
-            System.Diagnostics.Debug.WriteLine("LoadJobs() körs!");
             var jobs = _databaseService.GetJobProfiles();
 
-            System.Diagnostics.Debug.WriteLine($"Hämtade {jobs.Count()} jobb från DB:");
             foreach (var job in jobs)
             {
                 System.Diagnostics.Debug.WriteLine($"  - {job.JobTitle} (Active: {job.IsActive})");
@@ -85,12 +95,41 @@ namespace MyWorkSalary.ViewModels
             AllJobs = new ObservableCollection<JobProfile>(jobs);
             ActiveJob = jobs.FirstOrDefault(j => j.IsActive);
 
-            System.Diagnostics.Debug.WriteLine($"UI visar nu {AllJobs.Count} jobb");
+            OnPropertyChanged(nameof(HasActiveJob));
+            OnPropertyChanged(nameof(HasMultipleJobs));
+            OnPropertyChanged(nameof(ActiveJobText));
+
+            // Uppdatera command states
+            ((Command)EditActiveJobCommand).ChangeCanExecute();
+            ((Command)DeleteActiveJobCommand).ChangeCanExecute();
+            ((Command)AddOBRateCommand).ChangeCanExecute(); 
+
+            LoadOBRates(); // Ladda OB-regler när jobb ändras
+        }
+
+        private void LoadOBRates()
+        {
+            if (ActiveJob != null)
+            {
+                var obRates = _databaseService.GetOBRates(ActiveJob.Id);
+
+                OBRates.Clear();
+                foreach (var rate in obRates)
+                {
+                    OBRates.Add(rate);
+                }
+
+                OnPropertyChanged(nameof(HasOBRates));
+            }
+            else
+            {
+                OBRates.Clear();
+                OnPropertyChanged(nameof(HasOBRates));
+            }
         }
 
         public void RefreshActiveJob()
         {
-            System.Diagnostics.Debug.WriteLine("RefreshActiveJob() körs!");
             LoadJobs();
         }
 
@@ -127,6 +166,9 @@ namespace MyWorkSalary.ViewModels
                 // Uppdatera ActiveJob property
                 ActiveJob = selectedJob;
 
+                // Uppdatera OB property för aktiv job
+                LoadOBRates();
+
                 await Shell.Current.DisplayAlert("Framgång", $"Bytte till: {selectedJob.JobTitle}", "OK");
             }
             catch (Exception ex)
@@ -143,6 +185,11 @@ namespace MyWorkSalary.ViewModels
         private async void OnAddJob()
         {
             await Shell.Current.GoToAsync(nameof(AddJobPage));
+        }
+
+        private async void OnAddOBRate()
+        {
+            await Shell.Current.GoToAsync(nameof(AddOBRatePage));
         }
 
         private async void OnEditActiveJob()
@@ -194,6 +241,32 @@ namespace MyWorkSalary.ViewModels
                 await Shell.Current.DisplayAlert("Fel", $"Kunde inte radera jobbet: {ex.Message}", "OK");
             }
         }
+
+        private async void OnDeleteOBRate(OBRate obRate)
+        {
+            if (obRate == null)
+                return;
+
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Radera OB-regel",
+                $"Vill du radera '{obRate.Name}'?",
+                "Ja", "Nej");
+
+            if (confirm)
+            {
+                int deletedRows = _databaseService.DeleteOBRate(obRate.Id);
+
+                if (deletedRows > 0)
+                {
+                    LoadOBRates();
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Fel", "Kunde inte radera OB-regeln", "OK");
+                }
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged

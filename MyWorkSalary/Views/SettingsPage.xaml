@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="MyWorkSalary.Views.SettingsPage"
+             x:Name="SettingsPageRef"
+             xmlns:local="clr-namespace:MyWorkSalary.Views"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Inställningar">
@@ -133,6 +135,71 @@
                                 IsVisible="{Binding HasActiveJob}" />
 
                     </StackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- OB-Inställningar -->
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="⏰ OB-Inställningar"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource SalaryPrimary}" />
+
+                    <!-- Visa befintliga OB-regler med SwipeView -->
+                    <CollectionView ItemsSource="{Binding OBRates}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                                    <!-- Swipe från höger för att radera -->
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="🗑️ Radera" 
+                                                   BackgroundColor="Red"
+                                                   Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.DeleteOBRateCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+
+                                    <!-- Huvudinnehållet -->
+                                    <Frame BackgroundColor="LightBlue"
+                                           Padding="12"
+                                           CornerRadius="8"
+                                           Margin="0,2">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <StackLayout Grid.Column="0" Spacing="2">
+                                                <Label Text="{Binding Name}"
+                                                       FontAttributes="Bold"
+                                                       FontSize="14" />
+                                                <Label Text="{Binding ., Converter={StaticResource OBTimeRangeConverter}}"
+                                                       FontSize="12"
+                                                       TextColor="Gray" />
+                                            </StackLayout>
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding RatePerHour, StringFormat='{0:C}/h'}"
+                                                   FontAttributes="Bold"
+                                                   VerticalOptions="Center" />
+                                        </Grid>
+                                    </Frame>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Lägg till OB-regel knapp -->
+                    <Button Text="➕ Lägg till OB-regel"
+                            Command="{Binding AddOBRateCommand}"
+                            BackgroundColor="{StaticResource SalaryPrimary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="0,12" />
+
+                    <!--  HJÄLPTEXT -->
+                    <Label Text="💡 Swipa åt höger på en OB-regel för att radera den"
+                           FontSize="12"
+                           TextColor="Gray"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding HasOBRates}" />
                 </VerticalStackLayout>
             </Frame>
 

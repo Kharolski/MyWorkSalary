@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyWorkSalary.Views.Pages.AddOBRatePage"
+             Title="Lägg till OB-regel">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Namn på OB-regel -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="📝 Namn på OB-regel"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry Text="{Binding Name}"
+                           Placeholder="T.ex. 'Kväll OB vardagar'"
+                           FontSize="16" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Tider -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="⏰ Tidsperiod"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                        <!-- Starttid -->
+                        <VerticalStackLayout Grid.Column="0" Spacing="5">
+                            <Label Text="Från tid:" FontSize="14" />
+                            <TimePicker Time="{Binding StartTime}"
+                                       FontSize="16" />
+                        </VerticalStackLayout>
+
+                        <!-- Sluttid -->
+                        <VerticalStackLayout Grid.Column="1" Spacing="5">
+                            <Label Text="Till tid:" FontSize="14" />
+                            <TimePicker Time="{Binding EndTime}"
+                                       FontSize="16" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Lön per timme -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="💰 Lön per timme"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry Text="{Binding RatePerHour}"
+                           Placeholder="T.ex. 56.70"
+                           Keyboard="Numeric"
+                           FontSize="16" />
+                    <Label Text="Ange OB-lönen per timme (inklusive grundlön + tillägg)"
+                           FontSize="12"
+                           TextColor="Gray" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Kategori -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🏷️ Kategori"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Picker ItemsSource="{Binding Categories}"
+                            SelectedItem="{Binding SelectedCategory}"
+                            FontSize="16" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Veckodagar -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="📅 Gäller dessa dagar"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="8">
+                        <!-- Måndag -->
+                        <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding Monday}" />
+                            <Label Text="Måndag" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Tisdag -->
+                        <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding Tuesday}" />
+                            <Label Text="Tisdag" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Onsdag -->
+                        <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding Wednesday}" />
+                            <Label Text="Onsdag" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Torsdag -->
+                        <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding Thursday}" />
+                            <Label Text="Torsdag" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Fredag -->
+                        <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding Friday}" />
+                            <Label Text="Fredag" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Lördag -->
+                        <StackLayout Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding Saturday}" />
+                            <Label Text="Lördag" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Söndag -->
+                        <StackLayout Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding Sunday}" />
+                            <Label Text="Söndag" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Helgdagar -->
+                        <StackLayout Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding Holidays}" />
+                            <Label Text="Helgdagar" VerticalOptions="Center" />
+                        </StackLayout>
+                    </Grid>
+
+                    <!-- Snabbknappar -->
+                    <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="Center">
+                        <Button Text="Vardagar" 
+                                Command="{Binding SelectWeekdaysCommand}"
+                                BackgroundColor="LightBlue"
+                                TextColor="Black"
+                                CornerRadius="15"
+                                Padding="15,8"
+                                FontSize="12" />
+                        <Button Text="Helger" 
+                                Command="{Binding SelectWeekendsCommand}"
+                                BackgroundColor="LightGreen"
+                                TextColor="Black"
+                                CornerRadius="15"
+                                Padding="15,8"
+                                FontSize="12" />
+                        <Button Text="Alla" 
+                                Command="{Binding SelectAllDaysCommand}"
+                                BackgroundColor="LightCoral"
+                                TextColor="Black"
+                                CornerRadius="15"
+                                Padding="15,8"
+                                FontSize="12" />
+                    </StackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Spara knapp -->
+            <Button Text="💾 Spara OB-regel"
+                    Command="{Binding SaveCommand}"
+                    BackgroundColor="{StaticResource SalaryPrimary}"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Padding="0,15"
+                    FontSize="16"
+                    Margin="0,20,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
