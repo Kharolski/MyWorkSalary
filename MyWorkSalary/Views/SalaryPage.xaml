@@ -11,13 +11,5 @@
         <Label Text="Här kommer månadsrapporter och statistik"
                HorizontalOptions="Center" />
 
-        <!-- TEST KNAPP -->
-        <Button Text="🧪 Testa AddShiftPage"
-                Clicked="OnTestAddShiftClicked"
-                BackgroundColor="Orange"
-                TextColor="White"
-                CornerRadius="8"
-                Padding="0,15" />
-
     </VerticalStackLayout>
 </ContentPage>

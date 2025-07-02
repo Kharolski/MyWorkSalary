@@ -9,17 +9,5 @@ namespace MyWorkSalary.Views
             InitializeComponent();
         }
 
-        // TEST METOD
-        private async void OnTestAddShiftClicked(object sender, EventArgs e)
-        {
-            try
-            {
-                await Shell.Current.GoToAsync(nameof(AddShiftPage));
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Navigation Fel", ex.Message, "OK");
-            }
-        }
     }
 }

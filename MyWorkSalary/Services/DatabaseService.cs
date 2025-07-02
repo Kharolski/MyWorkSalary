@@ -63,7 +63,30 @@ namespace MyWorkSalary.Services
 
         public int DeleteJobProfile(int id)
         {
-            return _database.Delete<JobProfile>(id);
+            try
+            {
+                // 1. Radera alla OB-regler för detta jobb FÖRST
+                var obRates = _database.Table<OBRate>().Where(x => x.JobProfileId == id).ToList();
+                foreach (var obRate in obRates)
+                {
+                    _database.Delete<OBRate>(obRate.Id);
+                }
+
+                // 2. Radera alla WorkShifts för detta jobb
+                var workShifts = _database.Table<WorkShift>().Where(x => x.JobProfileId == id).ToList();
+                foreach (var shift in workShifts)
+                {
+                    _database.Delete<WorkShift>(shift.Id);
+                }
+
+                // 3. Slutligen radera jobbet själv
+                return _database.Delete<JobProfile>(id);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"FEL i DeleteJobProfile: {ex.Message}");
+                throw;
+            }
         }
 
         #endregion

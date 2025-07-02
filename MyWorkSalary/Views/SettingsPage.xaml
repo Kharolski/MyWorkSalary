@@ -11,16 +11,14 @@
             <!-- Kombinerad Jobb Sektion -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">
+
                     <!-- EN rubrik för allt -->
                     <Label Text="💼 Mina Jobb"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource SalaryPrimary}" />
+                           Style="{StaticResource SectionTitleLabel}" />
 
                     <!-- Visa aktivt jobb BARA när det finns 1 jobb -->
                     <StackLayout IsVisible="{Binding HasMultipleJobs, Converter={StaticResource InvertedBoolConverter}}"
                                  Spacing="5">
-                        
                         <Frame BackgroundColor="{StaticResource ActiveJobBlue}"
                                Padding="12,8"
                                CornerRadius="8"
@@ -28,14 +26,13 @@
                             <Label Text="{Binding ActiveJobText}"
                                    FontSize="16"
                                    FontAttributes="Bold"
-                                   TextColor="White"
+                                   TextColor="{StaticResource White}"
                                    HorizontalOptions="Center" />
                         </Frame>
                     </StackLayout>
 
                     <!-- Visa radio buttons när det finns flera jobb -->
                     <StackLayout IsVisible="{Binding HasMultipleJobs}" Spacing="10">
-                        
                         <CollectionView ItemsSource="{Binding AllJobs}"
                                         SelectionMode="None">
                             <CollectionView.ItemTemplate>
@@ -48,6 +45,7 @@
                                         <Grid ColumnDefinitions="Auto,*"
                                               ColumnSpacing="12"
                                               Padding="12,10">
+
                                             <!-- Hela raden klickbar -->
                                             <Grid.GestureRecognizers>
                                                 <TapGestureRecognizer
@@ -88,7 +86,7 @@
                                                 <Label Text="✓ AKTIV"
                                                        FontSize="12"
                                                        FontAttributes="Bold"
-                                                       TextColor="White"
+                                                       TextColor="{StaticResource White}"
                                                        HorizontalOptions="Center"
                                                        VerticalOptions="Center" />
                                             </Border>
@@ -100,8 +98,8 @@
                     </StackLayout>
 
                     <!-- Knappar bredvid varandra -->
-                    <StackLayout Orientation="Horizontal" 
-                                 Spacing="8" 
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="8"
                                  HorizontalOptions="FillAndExpand"
                                  Margin="0,10,0,0">
 
@@ -109,7 +107,7 @@
                         <Button Text="✚ Lägg till"
                                 Command="{Binding AddJobCommand}"
                                 BackgroundColor="{StaticResource SalaryPrimary}"
-                                TextColor="White"
+                                TextColor="{StaticResource White}"
                                 CornerRadius="8"
                                 Padding="0,12"
                                 HorizontalOptions="FillAndExpand" />
@@ -117,23 +115,15 @@
                         <!-- 2. Ändra (Orange) -->
                         <Button Text="✏️ Ändra"
                                 Command="{Binding EditActiveJobCommand}"
-                                BackgroundColor="Orange"
-                                TextColor="White"
-                                CornerRadius="8"
-                                Padding="0,12"
+                                Style="{StaticResource EditButton}"
                                 HorizontalOptions="FillAndExpand"
                                 IsVisible="{Binding HasActiveJob}" />
 
                         <!-- 3. Radera (Röd) -->
                         <Button Text="🗑️"
                                 Command="{Binding DeleteActiveJobCommand}"
-                                BackgroundColor="Red"
-                                TextColor="White"
-                                CornerRadius="8"
-                                Padding="12"
-                                WidthRequest="50"
+                                Style="{StaticResource DeleteButton}"
                                 IsVisible="{Binding HasActiveJob}" />
-
                     </StackLayout>
                 </VerticalStackLayout>
             </Frame>
@@ -141,10 +131,9 @@
             <!-- OB-Inställningar -->
             <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
                 <VerticalStackLayout Spacing="15">
+
                     <Label Text="⏰ OB-Inställningar"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource SalaryPrimary}" />
+                           Style="{StaticResource SectionTitleLabel}" />
 
                     <!-- Visa befintliga OB-regler med SwipeView -->
                     <CollectionView ItemsSource="{Binding OBRates}">
@@ -154,31 +143,33 @@
                                     <!-- Swipe från höger för att radera -->
                                     <SwipeView.RightItems>
                                         <SwipeItems>
-                                            <SwipeItem Text="🗑️ Radera" 
-                                                   BackgroundColor="Red"
-                                                   Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.DeleteOBRateCommand}"
-                                                   CommandParameter="{Binding .}" />
+                                            <SwipeItem Text="🗑️ Radera"
+                                                       BackgroundColor="{StaticResource ButtonDanger}"
+                                                       Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.DeleteOBRateCommand}"
+                                                       CommandParameter="{Binding .}" />
                                         </SwipeItems>
                                     </SwipeView.RightItems>
 
                                     <!-- Huvudinnehållet -->
-                                    <Frame BackgroundColor="LightBlue"
-                                           Padding="12"
-                                           CornerRadius="8"
-                                           Margin="0,2">
+                                    <Frame Style="{StaticResource OBRuleFrame}">
                                         <Grid ColumnDefinitions="*,Auto">
                                             <StackLayout Grid.Column="0" Spacing="2">
                                                 <Label Text="{Binding Name}"
                                                        FontAttributes="Bold"
-                                                       FontSize="14" />
+                                                       FontSize="14"
+                                                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                                                  Dark={StaticResource White}}" />
                                                 <Label Text="{Binding ., Converter={StaticResource OBTimeRangeConverter}}"
                                                        FontSize="12"
-                                                       TextColor="Gray" />
+                                                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
+                                                                                  Dark={StaticResource TextSecondaryDark}}" />
                                             </StackLayout>
                                             <Label Grid.Column="1"
                                                    Text="{Binding RatePerHour, StringFormat='{0:C}/h'}"
                                                    FontAttributes="Bold"
-                                                   VerticalOptions="Center" />
+                                                   VerticalOptions="Center"
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                                              Dark={StaticResource White}}" />
                                         </Grid>
                                     </Frame>
                                 </SwipeView>
@@ -190,14 +181,15 @@
                     <Button Text="➕ Lägg till OB-regel"
                             Command="{Binding AddOBRateCommand}"
                             BackgroundColor="{StaticResource SalaryPrimary}"
-                            TextColor="White"
+                            TextColor="{StaticResource White}"
                             CornerRadius="8"
                             Padding="0,12" />
 
                     <!--  HJÄLPTEXT -->
-                    <Label Text="💡 Swipa åt höger på en OB-regel för att radera den"
+                    <Label Text="💡 Swipa åt vänster på en OB-regel för att radera den"
                            FontSize="12"
-                           TextColor="Gray"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
+                                                      Dark={StaticResource TextSecondaryDark}}"
                            HorizontalOptions="Center"
                            IsVisible="{Binding HasOBRates}" />
                 </VerticalStackLayout>
@@ -206,13 +198,12 @@
             <!-- App Inställningar -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">
+
                     <Label Text="🔧 App-inställningar"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource SalaryPrimary}" />
+                           Style="{StaticResource SectionTitleLabel}" />
 
                     <!-- Tema-växlare -->
-                    <Grid ColumnDefinitions="Auto,*,Auto" 
+                    <Grid ColumnDefinitions="Auto,*,Auto"
                           ColumnSpacing="12"
                           Padding="8,4">
 
@@ -220,26 +211,41 @@
                         <Label Grid.Column="0"
                                Text="{Binding IsDarkTheme, Converter={StaticResource ThemeToIconConverter}}"
                                FontSize="20"
-                               VerticalOptions="Center" />
+                               VerticalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                          Dark={StaticResource TextPrimaryDark}}" />
 
                         <!-- Tema-text -->
-                        <StackLayout Grid.Column="1" 
+                        <StackLayout Grid.Column="1"
                                      Spacing="2"
                                      VerticalOptions="Center">
                             <Label Text="Mörkt tema"
                                    FontSize="16"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                              Dark={StaticResource TextPrimaryDark}}" />
                             <Label Text="{Binding ThemeDescription}"
                                    FontSize="12"
                                    Style="{StaticResource SecondaryLabel}" />
                         </StackLayout>
 
-                        <!-- Tema-switch -->
-                        <Switch Grid.Column="2"
-                                IsToggled="{Binding IsDarkTheme}"
-                                OnColor="{StaticResource SalaryPrimary}"
-                                ThumbColor="White"
-                                VerticalOptions="Center" />
+                        <!-- Custom Switch med synlig track -->
+                        <Frame Grid.Column="2"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource SwitchTrackOff}, 
+                                                            Dark={StaticResource SwitchTrackOffDark}}"
+                               
+                            CornerRadius="15"
+                            Padding="2"
+                            HeightRequest="30"
+                            WidthRequest="50"
+                            VerticalOptions="Center">
+                            <Switch IsToggled="{Binding IsDarkTheme}"
+                                    OnColor="{StaticResource SalaryPrimary}"
+                                    ThumbColor="{AppThemeBinding Light={StaticResource SwitchThumbLight}, 
+                                                                Dark={StaticResource White}}"
+                                    BackgroundColor="Transparent"
+                                    Scale="0.8" />
+                        </Frame>
                     </Grid>
 
                     <!-- Framtida inställningar -->
@@ -247,10 +253,8 @@
                            FontSize="14"
                            Style="{StaticResource SecondaryLabel}"
                            Margin="8,10,8,0" />
-
                 </VerticalStackLayout>
             </Frame>
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

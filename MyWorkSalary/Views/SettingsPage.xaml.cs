@@ -16,7 +16,6 @@ public partial class SettingsPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        System.Diagnostics.Debug.WriteLine("SettingsPage OnAppearing");
 
         if (BindingContext is SettingsViewModel viewModel)
         {

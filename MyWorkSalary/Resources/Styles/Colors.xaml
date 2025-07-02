@@ -4,52 +4,108 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- Grundfärger -->
+    <!-- ===== GRUNDFÄRGER ===== -->
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
+    <Color x:Key="Transparent">Transparent</Color>
 
-    <!-- Bakgrunder -->
-    <Color x:Key="AppBackground">#FAFAFA</Color>                <!-- För HomePage -->
-    <Color x:Key="BackgroundPrimary">#EAEAEA</Color>            <!-- För Style.xaml -->
+    <!-- ===== SPECIALFÄRGER ===== -->
+    <Color x:Key="OverlayColor">#80000000</Color>           <!-- Semi-transparent overlay -->
+    <Color x:Key="ShadowColor">#1A000000</Color>            <!-- Skugga för kort -->
 
-    <!-- Mörka bakgrunder -->
-    <Color x:Key="BackgroundDark">#2C2C2C</Color>
-    <Color x:Key="SurfaceDark">#1E1E1E</Color>
+    <!-- ===== HUVUDFÄRGER (samma i båda teman) ===== -->
+    <Color x:Key="SalaryPrimary">#2E7D32</Color>            <!-- Professionell grön -->
+    <Color x:Key="SalaryPrimaryDark">#4CAF50</Color>        <!-- Ljusare grön för dark mode -->
+    <Color x:Key="SalarySecondary">#1976D2</Color>          <!-- Blå accent -->
+    <Color x:Key="ActiveJobBlue">#2986cc</Color>            <!-- Aktiv jobb-färg -->
 
-    <!-- MyWorkSalary färger -->
-    <!-- Huvudfärger -->
-    <Color x:Key="SalaryPrimary">#2E7D32</Color>                <!-- Professionell grön -->
-    <Color x:Key="SalaryPrimaryDark">#4CAF50</Color>            <!-- Mörkare grön för dark mode -->
-    <Color x:Key="SalarySecondary">#1976D2</Color>              <!-- Blå accent -->
+    <!-- ===== STATUS FÄRGER ===== -->
+    <Color x:Key="Success">#4CAF50</Color>                  <!-- Grön för positiva belopp -->
+    <Color x:Key="Warning">#FF9800</Color>                  <!-- Orange för varningar -->
+    <Color x:Key="Error">#F44336</Color>                    <!-- Röd för fel -->
 
-    <!-- Status färger -->
-    <Color x:Key="Success">#4CAF50</Color>                      <!-- Grön för positiva belopp -->
-    <Color x:Key="Warning">#FF9800</Color>                      <!-- Orange för varningar -->
-    <Color x:Key="Error">#F44336</Color>                        <!-- Röd för fel -->
+    <!-- ===== KNAPP FÄRGER ===== -->
+    <Color x:Key="ButtonPrimary">#2E7D32</Color>            <!-- Grön primär knapp -->
+    <Color x:Key="ButtonCancel">#E57373</Color>             <!-- Ljusröd för avbryt -->
+    <Color x:Key="ButtonCancelText">#FFFFFF</Color>         <!-- Vit text för avbryt -->
+    <Color x:Key="ButtonDanger">#F44336</Color>             <!-- Röd för farliga åtgärder -->
+    <Color x:Key="SalaryTabSelected">#2E7D32</Color>        <!-- Grön för vald tab -->
 
-    <!-- Text färger -->
-    <Color x:Key="TextPrimary">#212121</Color>                  <!-- Mörk text -->
-    <Color x:Key="TextSecondary">#757575</Color>                <!-- Grå text -->
-    <Color x:Key="TextHint">#BDBDBD</Color>                     <!-- Placeholder -->
+    <!-- ===== SPECIALFÄRGER FÖR SHIFT PAGE ===== -->
+    <Color x:Key="ActiveJobBackground">#E3F2FD</Color>      <!-- Ljusblå för aktivt jobb -->
+    <Color x:Key="ActiveJobBackgroundDark">#1565C0</Color>  <!-- Mörkblå för dark mode -->
 
-    <!-- Mörka text-färger -->
-    <Color x:Key="TextPrimaryDark">#FFFFFF</Color>
-    <Color x:Key="TextSecondaryDark">#B0B0B0</Color>
-    
-    <Color x:Key="ActiveJobBlue">#2986cc</Color>
+    <Color x:Key="EmptyStateBackground">#F5F5F5</Color>     <!-- Ljusgrå för tom lista -->
+    <Color x:Key="EmptyStateBackgroundDark">#424242</Color> <!-- Mörkgrå för dark mode -->
 
-    <!-- Bakgrunder -->
-    <Color x:Key="SalaryCardBackground">#FFFFFF</Color>         <!-- Vit kort -->
-    <Color x:Key="SalaryCardBackgroundDark">#1E1E1E</Color>     <!-- Mörk bakgrund -->
+    <Color x:Key="PayTextColor">#2E7D32</Color>             <!-- Grön för lönetext -->
+    <Color x:Key="OBTextColor">#F57C00</Color>              <!-- Orange för OB-tillägg -->
 
-    <!-- Knapp färger -->
-    <Color x:Key="ButtonPrimary">#2E7D32</Color>                <!-- Grön primär knapp -->
-    <Color x:Key="ButtonCancel">#E57373</Color>                 <!-- Ljusröd för avbryt -->
-    <Color x:Key="ButtonCancelText">#FFFFFF</Color>             <!-- Vit text för avbryt -->
-    <Color x:Key="ButtonDanger">#F44336</Color>                 <!-- Röd för farliga åtgärder -->
+    <!-- ===== SPECIALFÄRGER FÖR ADD SHIFT PAGE ===== -->
+    <Color x:Key="CalculationBackground">#E8F5E8</Color>    <!-- Ljusgrön för beräkning -->
+    <Color x:Key="CalculationBackgroundDark">#2E7D32</Color><!-- Mörkgrön för dark mode -->
 
-    <!-- Tab färger -->
-    <Color x:Key="SalaryTabSelected">#2E7D32</Color>            <!-- Grön för vald tab -->
-    <Color x:Key="SalaryTabUnselected">#757575</Color>          <!-- Grå för ej vald -->
+    <Color x:Key="InputBackground">#FFFFFF</Color>          <!-- Vit för inputs -->
+    <Color x:Key="InputBackgroundDark">#3A3A3A</Color>      <!-- Mörk för inputs -->
+
+    <!-- ===== SPECIALFÄRGER FÖR SETTINGS PAGE ===== -->
+    <Color x:Key="EditButtonColor">#FF9800</Color>          <!-- Orange för edit-knapp -->
+    <Color x:Key="OBRuleBackground">#E3F2FD</Color>         <!-- Ljusblå för OB-regler -->
+    <Color x:Key="OBRuleBackgroundDark">#1565C0</Color>     <!-- Mörkblå för dark mode -->
+
+    <!-- ===== SPECIALFÄRGER FÖR ADD OB RATE PAGE ===== -->
+    <Color x:Key="WeekdaysButtonColor">#E3F2FD</Color>      <!-- Ljusblå för vardagar -->
+    <Color x:Key="WeekdaysButtonColorDark">#1976D2</Color>  <!-- Mörkblå för dark mode -->
+
+    <Color x:Key="WeekendsButtonColor">#E8F5E8</Color>      <!-- Ljusgrön för helger -->
+    <Color x:Key="WeekendsButtonColorDark">#388E3C</Color>  <!-- Mörkgrön för dark mode -->
+
+    <Color x:Key="AllDaysButtonColor">#FFEBEE</Color>       <!-- Ljusrosa för alla dagar -->
+    <Color x:Key="AllDaysButtonColorDark">#D32F2F</Color>   <!-- Mörkröd för dark mode -->
+
+
+    <!-- ============================== LJUST TEMA ============================= -->
+
+    <!-- ===== BAKGRUNDER ===== -->
+    <Color x:Key="AppBackground">#FAFAFA</Color>            <!-- Huvudbakgrund för sidor -->
+    <Color x:Key="BackgroundPrimary">#EAEAEA</Color>        <!-- Primär bakgrund -->
+    <Color x:Key="SalaryCardBackground">#FFFFFF</Color>     <!-- Vit bakgrund för kort -->
+
+    <!-- ===== TEXT ===== -->
+    <Color x:Key="TextPrimary">#212121</Color>              <!-- Mörk primär text -->
+    <Color x:Key="TextSecondary">#757575</Color>            <!-- Grå sekundär text -->
+    <Color x:Key="TextHint">#BDBDBD</Color>                 <!-- Placeholder text -->
+
+    <!-- ===== UI ELEMENT ===== -->
+    <Color x:Key="SalaryTabUnselected">#757575</Color>      <!-- Grå för ej vald tab -->
+    <Color x:Key="BorderColor">#E0E0E0</Color>              <!-- Ljusgrå för borders -->
+    <Color x:Key="SeparatorColor">#F0F0F0</Color>           <!-- Separator linjer -->
+
+    <!-- ===== SWITCH FÄRGER ===== -->
+    <Color x:Key="SwitchTrackOff">#E0E0E0</Color>           <!-- Ljusgrå för OFF-läge -->
+    <Color x:Key="SwitchThumbLight">#2E7D32</Color>         <!-- Blå för ljust tema -->
+
+    <!-- ============================== MÖRKT TEMA ============================= -->
+
+    <!-- ===== BAKGRUNDER ===== -->
+    <Color x:Key="AppBackgroundDark">#1A1A1A</Color>        <!-- Varm mörk bakgrund -->
+    <Color x:Key="BackgroundDark">#252525</Color>           <!-- Primär bakgrund -->
+    <Color x:Key="SurfaceDark">#2F2F2F</Color>              <!-- Upphöjd yta -->
+    <Color x:Key="SalaryCardBackgroundDark">#353535</Color> <!-- Tydlig kort-bakgrund -->
+
+    <!-- ===== TEXT ===== -->
+    <Color x:Key="TextPrimaryDark">#FFFFFF</Color>          <!-- Ren vit för viktiga texter -->
+    <Color x:Key="TextSecondaryDark">#B3B3B3</Color>        <!-- Ljus grå -->
+    <Color x:Key="TextHintDark">#808080</Color>             <!-- Medium grå för hints -->
+
+    <!-- ===== UI ELEMENT ===== -->
+    <Color x:Key="SalaryTabUnselectedDark">#999999</Color>  <!-- Ljusare unselected -->
+    <Color x:Key="BorderColorDark">#404040</Color>          <!-- Synlig men subtil border -->
+    <Color x:Key="SeparatorColorDark">#3D3D3D</Color>       <!-- Tydlig separator -->
+
+    <!-- ===== SWITCH FÄRGER ===== -->
+    <Color x:Key="SwitchTrackOffDark">#616161</Color>       <!-- Mörkgrå för OFF-läge -->
+    <Color x:Key="SwitchThumbDark">#FFFFFF</Color>          <!-- Vit för mörkt tema -->
+
 
 </ResourceDictionary>

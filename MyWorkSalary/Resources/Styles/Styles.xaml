@@ -29,6 +29,192 @@
         <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
     </Style>
 
+    <!-- Shift Page Styles -->
+    <Style TargetType="Frame" x:Key="ActiveJobFrame">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource ActiveJobBackground}, 
+                               Dark={StaticResource ActiveJobBackgroundDark}}" />
+        <Setter Property="Padding" Value="15" />
+        <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style TargetType="Frame" x:Key="EmptyStateFrame">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource EmptyStateBackground}, 
+                               Dark={StaticResource EmptyStateBackgroundDark}}" />
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="ActiveJobTitleLabel">
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource White}}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="PayLabel">
+        <Setter Property="TextColor" Value="{StaticResource PayTextColor}" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="OBLabel">
+        <Setter Property="TextColor" Value="{StaticResource OBTextColor}" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="SectionHeaderLabel">
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <!-- Add Shift Page Styles -->
+    <Style TargetType="Label" x:Key="FieldLabel">
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <Style TargetType="Frame" x:Key="CalculationFrame">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource CalculationBackground}, 
+                               Dark={StaticResource CalculationBackgroundDark}}" />
+        <Setter Property="Padding" Value="15" />
+        <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style TargetType="DatePicker" x:Key="ThemedDatePicker">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource InputBackground}, 
+                               Dark={StaticResource InputBackgroundDark}}" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+    </Style>
+
+    <Style TargetType="TimePicker" x:Key="ThemedTimePicker">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource InputBackground}, 
+                               Dark={StaticResource InputBackgroundDark}}" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+    </Style>
+
+    <Style TargetType="Picker" x:Key="ThemedPicker">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource InputBackground}, 
+                               Dark={StaticResource InputBackgroundDark}}" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+    </Style>
+
+    <Style TargetType="Editor" x:Key="ThemedEditor">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource InputBackground}, 
+                               Dark={StaticResource InputBackgroundDark}}" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+        <Setter Property="PlaceholderColor" 
+        Value="{AppThemeBinding Light={StaticResource TextHint}, 
+                               Dark={StaticResource TextHintDark}}" />
+    </Style>
+
+    <!-- Settings Page Styles -->
+    <Style TargetType="Label" x:Key="SectionTitleLabel">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource SalaryPrimary}" />
+    </Style>
+
+    <Style TargetType="Frame" x:Key="OBRuleFrame">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource OBRuleBackground}, 
+                               Dark={StaticResource OBRuleBackgroundDark}}" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Margin" Value="0,2" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="EditButton">
+        <Setter Property="BackgroundColor" Value="{StaticResource EditButtonColor}" />
+        <Setter Property="TextColor" Value="{StaticResource White}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="0,12" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="DeleteButton">
+        <Setter Property="BackgroundColor" Value="{StaticResource ButtonDanger}" />
+        <Setter Property="TextColor" Value="{StaticResource White}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="WidthRequest" Value="50" />
+    </Style>
+
+    <!-- Add OB Rate Page Styles -->
+    <Style TargetType="Label" x:Key="FieldTitleLabel">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="DayLabel">
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+    </Style>
+
+    <Style TargetType="CheckBox" x:Key="ThemedCheckBox">
+        <Setter Property="Color" Value="{StaticResource SalaryPrimary}" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="WeekdaysButton">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource WeekdaysButtonColor}, 
+                               Dark={StaticResource WeekdaysButtonColorDark}}" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource White}}" />
+        <Setter Property="CornerRadius" Value="15" />
+        <Setter Property="Padding" Value="15,8" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="WeekendsButton">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource WeekendsButtonColor}, 
+                               Dark={StaticResource WeekendsButtonColorDark}}" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource White}}" />
+        <Setter Property="CornerRadius" Value="15" />
+        <Setter Property="Padding" Value="15,8" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="AllDaysButton">
+        <Setter Property="BackgroundColor" 
+        Value="{AppThemeBinding Light={StaticResource AllDaysButtonColor}, 
+                               Dark={StaticResource AllDaysButtonColorDark}}" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource White}}" />
+        <Setter Property="CornerRadius" Value="15" />
+        <Setter Property="Padding" Value="15,8" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
     <!-- Label Styles -->
     <Style TargetType="Label">
         <Setter Property="TextColor" 
@@ -36,6 +222,23 @@
                                    Dark={StaticResource TextPrimaryDark}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <!-- Tips Label Style -->
+    <Style TargetType="Label" x:Key="TipsLabel">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" 
+    Value="{AppThemeBinding Light={StaticResource TextHint}, 
+                           Dark={StaticResource TextHintDark}}" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="QuestionLabel">
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HorizontalOptions" Value="Center" />
     </Style>
 
     <Style TargetType="Label" x:Key="TitleLabel">
@@ -59,17 +262,16 @@
     </Style>
 
     <!-- Entry Styles -->
-    <Style TargetType="Entry">
-        <Setter Property="TextColor" 
-            Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                   Dark={StaticResource TextPrimaryDark}}" />
+    <Style TargetType="Entry" x:Key="ThemedEntry">
         <Setter Property="BackgroundColor" 
-            Value="{AppThemeBinding Light={StaticResource SalaryCardBackground}, 
-                                   Dark={StaticResource SalaryCardBackgroundDark}}" />
-        <Setter Property="PlaceholderColor" Value="{StaticResource TextHint}" />
-        <Setter Property="FontFamily" Value="OpenSansRegular"/>
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="MinimumHeightRequest" Value="44"/>
+        Value="{AppThemeBinding Light={StaticResource InputBackground}, 
+                               Dark={StaticResource InputBackgroundDark}}" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                               Dark={StaticResource TextPrimaryDark}}" />
+        <Setter Property="PlaceholderColor" 
+        Value="{AppThemeBinding Light={StaticResource TextHint}, 
+                               Dark={StaticResource TextHintDark}}" />
     </Style>
 
     <!-- Button Styles -->
@@ -96,11 +298,11 @@
     <!-- Frame/Card Styles -->
     <Style TargetType="Frame" x:Key="CardFrame">
         <Setter Property="BackgroundColor" 
-            Value="{AppThemeBinding Light={StaticResource SalaryCardBackground}, 
-                                   Dark={StaticResource SalaryCardBackgroundDark}}" />
+                Value="{AppThemeBinding Light={StaticResource SalaryCardBackground}, 
+                                       Dark={StaticResource SalaryCardBackgroundDark}}" />
         <Setter Property="BorderColor" 
-            Value="{AppThemeBinding Light={StaticResource TextHint}, 
-                                   Dark={StaticResource TextSecondaryDark}}" />
+                Value="{AppThemeBinding Light={StaticResource BorderColor}, 
+                                       Dark={StaticResource BorderColorDark}}" />
         <Setter Property="CornerRadius" Value="12" />
         <Setter Property="Padding" Value="16" />
         <Setter Property="HasShadow" Value="True" />

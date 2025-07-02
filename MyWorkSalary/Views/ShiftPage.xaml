@@ -8,35 +8,31 @@
         <VerticalStackLayout Spacing="20" Padding="20">
 
             <!-- Header med aktivt jobb -->
-            <Frame BackgroundColor="LightBlue" Padding="15" CornerRadius="10">
+            <Frame Style="{StaticResource ActiveJobFrame}">
                 <VerticalStackLayout Spacing="5">
                     <Label Text="📋 Aktivt jobb"
-                           FontSize="16"
-                           FontAttributes="Bold" />
+                           Style="{StaticResource ActiveJobTitleLabel}" />
                     <Label Text="{Binding ActiveJobTitle}"
-                           FontSize="18" />
+                           FontSize="18"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                      Dark={StaticResource White}}" />
                 </VerticalStackLayout>
             </Frame>
 
             <!-- Lägg till pass knapp -->
             <Button Text="➕ Lägg till nytt pass"
                     Command="{Binding AddShiftCommand}"
-                    BackgroundColor="{StaticResource SalaryPrimary}"
-                    TextColor="White"
-                    CornerRadius="8"
+                    Style="{StaticResource ButtonPrimary}"
                     Padding="0,15"
                     FontSize="16" />
 
             <!-- Lista med pass -->
             <Label Text="📅 Mina arbetspass"
-                   FontSize="20"
-                   FontAttributes="Bold"
+                   Style="{StaticResource SectionHeaderLabel}"
                    Margin="0,10,0,0" />
 
             <!-- Meddelande när inga pass finns -->
-            <Frame BackgroundColor="LightGray"
-                   Padding="20"
-                   CornerRadius="10"
+            <Frame Style="{StaticResource EmptyStateFrame}"
                    IsVisible="{Binding NoShiftsVisible}">
                 <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
                     <Label Text="📝"
@@ -44,10 +40,11 @@
                            HorizontalOptions="Center" />
                     <Label Text="Inga arbetspass registrerade än"
                            FontSize="16"
-                           HorizontalOptions="Center" />
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                      Dark={StaticResource TextPrimaryDark}}" />
                     <Label Text="Tryck på knappen ovan för att lägga till ditt första pass"
-                           FontSize="14"
-                           TextColor="Gray"
+                           Style="{StaticResource SecondaryLabel}"
                            HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Frame>
@@ -68,12 +65,12 @@
                                            Text="{Binding MonthYear, StringFormat='{0}'}"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="White" />
+                                           TextColor="{StaticResource White}" />
                                     <Label Grid.Column="1"
                                            Text="{Binding TotalHours, StringFormat='({0:F1}h)'}"
                                            FontSize="16"
                                            FontAttributes="Bold"
-                                           TextColor="White" />
+                                           TextColor="{StaticResource White}" />
                                 </Grid>
                             </Frame>
 
@@ -81,13 +78,12 @@
                             <CollectionView ItemsSource="{Binding .}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <!-- SWIPE VIEW WRAPPER -->
                                         <SwipeView>
-                                            <!-- SWIPE ACTIONS (höger swipe) -->
+                                            <!-- SWIPE ACTIONS (Vänster swipe) -->
                                             <SwipeView.RightItems>
                                                 <SwipeItems>
                                                     <SwipeItem Text="🗑️ Radera"
-                                                               BackgroundColor="Red"
+                                                               BackgroundColor="{StaticResource ButtonDanger}"
                                                                Command="{Binding Source={x:Reference ShiftPageRef}, Path=BindingContext.DeleteShiftCommand}"
                                                                CommandParameter="{Binding .}" />
                                                 </SwipeItems>
@@ -95,12 +91,8 @@
 
                                             <!-- BEFINTLIGT PASS-KORT -->
                                             <Grid Padding="0,2">
-                                                <Frame BackgroundColor="White"
-                                                       Padding="15"
-                                                       CornerRadius="8"
-                                                       HasShadow="True"
+                                                <Frame Style="{StaticResource CardFrame}"
                                                        Margin="10,0">
-
                                                     <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
 
                                                         <!-- PASS-TYP IKON -->
@@ -108,13 +100,17 @@
                                                                Text="{Binding ., Converter={StaticResource ShiftTypeToIconConverter}}"
                                                                FontSize="16"
                                                                VerticalOptions="Center"
-                                                               Margin="0,0,10,0" />
+                                                               Margin="0,0,10,0"
+                                                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                                                          Dark={StaticResource TextPrimaryDark}}" />
 
                                                         <!-- DATUM OCH VECKODAG -->
                                                         <Label Grid.Row="0" Grid.Column="1"
                                                                Text="{Binding ., Converter={StaticResource ShiftToDateStringConverter}}"
                                                                FontSize="16"
-                                                               FontAttributes="Bold" />
+                                                               FontAttributes="Bold"
+                                                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                                                          Dark={StaticResource TextPrimaryDark}}" />
 
                                                         <!-- TIMMAR -->
                                                         <Label Grid.Row="0" Grid.Column="2"
@@ -127,28 +123,24 @@
                                                         <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
                                                                Text="{Binding ., Converter={StaticResource ShiftToTimeStringConverter}}"
                                                                FontSize="14"
-                                                               TextColor="Gray"
+                                                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
+                                                                                          Dark={StaticResource TextSecondaryDark}}"
                                                                Margin="0,2,0,0" />
 
                                                         <!-- LÖN OCH OB -->
                                                         <VerticalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
                                                                              Spacing="2"
                                                                              Margin="0,5,0,0">
-
                                                             <!-- Total lön -->
                                                             <Label Text="{Binding TotalPay, StringFormat='{0:C}'}"
-                                                                   FontSize="14"
-                                                                   TextColor="Green"
+                                                                   Style="{StaticResource PayLabel}"
                                                                    IsVisible="{Binding TotalPay, Converter={StaticResource IsGreaterThanZeroConverter}}" />
 
                                                             <!-- OB-tillägg -->
                                                             <Label Text="{Binding OBPay, StringFormat='OB-tillägg: {0:C}'}"
-                                                                   FontSize="12"
-                                                                   TextColor="Orange"
+                                                                   Style="{StaticResource OBLabel}"
                                                                    IsVisible="{Binding OBPay, Converter={StaticResource IsGreaterThanZeroConverter}}" />
-
                                                         </VerticalStackLayout>
-
                                                     </Grid>
                                                 </Frame>
                                             </Grid>
@@ -156,12 +148,10 @@
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
-
                         </VerticalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
