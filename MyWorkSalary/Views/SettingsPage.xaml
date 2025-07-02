@@ -205,13 +205,48 @@
 
             <!-- App Inställningar -->
             <Frame Style="{StaticResource CardFrame}">
-                <VerticalStackLayout Spacing="10">
+                <VerticalStackLayout Spacing="15">
                     <Label Text="🔧 App-inställningar"
                            FontSize="18"
                            FontAttributes="Bold"
                            TextColor="{StaticResource SalaryPrimary}" />
-                    <Label Text="Kommer snart..."
-                           Style="{StaticResource SecondaryLabel}" />
+
+                    <!-- Tema-växlare -->
+                    <Grid ColumnDefinitions="Auto,*,Auto" 
+                          ColumnSpacing="12"
+                          Padding="8,4">
+
+                        <!-- Tema-ikon -->
+                        <Label Grid.Column="0"
+                               Text="{Binding IsDarkTheme, Converter={StaticResource ThemeToIconConverter}}"
+                               FontSize="20"
+                               VerticalOptions="Center" />
+
+                        <!-- Tema-text -->
+                        <StackLayout Grid.Column="1" 
+                                     Spacing="2"
+                                     VerticalOptions="Center">
+                            <Label Text="Mörkt tema"
+                                   FontSize="16"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding ThemeDescription}"
+                                   FontSize="12"
+                                   Style="{StaticResource SecondaryLabel}" />
+                        </StackLayout>
+
+                        <!-- Tema-switch -->
+                        <Switch Grid.Column="2"
+                                IsToggled="{Binding IsDarkTheme}"
+                                OnColor="{StaticResource SalaryPrimary}"
+                                ThumbColor="White"
+                                VerticalOptions="Center" />
+                    </Grid>
+
+                    <!-- Framtida inställningar -->
+                    <Label Text="🌍 Språk: Svenska (mer språk kommer snart)"
+                           FontSize="14"
+                           Style="{StaticResource SecondaryLabel}"
+                           Margin="8,10,8,0" />
 
                 </VerticalStackLayout>
             </Frame>

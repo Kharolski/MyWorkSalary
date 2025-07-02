@@ -14,6 +14,8 @@ namespace MyWorkSalary.ViewModels
         private JobProfile _activeJob;
         private ObservableCollection<JobProfile> _allJobs;
         private bool _isChangingJob = false;
+        private AppSettings _appSettings;  
+        private bool _isDarkTheme;
         #endregion
 
         #region Constructor
@@ -32,6 +34,7 @@ namespace MyWorkSalary.ViewModels
 
             LoadJobs();
             LoadOBRates();
+            LoadAppSettings();
         }
         #endregion
 
@@ -69,6 +72,24 @@ namespace MyWorkSalary.ViewModels
         // Property för OB-regler
         public ObservableCollection<OBRate> OBRates { get; } = new ObservableCollection<OBRate>();
         public bool HasOBRates => OBRates?.Count > 0;
+
+        // Tema-properties
+        public bool IsDarkTheme
+        {
+            get => _isDarkTheme;
+            set
+            {
+                if (_isDarkTheme != value)
+                {
+                    _isDarkTheme = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(ThemeDescription));
+                    OnThemeChanged(value);  // Spara och applicera tema
+                }
+            }
+        }
+
+        public string ThemeDescription => IsDarkTheme ? "Mörkt utseende aktiverat" : "Ljust utseende aktiverat";
         #endregion
 
         #region Commands
@@ -86,11 +107,6 @@ namespace MyWorkSalary.ViewModels
         private void LoadJobs()
         {
             var jobs = _databaseService.GetJobProfiles();
-
-            foreach (var job in jobs)
-            {
-                System.Diagnostics.Debug.WriteLine($"  - {job.JobTitle} (Active: {job.IsActive})");
-            }
 
             AllJobs = new ObservableCollection<JobProfile>(jobs);
             ActiveJob = jobs.FirstOrDefault(j => j.IsActive);
@@ -267,6 +283,50 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        #endregion
+
+        #region Theme Methods
+        private void LoadAppSettings()
+        {
+            try
+            {
+                _appSettings = _databaseService.GetAppSettings();
+                _isDarkTheme = _appSettings.IsDarkTheme;
+                OnPropertyChanged(nameof(IsDarkTheme));
+                OnPropertyChanged(nameof(ThemeDescription));
+
+                // Applicera tema direkt
+                ApplyTheme(_isDarkTheme);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"FEL vid laddning av app-inställningar: {ex.Message}");
+                // Fallback till ljust tema
+                _isDarkTheme = false;
+                ApplyTheme(false);
+            }
+        }
+
+        private async void OnThemeChanged(bool isDarkTheme)
+        {
+            try
+            {
+                _appSettings.IsDarkTheme = isDarkTheme;
+                _databaseService.SaveAppSettings(_appSettings);
+                ApplyTheme(isDarkTheme);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"FEL vid tema-ändring: {ex.Message}");
+                await Shell.Current.DisplayAlert("Fel", "Kunde inte spara tema-inställning", "OK");
+            }
+        }
+
+        private void ApplyTheme(bool isDarkTheme)
+        {
+            // Sätt app-tema
+            Application.Current.UserAppTheme = isDarkTheme ? AppTheme.Dark : AppTheme.Light;
+        }
         #endregion
 
         #region INotifyPropertyChanged

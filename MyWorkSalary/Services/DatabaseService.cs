@@ -19,6 +19,7 @@ namespace MyWorkSalary.Services
             _database.CreateTable<JobProfile>();
             _database.CreateTable<OBRate>();
             _database.CreateTable<WorkShift>();
+            _database.CreateTable<AppSettings>();
         }
         #endregion
 
@@ -160,6 +161,48 @@ namespace MyWorkSalary.Services
 
         #endregion
 
+        #region AppSettings Methods
+        public AppSettings GetAppSettings()
+        {
+            var settings = _database.Table<AppSettings>().FirstOrDefault();
+
+            if (settings == null)
+            {
+                settings = new AppSettings
+                {
+                    IsDarkTheme = false,
+                    Language = "sv"
+                };
+                _database.Insert(settings);
+            }
+            return settings;
+        }
+
+        public void SaveAppSettings(AppSettings settings)
+        {
+            try
+            {
+                settings.LastModified = DateTime.Now;
+
+                if (settings.Id == 0)
+                {
+                    _database.Insert(settings);
+                }
+                else
+                {
+                    _database.Update(settings);
+                }
+
+                _database.Execute("PRAGMA synchronous = FULL");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"FEL i SaveAppSettings: {ex.Message}");
+                throw;
+            }
+        }
+        #endregion
+
         #region Database Management
         public void CloseConnection()
         {
@@ -171,6 +214,7 @@ namespace MyWorkSalary.Services
             _database.DeleteAll<WorkShift>();
             _database.DeleteAll<OBRate>();
             _database.DeleteAll<JobProfile>();
+            _database.DeleteAll<AppSettings>();
         }
         #endregion
 

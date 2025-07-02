@@ -30,6 +30,7 @@
             <converters:IsGreaterThanZeroConverter x:Key="IsGreaterThanZeroConverter" />
 
             <converters:OBTimeRangeConverter x:Key="OBTimeRangeConverter" />
+            <converters:ThemeToIconConverter x:Key="ThemeToIconConverter" />
 
         </ResourceDictionary>
     </Application.Resources>
