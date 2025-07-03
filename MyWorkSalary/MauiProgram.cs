@@ -35,6 +35,7 @@ namespace MyWorkSalary
             builder.Services.AddTransient<IShiftCalculationService, ShiftCalculationService>();
             builder.Services.AddTransient<IShiftBuilderService, ShiftBuilderService>();
             builder.Services.AddTransient<IConflictHandlerService, ConflictHandlerService>();
+            builder.Services.AddTransient<IDashboardService, DashboardService>();
 
             // Registrera ViewModels
             builder.Services.AddTransient<HomeViewModel>();
