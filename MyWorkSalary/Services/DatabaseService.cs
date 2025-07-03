@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using MyWorkSalary.Models;
 using System.Globalization;
+using MyWorkSalary.Services.Interfaces;
 
 namespace MyWorkSalary.Services
 {
@@ -21,6 +22,7 @@ namespace MyWorkSalary.Services
             _database.CreateTable<WorkShift>();
             _database.CreateTable<AppSettings>();
         }
+
         #endregion
 
         #region JobProfile Methods
@@ -126,12 +128,13 @@ namespace MyWorkSalary.Services
                            .ToList();
         }
 
+        // Använd ShiftDate istället för StartTime för Semester/Sjuk
         public List<WorkShift> GetWorkShifts(int jobProfileId, DateTime fromDate, DateTime toDate)
         {
             return _database.Table<WorkShift>()
                            .Where(x => x.JobProfileId == jobProfileId &&
-                                      x.StartTime >= fromDate &&
-                                      x.StartTime <= toDate)
+                                      x.ShiftDate >= fromDate &&
+                                      x.ShiftDate <= toDate)
                            .ToList();
         }
 
@@ -150,36 +153,34 @@ namespace MyWorkSalary.Services
             }
         }
 
-        public async Task<(bool Success, string Message)> SaveWorkShiftWithValidation(WorkShift workShift)
-        {
-            // Kontrollera överlapp
-            var overlappingShift = GetOverlappingShift(workShift);
-            if (overlappingShift != null)
-            {
-                var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
-                var message = $"Passet överlappar med befintligt pass:\n\n" +
-                             $"📅 {overlappingShift.StartTime.ToString("dddd d MMMM", swedishCulture)}\n" +
-                             $"🕐 {overlappingShift.StartTime:HH:mm} → {overlappingShift.EndTime:HH:mm}\n\n" +
-                             $"Ändra tiden för att undvika överlapp.";
-
-                return (false, message);
-            }
-
-            // Spara om ingen överlapp
-            try
-            {
-                SaveWorkShift(workShift);
-                return (true, "Passet har sparats!");
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Fel vid sparande: {ex.Message}");
-            }
-        }
-
         public int DeleteWorkShift(int id)
         {
             return _database.Delete<WorkShift>(id);
+        }
+
+        // Hämta pass för specifik månad (för rapporter)
+        public List<WorkShift> GetWorkShiftsForMonth(int jobProfileId, int year, int month)
+        {
+            var startDate = new DateTime(year, month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            return _database.Table<WorkShift>()
+                           .Where(x => x.JobProfileId == jobProfileId &&
+                                      x.ShiftDate >= startDate &&
+                                      x.ShiftDate <= endDate)
+                           .ToList();
+        }
+
+        // Hämta statistik för månad
+        public (decimal TotalHours, decimal TotalPay, int TotalShifts) GetMonthlyStats(int jobProfileId, int year, int month)
+        {
+            var shifts = GetWorkShiftsForMonth(jobProfileId, year, month);
+
+            var totalHours = shifts.Sum(x => x.TotalHours);
+            var totalPay = shifts.Sum(x => x.TotalPay);
+            var totalShifts = shifts.Count;
+
+            return (totalHours, totalPay, totalShifts);
         }
 
         #endregion
@@ -242,46 +243,19 @@ namespace MyWorkSalary.Services
         #endregion
 
         #region Validering
-        public bool HasOverlappingShift(WorkShift newShift)
-        {
-            var existingShifts = GetWorkShifts(newShift.JobProfileId);
+        // Flytat till Services/Interfaces/IShiftValidationService.cs
+        #endregion
 
-            foreach (var existing in existingShifts)
-            {
-                // Skippa om vi uppdaterar samma pass
-                if (existing.Id == newShift.Id)
-                    continue;
+        #region Konflikthantering - Detaljerad konfliktanalys
+        // Flyttat till Services/Interfaces/IConflictResolutionService.cs
+        #endregion
 
-                // Kontrollera överlapp
-                if (newShift.StartTime < existing.EndTime && newShift.EndTime > existing.StartTime)
-                {
-                    return true;
-                }
-            }
+        #region Konfliktlösning - Automatiska åtgärder
+        // Flyttat till Services/Interfaces/IConflictResolutionService.cs
+        #endregion
 
-            return false;
-        }
-
-        public WorkShift? GetOverlappingShift(WorkShift newShift)
-        {
-            var existingShifts = GetWorkShifts(newShift.JobProfileId);
-
-            foreach (var existing in existingShifts)
-            {
-                // Skippa om vi uppdaterar samma pass
-                if (existing.Id == newShift.Id)
-                    continue;
-
-                // Kontrollera överlapp
-                if (newShift.StartTime < existing.EndTime && newShift.EndTime > existing.StartTime)
-                {
-                    return existing;
-                }
-            }
-
-            return null;
-        }
-
+        #region Hjälpfunktioner - Privata hjälpmetoder
+        // Flyttat till Services/Interfaces/IConflictResolutionService.cs
         #endregion
     }
 }

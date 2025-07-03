@@ -1,8 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
 using MyWorkSalary.Services;
+using MyWorkSalary.Services.Builders;
+using MyWorkSalary.Services.Calculations;
+using MyWorkSalary.Services.Conflicts;
+using MyWorkSalary.Services.Handlers;
+using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Validation;
 using MyWorkSalary.ViewModels;
-using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views;
+using MyWorkSalary.Views.Pages;
 
 namespace MyWorkSalary
 {
@@ -15,13 +21,20 @@ namespace MyWorkSalary
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
             // Registrera DatabaseService
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "WorkSalary.db3");
             builder.Services.AddSingleton<DatabaseService>(s => new DatabaseService(dbPath));
+
+            // Registrera nya Services
+            builder.Services.AddTransient<IShiftValidationService, ShiftValidationService>();
+            builder.Services.AddTransient<IConflictResolutionService, ConflictResolutionService>();
+            builder.Services.AddTransient<IWorkShiftService, WorkShiftService>();
+            builder.Services.AddTransient<IShiftCalculationService, ShiftCalculationService>();
+            builder.Services.AddTransient<IShiftBuilderService, ShiftBuilderService>();
+            builder.Services.AddTransient<IConflictHandlerService, ConflictHandlerService>();
 
             // Registrera ViewModels
             builder.Services.AddTransient<HomeViewModel>();

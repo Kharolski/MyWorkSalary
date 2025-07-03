@@ -3,28 +3,44 @@ using MyWorkSalary.Models;
 
 namespace MyWorkSalary.Helpers.Converters
 {
-    // 1. Konverterar WorkShift till ikon baserat på tid
+    // 1. Konverterar WorkShift till ikon baserat på ShiftType och tid
     public class ShiftTypeToIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is WorkShift shift)
             {
-                var startHour = shift.StartTime.Hour;
-
-                // Nattpass: 21:00-07:00
-                if (startHour >= 21 || startHour < 7)
-                    return "🌙 Natt";
-
-                // Kvällspass: 16:00-21:00
-                if (startHour >= 16 && startHour < 21)
-                    return "🌅 Kväll";
-
-                // Dagpass: 06:00-16:00
-                return "☀️ Dag";
+                // ✅ SPECIALHANTERING FÖR SEMESTER/SJUK
+                return shift.ShiftType switch
+                {
+                    ShiftType.Vacation => "🏖️ Sem",
+                    ShiftType.SickLeave => "🤒 Sjuk",
+                    ShiftType.Training => "📚 Utb",
+                    ShiftType.OnCall => "📞 Jour",
+                    ShiftType.Overtime => "⏰ Övertid",
+                    ShiftType.Regular => GetTimeBasedIcon(shift),
+                    _ => "📋 Pass"
+                };
             }
-
             return "📋 Pass";
+        }
+
+        private string GetTimeBasedIcon(WorkShift shift)
+        {
+            // Om inga tider finns (säkerhetscheck)
+            if (!shift.StartTime.HasValue)
+                return "📋 Pass";
+
+            var startHour = shift.StartTime.Value.Hour;
+
+            // Nattpass: 21:00-07:00
+            if (startHour >= 21 || startHour < 7)
+                return "🌙 Natt";
+            // Kvällspass: 16:00-21:00
+            if (startHour >= 16 && startHour < 21)
+                return "🌅 Kväll";
+            // Dagpass: 06:00-16:00
+            return "☀️ Dag";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -42,16 +58,27 @@ namespace MyWorkSalary.Helpers.Converters
             {
                 var swedishCulture = new CultureInfo("sv-SE");
 
-                // För nattpass som går över midnatt - visa startdatum
-                if (shift.StartTime.Date != shift.EndTime.Date)
+                // ANVÄND ShiftDate FÖR SEMESTER/SJUK
+                if (shift.ShiftType == ShiftType.Vacation || shift.ShiftType == ShiftType.SickLeave)
                 {
-                    return $"{shift.StartTime.ToString("dddd d MMMM", swedishCulture)}";
+                    return shift.ShiftDate.ToString("dddd d MMMM", swedishCulture);
                 }
 
-                // Vanligt pass samma dag
-                return shift.StartTime.ToString("dddd d MMMM", swedishCulture);
-            }
+                // Vanliga pass - använd StartTime om det finns
+                if (shift.StartTime.HasValue)
+                {
+                    // För nattpass som går över midnatt - visa startdatum
+                    if (shift.EndTime.HasValue && shift.StartTime.Value.Date != shift.EndTime.Value.Date)
+                    {
+                        return shift.StartTime.Value.ToString("dddd d MMMM", swedishCulture);
+                    }
+                    // Vanligt pass samma dag
+                    return shift.StartTime.Value.ToString("dddd d MMMM", swedishCulture);
+                }
 
+                // Fallback till ShiftDate
+                return shift.ShiftDate.ToString("dddd d MMMM", swedishCulture);
+            }
             return "";
         }
 
@@ -61,48 +88,52 @@ namespace MyWorkSalary.Helpers.Converters
         }
     }
 
-    // 3. Konverterar WorkShift till tid-sträng
+    // 3. Konverterar WorkShift till tid-sträng eller period-info
     public class ShiftToTimeStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is WorkShift shift)
             {
-                // För nattpass som går över midnatt
-                if (shift.StartTime.Date != shift.EndTime.Date)
+                // SPECIALHANTERING FÖR SEMESTER/SJUK
+                if (shift.ShiftType == ShiftType.Vacation)
                 {
-                    var swedishCulture = new CultureInfo("sv-SE");
-                    return $"{shift.StartTime:HH:mm} → {shift.EndTime:HH:mm}";
+                    var days = shift.NumberOfDays ?? 1;
+                    return $"Semester - {days} dag{(days > 1 ? "ar" : "")}";
                 }
 
-                // Vanligt pass samma dag
-                return $"{shift.StartTime:HH:mm} → {shift.EndTime:HH:mm}";
+                if (shift.ShiftType == ShiftType.SickLeave)
+                {
+                    var days = shift.NumberOfDays ?? 1;
+                    string karensInfo = shift.IsKarensDay ? " (inkl. karensdag)" : "";
+                    return $"Sjukskrivning - {days} dag{(days > 1 ? "ar" : "")}{karensInfo}";
+                }
+
+                if (shift.ShiftType == ShiftType.Training)
+                {
+                    if (shift.NumberOfDays.HasValue)
+                    {
+                        var days = shift.NumberOfDays.Value;
+                        return $"Utbildning - {days} dag{(days > 1 ? "ar" : "")}";
+                    }
+                }
+
+                // VANLIGA PASS MED TIDER
+                if (shift.StartTime.HasValue && shift.EndTime.HasValue)
+                {
+                    // För nattpass som går över midnatt
+                    if (shift.StartTime.Value.Date != shift.EndTime.Value.Date)
+                    {
+                        return $"{shift.StartTime.Value:HH:mm} → {shift.EndTime.Value:HH:mm}";
+                    }
+                    // Vanligt pass samma dag
+                    return $"{shift.StartTime.Value:HH:mm} → {shift.EndTime.Value:HH:mm}";
+                }
+
+                // Fallback för pass utan tider
+                return "Ingen tid registrerad";
             }
-
             return "";
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    // 4. Kontrollerar om värde är större än 0
-    public class IsGreaterThanZeroConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is decimal decimalValue)
-                return decimalValue > 0;
-
-            if (value is double doubleValue)
-                return doubleValue > 0;
-
-            if (value is int intValue)
-                return intValue > 0;
-
-            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

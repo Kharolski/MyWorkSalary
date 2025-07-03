@@ -1,4 +1,4 @@
-using MyWorkSalary.ViewModels;
+﻿using MyWorkSalary.ViewModels;
 
 namespace MyWorkSalary.Views.Pages
 {
@@ -9,5 +9,6 @@ namespace MyWorkSalary.Views.Pages
             InitializeComponent();
             BindingContext = viewModel;
         }
+
     }
 }

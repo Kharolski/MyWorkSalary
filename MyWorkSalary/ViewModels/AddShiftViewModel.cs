@@ -1,16 +1,22 @@
 ﻿using MyWorkSalary.Models;
 using MyWorkSalary.Services;
+using MyWorkSalary.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
-    //[QueryProperty(nameof(JobId), "jobId")]
     public class AddShiftViewModel : INotifyPropertyChanged
     {
         #region Private Fields
         private readonly DatabaseService _databaseService;
+        private readonly IConflictResolutionService _conflictResolutionService;
+        private readonly IWorkShiftService _workShiftService;
+        private readonly IShiftCalculationService _calculationService;
+        private readonly IShiftBuilderService _shiftBuilderService;
+        private readonly IConflictHandlerService _conflictHandlerService;
+
         private JobProfile _activeJob;
         private DateTime _selectedDate = DateTime.Today;
         private TimeSpan _startTime = new TimeSpan(8, 0, 0); // 08:00
@@ -24,18 +30,19 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Constructor
-        public AddShiftViewModel(DatabaseService databaseService)
+        public AddShiftViewModel(DatabaseService databaseService, 
+            IConflictResolutionService conflictResolutionService, 
+            IWorkShiftService workShiftService, 
+            IShiftCalculationService calculationService, 
+            IShiftBuilderService shiftBuilderService, 
+            IConflictHandlerService conflictHandlerService)
         {
             _databaseService = databaseService;
-
-            // Initiera listor
-            ShiftTypes = new ObservableCollection<ShiftType>
-            {
-                ShiftType.Regular,
-                ShiftType.Overtime,
-                ShiftType.OnCall,
-                ShiftType.Training
-            };
+            _conflictResolutionService = conflictResolutionService;
+            _workShiftService = workShiftService;
+            _calculationService = calculationService;
+            _shiftBuilderService = shiftBuilderService;
+            _conflictHandlerService = conflictHandlerService;
 
             // Commands
             SaveCommand = new Command(OnSave, CanExecuteSave);
@@ -46,6 +53,7 @@ namespace MyWorkSalary.ViewModels
 
             // Beräkna initial
             CalculateHours();
+            
         }
         #endregion
 
@@ -119,6 +127,62 @@ namespace MyWorkSalary.ViewModels
 
         public ObservableCollection<ShiftType> ShiftTypes { get; }
 
+        public List<string> ShiftTypeDisplayNames { get; } = new List<string>
+        {
+            "Vanligt pass",      // Regular
+            "Övertid",           // Overtime  
+            "Jour",              // OnCall
+            "Sjukskrivning",     // SickLeave
+            "Semester",          // Vacation
+            "Utbildning"         // Training
+        };
+
+        private string _selectedShiftTypeDisplay = "Vanligt pass";
+        public string SelectedShiftTypeDisplay
+        {
+            get => _selectedShiftTypeDisplay;
+            set
+            {
+                _selectedShiftTypeDisplay = value;
+                _selectedShiftType = GetShiftTypeFromDisplay(value);
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowTimeFields));
+                OnPropertyChanged(nameof(ShowDaysField));
+                OnPropertyChanged(nameof(CalculationSummary));
+                CalculateHours();
+            }
+        }
+
+        public bool ShowTimeFields =>
+            SelectedShiftTypeDisplay != "Sjukskrivning" && SelectedShiftTypeDisplay != "Semester";
+
+        public bool ShowDaysField =>
+            SelectedShiftTypeDisplay == "Sjukskrivning" || SelectedShiftTypeDisplay == "Semester";
+
+        private string _numberOfDays = "1";
+        public string NumberOfDays
+        {
+            get => _numberOfDays;
+            set
+            {
+                _numberOfDays = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CalculationSummary));
+            }
+        }
+
+        public string CalculationSummary
+        {
+            get
+            {
+                if (ShowDaysField)
+                {
+                    return $"Period: {NumberOfDays} dagar";
+                }
+                return $"Totalt: {CalculatedHours:F1} timmar";
+            }
+        }
+
         public bool ShowCalculation
         {
             get => _showCalculation;
@@ -170,7 +234,7 @@ namespace MyWorkSalary.ViewModels
         public ICommand CancelCommand { get; }
         #endregion
 
-        #region Methods
+        #region Initialization & Setup
         private void LoadActiveJob()
         {
             try
@@ -190,39 +254,35 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        #endregion
+
+        #region Calculations & Validation
         private void CalculateHours()
         {
             try
             {
-                // Skapa DateTime för start och slut
-                var startDateTime = SelectedDate.Add(StartTime);
-                var endDateTime = SelectedDate.Add(EndTime);
+                int days = ShowDaysField && int.TryParse(NumberOfDays, out int d) ? d : 1;
 
-                // Om sluttid är tidigare än starttid, lägg till en dag
-                if (EndTime < StartTime)
+                var result = _calculationService.CalculateShiftHoursAndPay(
+                    SelectedDate, StartTime, EndTime,
+                    GetShiftTypeFromDisplay(SelectedShiftTypeDisplay),
+                    days, ActiveJob);
+
+                CalculatedHours = result.Hours;
+                CalculatedPay = result.Pay;
+
+                // Visa beräkning
+                ShowCalculation = CalculatedHours > 0 || ShowDaysField;
+
+                // Validering
+                if (ShowDaysField)
                 {
-                    endDateTime = endDateTime.AddDays(1);
-                }
-
-                // Beräkna timmar
-                var duration = endDateTime - startDateTime;
-                CalculatedHours = (decimal)duration.TotalHours;
-
-                // Beräkna grundläggande lön (om timlön finns)
-                if (ActiveJob?.HourlyRate > 0)  
-                {
-                    CalculatedPay = CalculatedHours * ActiveJob.HourlyRate.Value;  
+                    CanSave = days > 0 && ActiveJob != null;
                 }
                 else
                 {
-                    CalculatedPay = 0;
+                    CanSave = _calculationService.ValidateHours(CalculatedHours) && ActiveJob != null;
                 }
-
-                // Visa beräkning om det finns timmar
-                ShowCalculation = CalculatedHours > 0;
-
-                // Validering
-                CanSave = CalculatedHours > 0 && CalculatedHours <= 24 && ActiveJob != null;
 
                 OnPropertyChanged(nameof(ShowPay));
             }
@@ -233,12 +293,15 @@ namespace MyWorkSalary.ViewModels
                 CanSave = false;
             }
         }
-
+        
         private bool CanExecuteSave()
         {
             return CanSave;
         }
 
+        #endregion
+
+        #region Main Actions
         private async void OnSave()
         {
             if (ActiveJob == null)
@@ -249,68 +312,69 @@ namespace MyWorkSalary.ViewModels
 
             try
             {
-                // Skapa WorkShift objekt
-                var startDateTime = SelectedDate.Add(StartTime);
-                var endDateTime = SelectedDate.Add(EndTime);
-                if (EndTime < StartTime)
+                WorkShift workShift;
+                if (ShowDaysField) // Semester eller Sjukskrivning
                 {
-                    endDateTime = endDateTime.AddDays(1);
+                    if (!int.TryParse(NumberOfDays, out int days) || days <= 0)
+                    {
+                        await Shell.Current.DisplayAlert("Fel", "Ange ett giltigt antal dagar.", "OK");
+                        return;
+                    }
+                    workShift = _shiftBuilderService.BuildLeaveShift(
+                        ActiveJob, SelectedDate, GetShiftTypeFromDisplay(SelectedShiftTypeDisplay),
+                        days, CalculatedPay, Notes);
+                }
+                else // Vanliga arbetspass
+                {
+                    workShift = _shiftBuilderService.BuildRegularShift(
+                        ActiveJob, SelectedDate, StartTime, EndTime,
+                        GetShiftTypeFromDisplay(SelectedShiftTypeDisplay),
+                        CalculatedHours, CalculatedPay, Notes);
                 }
 
-                var workShift = new WorkShift
-                {
-                    JobProfileId = ActiveJob.Id,
-                    StartTime = startDateTime,
-                    EndTime = endDateTime,
-                    ShiftType = SelectedShiftType,
-                    TotalHours = CalculatedHours,
-                    RegularHours = CalculatedHours, // Förenklad - senare kan vi dela upp OB
-                    OBHours = 0, // TODO: Beräkna OB-timmar
-                    RegularPay = CalculatedPay,
-                    OBPay = 0, // TODO: Beräkna OB-tillägg
-                    TotalPay = CalculatedPay,
-                    Notes = Notes,
-                    CreatedDate = DateTime.Now,
-                    IsConfirmed = false
-                };
+                // Spara med konflikthantering
+                var result = await _workShiftService.SaveWorkShiftWithValidation(workShift);
 
-                // ANVÄND NY VALIDERING ISTÄLLET FÖR DIREKT SPARANDE
-                var result = await _databaseService.SaveWorkShiftWithValidation(workShift);
+                // Hantera specialmeddelande
+                if (!result.Success && result.Message.StartsWith("CONFLICT_RESOLUTION_NEEDED|"))
+                {
+                    await _conflictHandlerService.HandleSickLeaveConflict(result.Message, workShift);
+                    return;
+                }
+
+                if (!result.Success && result.Message.StartsWith("SICK_CONFLICT|"))
+                {
+                    await _conflictHandlerService.HandleWorkShiftSickConflict(result.Message, workShift, ActiveJob);
+                    return;
+                }
+
+                // Hantera arbetspass konflikt
+                if (!result.Success && result.Message.StartsWith("WORK_CONFLICT|"))
+                {
+                    await _conflictHandlerService.HandleWorkShiftConflict(result.Message, workShift);
+                    return;
+                }
+
+                // Hantera sammanslagning av perioder
+                if (!result.Success && result.Message.StartsWith("MERGE_PERIODS|"))
+                {
+                    await _conflictHandlerService.HandlePeriodMerging(result.Message, workShift);
+                    return;
+                }
 
                 if (result.Success)
                 {
-                    // Framgång - spara lyckades
-                    await Shell.Current.DisplayAlert(
-                        "Sparat!",
-                        $"Arbetspass på {CalculatedHours:F1} timmar har sparats.",
-                        "OK");
-
-                    // Gå tillbaka
+                    await Shell.Current.DisplayAlert("Sparat!", result.Message, "OK");
                     await Shell.Current.GoToAsync("..");
                 }
                 else
                 {
-                    // Överlapp upptäckt - visa felmeddelande med alternativ
-                    bool changeTime = await Shell.Current.DisplayAlert(
-                        "⚠️ Överlappande pass",
-                        result.Message,
-                        "Ändra tiden",
-                        "Avbryt");
-
-                    if (!changeTime)
-                    {
-                        // Användaren valde "Avbryt" - gå tillbaka utan att spara
-                        await Shell.Current.GoToAsync("..");
-                    }
-                    // Om "Ändra tiden" - stanna kvar i formuläret så användaren kan justera
+                    await Shell.Current.DisplayAlert("⚠️ Fel", result.Message, "OK");
                 }
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert(
-                    "Fel",
-                    $"Kunde inte spara passet: {ex.Message}",
-                    "OK");
+                await Shell.Current.DisplayAlert("Fel", $"Kunde inte spara: {ex.Message}", "OK");
             }
         }
 
@@ -326,6 +390,27 @@ namespace MyWorkSalary.ViewModels
             {
                 await Shell.Current.GoToAsync("..");
             }
+        }
+
+        #endregion
+
+        #region Conflict Handlers
+        // Flyttat till Services/Interfaces/
+        #endregion
+
+        #region Helper Methods
+        private ShiftType GetShiftTypeFromDisplay(string displayName)
+        {
+            return displayName switch
+            {
+                "Vanligt pass" => ShiftType.Regular,
+                "Övertid" => ShiftType.Overtime,
+                "Jour" => ShiftType.OnCall,
+                "Sjukskrivning" => ShiftType.SickLeave,
+                "Semester" => ShiftType.Vacation,
+                "Utbildning" => ShiftType.Training,
+                _ => ShiftType.Regular
+            };
         }
 
         #endregion

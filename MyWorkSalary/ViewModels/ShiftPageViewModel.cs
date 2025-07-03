@@ -79,10 +79,10 @@ namespace MyWorkSalary.ViewModels
             if (_activeJob != null)
             {
                 var shifts = _databaseService.GetWorkShifts(_activeJob.Id)
-                                           .OrderByDescending(s => s.StartTime);
+                                           .OrderByDescending(s => s.ShiftDate);
 
-                // Gruppera per månad
-                var grouped = shifts.GroupBy(s => s.StartTime.ToString("MMMM yyyy", new System.Globalization.CultureInfo("sv-SE")))
+                // Enkel gruppering - bara visa månad/år
+                var grouped = shifts.GroupBy(s => GetMonthYearKey(s))
                                    .Select(g => new GroupedWorkShift(g.Key, g))
                                    .ToList();
 
@@ -105,15 +105,18 @@ namespace MyWorkSalary.ViewModels
             await Shell.Current.GoToAsync(nameof(AddShiftPage));
         }
 
+        // Hantera radering av alla passtyper
         private async void OnDeleteShift(WorkShift shift)
         {
             if (shift == null)
                 return;
 
-            // Bekräfta radering
+            // Ampassat bekräftelsemeddelande baserat på passtyp
+            string confirmMessage = GetDeleteConfirmationMessage(shift);
+
             bool confirm = await Shell.Current.DisplayAlert(
                 "Radera pass",
-                $"Vill du radera passet från {shift.StartTime:dd/MM HH:mm} till {shift.EndTime:HH:mm}?",
+                confirmMessage,
                 "Radera",
                 "Avbryt");
 
@@ -127,7 +130,9 @@ namespace MyWorkSalary.ViewModels
                     // Uppdatera UI
                     LoadData();
 
-                    //await Shell.Current.DisplayAlert("Klart", "Passet har raderats", "OK");
+                    // bekräftelsemeddelande
+                    string deletedMessage = GetDeletedMessage(shift);
+                    await Shell.Current.DisplayAlert("Raderat", deletedMessage, "OK");
                 }
                 catch (Exception ex)
                 {
@@ -135,6 +140,55 @@ namespace MyWorkSalary.ViewModels
                 }
             }
         }
+
+        // Få rätt månad/år för gruppering
+        private string GetMonthYearKey(WorkShift shift)
+        {
+            var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
+
+            // Använd ShiftDate för alla passtyper
+            return shift.ShiftDate.ToString("MMMM yyyy", swedishCulture);
+        }
+
+        // Skapa bekräftelsemeddelande
+        private string GetDeleteConfirmationMessage(WorkShift shift)
+        {
+            var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
+            var dateStr = shift.ShiftDate.ToString("dddd d MMMM", swedishCulture);
+
+            return shift.ShiftType switch
+            {
+                ShiftType.Vacation =>
+                    $"Vill du radera semestern från {dateStr}?\n({shift.NumberOfDays} dagar)",
+
+                ShiftType.SickLeave =>
+                    $"Vill du radera sjukskrivningen från {dateStr}?\n({shift.NumberOfDays} dagar)",
+
+                ShiftType.Training =>
+                    shift.NumberOfDays.HasValue
+                        ? $"Vill du radera utbildningen från {dateStr}?\n({shift.NumberOfDays} dagar)"
+                        : $"Vill du radera utbildningspasset från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})",
+
+                _ => shift.StartTime.HasValue && shift.EndTime.HasValue
+                    ? $"Vill du radera passet från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})"
+                    : $"Vill du radera passet från {dateStr}?"
+            };
+        }
+
+        // Skapa raderingsbekräftelse
+        private string GetDeletedMessage(WorkShift shift)
+        {
+            return shift.ShiftType switch
+            {
+                ShiftType.Vacation => "Semestern har raderats",
+                ShiftType.SickLeave => "Sjukskrivningen har raderats",
+                ShiftType.Training => "Utbildningen har raderats",
+                ShiftType.OnCall => "Jourpasset har raderats",
+                ShiftType.Overtime => "Övertidspasset har raderats",
+                _ => "Passet har raderats"
+            };
+        }
+
         #endregion
 
         #region INotifyPropertyChanged
@@ -151,10 +205,17 @@ namespace MyWorkSalary.ViewModels
         public string MonthYear { get; private set; }
         public decimal TotalHours { get; private set; }
 
+        // visa bara timmar
+        public string HoursSummary => $"{TotalHours:F1}h";
+
         public GroupedWorkShift(string monthYear, IEnumerable<WorkShift> shifts) : base(shifts)
         {
             MonthYear = monthYear;
-            TotalHours = this.Sum(s => s.TotalHours);
+
+            // Fokus på arbetstimmar
+            TotalHours = this.Where(s => s.ShiftType != ShiftType.Vacation &&
+                                        s.ShiftType != ShiftType.SickLeave)
+                            .Sum(s => s.TotalHours);
         }
     }
 }

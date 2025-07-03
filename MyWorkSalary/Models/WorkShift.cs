@@ -10,16 +10,20 @@ namespace MyWorkSalary.Models
 
         public int JobProfileId { get; set; }               // Kopplar till JobProfile
 
-        [Required]
-        public DateTime StartTime { get; set; }             // 2024-01-15 21:30
+        public DateTime? StartTime { get; set; }             // NULL för semester/sjuk
+        public DateTime? EndTime { get; set; }               // NULL semester/sjuk
 
         [Required]
-        public DateTime EndTime { get; set; }               // 2024-01-16 07:15
-
+        public DateTime ShiftDate { get; set; }             // Datum för passet/perioden
         public ShiftType ShiftType { get; set; }
 
+        // Semester/sjuk
+        public int? NumberOfDays { get; set; }          // Antal dagar för Semester/Sjuk
+        public decimal? SickPayPercentage { get; set; } // 80% efter karensdag
+        public bool IsKarensDay { get; set; }           // Första dagen = karens
+
         // Beräknade värden (sparas för snabbhet)
-        public decimal TotalHours { get; set; }             // 9.75 timmar
+        public decimal TotalHours { get; set; }             
         public decimal RegularHours { get; set; }           // Vanliga arbetstimmar
         public decimal OBHours { get; set; }                // OB-timmar totalt
 

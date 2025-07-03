@@ -5,7 +5,6 @@
              Title="Lägg till pass">
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
-
             <!-- Header -->
             <Label Text="📝 Nytt arbetspass"
                    Style="{StaticResource TitleLabel}"
@@ -19,8 +18,8 @@
                            FontSize="14" />
                     <Label Text="{Binding ActiveJobTitle}"
                            FontSize="16"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                      Dark={StaticResource White}}" />
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                       Dark={StaticResource White}}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -33,37 +32,64 @@
                             Format="dddd d MMMM yyyy" />
             </VerticalStackLayout>
 
-            <!-- Starttid -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="🕐 Starttid"
-                       Style="{StaticResource FieldLabel}" />
-                <TimePicker Time="{Binding StartTime}"
-                            Style="{StaticResource ThemedTimePicker}"
-                            Format="HH:mm" />
-            </VerticalStackLayout>
-
-            <!-- Sluttid -->
-            <VerticalStackLayout Spacing="5">
-                <Label Text="🕐 Sluttid"
-                       Style="{StaticResource FieldLabel}" />
-                <TimePicker Time="{Binding EndTime}"
-                            Style="{StaticResource ThemedTimePicker}"
-                            Format="HH:mm" />
-                <Label Text="💡 Tips: Om passet går över midnatt kommer sluttiden att räknas som nästa dag"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
-                                                  Dark={StaticResource TextSecondaryDark}}"
-                       Margin="0,5,0,0" />
-            </VerticalStackLayout>
-
             <!-- Passtyp -->
             <VerticalStackLayout Spacing="5">
                 <Label Text="📋 Typ av pass"
                        Style="{StaticResource FieldLabel}" />
-                <Picker ItemsSource="{Binding ShiftTypes}"
-                        SelectedItem="{Binding SelectedShiftType}"
+                <Picker ItemsSource="{Binding ShiftTypeDisplayNames}"
+                        SelectedItem="{Binding SelectedShiftTypeDisplay}"
                         Style="{StaticResource ThemedPicker}"
                         Title="Välj passtyp" />
+            </VerticalStackLayout>
+
+            <!-- Tider på samma rad - döljs för semester/sjuk -->
+            <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowTimeFields}">
+                <Label Text="🕐 Arbetstid"
+                       Style="{StaticResource FieldLabel}" />
+                <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                    <!-- Starttid -->
+                    <VerticalStackLayout Grid.Column="0" Spacing="3">
+                        <Label Text="Från" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                        <TimePicker Time="{Binding StartTime}"
+                                    Style="{StaticResource ThemedTimePicker}"
+                                    Format="HH:mm" />
+                    </VerticalStackLayout>
+
+                    <!-- Separator -->
+                    <Label Grid.Column="1" 
+                           Text="→" 
+                           FontSize="20" 
+                           VerticalOptions="Center"
+                           TextColor="Gray" />
+
+                    <!-- Sluttid -->
+                    <VerticalStackLayout Grid.Column="2" Spacing="3">
+                        <Label Text="Till" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                        <TimePicker Time="{Binding EndTime}"
+                                    Style="{StaticResource ThemedTimePicker}"
+                                    Format="HH:mm" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Label Text="💡 Tips: Om passet går över midnatt kommer sluttiden att räknas som nästa dag"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                   Dark={StaticResource TextSecondaryDark}}"
+                       Margin="0,5,0,0" />
+            </VerticalStackLayout>
+
+            <!-- Antal dagar - visas för semester/sjuk -->
+            <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowDaysField}">
+                <Label Text="📊 Antal dagar"
+                       Style="{StaticResource FieldLabel}" />
+                <Entry Text="{Binding NumberOfDays}"
+                       Placeholder="Ange antal dagar"
+                       Keyboard="Numeric"
+                       Style="{StaticResource ThemedEntry}" />
+                <Label Text="💡 Ange hur många dagar denna period gäller"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                   Dark={StaticResource TextSecondaryDark}}" />
             </VerticalStackLayout>
 
             <!-- Anteckningar (valfritt) -->
@@ -83,16 +109,16 @@
                     <Label Text="📊 Beräkning"
                            FontSize="16"
                            FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                      Dark={StaticResource White}}" />
-                    <Label Text="{Binding CalculatedHours, StringFormat='Totalt: {0:F1} timmar'}"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                       Dark={StaticResource White}}" />
+                    <Label Text="{Binding CalculationSummary}"
                            FontSize="14"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                      Dark={StaticResource White}}" />
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                       Dark={StaticResource White}}" />
                     <Label Text="{Binding CalculatedPay, StringFormat='Beräknad lön: {0:C}'}"
                            FontSize="14"
-                           TextColor="{AppThemeBinding Light={StaticResource Success}, 
-                                                      Dark={StaticResource Success}}"
+                           TextColor="{AppThemeBinding Light={StaticResource Success},
+                                                       Dark={StaticResource Success}}"
                            IsVisible="{Binding ShowPay}" />
                 </VerticalStackLayout>
             </Frame>
@@ -102,14 +128,12 @@
                          Spacing="10"
                          HorizontalOptions="FillAndExpand"
                          Margin="0,20,0,0">
-
                 <!-- Avbryt -->
                 <Button Text="Avbryt"
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource SecondaryButton}"
                         Padding="0,15"
                         HorizontalOptions="FillAndExpand" />
-
                 <!-- Spara -->
                 <Button Text="💾 Spara pass"
                         Command="{Binding SaveCommand}"

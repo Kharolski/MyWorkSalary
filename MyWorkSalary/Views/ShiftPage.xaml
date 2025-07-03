@@ -89,28 +89,26 @@
                                                 </SwipeItems>
                                             </SwipeView.RightItems>
 
-                                            <!-- BEFINTLIGT PASS-KORT -->
+                                            <!-- PASS-KORT -->
                                             <Grid Padding="0,2">
-                                                <Frame Style="{StaticResource CardFrame}"
-                                                       Margin="10,0">
-                                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
-
+                                                <Frame Style="{StaticResource CardFrame}" Margin="10,0">
+                                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
                                                         <!-- PASS-TYP IKON -->
                                                         <Label Grid.Row="0" Grid.Column="0"
                                                                Text="{Binding ., Converter={StaticResource ShiftTypeToIconConverter}}"
                                                                FontSize="16"
                                                                VerticalOptions="Center"
                                                                Margin="0,0,10,0"
-                                                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                                                          Dark={StaticResource TextPrimaryDark}}" />
+                                                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                                                           Dark={StaticResource TextPrimaryDark}}" />
 
                                                         <!-- DATUM OCH VECKODAG -->
                                                         <Label Grid.Row="0" Grid.Column="1"
                                                                Text="{Binding ., Converter={StaticResource ShiftToDateStringConverter}}"
-                                                               FontSize="16"
+                                                               FontSize="16" Margin="10,0,0,0"
                                                                FontAttributes="Bold"
-                                                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                                                          Dark={StaticResource TextPrimaryDark}}" />
+                                                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                                                           Dark={StaticResource TextPrimaryDark}}" />
 
                                                         <!-- TIMMAR -->
                                                         <Label Grid.Row="0" Grid.Column="2"
@@ -119,28 +117,13 @@
                                                                FontAttributes="Bold"
                                                                TextColor="{StaticResource SalaryPrimary}" />
 
-                                                        <!-- ARBETSTIDER -->
+                                                        <!-- ARBETSTIDER / PERIOD INFO -->
                                                         <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
                                                                Text="{Binding ., Converter={StaticResource ShiftToTimeStringConverter}}"
-                                                               FontSize="14"
-                                                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
-                                                                                          Dark={StaticResource TextSecondaryDark}}"
-                                                               Margin="0,2,0,0" />
-
-                                                        <!-- LÖN OCH OB -->
-                                                        <VerticalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
-                                                                             Spacing="2"
-                                                                             Margin="0,5,0,0">
-                                                            <!-- Total lön -->
-                                                            <Label Text="{Binding TotalPay, StringFormat='{0:C}'}"
-                                                                   Style="{StaticResource PayLabel}"
-                                                                   IsVisible="{Binding TotalPay, Converter={StaticResource IsGreaterThanZeroConverter}}" />
-
-                                                            <!-- OB-tillägg -->
-                                                            <Label Text="{Binding OBPay, StringFormat='OB-tillägg: {0:C}'}"
-                                                                   Style="{StaticResource OBLabel}"
-                                                                   IsVisible="{Binding OBPay, Converter={StaticResource IsGreaterThanZeroConverter}}" />
-                                                        </VerticalStackLayout>
+                                                               FontSize="14" 
+                                                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                                                           Dark={StaticResource TextSecondaryDark}}"
+                                                               Margin="10,2,0,0" />
                                                     </Grid>
                                                 </Frame>
                                             </Grid>
