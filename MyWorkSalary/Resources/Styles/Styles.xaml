@@ -11,15 +11,30 @@
                                    Dark={StaticResource BackgroundDark}}" />
     </Style>
 
-    <!-- Shell Styles -->
+    <!-- Shell Header Styles - Top -->
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundPrimary}, Dark={StaticResource BackgroundDark}}" />
+        <Setter Property="Shell.BackgroundColor" 
+                Value="{AppThemeBinding Light={StaticResource BackgroundPrimary}, 
+                                        Dark={StaticResource BackgroundDark}}" />
+        <Setter Property="Shell.TitleColor" 
+                Value="{AppThemeBinding Light={StaticResource SalaryPrimary}, 
+                                        Dark={StaticResource SalaryPrimaryDark}}" />
+        
         <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource SalaryCardBackground}, Dark={StaticResource BackgroundDark}}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource SalaryTabSelected}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource SalaryTabSelected}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource SalaryTabUnselected}, Dark={StaticResource TextSecondary}}" />
+
+        <!-- Shell Tabbar Styles - Bottom -->
+        <Setter Property="Shell.TabBarBackgroundColor" 
+                Value="{AppThemeBinding Light={StaticResource BackgroundTab}, 
+                                        Dark={StaticResource BackgroundDark}}" />
+        <Setter Property="Shell.TabBarForegroundColor" 
+                Value="{AppThemeBinding Light={StaticResource SalaryTabSelected}, 
+                                        Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarTitleColor" 
+                Value="{AppThemeBinding Light={StaticResource SalaryTabSelected}, 
+                                        Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarUnselectedColor" 
+                Value="{AppThemeBinding Light={StaticResource SalaryTabUnselected}, 
+                                        Dark={StaticResource TextSecondary}}" />
     </Style>
 
     <!-- NavigationPage Styles -->
@@ -132,7 +147,7 @@
     <Style TargetType="Label" x:Key="SectionTitleLabel">
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="TextColor" Value="{StaticResource SalaryPrimary}" />
+        <Setter Property="TextColor" Value="{StaticResource ButtonPrimary}" />
     </Style>
 
     <Style TargetType="Frame" x:Key="OBRuleFrame">
@@ -228,8 +243,15 @@
     <Style TargetType="Label" x:Key="TipsLabel">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="TextColor" 
-    Value="{AppThemeBinding Light={StaticResource TextHint}, 
-                           Dark={StaticResource TextHintDark}}" />
+                Value="{AppThemeBinding Light={StaticResource TextHint}, 
+                                       Dark={StaticResource TextHintDark}}" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="ActiveJob">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Light={StaticResource ActiveJobLight}, 
+                                   Dark={StaticResource ActiveJobDark}}" />
     </Style>
 
     <Style TargetType="Label" x:Key="QuestionLabel">
@@ -287,7 +309,17 @@
 
     <Style TargetType="Button" x:Key="SecondaryButton">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ButtonCancelText}, Dark={StaticResource White}}" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource ButtonCancel}, Dark={StaticResource ButtonDanger}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource ButtonCancel}, Dark={StaticResource ButtonCancel}}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="16,12"/>
+        <Setter Property="MinimumHeightRequest" Value="48"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ButtonAdd">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ButtonCancelText}, Dark={StaticResource White}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource ButtonPrimary}, Dark={StaticResource ButtonPrimary}}" />
         <Setter Property="FontFamily" Value="OpenSansSemibold"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="CornerRadius" Value="8"/>

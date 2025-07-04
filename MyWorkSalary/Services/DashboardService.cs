@@ -331,8 +331,8 @@ namespace MyWorkSalary.Services
         {
             return balance switch
             {
-                > 0 => $"+{balance:F1}h kompledighet",
-                < 0 => $"{balance:F1}h skuld",
+                > 0 => $"+{balance:F1} tim kompledighet",
+                < 0 => $"{balance:F1} tim skuld",
                 _ => "Balanserat"
             };
         }
@@ -341,8 +341,8 @@ namespace MyWorkSalary.Services
         {
             return difference switch
             {
-                > 0 => $"+{difference:F1}h denna månad",
-                < 0 => $"{difference:F1}h denna månad",
+                > 0 => $"+{difference:F1} timmar denna månad",
+                < 0 => $"{difference:F1} timmar denna månad",
                 _ => "Balanserat denna månad"
             };
         }

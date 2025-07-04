@@ -27,7 +27,28 @@ namespace MyWorkSalary.Models
         public decimal? MonthlySalary { get; set; }
         public decimal? HourlyRate { get; set; }
         public decimal ExpectedHoursPerMonth { get; set; }
-
+        public string SalaryDisplayText
+        {
+            get
+            {
+                if (HourlyRate.HasValue)
+                {
+                    var employmentText = EmploymentType switch
+                    {
+                        EmploymentType.Permanent => "Tillsvidare",
+                        EmploymentType.Temporary => "Visstid",
+                        EmploymentType.OnCall => "Timanställd",
+                        _ => "Anställd"
+                    };
+                    return $"{HourlyRate:F0} kr/tim • {employmentText}";
+                }
+                else if (MonthlySalary.HasValue)
+                {
+                    return $"{MonthlySalary:N0} kr/mån • Månadslön";
+                }
+                return "Lön ej angiven";
+            }
+        }
         #endregion
 
         #region Pay Period Properties

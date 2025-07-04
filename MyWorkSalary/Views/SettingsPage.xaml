@@ -73,6 +73,10 @@
                                                 <Label Text="{Binding Workplace}"
                                                        FontSize="14"
                                                        TextColor="{Binding IsActive, Converter={StaticResource BoolToJobSubTextColorConverter}}" />
+                                                <Label Text="{Binding SalaryDisplayText}"
+                                                       FontSize="12"
+                                                       Style="{StaticResource SecondaryLabel}"
+                                                       Margin="0,2,0,0" />
                                             </StackLayout>
 
                                             <!-- Aktiv indikator med Border -->
@@ -106,7 +110,7 @@
                         <!-- 1. Lägg till (Grön) -->
                         <Button Text="✚ Lägg till"
                                 Command="{Binding AddJobCommand}"
-                                BackgroundColor="{StaticResource SalaryPrimary}"
+                                BackgroundColor="{StaticResource ButtonPrimary}"
                                 TextColor="{StaticResource White}"
                                 CornerRadius="8"
                                 Padding="0,12"
@@ -144,7 +148,7 @@
                                     <SwipeView.RightItems>
                                         <SwipeItems>
                                             <SwipeItem Text="🗑️ Radera"
-                                                       BackgroundColor="{StaticResource ButtonDanger}"
+                                                       BackgroundColor="{StaticResource ButtonCancel}"
                                                        Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.DeleteOBRateCommand}"
                                                        CommandParameter="{Binding .}" />
                                         </SwipeItems>
@@ -165,7 +169,7 @@
                                                                                   Dark={StaticResource TextSecondaryDark}}" />
                                             </StackLayout>
                                             <Label Grid.Column="1"
-                                                   Text="{Binding RatePerHour, StringFormat='{0:C}/h'}"
+                                                   Text="{Binding RatePerHour, StringFormat='{0:C}/t'}"
                                                    FontAttributes="Bold"
                                                    VerticalOptions="Center"
                                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
@@ -180,7 +184,7 @@
                     <!-- Lägg till OB-regel knapp -->
                     <Button Text="➕ Lägg till OB-regel"
                             Command="{Binding AddOBRateCommand}"
-                            BackgroundColor="{StaticResource SalaryPrimary}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
                             TextColor="{StaticResource White}"
                             CornerRadius="8"
                             Padding="0,12" />
@@ -240,7 +244,7 @@
                             WidthRequest="50"
                             VerticalOptions="Center">
                             <Switch IsToggled="{Binding IsDarkTheme}"
-                                    OnColor="{StaticResource SalaryPrimary}"
+                                    OnColor="{StaticResource ButtonPrimary}"
                                     ThumbColor="{AppThemeBinding Light={StaticResource SwitchThumbLight}, 
                                                                 Dark={StaticResource White}}"
                                     BackgroundColor="Transparent"

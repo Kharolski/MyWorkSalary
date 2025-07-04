@@ -22,6 +22,7 @@ namespace MyWorkSalary
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("FontAwesome6Free-Solid-900.otf", "FontAwesome");
                 });
 
             // Registrera DatabaseService

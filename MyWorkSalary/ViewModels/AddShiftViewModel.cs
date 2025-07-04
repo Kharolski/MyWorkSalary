@@ -168,6 +168,7 @@ namespace MyWorkSalary.ViewModels
                 _numberOfDays = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CalculationSummary));
+                CalculateHours();
             }
         }
 
@@ -211,6 +212,7 @@ namespace MyWorkSalary.ViewModels
             {
                 _calculatedHours = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(CalculationSummary));
             }
         }
 
@@ -291,6 +293,10 @@ namespace MyWorkSalary.ViewModels
                 System.Diagnostics.Debug.WriteLine($"Fel i CalculateHours: {ex.Message}");
                 ShowCalculation = false;
                 CanSave = false;
+
+                // Trigga UI-uppdatering även vid fel:
+                OnPropertyChanged(nameof(ShowCalculation));
+                OnPropertyChanged(nameof(CanSave));
             }
         }
         

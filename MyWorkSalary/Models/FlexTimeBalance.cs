@@ -70,16 +70,16 @@ namespace MyWorkSalary.Models
         [Ignore]
         public string MonthlyDifferenceText => MonthlyDifference switch
         {
-            > 0 => $"+{MonthlyDifference:F1}h kompledighet",
-            < 0 => $"{MonthlyDifference:F1}h skuld",
+            > 0 => $"+{MonthlyDifference:F1} tim kompledighet",
+            < 0 => $"{MonthlyDifference:F1} tim skuld",
             _ => "Balanserat"
         };
 
         [Ignore]
         public string RunningBalanceText => RunningBalance switch
         {
-            > 0 => $"+{RunningBalance:F1}h kompledighet",
-            < 0 => $"{RunningBalance:F1}h skuld",
+            > 0 => $"+{RunningBalance:F1} tim kompledighet",
+            < 0 => $"{RunningBalance:F1} tim skuld",
             _ => "Balanserat"
         };
 

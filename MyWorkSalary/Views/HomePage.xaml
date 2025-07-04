@@ -11,7 +11,8 @@
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="{Binding WelcomeText}"
-                           Style="{StaticResource TitleLabel}"
+                           Style="{StaticResource ActiveJob}" 
+                           HorizontalOptions="Center" FontAttributes="Bold"
                            FontSize="20" />
 
                     <!-- Visa när inget jobb finns -->
@@ -20,21 +21,18 @@
                                Style="{StaticResource SecondaryLabel}"
                                HorizontalOptions="Center" />
                         <Button Text="Skapa ditt första jobb"
-                                Command="{Binding SetupJobCommand}"
+                                Command="{Binding SetupJobCommand}" Margin="0,10,0,0"
                                 HorizontalOptions="Center" />
                     </StackLayout>
 
                     <!-- Visa när jobb finns -->
                     <StackLayout IsVisible="{Binding HasActiveJob}" Spacing="5">
                         <Label Text="{Binding WorkplaceText}"
-                               Style="{StaticResource SecondaryLabel}"
-                               FontSize="16"
+                               Style="{StaticResource ActiveJob}"
+                               FontSize="16" Margin="0,-10,0,0"
                                HorizontalOptions="Center" />
-                        <Label Text="{Binding SalaryDisplayText}"
-                               Style="{StaticResource SecondaryLabel}"
-                               FontSize="14"
-                               HorizontalOptions="Center" />
-                        <Label Text="{Binding SalaryTypeInfo}"
+                        
+                        <Label Text="{Binding SalaryTypeInfo}" 
                                Style="{StaticResource SecondaryLabel}"
                                FontSize="12"
                                HorizontalOptions="Center" />
@@ -57,7 +55,7 @@
                                 <Label Text="⏰" 
                                        FontSize="24" 
                                        HorizontalOptions="Center" />
-                                <Label Text="{Binding MonthlyHours, StringFormat='{0:F1}h'}"
+                                <Label Text="{Binding MonthlyHours, StringFormat='{0:F1}'}"
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        HorizontalOptions="Center" />
@@ -72,7 +70,7 @@
                                 <Label Text="💰" 
                                        FontSize="24" 
                                        HorizontalOptions="Center" />
-                                <Label Text="{Binding MonthlyEarnings, StringFormat='{0:C0}'}"
+                                <Label Text="{Binding MonthlyEarnings, StringFormat='{0:N0} kr'}"
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        HorizontalOptions="Center" />
@@ -137,7 +135,7 @@
                             <Button Grid.Column="0"
                                     Text="➕ Lägg till pass"
                                     Command="{Binding AddShiftCommand}"
-                                    Style="{StaticResource PrimaryButton}" />
+                                    Style="{StaticResource ButtonAdd}" />
 
                             <Button Grid.Column="1"
                                     Text="📊 Visa rapporter"
@@ -159,10 +157,10 @@
                 <Frame Style="{StaticResource CardFrame}">
                     <VerticalStackLayout Spacing="15">
                         <Label Text="Senaste aktiviteter"
-               Style="{StaticResource CardTitleLabel}" />
+                            Style="{StaticResource CardTitleLabel}" />
 
                         <CollectionView ItemsSource="{Binding RecentActivities}"
-                        SelectionMode="None">
+                                    SelectionMode="None">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid ColumnDefinitions="Auto,*,Auto" 
@@ -189,7 +187,7 @@
                                         <Label Grid.Column="2"
                                                Text="{Binding Duration}"
                                                FontSize="14"
-                                               TextColor="{StaticResource SalaryPrimary}"
+                                               TextColor="{StaticResource ButtonPrimary}"
                                                VerticalOptions="Center" />
                                     </Grid>
                                 </DataTemplate>
@@ -199,12 +197,12 @@
                                 <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20">
                                     <Label Text="📝" FontSize="32" HorizontalOptions="Center" />
                                     <Label Text="Inga aktiviteter än"
-                           Style="{StaticResource SecondaryLabel}"
-                           HorizontalOptions="Center" />
+                                           Style="{StaticResource SecondaryLabel}"
+                                           HorizontalOptions="Center" />
                                     <Label Text="Registrera ditt första arbetspass!"
-                           Style="{StaticResource SecondaryLabel}"
-                           FontSize="12"
-                           HorizontalOptions="Center" />
+                                           Style="{StaticResource SecondaryLabel}"
+                                           FontSize="12"
+                                           HorizontalOptions="Center" />
                                 </StackLayout>
                             </CollectionView.EmptyView>
                         </CollectionView>

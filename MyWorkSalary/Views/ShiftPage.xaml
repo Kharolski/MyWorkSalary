@@ -8,21 +8,21 @@
         <VerticalStackLayout Spacing="20" Padding="20">
 
             <!-- Header med aktivt jobb -->
-            <Frame Style="{StaticResource ActiveJobFrame}">
+            <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="5">
                     <Label Text="📋 Aktivt jobb"
                            Style="{StaticResource ActiveJobTitleLabel}" />
                     <Label Text="{Binding ActiveJobTitle}"
                            FontSize="18"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                      Dark={StaticResource White}}" />
+                           TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight}, 
+                                                      Dark={StaticResource ActiveJobDark}}" />
                 </VerticalStackLayout>
             </Frame>
 
             <!-- Lägg till pass knapp -->
             <Button Text="➕ Lägg till nytt pass"
                     Command="{Binding AddShiftCommand}"
-                    Style="{StaticResource ButtonPrimary}"
+                    Style="{StaticResource ButtonAdd}"
                     Padding="0,15"
                     FontSize="16" />
 
@@ -57,7 +57,7 @@
                         <VerticalStackLayout Spacing="10" Margin="0,0,0,20">
 
                             <!-- MÅNADS-HEADER -->
-                            <Frame BackgroundColor="{StaticResource SalarySecondary}"
+                            <Frame BackgroundColor="{StaticResource ActiveJobLight}"
                                    Padding="15,10"
                                    CornerRadius="8">
                                 <Grid ColumnDefinitions="*,Auto">
@@ -67,7 +67,7 @@
                                            FontAttributes="Bold"
                                            TextColor="{StaticResource White}" />
                                     <Label Grid.Column="1"
-                                           Text="{Binding TotalHours, StringFormat='({0:F1}h)'}"
+                                           Text="{Binding TotalHours, StringFormat='({0:F1}t)'}"
                                            FontSize="16"
                                            FontAttributes="Bold"
                                            TextColor="{StaticResource White}" />
@@ -112,10 +112,10 @@
 
                                                         <!-- TIMMAR -->
                                                         <Label Grid.Row="0" Grid.Column="2"
-                                                               Text="{Binding TotalHours, StringFormat='{0:F1}h'}"
+                                                               Text="{Binding TotalHours, StringFormat='{0:F1}t'}"
                                                                FontSize="16"
                                                                FontAttributes="Bold"
-                                                               TextColor="{StaticResource SalaryPrimary}" />
+                                                               TextColor="{StaticResource ButtonPrimary}" />
 
                                                         <!-- ARBETSTIDER / PERIOD INFO -->
                                                         <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"

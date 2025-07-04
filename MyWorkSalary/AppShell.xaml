@@ -10,25 +10,25 @@
     <TabBar>
         <ShellContent
             Title="Hem"
-            Icon="{FontImageSource Glyph='🏠', FontFamily='Arial', Size=20}"
+            Icon="home.png"
             ContentTemplate="{DataTemplate views:HomePage}"
             Route="HomePage" />
 
         <ShellContent
             Title="Pass"
-            Icon="{FontImageSource Glyph='⏰', FontFamily='Arial', Size=20}"
+            Icon="pass.png"
             ContentTemplate="{DataTemplate views:ShiftPage}"
             Route="ShiftPage" />
 
         <ShellContent
             Title="Lön"
-            Icon="{FontImageSource Glyph='💰', FontFamily='Arial', Size=20}"
+            Icon="raport.png"
             ContentTemplate="{DataTemplate views:SalaryPage}"
             Route="SalaryPage" />
 
         <ShellContent
             Title="Inställningar"
-            Icon="{FontImageSource Glyph='⚙️', FontFamily='Arial', Size=20}"
+            Icon="settings.png"
             ContentTemplate="{DataTemplate views:SettingsPage}"
             Route="SettingsPage" />
     </TabBar>

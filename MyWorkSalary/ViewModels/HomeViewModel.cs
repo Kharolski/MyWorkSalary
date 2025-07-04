@@ -63,6 +63,7 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged(nameof(ShowDashboard));
                 OnPropertyChanged(nameof(JobDisplayText));
                 OnPropertyChanged(nameof(SalaryTypeInfo));
+                OnPropertyChanged(nameof(WorkplaceText)); 
                 OnPropertyChanged(nameof(HasFlexTime)); 
             }
         }
@@ -245,30 +246,10 @@ namespace MyWorkSalary.ViewModels
         public ICommand SetupJobCommand { get; }
         public ICommand AddShiftCommand { get; }
         public ICommand ViewReportsCommand { get; }
-        public ICommand ViewFlexHistoryCommand { get; } 
+        public ICommand ViewFlexHistoryCommand { get; }
         #endregion
 
         #region Methods
-        private string GetSalaryDisplayText(JobProfile job)
-        {
-            if (job.HourlyRate.HasValue)
-            {
-                var employmentText = job.EmploymentType switch
-                {
-                    EmploymentType.Permanent => "Tillsvidare",
-                    EmploymentType.Temporary => "Visstid",
-                    EmploymentType.OnCall => "Timanställd",
-                    _ => "Anställd"
-                };
-                return $"{job.HourlyRate:C}/tim • {employmentText}";
-            }
-            else if (job.MonthlySalary.HasValue)
-            {
-                return $"{job.MonthlySalary:C}/mån • Månadslön";
-            }
-            return "Lön ej angiven";
-        }
-
         private void LoadDashboardData()
         {
             LoadActiveJob();
@@ -377,7 +358,7 @@ namespace MyWorkSalary.ViewModels
         }
 
         /// <summary>
-        /// Visa flex-historik 
+        /// Visa flex-historik TODO: Skapa FlexHistoryPage
         /// </summary>
         private async void OnViewFlexHistory()
         {

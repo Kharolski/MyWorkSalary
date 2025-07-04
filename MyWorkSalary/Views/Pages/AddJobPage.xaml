@@ -104,7 +104,7 @@
 
                 <Button Text="Spara jobb"
                         Command="{Binding SaveCommand}"
-                        Style="{StaticResource ButtonPrimary}"
+                        Style="{StaticResource ButtonAdd}"
                         HorizontalOptions="FillAndExpand" />
             </StackLayout>
         </VerticalStackLayout>

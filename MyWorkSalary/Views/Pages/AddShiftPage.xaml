@@ -137,7 +137,7 @@
                 <!-- Spara -->
                 <Button Text="💾 Spara pass"
                         Command="{Binding SaveCommand}"
-                        BackgroundColor="{StaticResource SalaryPrimary}"
+                        BackgroundColor="{StaticResource ButtonPrimary}"
                         TextColor="{StaticResource White}"
                         CornerRadius="8"
                         Padding="0,15"
