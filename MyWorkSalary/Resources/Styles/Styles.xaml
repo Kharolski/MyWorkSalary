@@ -340,4 +340,13 @@
         <Setter Property="HasShadow" Value="True" />
     </Style>
 
+    <Style TargetType="Label" x:Key="CardTitleLabel">
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                   Dark={StaticResource TextPrimaryDark}}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
 </ResourceDictionary>

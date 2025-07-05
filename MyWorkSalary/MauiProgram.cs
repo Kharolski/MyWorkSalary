@@ -22,12 +22,22 @@ namespace MyWorkSalary
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    fonts.AddFont("FontAwesome6Free-Solid-900.otf", "FontAwesome");
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
-            // Registrera DatabaseService
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "WorkSalary.db3");
-            builder.Services.AddSingleton<DatabaseService>(s => new DatabaseService(dbPath));
+            try
+            {
+                // Force SQLite initialization
+                SQLitePCL.Batteries_V2.Init();
+
+                // Registrera DatabaseService
+                string dbPath = Path.Combine(FileSystem.AppDataDirectory, "WorkSalary.db3");
+                builder.Services.AddSingleton<DatabaseService>(s => new DatabaseService(dbPath));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 Database Error: {ex}");
+            }
 
             // Registrera nya Services
             builder.Services.AddTransient<IShiftValidationService, ShiftValidationService>();
@@ -55,6 +65,7 @@ namespace MyWorkSalary
             builder.Services.AddTransient<ShiftPage>();
             builder.Services.AddTransient<AddShiftPage>();
             builder.Services.AddTransient<AddOBRatePage>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();

@@ -3,11 +3,11 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Hem">
-
+      
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
 
-            <!-- Välkomst-kort -->
+             <!--Välkomst-kort--> 
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="{Binding WelcomeText}"
@@ -15,7 +15,7 @@
                            HorizontalOptions="Center" FontAttributes="Bold"
                            FontSize="20" />
 
-                    <!-- Visa när inget jobb finns -->
+                     <!--Visa när inget jobb finns--> 
                     <StackLayout IsVisible="{Binding ShowSetupButton}">
                         <Label Text="Kom igång genom att skapa ditt första jobb"
                                Style="{StaticResource SecondaryLabel}"
@@ -25,7 +25,7 @@
                                 HorizontalOptions="Center" />
                     </StackLayout>
 
-                    <!-- Visa när jobb finns -->
+                     <!--Visa när jobb finns--> 
                     <StackLayout IsVisible="{Binding HasActiveJob}" Spacing="5">
                         <Label Text="{Binding WorkplaceText}"
                                Style="{StaticResource ActiveJob}"
@@ -40,22 +40,18 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Dashboard innehåll (bara när jobb finns) -->
+             <!--Dashboard innehåll (bara när jobb finns)--> 
             <StackLayout IsVisible="{Binding ShowDashboard}" Spacing="20">
 
-                <!-- Månadens statistik -->
+                 <!--Månadens statistik--> 
                 <Frame Style="{StaticResource CardFrame}">
                     <VerticalStackLayout Spacing="15">
-                        <Label Text="{Binding CurrentMonthYear}"
-                               Style="{StaticResource CardTitleLabel}" />
-
+                        <Label Text="{Binding CurrentMonthYear}" Style="{StaticResource SectionTitleLabel}" />
                         <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10">
-                            <!-- Timmar -->
+                             <!--Timmar--> 
                             <StackLayout Grid.Column="0">
-                                <Label Text="⏰" 
-                                       FontSize="24" 
-                                       HorizontalOptions="Center" />
-                                <Label Text="{Binding MonthlyHours, StringFormat='{0:F1}'}"
+                                <Label Text="⏰" FontSize="24" HorizontalOptions="Center" />
+                                <Label Text="{Binding MonthlyHoursText}"
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        HorizontalOptions="Center" />
@@ -65,12 +61,10 @@
                                        HorizontalOptions="Center" />
                             </StackLayout>
 
-                            <!-- Intjänat -->
+                             <!--Intjänat--> 
                             <StackLayout Grid.Column="1">
-                                <Label Text="💰" 
-                                       FontSize="24" 
-                                       HorizontalOptions="Center" />
-                                <Label Text="{Binding MonthlyEarnings, StringFormat='{0:N0} kr'}"
+                                <Label Text="💰" FontSize="24" HorizontalOptions="Center" />
+                                <Label Text="{Binding MonthlyEarningsText}"
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        HorizontalOptions="Center" />
@@ -80,11 +74,9 @@
                                        HorizontalOptions="Center" />
                             </StackLayout>
 
-                            <!-- Arbetsdagar -->
+                             <!--Arbetsdagar--> 
                             <StackLayout Grid.Column="2">
-                                <Label Text="📅" 
-                                       FontSize="24" 
-                                       HorizontalOptions="Center" />
+                                <Label Text="📅" FontSize="24" HorizontalOptions="Center" />
                                 <Label Text="{Binding WorkDaysThisMonth}"
                                        FontAttributes="Bold"
                                        FontSize="18"
@@ -98,13 +90,12 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                <!-- Flex-tid sektion (bara för månadslön) -->
+                 <!--Flex-tid sektion (bara för månadslön)--> 
                 <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding ShowFlexSection}">
                     <VerticalStackLayout Spacing="15">
-                        <Label Text="Flex-tid"
-                            Style="{StaticResource CardTitleLabel}" />
+                        <Label Text="Flex-tid" Style="{StaticResource SectionTitleLabel}" />
 
-                        <!-- Aktuellt saldo -->
+                         <!--Aktuellt saldo--> 
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10">
                             <Label Text="{Binding FlexStatusIcon}"
                                    FontSize="24"
@@ -116,7 +107,7 @@
                                    VerticalOptions="Center" />
                         </StackLayout>
 
-                        <!-- Denna månad -->
+                         <!--Denna månad--> 
                         <Label Text="{Binding MonthlyFlexText}"
                                Style="{StaticResource SecondaryLabel}"
                                FontSize="14"
@@ -125,12 +116,10 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                <!-- Snabbknappar -->
+                 <!--Snabbknappar--> 
                 <Frame Style="{StaticResource CardFrame}">
                     <VerticalStackLayout Spacing="15">
-                        <Label Text="Snabbåtgärder"
-                               Style="{StaticResource CardTitleLabel}" />
-
+                        <Label Text="Snabbåtgärder" Style="{StaticResource SectionTitleLabel}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
                             <Button Grid.Column="0"
                                     Text="➕ Lägg till pass"
@@ -141,10 +130,9 @@
                                     Text="📊 Visa rapporter"
                                     Command="{Binding ViewReportsCommand}"
                                     Style="{StaticResource SecondaryButton}" />
-                            
                         </Grid>
 
-                        <!-- HJÄLPTEXT -->
+                         <!--HJÄLPTEXT--> 
                         <Label Text="💡 Registrera arbetstid eller visa dina lönerapporter"
                                FontSize="12"
                                TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
@@ -153,27 +141,25 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                <!-- Senaste aktiviteter -->
+                 <!--Senaste aktiviteter--> 
                 <Frame Style="{StaticResource CardFrame}">
                     <VerticalStackLayout Spacing="15">
-                        <Label Text="Senaste aktiviteter"
-                            Style="{StaticResource CardTitleLabel}" />
+                        <Label Text="Senaste aktiviteter" Style="{StaticResource SectionTitleLabel}" />
 
-                        <CollectionView ItemsSource="{Binding RecentActivities}"
-                                    SelectionMode="None">
+                        <CollectionView ItemsSource="{Binding RecentActivities}" HeightRequest="160" SelectionMode="None">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid ColumnDefinitions="Auto,*,Auto" 
                                           ColumnSpacing="15" 
                                           Padding="0,10">
 
-                                        <!-- Ikon -->
+                                         <!--Ikon--> 
                                         <Label Grid.Column="0"
                                                Text="{Binding Icon}"
                                                FontSize="20"
                                                VerticalOptions="Center" />
 
-                                        <!-- Beskrivning -->
+                                         <!--Beskrivning--> 
                                         <StackLayout Grid.Column="1" VerticalOptions="Center">
                                             <Label Text="{Binding Description}"
                                                    FontAttributes="Bold"
@@ -183,7 +169,7 @@
                                                    FontSize="14" />
                                         </StackLayout>
 
-                                        <!-- Varaktighet med färg -->
+                                         <!--Varaktighet med färg--> 
                                         <Label Grid.Column="2"
                                                Text="{Binding Duration}"
                                                FontSize="14"
@@ -194,14 +180,15 @@
                             </CollectionView.ItemTemplate>
 
                             <CollectionView.EmptyView>
-                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20">
-                                    <Label Text="📝" FontSize="32" HorizontalOptions="Center" />
+                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="40,20" Spacing="10">
+                                    <Label Text="📝" FontSize="32" HorizontalOptions="Center" Opacity="0.6" />
                                     <Label Text="Inga aktiviteter än"
+                                           FontSize="16" FontAttributes="Bold"
                                            Style="{StaticResource SecondaryLabel}"
                                            HorizontalOptions="Center" />
                                     <Label Text="Registrera ditt första arbetspass!"
                                            Style="{StaticResource SecondaryLabel}"
-                                           FontSize="12"
+                                           FontSize="14"
                                            HorizontalOptions="Center" />
                                 </StackLayout>
                             </CollectionView.EmptyView>
@@ -209,7 +196,7 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                <!-- Dagens datum (längst ner) -->
+                 <!--Dagens datum (längst ner)--> 
                 <Label Text="{Binding TodayDate}"
                        Style="{StaticResource SecondaryLabel}"
                        FontSize="12"

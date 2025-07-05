@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#9c3434</color>
-    <color name="colorPrimaryDark">#2B0B98</color>
-    <color name="colorAccent">#2B0B98</color>
-    <color name="AppBackground">#FAFAFA</color>
+  <color name="colorPrimary">#2B0B98</color>  <!-- Ändra till din huvudfärg -->
+  <color name="colorPrimaryDark">#1A0660</color>  <!-- Mörkare version -->
+  <color name="colorAccent">#2B0B98</color>
+  <color name="AppBackground">#FAFAFA</color>
+
+  <!-- Lägg till splash-specifika färger -->
+  <color name="splash_background">#2B0B98</color>  <!-- Samma som colorPrimary -->
+  <color name="maui_splash_color">#2B0B98</color>  <!-- MAUI splash färg -->
 </resources>

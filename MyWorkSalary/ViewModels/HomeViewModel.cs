@@ -44,8 +44,8 @@ namespace MyWorkSalary.ViewModels
             // Initialize collections
             RecentActivities = new ObservableCollection<RecentActivityItem>();
 
-            // Ladda data
-            LoadDashboardData();
+            // FLYTTA DENNA TILL OnAppearing istället för konstruktor
+            //LoadDashboardData();
         }
         #endregion
 
@@ -100,6 +100,7 @@ namespace MyWorkSalary.ViewModels
             : "Timlön • Ingen flex-tid";
 
         // Månadens statistik
+        public string MonthlyHoursText => MonthlyHours.ToString("F1");
         public decimal MonthlyHours
         {
             get => _monthlyHours;
@@ -107,9 +108,11 @@ namespace MyWorkSalary.ViewModels
             {
                 _monthlyHours = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(MonthlyHoursText));
             }
         }
 
+        public string MonthlyEarningsText => MonthlyEarnings.ToString("N0") + " kr";
         public decimal MonthlyEarnings
         {
             get => _monthlyEarnings;
@@ -117,6 +120,7 @@ namespace MyWorkSalary.ViewModels
             {
                 _monthlyEarnings = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(MonthlyEarningsText));
             }
         }
 
@@ -141,7 +145,17 @@ namespace MyWorkSalary.ViewModels
         }
 
         // Display properties
-        public string CurrentMonthYear => DateTime.Now.ToString("MMMM yyyy", new System.Globalization.CultureInfo("sv-SE"));
+        public string CurrentMonthYear
+        {
+            get
+            {
+                var culture = new System.Globalization.CultureInfo("sv-SE");
+                var monthYear = DateTime.Now.ToString("MMMM yyyy", culture);
+
+                // Använd TextInfo för korrekt kapitalisering
+                return culture.TextInfo.ToTitleCase(monthYear);
+            }
+        }
         public string TodayDate => DateTime.Now.ToString("dddd d MMMM yyyy", new System.Globalization.CultureInfo("sv-SE"));
         #endregion
 
