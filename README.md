@@ -1,29 +1,31 @@
 # My Work Salary - Mobil App
 
 ## Projektbeskrivning
-En mobil app för vårdpersonal att kontrollera om de får rätt OB-tillägg och hålla koll på timbalans.
+En mobil app för skiftarbetare att registrera arbetspass, hålla koll på arbetstid och kontrollera att lönen från arbetsgivaren stämmer.
 
 ## Målgrupp
-- Primärt: Undersköterskor och vårdpersonal
-- Sekundärt: Andra skiftarbetare
+- **Primärt**: Vårdpersonal (undersköterskor, sjuksköterskor)
+- **Sekundärt**: Alla skiftarbetare som behöver kolla sin lön
 
 ## Huvudfunktioner
 
-### MVP (Minimum Viable Product)
-- [x] Skapa jobbprofiler (fast anställd vs vikarie)
-- [x] Hantera flera jobb (växla aktivt jobb)
-- [x] Redigera och radera jobb
-- [ ] Registrera arbetspass
-- [ ] Beräkna OB-tillägg automatiskt
-- [ ] Visa timbalans för fast anställda
-- [ ] Månadsrapporter
-- [ ] Svensk helgdagskalender
+### Klart ✅
+- [x] **Jobbhantering**: Skapa, redigera och radera jobbprofiler
+- [x] **Flera jobb**: Växla mellan olika anställningar
+- [x] **Passregistrering**: Registrera arbetspass, sjukdagar och semester
+- [x] **Flex-timbalans**: Spårning av över-/undertid för månadslöner
+- [x] **Dashboard**: Översikt av månadsstatistik och flex-saldo
+- [x] **Svensk formatering**: Kronor, svenska datum och tidsformat
+- [x] **Ljust/Mörkt tema**: Växla mellan teman
 
-### Framtida funktioner
-- [ ] Sjukskrivning och VAB
-- [ ] Export till PDF/Excel
-- [ ] Mörkt tema
-- [ ] Backup/sync
+### Pågående utveckling 🚧
+- [ ] **OB-tillägg**: Automatisk beräkning baserat på arbetstid
+- [ ] **Svensk helgkalender**: Automatisk helgdagsdetektering för OB-beräkning
+
+### Framtida funktioner 📋
+- [ ] **VAB-registrering**: Vård av barn som egen kategori
+- [ ] **Export**: Månadsrapporter till PDF/Excel
+- [ ] **Lönejämförelse**: Jämför beräknad vs faktisk lön från arbetsgivaren
 
 ## Teknisk stack
 - **Framework**: .NET MAUI
@@ -32,115 +34,169 @@ En mobil app för vårdpersonal att kontrollera om de får rätt OB-tillägg och
 - **Dependency Injection**: Microsoft.Extensions.DependencyInjection
 - **Plattformar**: Android (primärt), iOS (sekundärt)
 
-## Nuvarande funktioner ✅
+## Funktioner i detalj
 
-### 1. Hem-sida (HomePage)
-- Välkomstmeddelande
-- Visar aktivt jobb
-- Navigation till att skapa första jobb
+### 🏠 Hem-sida (HomePage)
+- Välkomstmeddelande med aktivt jobb
+- Månadsstatistik (timmar, lön, arbetsdagar)
+- Flex-saldo med visuell indikator
+- Senaste aktiviteter
+- Snabbnavigation till passregistrering
 
-### 2. Jobb-hantering
-- **Skapa jobb** (AddJobPage):
-  - Jobbtitel och arbetsplats
-  - Anställningstyp (Tillsvidare/Vikarie/Behovsanställd)
-  - Lönetyp (Månadslön/Timlön)
-  - Förväntade timmar per månad
-  - Skattesats
-- **Redigera jobb** (EditJobPage):
-  - Uppdatera befintlig jobbinformation
-  - Förifylld data från valt jobb
-- **Radera jobb**:
-  - Säker radering med bekräftelse
-  - Automatisk aktivering av nästa jobb
+### 💼 Jobb-hantering
+- **Skapa jobb**: Jobbtitel, arbetsplats, anställningstyp, löneinfo
+- **Flera jobb**: Växla aktivt jobb med radiobuttons
+- **Redigera**: Uppdatera jobbinformation
+- **Radera**: Säker borttagning med bekräftelse
+- **Anställningstyper**: Tillsvidare, Visstid, Timanställd
 
-### 3. Inställningar (SettingsPage)
-- Visa aktivt jobb (vid 1 jobb)
-- Växla mellan jobb (vid flera jobb)
-- Hantera jobb: [➕ Lägg till] [✏️ Ändra] [🗑️ Radera]
-- Debug-funktioner
+### ⏰ Pass-registrering (AddShiftPage)
+- **Arbetstid**: Datum, start-/sluttid med tidsväljare
+- **Skifttyper**: Arbetspass, Sjukdag, Semester
+- **Flerdagarspass**: Registrera samma pass över flera dagar
+- **Grundläggande beräkning**: Timmar och grundlön
+- **Realtidsuppdatering**: Se beräknad lön medan du skriver
 
-### 4. Databas & Data
-- SQLite databas med JobProfile-modell
-- CRUD-operationer (Create, Read, Update, Delete)
-- Automatisk databasinitiering
-- Hantering av aktivt jobb
+### 📈 Flex-timbalans
+- **Månadslön**: Spårning av över-/undertid
+- **Ackumulerat saldo**: Löpande balans över månader
+- **Visuell feedback**: Färgkodade indikatorer
+- **Historik**: Se tidigare månaders flex-utveckling
+
+### ⚙️ Inställningar (SettingsPage)
+- **Jobbväxling**: Enkelt byte mellan anställningar
+- **Jobbhantering**: Lägg till, ändra, radera jobb
+- **Detaljerad jobbinfo**: Lön, anställningstyp, arbetstid
+- **Tema**: Växla mellan ljust och mörkt tema
 
 ## Projektstruktur
 ```
 MyWorkSalary/
 ├── Models/
-│   ├── JobProfile.cs           # Jobbprofil datamodell
-│   └── EmploymentType.cs       # Anställningstyp enum
+│   ├── JobProfile.cs           # Jobbprofil med löneinfo
+│   ├── WorkShift.cs           # Arbetspass med grundberäkning
+│   ├── FlexTimeBalance.cs     # Flex-timbalans per månad
+│   ├── OBRate.cs              # OB-tillägg konfiguration
+│   └── AppSettings.cs         # App-inställningar
 ├── Views/
-│   ├── HomePage.xaml           # Startsida
-│   ├── SettingsPage.xaml       # Inställningar
+│   ├── HomePage.xaml          # Dashboard med översikt
+│   ├── SalaryPage.xaml        # Löneöversikt
+│   ├── ShiftPage.xaml         # Pass-översikt
+│   ├── SettingsPage.xaml      # Inställningar och jobbhantering
 │   └── Pages/
-│       ├── AddJobPage.xaml     # Skapa nytt jobb
-│       └── EditJobPage.xaml    # Redigera jobb
+│       ├── AddJobPage.xaml    # Skapa nytt jobb
+│       ├── EditJobPage.xaml   # Redigera befintligt jobb
+│       ├── AddOBRatePage.xaml # Konfigurera OB-tillägg
+│       └── AddShiftPage.xaml  # Registrera arbetspass
 ├── ViewModels/
-│   ├── HomeViewModel.cs        # Hem-sida logik
-│   ├── SettingsViewModel.cs    # Inställningar logik
-│   ├── AddJobViewModel.cs      # Skapa jobb logik
-│   └── EditJobViewModel.cs     # Redigera jobb logik
+│   ├── AddJobViewModel.cs     # Skapa jobb logik
+│   ├── AddOBRateViewModel.cs  # OB-konfiguration logik
+│   ├── AddShiftViewModel.cs   # Pass-registrering logik
+│   ├── EditJobViewModel.cs    # Redigera jobb logik
+│   ├── HomeViewModel.cs       # Dashboard-logik
+│   ├── SettingsViewModel.cs   # Inställningar logik
+│   └── ShiftPageViewModel.cs  # Pass-översikt logik
 ├── Services/
-│   └── DatabaseService.cs      # Databas-operationer
-├── Resources/
-│   └── Styles/
-│       └── Styles.xaml         # App-stilar och färger
-└── Platforms/                  # Plattformsspecifik kod
+│   ├── Builders/
+│   │   └── ShiftBuildersServices.cs    # Pass-byggare
+│   ├── Calculations/
+│   │   └── ShiftCalculationService.cs  # Löneberäkningar
+│   ├── Conflicts/
+│   │   └── ConflictResolutionService.cs # Konfliktlösning
+│   ├── Handlers/
+│   │   └── ConflictHandlerService.cs    # Konflikthantering
+│   ├── Interfaces/
+│   │   ├── IConflictHandlerService.cs
+│   │   ├── IConflictResolutionService.cs
+│   │   ├── IDashboardService.cs
+│   │   ├── IShiftBuilderService.cs
+│   │   ├── IShiftCalculationService.cs
+│   │   ├── IShiftValidationService.cs
+│   │   └── IWorkShiftService.cs
+│   ├── Validation/
+│   │   └── ShiftValidationService.cs    # Pass-validering
+│   ├── DatabaseService.cs      # SQLite databas-operationer
+│   ├── WorkShiftService.cs     # Pass-hantering
+│   └── DashboardService.cs     # Dashboard-data och statistik
+└── Resources/
+    └── Styles/
+        ├── Styles.xaml         # App-stilar
+        └── Colors.xaml         # Färgtema
 ```
 
-## Utvecklingsplan
+## Tekniska funktioner
 
-### Klart ✅
-- [x] Projektplanering och UI-design
-- [x] Skapa MAUI-projekt
-- [x] Grundläggande datamodeller
-- [x] Databas setup (SQLite)
-- [x] MVVM-arkitektur med Dependency Injection
-- [x] Navigation och routing
-- [x] Hem-sida med dynamiskt innehåll
-- [x] Komplett jobb-hantering (CRUD)
-- [x] Inställningar med smart UI
-- [x] Formulärvalidering och felhantering
+### 🗄️ Databas
+- **SQLite**: Lokal databas med automatisk initiering
+- **Relationer**: JobProfile → WorkShift → FlexTimeBalance
+- **CRUD**: Fullständiga databas-operationer
+- **Prestanda**: Optimerade frågor för snabb datahantering
 
-### Pågående 🚧
-- [ ] Pass-registrering (arbetstid)
-- [ ] Lön-beräkningar
-- [ ] Månadsöversikter
+### 🧮 Beräkningsmotor
+- **Grundlön**: Beräkning baserat på timmar och timlön/månadslön
+- **Flex-timmar**: Ackumulerad balans över månader
+- **Månadsstatistik**: Sammanställning av arbetstid och lön
+- **Validering**: Konflikthantering och datavalidering
 
-### Nästa steg 📋
-1. **Pass-sida**: Registrera arbetstimmar och datum
-2. **Lön-sida**: Beräkna och visa lön baserat på pass
-3. **OB-tillägg**: Automatisk beräkning baserat på tid
-4. **Rapporter**: Månads- och veckoöversikter
-
-## Tekniska beslut
-
-### Arkitektur
-- **MVVM**: Separation mellan UI och logik
-- **Commands**: För användarinteraktioner
-- **Data Binding**: Automatisk UI-uppdatering
-- **Dependency Injection**: Löst kopplad kod
-
-### UI/UX
-- **Material Design**: Moderna kort och färger
-- **Responsiv design**: Fungerar på olika skärmstorlekar
+### 🎨 UI/UX Design
+- **Material Design**: Moderna kort och färgschema
+- **Responsiv**: Fungerar på olika skärmstorlekar
 - **Intuitive navigation**: Shell-baserad navigation
-- **Säker UX**: Bekräftelsedialoger för destruktiva åtgärder
+- **Realtidsuppdatering**: Data binding med automatisk UI-refresh
+- **Svensk lokalisering**: Datum, tid och valuta i svenskt format
+- **Tema-stöd**: Ljust och mörkt tema
+
+### 🏗️ Arkitektur
+- **MVVM**: Tydlig separation mellan UI och logik
+- **Dependency Injection**: Löst kopplad och testbar kod
+- **Commands**: Asynkrona användarinteraktioner
+- **Services**: Modulär affärslogik med specialiserade tjänster
+- **Converters**: UI-datakonvertering
+- **Separation of Concerns**: Tydlig uppdelning av ansvar
 
 ## Installation och körning
 
-```bash
-# Klona projektet
-git clone [repository-url]
+### Förutsättningar
+- Visual Studio 2022 (17.8+)
+- .NET 8 SDK
+- Android SDK (API 34+) eller iOS SDK
 
-# Öppna i Visual Studio
-# Välj Android/iOS emulator
-# Tryck F5 för att köra
+### Steg för steg
+```bash
+# 1. Klona projektet
+git clone [repository-url]
+cd MyWorkSalary
+
+# 2. Återställ NuGet-paket
+dotnet restore
+
+# 3. Öppna i Visual Studio
+start MyWorkSalary.sln
+
+# 4. Välj target (Android/iOS)
+# 5. Tryck F5 för att köra
 ```
+
+### Första körningen
+1. Appen skapar automatiskt SQLite-databas
+2. Skapa din första jobbprofil
+3. Registrera ditt första arbetspass
+4. Se grundläggande löneberäkning och flex-saldo
 
 ## Utvecklingsmiljö
 - **IDE**: Visual Studio 2022
 - **SDK**: .NET 8
-- **Emulator**: Android API 34+
+- **Emulator**: Android API 34+ / iOS Simulator
+- **Debugging**: Hot Reload aktiverat
+- **Version Control**: Git
+
+## Syfte och användning
+Appen hjälper skiftarbetare att:
+- Hålla koll på sina arbetstimmar
+- Beräkna förväntad lön
+- Jämföra med lön från arbetsgivaren
+- Spåra flex-timbalans för månadslöner
+- Ha kontroll över sin arbetssituation
+
+---
+*Utvecklad för att ge skiftarbetare bättre kontroll över sin lön och arbetstid* 💪
