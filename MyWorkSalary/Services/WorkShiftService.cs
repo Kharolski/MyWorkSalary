@@ -1,4 +1,6 @@
 ﻿using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
 using System.Globalization;
 
@@ -79,7 +81,7 @@ namespace MyWorkSalary.Services
                 }
 
                 // Spara om allt är ok
-                _databaseService.SaveWorkShift(workShift);
+                _databaseService.WorkShifts.SaveWorkShift(workShift);
                 string successMessage = workShift.ShiftType switch
                 {
                     ShiftType.Vacation => $"Semester på {workShift.NumberOfDays} dagar har sparats!",

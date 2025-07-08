@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using MyWorkSalary.Models.Specialized;
+using System.Globalization;
 
 namespace MyWorkSalary.Helpers.Converters
 {
@@ -6,7 +7,7 @@ namespace MyWorkSalary.Helpers.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Models.OBRate obRate)
+            if (value is OBRate obRate)
             {
                 return $"{obRate.StartTime:hh\\:mm} - {obRate.EndTime:hh\\:mm}";
             }

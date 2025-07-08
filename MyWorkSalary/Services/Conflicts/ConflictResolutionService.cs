@@ -1,4 +1,6 @@
 ﻿using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
 using System.Globalization;
 
@@ -22,7 +24,7 @@ namespace MyWorkSalary.Services.Conflicts
                 return (false, "", new List<WorkShift>());
             }
 
-            var existingShifts = _databaseService.GetWorkShifts(newShift.JobProfileId);
+            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(newShift.JobProfileId);
             var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
             var conflictingShifts = new List<WorkShift>();
 
@@ -133,7 +135,7 @@ namespace MyWorkSalary.Services.Conflicts
             if (workShift.ShiftType == ShiftType.SickLeave || !workShift.StartTime.HasValue)
                 return (false, "", null);
 
-            var existingShifts = _databaseService.GetWorkShifts(workShift.JobProfileId);
+            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(workShift.JobProfileId);
             var workDate = workShift.StartTime.Value.Date;
 
             foreach (var existing in existingShifts)
@@ -189,7 +191,7 @@ namespace MyWorkSalary.Services.Conflicts
                 }
 
                 // Spara sjukskrivningen
-                _databaseService.SaveWorkShift(sickShift);
+                _databaseService.WorkShifts.SaveWorkShift(sickShift);
                 return (true, $"Sjukskrivning på {sickShift.NumberOfDays} dagar har sparats!");
             }
             catch (Exception ex)
@@ -210,11 +212,11 @@ namespace MyWorkSalary.Services.Conflicts
                 var conflictingShifts = GetWorkShiftsDuringSickLeave(sickShift);
                 foreach (var conflictShift in conflictingShifts)
                 {
-                    _databaseService.DeleteWorkShift(conflictShift.Id);
+                    _databaseService.WorkShifts.DeleteWorkShift(conflictShift.Id);
                 }
 
                 // Spara sjukskrivningen
-                _databaseService.SaveWorkShift(sickShift);
+                _databaseService.WorkShifts.SaveWorkShift(sickShift);
 
                 var message = conflictingShifts.Any()
                     ? $"Sjukskrivning sparad! {conflictingShifts.Count} arbetspass har tagits bort."
@@ -239,14 +241,14 @@ namespace MyWorkSalary.Services.Conflicts
                 if (newDays <= 0)
                 {
                     // Ta bort hela sjukskrivningen
-                    _databaseService.DeleteWorkShift(sickLeave.Id);
+                    _databaseService.WorkShifts.DeleteWorkShift(sickLeave.Id);
                     return (true, "Sjukskrivningen har tagits bort helt.");
                 }
                 else
                 {
                     // Förkorta sjukskrivningen
                     sickLeave.NumberOfDays = newDays;
-                    _databaseService.SaveWorkShift(sickLeave);
+                    _databaseService.WorkShifts.SaveWorkShift(sickLeave);
                     var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
                     return (true, $"Sjukskrivningen förkortad till {newDays} dagar (till {newEndDate.ToString("d MMM", swedishCulture)}).");
                 }
@@ -265,7 +267,7 @@ namespace MyWorkSalary.Services.Conflicts
                 // Ta bort befintliga perioder
                 foreach (var id in existingShiftIds)
                 {
-                    _databaseService.DeleteWorkShift(id);
+                    _databaseService.WorkShifts.DeleteWorkShift(id);
                 }
 
                 // Skapa ny sammanslagen period
@@ -290,7 +292,7 @@ namespace MyWorkSalary.Services.Conflicts
                     SickPayPercentage = newShift.ShiftType == ShiftType.SickLeave ? 0.8m : null
                 };
 
-                _databaseService.SaveWorkShift(mergedShift);
+                _databaseService.WorkShifts.SaveWorkShift(mergedShift);
 
                 var typeText = newShift.ShiftType == ShiftType.SickLeave ? "Sjukskrivning" : "Semester";
                 return (true, $"{typeText} sammanslagen till {mergedDays} dagar!");
@@ -309,7 +311,7 @@ namespace MyWorkSalary.Services.Conflicts
             var sickStart = sickShift.ShiftDate.Date;
             var sickEnd = sickStart.AddDays((sickShift.NumberOfDays ?? 1) - 1);
 
-            return _databaseService.GetWorkShifts(sickShift.JobProfileId)
+            return _databaseService.WorkShifts.GetWorkShifts(sickShift.JobProfileId)
                 .Where(s => s.Id != sickShift.Id &&
                            s.StartTime.HasValue &&
                            s.StartTime.Value.Date >= sickStart &&
@@ -330,10 +332,10 @@ namespace MyWorkSalary.Services.Conflicts
             try
             {
                 // Ta bort arbetspasset
-                _databaseService.DeleteWorkShift(workShiftId);
+                _databaseService.WorkShifts.DeleteWorkShift(workShiftId);
 
                 // Spara ledigheten
-                _databaseService.SaveWorkShift(leaveShift);
+                _databaseService.WorkShifts.SaveWorkShift(leaveShift);
 
                 var typeText = leaveShift.ShiftType == ShiftType.SickLeave ? "sjukskrivning" : "semester";
                 return (true, $"Arbetspasset har tagits bort och {typeText} har sparats!");

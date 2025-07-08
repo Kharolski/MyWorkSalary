@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services;
 
 namespace MyWorkSalary.ViewModels
@@ -163,8 +165,6 @@ namespace MyWorkSalary.ViewModels
 
             try
             {
-                System.Diagnostics.Debug.WriteLine("STARTAR SPARA");
-
                 // Validering
                 if (string.IsNullOrWhiteSpace(JobTitle) || string.IsNullOrWhiteSpace(Workplace))
                 {
@@ -173,13 +173,7 @@ namespace MyWorkSalary.ViewModels
                 }
 
                 // Kolla befintliga jobb INNAN vi sparar
-                var existingJobs = _databaseService.GetJobProfiles();
-                System.Diagnostics.Debug.WriteLine($"INNAN SPARA: {existingJobs.Count()} jobb finns");
-                foreach (var job in existingJobs)
-                {
-                    System.Diagnostics.Debug.WriteLine($"  - {job.JobTitle} (Active: {job.IsActive})");
-                }
-
+                var existingJobs = _databaseService.JobProfiles.GetJobProfiles();
                 bool hasExistingJobs = existingJobs.Any();
 
                 // Skapa JobProfile
@@ -193,8 +187,6 @@ namespace MyWorkSalary.ViewModels
                     TaxMethod = TaxCalculationMethod.Manual,
                     IsActive = !hasExistingJobs // BARA första jobbet blir aktivt
                 };
-
-                System.Diagnostics.Debug.WriteLine($"NYTT JOBB: {jobProfile.JobTitle} (Active: {jobProfile.IsActive})");
 
                 // Sätt lön
                 if (IsMonthlySalary && decimal.TryParse(MonthlySalary, out var monthly))
@@ -220,44 +212,29 @@ namespace MyWorkSalary.ViewModels
                 // BARA inaktivera andra jobb om detta är första jobbet
                 if (!hasExistingJobs)
                 {
-                    System.Diagnostics.Debug.WriteLine("FÖRSTA JOBBET - inaktiverar andra");
                     foreach (var job in existingJobs.Where(j => j.IsActive))
                     {
                         job.IsActive = false;
-                        _databaseService.SaveJobProfile(job);
-                        System.Diagnostics.Debug.WriteLine($"  Inaktiverade: {job.JobTitle}");
+                        _databaseService.JobProfiles.SaveJobProfile(job);
                     }
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("INTE första jobbet - lämnar andra aktiva");
                 }
 
                 // Spara nytt jobb
-                _databaseService.SaveJobProfile(jobProfile);
-                System.Diagnostics.Debug.WriteLine($"SPARAT: {jobProfile.JobTitle}");
+                _databaseService.JobProfiles.SaveJobProfile(jobProfile);
 
                 // Kolla resultat
-                var allJobsAfter = _databaseService.GetJobProfiles();
-                System.Diagnostics.Debug.WriteLine($"EFTER SPARA: {allJobsAfter.Count()} jobb finns");
-                foreach (var job in allJobsAfter)
-                {
-                    System.Diagnostics.Debug.WriteLine($"  - {job.JobTitle} (Active: {job.IsActive})");
-                }
+                var allJobsAfter = _databaseService.JobProfiles.GetJobProfiles();
 
-                System.Diagnostics.Debug.WriteLine("SPARA KLAR");
                 await Shell.Current.DisplayAlert("Framgång", "Jobbet har sparats!", "OK");
                 await Shell.Current.GoToAsync("//SettingsPage");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"FEL VID SPARA: {ex.Message}");
                 await Shell.Current.DisplayAlert("Fel", $"Kunde inte spara jobbet: {ex.Message}", "OK");
             }
             finally
             {
                 _isSaving = false;
-                System.Diagnostics.Debug.WriteLine("SPARA SLUTFÖRD - _isSaving = false");
             }
         }
 

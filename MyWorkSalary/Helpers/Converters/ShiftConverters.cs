@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
 using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 
 namespace MyWorkSalary.Helpers.Converters
 {
@@ -10,14 +12,13 @@ namespace MyWorkSalary.Helpers.Converters
         {
             if (value is WorkShift shift)
             {
-                // ✅ SPECIALHANTERING FÖR SEMESTER/SJUK
+                // SPECIALHANTERING FÖR SEMESTER/SJUK/VAB
                 return shift.ShiftType switch
                 {
                     ShiftType.Vacation => "🏖️ Sem",
                     ShiftType.SickLeave => "🤒 Sjuk",
-                    ShiftType.Training => "📚 Utb",
                     ShiftType.OnCall => "📞 Jour",
-                    ShiftType.Overtime => "⏰ Övertid",
+                    ShiftType.VAB => "👶 VAB",
                     ShiftType.Regular => GetTimeBasedIcon(shift),
                     _ => "📋 Pass"
                 };
@@ -95,6 +96,12 @@ namespace MyWorkSalary.Helpers.Converters
         {
             if (value is WorkShift shift)
             {
+                // SPECIALHANTERING FÖR VAB
+                if (shift.ShiftType == ShiftType.VAB)
+                {
+                    return "Vård av barn - Heldag";
+                }
+
                 // SPECIALHANTERING FÖR SEMESTER/SJUK
                 if (shift.ShiftType == ShiftType.Vacation)
                 {
@@ -107,15 +114,6 @@ namespace MyWorkSalary.Helpers.Converters
                     var days = shift.NumberOfDays ?? 1;
                     string karensInfo = shift.IsKarensDay ? " (inkl. karensdag)" : "";
                     return $"Sjukskrivning - {days} dag{(days > 1 ? "ar" : "")}{karensInfo}";
-                }
-
-                if (shift.ShiftType == ShiftType.Training)
-                {
-                    if (shift.NumberOfDays.HasValue)
-                    {
-                        var days = shift.NumberOfDays.Value;
-                        return $"Utbildning - {days} dag{(days > 1 ? "ar" : "")}";
-                    }
                 }
 
                 // VANLIGA PASS MED TIDER
@@ -142,4 +140,20 @@ namespace MyWorkSalary.Helpers.Converters
         }
     }
 
+    public class StringToBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue && parameter is string targetString)
+            {
+                return stringValue.Equals(targetString, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

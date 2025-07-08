@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services;
 using MyWorkSalary.Views.Pages;
 
@@ -71,25 +73,43 @@ namespace MyWorkSalary.ViewModels
         public void LoadData()
         {
             // Ladda aktivt jobb
-            var jobs = _databaseService.GetJobProfiles();
+            var jobs = _databaseService.JobProfiles.GetJobProfiles();
             _activeJob = jobs.FirstOrDefault(j => j.IsActive);
             OnPropertyChanged(nameof(ActiveJobTitle));
 
             // Ladda pass för aktivt jobb
             if (_activeJob != null)
             {
-                var shifts = _databaseService.GetWorkShifts(_activeJob.Id)
+                var shifts = _databaseService.WorkShifts.GetWorkShifts(_activeJob.Id)
                                            .OrderByDescending(s => s.ShiftDate);
 
-                // Enkel gruppering - bara visa månad/år
+                // 🔍 DEBUG - Visa ALLA pass
+                System.Diagnostics.Debug.WriteLine($"🔍 LoadData Debug:");
+                System.Diagnostics.Debug.WriteLine($"   ActiveJob ID: {_activeJob.Id}");
+                System.Diagnostics.Debug.WriteLine($"   Totalt antal pass: {shifts.Count()}");
+
+                foreach (var shift in shifts)
+                {
+                    System.Diagnostics.Debug.WriteLine($"   Pass: {shift.ShiftDate:yyyy-MM-dd} | Typ: {shift.ShiftType} | Timmar: {shift.TotalHours}");
+                }
+
+                // Gruppering
                 var grouped = shifts.GroupBy(s => GetMonthYearKey(s))
                                    .Select(g => new GroupedWorkShift(g.Key, g))
                                    .ToList();
+
+                System.Diagnostics.Debug.WriteLine($"🔍 Gruppering:");
+                System.Diagnostics.Debug.WriteLine($"   Antal grupper: {grouped.Count}");
+                foreach (var group in grouped)
+                {
+                    System.Diagnostics.Debug.WriteLine($"   Grupp: {group.MonthYear} | Pass: {group.Count} | Timmar: {group.TotalHours}");
+                }
 
                 GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>(grouped);
             }
             else
             {
+                System.Diagnostics.Debug.WriteLine($"❌ Inget aktivt jobb!");
                 GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>();
             }
         }
@@ -125,7 +145,7 @@ namespace MyWorkSalary.ViewModels
                 try
                 {
                     // Radera från databas
-                    _databaseService.DeleteWorkShift(shift.Id);
+                    _databaseService.WorkShifts.DeleteWorkShift(shift.Id);
 
                     // Uppdatera UI
                     LoadData();
@@ -164,10 +184,10 @@ namespace MyWorkSalary.ViewModels
                 ShiftType.SickLeave =>
                     $"Vill du radera sjukskrivningen från {dateStr}?\n({shift.NumberOfDays} dagar)",
 
-                ShiftType.Training =>
-                    shift.NumberOfDays.HasValue
-                        ? $"Vill du radera utbildningen från {dateStr}?\n({shift.NumberOfDays} dagar)"
-                        : $"Vill du radera utbildningspasset från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})",
+                //ShiftType.Training =>
+                //    shift.NumberOfDays.HasValue
+                //        ? $"Vill du radera utbildningen från {dateStr}?\n({shift.NumberOfDays} dagar)"
+                //        : $"Vill du radera utbildningspasset från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})",
 
                 _ => shift.StartTime.HasValue && shift.EndTime.HasValue
                     ? $"Vill du radera passet från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})"
@@ -182,9 +202,9 @@ namespace MyWorkSalary.ViewModels
             {
                 ShiftType.Vacation => "Semestern har raderats",
                 ShiftType.SickLeave => "Sjukskrivningen har raderats",
-                ShiftType.Training => "Utbildningen har raderats",
+                //ShiftType.Training => "Utbildningen har raderats",
                 ShiftType.OnCall => "Jourpasset har raderats",
-                ShiftType.Overtime => "Övertidspasset har raderats",
+                //ShiftType.Overtime => "Övertidspasset har raderats",
                 _ => "Passet har raderats"
             };
         }

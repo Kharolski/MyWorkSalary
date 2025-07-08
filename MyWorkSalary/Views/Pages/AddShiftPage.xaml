@@ -2,13 +2,10 @@
 <ContentPage x:Class="MyWorkSalary.Views.Pages.AddShiftPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shifttypes="clr-namespace:MyWorkSalary.Views.Pages.ShiftTypesView"
              Title="Lägg till pass">
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
-            <!-- Header -->
-            <Label Text="📝 Nytt arbetspass"
-                   Style="{StaticResource TitleLabel}"
-                   Margin="0,0,0,10" />
 
             <!-- Aktivt jobb info -->
             <Frame Style="{StaticResource ActiveJobFrame}">
@@ -42,7 +39,17 @@
                         Title="Välj passtyp" />
             </VerticalStackLayout>
 
-            <!-- Tider på samma rad - döljs för semester/sjuk -->
+            <!-- 🤒 SJUKSKRIVNING FORM -->
+            <ContentView IsVisible="{Binding ShowSickLeaveForm}">
+                <shifttypes:SickLeaveFormView BindingContext="{Binding SickLeaveVM}" />
+            </ContentView>
+
+            <!-- 🍼 VAB FORM -->
+            <ContentView IsVisible="{Binding ShowVABForm}">
+                <shifttypes:VABFormView BindingContext="{Binding VABVM}" />
+            </ContentView>
+
+            <!-- ⏰ Vanliga arbetstider - döljs för semester/sjuk/VAB -->
             <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowTimeFields}">
                 <Label Text="🕐 Arbetstid"
                        Style="{StaticResource FieldLabel}" />
@@ -54,14 +61,12 @@
                                     Style="{StaticResource ThemedTimePicker}"
                                     Format="HH:mm" />
                     </VerticalStackLayout>
-
                     <!-- Separator -->
-                    <Label Grid.Column="1" 
-                           Text="→" 
-                           FontSize="20" 
+                    <Label Grid.Column="1"
+                           Text="→"
+                           FontSize="20"
                            VerticalOptions="Center"
                            TextColor="Gray" />
-
                     <!-- Sluttid -->
                     <VerticalStackLayout Grid.Column="2" Spacing="3">
                         <Label Text="Till" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
@@ -70,7 +75,6 @@
                                     Format="HH:mm" />
                     </VerticalStackLayout>
                 </Grid>
-
                 <Label Text="💡 Tips: Om passet går över midnatt kommer sluttiden att räknas som nästa dag"
                        FontSize="12"
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
@@ -78,22 +82,39 @@
                        Margin="0,5,0,0" />
             </VerticalStackLayout>
 
-            <!-- Antal dagar - visas för semester/sjuk -->
-            <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowDaysField}">
-                <Label Text="📊 Antal dagar"
-                       Style="{StaticResource FieldLabel}" />
-                <Entry Text="{Binding NumberOfDays}"
-                       Placeholder="Ange antal dagar"
+            <!-- Rast-fält (visas bara för arbetstid) -->
+            <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowBreakField}">
+                <Label Text="☕ Rast (minuter)" Style="{StaticResource FieldLabel}" />
+                <Entry Text="{Binding BreakMinutes}"
+                       Placeholder="0"
                        Keyboard="Numeric"
                        Style="{StaticResource ThemedEntry}" />
-                <Label Text="💡 Ange hur många dagar denna period gäller"
+                <Label Text="{Binding BreakSuggestionText}"
                        FontSize="12"
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                    Dark={StaticResource TextSecondaryDark}}" />
             </VerticalStackLayout>
 
-            <!-- Anteckningar (valfritt) -->
-            <VerticalStackLayout Spacing="5">
+            <!-- Semester/Enkel visning (för framtida semester/ledighet) -->
+            <!--<Frame Style="{StaticResource ActiveJobFrame}"
+                   IsVisible="{Binding ShowSingleDayInfo}">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="{Binding SingleDayInfoTitle}"
+                           Style="{StaticResource ActiveJobTitleLabel}"
+                           FontSize="14" />
+                    <Label Text="{Binding CalculationSummary}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                       Dark={StaticResource White}}" />
+                    <Label Text="{Binding SingleDayInfoTip}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}" />
+                </VerticalStackLayout>
+            </Frame>-->
+
+            <!-- Anteckningar (valfritt) - DÖLJS för sjukskrivning/VAB (hanteras i respektive FormView) -->
+            <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowGeneralNotes}">
                 <Label Text="📝 Anteckningar (valfritt)"
                        Style="{StaticResource FieldLabel}" />
                 <Editor Text="{Binding Notes}"
@@ -102,9 +123,9 @@
                         HeightRequest="80" />
             </VerticalStackLayout>
 
-            <!-- Beräknad information -->
+            <!-- Beräknad information - DÖLJS för sjukskrivning/VAB (hanteras i respektive FormView) -->
             <Frame Style="{StaticResource CalculationFrame}"
-                   IsVisible="{Binding ShowCalculation}">
+                   IsVisible="{Binding ShowGeneralCalculation}">
                 <VerticalStackLayout Spacing="5">
                     <Label Text="📊 Beräkning"
                            FontSize="16"
@@ -144,6 +165,7 @@
                         HorizontalOptions="FillAndExpand"
                         IsEnabled="{Binding CanSave}" />
             </StackLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

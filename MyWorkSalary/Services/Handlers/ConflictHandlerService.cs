@@ -1,4 +1,6 @@
 ﻿using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
 
 namespace MyWorkSalary.Services.Handlers
@@ -69,7 +71,7 @@ namespace MyWorkSalary.Services.Handlers
 
                 if (shortenSick)
                 {
-                    var sickLeave = _databaseService.GetWorkShifts(activeJob.Id)
+                    var sickLeave = _databaseService.WorkShifts.GetWorkShifts(activeJob.Id)
                         .FirstOrDefault(s => s.Id == sickLeaveId);
 
                     if (sickLeave != null)

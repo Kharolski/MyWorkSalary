@@ -1,4 +1,5 @@
 ﻿using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
 
 namespace MyWorkSalary.Services.Interfaces
 {

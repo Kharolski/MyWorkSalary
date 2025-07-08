@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services;
 
 namespace MyWorkSalary.ViewModels
@@ -147,7 +149,7 @@ namespace MyWorkSalary.ViewModels
         #region Methods
         public void LoadJob(int jobId)
         {
-            var jobs = _databaseService.GetJobProfiles();
+            var jobs = _databaseService.JobProfiles.GetJobProfiles();
             _originalJob = jobs.FirstOrDefault(j => j.Id == jobId);
 
             if (_originalJob != null)
@@ -242,7 +244,7 @@ namespace MyWorkSalary.ViewModels
                 }
 
                 // Spara ändringar
-                _databaseService.SaveJobProfile(_originalJob);
+                _databaseService.JobProfiles.SaveJobProfile(_originalJob);
 
                 await Shell.Current.DisplayAlert("Framgång", "Jobbet har uppdaterats!", "OK");
 

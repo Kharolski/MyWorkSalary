@@ -25,7 +25,7 @@ namespace MyWorkSalary
 
                 if (databaseService != null)
                 {
-                    var appSettings = databaseService.GetAppSettings();
+                    var appSettings = databaseService.AppSettings.GetAppSettings();
                     UserAppTheme = appSettings.IsDarkTheme ? AppTheme.Dark : AppTheme.Light;
                 }
                 else

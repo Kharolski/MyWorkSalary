@@ -1,4 +1,6 @@
 ﻿using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
 using System.Globalization;
 
@@ -24,11 +26,11 @@ namespace MyWorkSalary.Services
             var monthStart = new DateTime(currentMonth.Year, currentMonth.Month, 1);
             var monthEnd = monthStart.AddMonths(1).AddDays(-1);
 
-            var shifts = _databaseService.GetWorkShifts(jobProfileId)
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId)
                 .Where(s => s.ShiftDate >= monthStart && s.ShiftDate <= monthEnd)
                 .ToList();
 
-            var jobProfile = _databaseService.GetJobProfile(jobProfileId);
+            var jobProfile = _databaseService.JobProfiles.GetJobProfile(jobProfileId);
 
             var stats = new MonthlyStats
             {
@@ -81,7 +83,7 @@ namespace MyWorkSalary.Services
         #region Recent Activities
         public List<RecentActivityItem> GetRecentActivities(int jobProfileId, int count = 4)
         {
-            var shifts = _databaseService.GetWorkShifts(jobProfileId)
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId)
                 .OrderByDescending(s => s.ShiftDate)
                 .ThenByDescending(s => s.StartTime)
                 .Take(count)
@@ -129,7 +131,7 @@ namespace MyWorkSalary.Services
         #region Job Profile
         public JobProfile GetActiveJob()
         {
-            var jobs = _databaseService.GetJobProfiles();
+            var jobs = _databaseService.JobProfiles.GetJobProfiles();
             return jobs.FirstOrDefault(j => j.IsActive);
         }
         #endregion
@@ -138,14 +140,14 @@ namespace MyWorkSalary.Services
         public bool HasWorkedToday(int jobProfileId)
         {
             var today = DateTime.Today;
-            var shifts = _databaseService.GetWorkShifts(jobProfileId);
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId);
             return shifts.Any(s => s.ShiftDate.Date == today && s.ShiftType == ShiftType.Regular);
         }
 
         public decimal GetTodaysHours(int jobProfileId)
         {
             var today = DateTime.Today;
-            var shifts = _databaseService.GetWorkShifts(jobProfileId);
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId);
             return shifts
                 .Where(s => s.ShiftDate.Date == today && s.ShiftType == ShiftType.Regular)
                 .Sum(s => s.TotalHours);
@@ -181,12 +183,12 @@ namespace MyWorkSalary.Services
         #region FlexTime Methods 
         public decimal GetCurrentFlexBalance(int jobProfileId)
         {
-            return _databaseService.GetCurrentFlexBalance(jobProfileId);
+            return _databaseService.FlexTime.GetCurrentFlexBalance(jobProfileId);
         }
 
         public List<FlexTimeBalance> GetFlexTimeHistory(int jobProfileId, int monthsBack = 12)
         {
-            return _databaseService.GetFlexTimeHistory(jobProfileId)
+            return _databaseService.FlexTime.GetFlexTimeHistory(jobProfileId)
                 .Take(monthsBack)
                 .ToList();
         }
@@ -197,7 +199,7 @@ namespace MyWorkSalary.Services
             var year = currentMonth.Year;
             var month = currentMonth.Month;
 
-            var jobProfile = _databaseService.GetJobProfile(jobProfileId);
+            var jobProfile = _databaseService.JobProfiles.GetJobProfile(jobProfileId);
 
             // Bara för månadslön
             if (jobProfile?.ExpectedHoursPerMonth <= 0)
@@ -210,12 +212,12 @@ namespace MyWorkSalary.Services
             var difference = actualHours - expectedHours;
 
             // Hämta eller skapa FlexTimeBalance
-            var existingBalance = _databaseService.GetFlexTimeBalance(jobProfileId, year, month);
+            var existingBalance = _databaseService.FlexTime.GetFlexTimeBalance(jobProfileId, year, month);
 
             if (existingBalance == null)
             {
                 // Skapa ny
-                var previousBalance = _databaseService.GetPreviousFlexBalance(jobProfileId, year, month);
+                var previousBalance = _databaseService.FlexTime.GetPreviousFlexBalance(jobProfileId, year, month);
 
                 var newBalance = new FlexTimeBalance
                 {
@@ -228,7 +230,7 @@ namespace MyWorkSalary.Services
                     RunningBalance = previousBalance + difference
                 };
 
-                _databaseService.SaveFlexTimeBalance(newBalance);
+                _databaseService.FlexTime.SaveFlexTimeBalance(newBalance);
             }
             else
             {
@@ -237,10 +239,10 @@ namespace MyWorkSalary.Services
                 existingBalance.MonthlyDifference = difference;
 
                 // Räkna om running balance
-                var previousBalance = _databaseService.GetPreviousFlexBalance(jobProfileId, year, month);
+                var previousBalance = _databaseService.FlexTime.GetPreviousFlexBalance(jobProfileId, year, month);
                 existingBalance.RunningBalance = previousBalance + difference;
 
-                _databaseService.UpdateFlexTimeBalance(existingBalance);
+                _databaseService.FlexTime.UpdateFlexTimeBalance(existingBalance);
             }
         }
 
@@ -250,7 +252,7 @@ namespace MyWorkSalary.Services
             var currentMonth = DateTime.Now;
 
             // Hämta denna månads difference
-            var thisMonthBalance = _databaseService.GetFlexTimeBalance(jobProfileId, currentMonth.Year, currentMonth.Month);
+            var thisMonthBalance = _databaseService.FlexTime.GetFlexTimeBalance(jobProfileId, currentMonth.Year, currentMonth.Month);
             var monthlyDifference = thisMonthBalance?.MonthlyDifference ?? 0;
 
             return new FlexStatus
@@ -303,7 +305,7 @@ namespace MyWorkSalary.Services
             var startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + 1); // Måndag
             var endOfWeek = startOfWeek.AddDays(6); // Söndag
 
-            var shifts = _databaseService.GetWorkShifts(jobProfileId);
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId);
             return shifts
                 .Where(s => s.ShiftDate >= startOfWeek && s.ShiftDate <= endOfWeek && s.ShiftType == ShiftType.Regular)
                 .Sum(s => s.TotalHours);
@@ -317,13 +319,13 @@ namespace MyWorkSalary.Services
 
         private bool HasUpcomingVacation(int jobProfileId)
         {
-            var shifts = _databaseService.GetWorkShifts(jobProfileId);
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId);
             return shifts.Any(s => s.ShiftDate > DateTime.Today && s.ShiftType == ShiftType.Vacation);
         }
 
         private bool IsCurrentlySick(int jobProfileId)
         {
-            var shifts = _databaseService.GetWorkShifts(jobProfileId);
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId);
             return shifts.Any(s => s.ShiftDate.Date == DateTime.Today && s.ShiftType == ShiftType.SickLeave);
         }
 

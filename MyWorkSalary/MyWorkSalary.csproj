@@ -98,6 +98,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Models\AppSettings.cs" />
+	  <Compile Remove="Models\FlexTimeBalance.cs" />
+	  <Compile Remove="Models\JobProfile.cs" />
+	  <Compile Remove="Models\OBRate.cs" />
+	  <Compile Remove="Models\WorkShift.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Views\HomePage.xaml.cs">
 	    <DependentUpon>HomePage.xaml</DependentUpon>
 	  </Compile>
@@ -116,6 +124,18 @@
 	  <MauiXaml Update="Views\Pages\EditJobPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\ShiftTypeView\RegularShiftFormView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\ShiftTypeView\SickLeaveFormView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\ShiftTypeView\VABFormView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\ShiftTypeView\VacationFormView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\SalaryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -125,6 +145,10 @@
 	  <MauiXaml Update="Views\ShiftPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\Calculations\" />
 	</ItemGroup>
 
 </Project>

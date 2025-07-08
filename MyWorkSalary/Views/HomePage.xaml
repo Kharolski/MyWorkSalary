@@ -146,7 +146,7 @@
                     <VerticalStackLayout Spacing="15">
                         <Label Text="Senaste aktiviteter" Style="{StaticResource SectionTitleLabel}" />
 
-                        <CollectionView ItemsSource="{Binding RecentActivities}" HeightRequest="160" SelectionMode="None">
+                        <CollectionView ItemsSource="{Binding RecentActivities}" SelectionMode="None">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid ColumnDefinitions="Auto,*,Auto" 

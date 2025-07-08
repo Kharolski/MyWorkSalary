@@ -3,6 +3,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
+using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 
 namespace MyWorkSalary.ViewModels
@@ -35,7 +38,7 @@ namespace MyWorkSalary.ViewModels
         public AddOBRateViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
-            _activeJob = _databaseService.GetActiveJob();
+            _activeJob = _databaseService.JobProfiles.GetActiveJob();
 
             // Initiera commands
             SaveCommand = new Command(OnSave);
@@ -186,7 +189,7 @@ namespace MyWorkSalary.ViewModels
                     IsActive = true
                 };
 
-                _databaseService.SaveOBRate(obRate);
+                _databaseService.OBRates.SaveOBRate(obRate);
 
                 await Shell.Current.DisplayAlert(
                     "Sparat!",

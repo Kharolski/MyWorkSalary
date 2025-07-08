@@ -283,6 +283,12 @@
         <Setter Property="FontSize" Value="14" />
     </Style>
 
+    <Style TargetType="Label" x:Key="ValidationLabel">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Error}, Dark={StaticResource Error}}" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
     <!-- Entry Styles -->
     <Style TargetType="Entry" x:Key="ThemedEntry">
         <Setter Property="BackgroundColor" 

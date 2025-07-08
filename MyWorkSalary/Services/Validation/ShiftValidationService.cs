@@ -1,4 +1,6 @@
 ﻿using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
 using System.Globalization;
 
@@ -66,7 +68,7 @@ namespace MyWorkSalary.Services.Validation
                 return false;
             }
 
-            var existingShifts = _databaseService.GetWorkShifts(newShift.JobProfileId);
+            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(newShift.JobProfileId);
 
             foreach (var existing in existingShifts)
             {
@@ -101,7 +103,7 @@ namespace MyWorkSalary.Services.Validation
                 return null;
             }
 
-            var existingShifts = _databaseService.GetWorkShifts(newShift.JobProfileId);
+            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(newShift.JobProfileId);
 
             foreach (var existing in existingShifts)
             {
@@ -134,7 +136,7 @@ namespace MyWorkSalary.Services.Validation
                 return false;
             }
 
-            var existingShifts = _databaseService.GetWorkShifts(newShift.JobProfileId);
+            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(newShift.JobProfileId);
 
             foreach (var existing in existingShifts)
             {
@@ -181,7 +183,7 @@ namespace MyWorkSalary.Services.Validation
         // Kontrollera om datum redan har pass
         public bool HasShiftOnDate(int jobProfileId, DateTime date, ShiftType? shiftType = null)
         {
-            var query = _databaseService.GetWorkShifts(jobProfileId)
+            var query = _databaseService.WorkShifts.GetWorkShifts(jobProfileId)
                                        .Where(x => x.ShiftDate.Date == date.Date);
 
             if (shiftType.HasValue)
@@ -202,7 +204,7 @@ namespace MyWorkSalary.Services.Validation
                 return (false, "", null);
 
             var workDate = workShift.StartTime.Value.Date;
-            var existingShifts = _databaseService.GetWorkShifts(workShift.JobProfileId);
+            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(workShift.JobProfileId);
 
             foreach (var existing in existingShifts)
             {

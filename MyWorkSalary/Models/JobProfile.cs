@@ -1,141 +1,125 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-using SQLite;
+﻿//using System.ComponentModel;
+//using System.ComponentModel.DataAnnotations;
+//using System.Runtime.CompilerServices;
+//using MyWorkSalary.Models.Enums;
+//using SQLite;
 
-namespace MyWorkSalary.Models
-{
-    public class JobProfile : INotifyPropertyChanged
-    {
-        #region Database Properties
+//namespace MyWorkSalary.Models
+//{
+//    public class JobProfile : INotifyPropertyChanged
+//    {
+//        #region Database Properties
 
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+//        [PrimaryKey, AutoIncrement]
+//        public int Id { get; set; }
 
-        [Required]
-        public string JobTitle { get; set; } = string.Empty;
+//        [Required]
+//        public string JobTitle { get; set; } = string.Empty;
 
-        [Required]
-        public string Workplace { get; set; } = string.Empty;
+//        [Required]
+//        public string Workplace { get; set; } = string.Empty;
 
-        public EmploymentType EmploymentType { get; set; }
+//        public EmploymentType EmploymentType { get; set; }
 
-        #endregion
+//        #endregion
 
-        #region Salary Properties
+//        #region Salary Properties
 
-        public decimal? MonthlySalary { get; set; }
-        public decimal? HourlyRate { get; set; }
-        public decimal ExpectedHoursPerMonth { get; set; }
-        public string SalaryDisplayText
-        {
-            get
-            {
-                if (HourlyRate.HasValue)
-                {
-                    var employmentText = EmploymentType switch
-                    {
-                        EmploymentType.Permanent => "Tillsvidare",
-                        EmploymentType.Temporary => "Visstid",
-                        EmploymentType.OnCall => "Timanställd",
-                        _ => "Anställd"
-                    };
-                    return $"{HourlyRate:F0} kr/tim • {employmentText}";
-                }
-                else if (MonthlySalary.HasValue)
-                {
-                    return $"{MonthlySalary:N0} kr/mån • Månadslön";
-                }
-                return "Lön ej angiven";
-            }
-        }
-        #endregion
+//        public decimal? MonthlySalary { get; set; }
+//        public decimal? HourlyRate { get; set; }
+//        public decimal ExpectedHoursPerMonth { get; set; }
+//        public string SalaryDisplayText
+//        {
+//            get
+//            {
+//                if (HourlyRate.HasValue)
+//                {
+//                    var employmentText = EmploymentType switch
+//                    {
+//                        EmploymentType.Permanent => "Tillsvidare",
+//                        EmploymentType.Temporary => "Visstid",
+//                        EmploymentType.OnCall => "Timanställd",
+//                        _ => "Anställd"
+//                    };
+//                    return $"{HourlyRate:F0} kr/tim • {employmentText}";
+//                }
+//                else if (MonthlySalary.HasValue)
+//                {
+//                    return $"{MonthlySalary:N0} kr/mån • Månadslön";
+//                }
+//                return "Lön ej angiven";
+//            }
+//        }
+//        #endregion
 
-        #region Pay Period Properties
+//        #region Pay Period Properties
 
-        public PayPeriodType PayPeriodType { get; set; } = PayPeriodType.CalendarMonth;
-        public int PayPeriodStartDay { get; set; } = 25;
+//        public PayPeriodType PayPeriodType { get; set; } = PayPeriodType.CalendarMonth;
+//        public int PayPeriodStartDay { get; set; } = 25;
 
-        #endregion
+//        #endregion
 
-        #region Tax Properties
+//        #region Tax Properties
 
-        public TaxCalculationMethod TaxMethod { get; set; } = TaxCalculationMethod.Manual;
-        public decimal ManualTaxRate { get; set; } = 0.33m;
-        public decimal? LastMonthGrossPay { get; set; }
-        public decimal? LastMonthTaxDeduction { get; set; }
+//        public TaxCalculationMethod TaxMethod { get; set; } = TaxCalculationMethod.Manual;
+//        public decimal ManualTaxRate { get; set; } = 0.33m;
+//        public decimal? LastMonthGrossPay { get; set; }
+//        public decimal? LastMonthTaxDeduction { get; set; }
 
-        [Ignore]
-        public decimal EffectiveTaxRate => TaxMethod switch
-        {
-            TaxCalculationMethod.FromPayslip when LastMonthGrossPay > 0 && LastMonthTaxDeduction > 0
-                => (decimal)(LastMonthTaxDeduction / LastMonthGrossPay),
-            _ => ManualTaxRate
-        };
+//        [Ignore]
+//        public decimal EffectiveTaxRate => TaxMethod switch
+//        {
+//            TaxCalculationMethod.FromPayslip when LastMonthGrossPay > 0 && LastMonthTaxDeduction > 0
+//                => (decimal)(LastMonthTaxDeduction / LastMonthGrossPay),
+//            _ => ManualTaxRate
+//        };
 
-        #endregion
+//        #endregion
 
-        #region Ignored Properties
+//        #region Ignored Properties
 
-        [Ignore]
-        public List<OBRate> OBRates { get; set; } = new();
+//        [Ignore]
+//        public List<OBRate> OBRates { get; set; } = new();
 
-        #endregion
+//        [Ignore]
+//        public bool IsHourlyEmployee => HourlyRate.HasValue && !MonthlySalary.HasValue;
 
-        #region Metadata Properties
+//        [Ignore]
+//        public bool IsSalariedEmployee => MonthlySalary.HasValue;
+//        #endregion
 
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public DateTime? ModifiedDate { get; set; }
+//        #region Metadata Properties
 
-        // IsActive med INotifyPropertyChanged
-        private bool _isActive = true;
-        public bool IsActive
-        {
-            get => _isActive;
-            set
-            {
-                if (_isActive != value)
-                {
-                    _isActive = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+//        public DateTime CreatedDate { get; set; } = DateTime.Now;
+//        public DateTime? ModifiedDate { get; set; }
 
-        #endregion
+//        // IsActive med INotifyPropertyChanged
+//        private bool _isActive = true;
+//        public bool IsActive
+//        {
+//            get => _isActive;
+//            set
+//            {
+//                if (_isActive != value)
+//                {
+//                    _isActive = value;
+//                    OnPropertyChanged();
+//                }
+//            }
+//        }
 
-        #region INotifyPropertyChanged Implementation
+//        #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
+//        #region INotifyPropertyChanged Implementation
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+//        public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
-    }
+//        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+//        {
+//            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+//        }
 
-    #region Enums
+//        #endregion
+//    }
 
-    public enum EmploymentType
-    {
-        Permanent,
-        Temporary,
-        OnCall
-    }
-
-    public enum PayPeriodType
-    {
-        CalendarMonth,
-        CustomPeriod
-    }
-
-    public enum TaxCalculationMethod
-    {
-        Manual,
-        FromPayslip
-    }
-
-    #endregion
-}
+//}

@@ -7,6 +7,7 @@ using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Services.Validation;
 using MyWorkSalary.ViewModels;
+using MyWorkSalary.ViewModels.ShiftTypes;
 using MyWorkSalary.Views;
 using MyWorkSalary.Views.Pages;
 
@@ -48,13 +49,22 @@ namespace MyWorkSalary
             builder.Services.AddTransient<IConflictHandlerService, ConflictHandlerService>();
             builder.Services.AddTransient<IDashboardService, DashboardService>();
 
+            // Handlers
+            builder.Services.AddTransient<ShiftTypeHandler>();
+            builder.Services.AddTransient<VABHandler>();
+            builder.Services.AddTransient<SickLeaveHandler>();
+
             // Registrera ViewModels
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<AddJobViewModel>();
             builder.Services.AddTransient<EditJobViewModel>();
+            
             builder.Services.AddTransient<ShiftPageViewModel>();
             builder.Services.AddTransient<AddShiftViewModel>();
+            builder.Services.AddTransient<VABViewModel>();
+            builder.Services.AddTransient<SickLeaveViewModel>();
+            
             builder.Services.AddTransient<AddOBRateViewModel>();
 
             // Registrera Views

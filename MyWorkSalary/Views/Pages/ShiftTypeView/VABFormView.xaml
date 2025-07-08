@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView x:Class="MyWorkSalary.Views.Pages.ShiftTypesView.VABFormView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <VerticalStackLayout Spacing="20">
+
+        <!-- 🍼 VAB Förklaring -->
+        <Frame Style="{StaticResource ActiveJobFrame}">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="🍼 VAB - Vård av barn"
+                       Style="{StaticResource ActiveJobTitleLabel}"
+                       FontSize="16" />
+                <Label Text="{Binding VABExplanationText}"
+                       FontSize="13"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                   Dark={StaticResource White}}" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- 🕐 Timmar som skulle jobbats -->
+        <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowVABWorkingHours}">
+            <Label Text="🕐 Timmar som skulle jobbats"
+                   Style="{StaticResource FieldLabel}" />
+            <Entry Text="{Binding WorkingHours}"
+                   Placeholder="Ange timmar (t.ex. 8, 7.5, 0)"
+                   Keyboard="Numeric"
+                   Style="{StaticResource ThemedEntry}" />
+            <Label Text="💡 Skriv 0 om du skulle vara ledig denna dag"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                               Dark={StaticResource TextSecondaryDark}}" />
+        </VerticalStackLayout>
+
+        <!-- 💰 Beräknad information -->
+        <Frame Style="{StaticResource CalculationFrame}"
+               IsVisible="{Binding ShowCalculation}">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="💰 VAB-information"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                   Dark={StaticResource White}}" />
+
+                <!-- Beräkningssammanfattning -->
+                <Label Text="{Binding CalculationSummary}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                   Dark={StaticResource White}}" />
+
+                <!-- Löneavdrag för fast anställda -->
+                <Label Text="{Binding PayDeductionText}"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource Warning},
+                                                   Dark={StaticResource Warning}}"
+                       IsVisible="{Binding ShowPayDeduction}" />
+
+                <!-- VAB-ersättning info -->
+                <Label Text="✅ Försäkringskassan betalar VAB-ersättning"
+                       FontSize="13"
+                       TextColor="{AppThemeBinding Light={StaticResource Success},
+                                                   Dark={StaticResource Success}}" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- ⚠️ Validation meddelanden -->
+        <ContentView IsVisible="{Binding HasValidationMessage}">
+            <Label Text="{Binding ValidationMessage}"
+                   FontSize="14"
+                   Style="{StaticResource ValidationLabel}"
+                   Margin="0,0,0,0" />
+        </ContentView>
+
+    </VerticalStackLayout>
+</ContentView>

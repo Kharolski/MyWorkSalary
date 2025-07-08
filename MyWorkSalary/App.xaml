@@ -27,6 +27,8 @@
             <converters:ShiftTypeToIconConverter x:Key="ShiftTypeToIconConverter" />
             <converters:ShiftToDateStringConverter x:Key="ShiftToDateStringConverter" />
             <converters:ShiftToTimeStringConverter x:Key="ShiftToTimeStringConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+            
 
             <converters:OBTimeRangeConverter x:Key="OBTimeRangeConverter" />
             <converters:ThemeToIconConverter x:Key="ThemeToIconConverter" />

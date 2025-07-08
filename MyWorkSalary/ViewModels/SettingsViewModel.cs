@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Views.Pages;
 
@@ -106,7 +108,7 @@ namespace MyWorkSalary.ViewModels
         #region Methods
         private void LoadJobs()
         {
-            var jobs = _databaseService.GetJobProfiles();
+            var jobs = _databaseService.JobProfiles.GetJobProfiles();
 
             AllJobs = new ObservableCollection<JobProfile>(jobs);
             ActiveJob = jobs.FirstOrDefault(j => j.IsActive);
@@ -127,7 +129,7 @@ namespace MyWorkSalary.ViewModels
         {
             if (ActiveJob != null)
             {
-                var obRates = _databaseService.GetOBRates(ActiveJob.Id);
+                var obRates = _databaseService.OBRates.GetOBRates(ActiveJob.Id);
 
                 OBRates.Clear();
                 foreach (var rate in obRates)
@@ -171,13 +173,13 @@ namespace MyWorkSalary.ViewModels
                     if (job.IsActive)
                     {
                         job.IsActive = false; // 🔥 Triggar PropertyChanged
-                        _databaseService.SaveJobProfile(job);
+                        _databaseService.JobProfiles.SaveJobProfile(job);
                     }
                 }
 
                 // Aktivera valt jobb (UI uppdateras automatiskt)
                 selectedJob.IsActive = true; // 🔥 Triggar PropertyChanged
-                _databaseService.SaveJobProfile(selectedJob);
+                _databaseService.JobProfiles.SaveJobProfile(selectedJob);
 
                 // Uppdatera ActiveJob property
                 ActiveJob = selectedJob;
@@ -233,10 +235,10 @@ namespace MyWorkSalary.ViewModels
 
             try
             {
-                var allJobs = _databaseService.GetJobProfiles();
+                var allJobs = _databaseService.JobProfiles.GetJobProfiles();
 
                 // Ta bort jobbet
-                _databaseService.DeleteJobProfile(ActiveJob.Id);
+                _databaseService.JobProfiles.DeleteJobProfile(ActiveJob.Id);
 
                 // Om det fanns fler jobb, sätt nästa som aktivt
                 var remainingJobs = allJobs.Where(j => j.Id != ActiveJob.Id).ToList();
@@ -244,7 +246,7 @@ namespace MyWorkSalary.ViewModels
                 {
                     var nextActiveJob = remainingJobs.First();
                     nextActiveJob.IsActive = true;
-                    _databaseService.SaveJobProfile(nextActiveJob);
+                    _databaseService.JobProfiles.SaveJobProfile(nextActiveJob);
                 }
 
                 // Uppdatera UI
@@ -270,7 +272,7 @@ namespace MyWorkSalary.ViewModels
 
             if (confirm)
             {
-                int deletedRows = _databaseService.DeleteOBRate(obRate.Id);
+                int deletedRows = _databaseService.OBRates.DeleteOBRate(obRate.Id);
 
                 if (deletedRows > 0)
                 {
@@ -290,7 +292,7 @@ namespace MyWorkSalary.ViewModels
         {
             try
             {
-                _appSettings = _databaseService.GetAppSettings();
+                _appSettings = _databaseService.AppSettings.GetAppSettings();
                 _isDarkTheme = _appSettings.IsDarkTheme;
                 OnPropertyChanged(nameof(IsDarkTheme));
                 OnPropertyChanged(nameof(ThemeDescription));
@@ -312,7 +314,7 @@ namespace MyWorkSalary.ViewModels
             try
             {
                 _appSettings.IsDarkTheme = isDarkTheme;
-                _databaseService.SaveAppSettings(_appSettings);
+                _databaseService.AppSettings.SaveAppSettings(_appSettings);
                 ApplyTheme(isDarkTheme);
             }
             catch (Exception ex)

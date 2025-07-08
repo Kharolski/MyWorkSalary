@@ -1,4 +1,5 @@
 ﻿using MyWorkSalary.Models;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Views.Pages;
@@ -277,7 +278,7 @@ namespace MyWorkSalary.ViewModels
 
         private void LoadActiveJob()
         {
-            var jobs = _databaseService.GetJobProfiles();
+            var jobs = _databaseService.JobProfiles.GetJobProfiles();
             var activeJob = jobs.FirstOrDefault(j => j.IsActive);
             ActiveJob = activeJob;
             HasActiveJob = activeJob != null;
