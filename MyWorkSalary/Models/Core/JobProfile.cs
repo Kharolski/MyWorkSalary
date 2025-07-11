@@ -56,6 +56,12 @@ namespace MyWorkSalary.Models.Core
         public int PayPeriodStartDay { get; set; } = 25;
         #endregion
 
+        #region Vacation Properties
+        public DateTime EmploymentStartDate { get; set; }
+        public decimal VacationDaysPerYear { get; set; } = 25m;
+        public decimal? InitialVacationBalance { get; set; } // Sparade dagar vid registrering
+        #endregion
+
         #region Tax Properties
         public TaxCalculationMethod TaxMethod { get; set; } = TaxCalculationMethod.Manual;
         public decimal ManualTaxRate { get; set; } = 0.33m;

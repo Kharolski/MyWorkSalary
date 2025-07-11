@@ -11,42 +11,33 @@
             <!-- Kombinerad Jobb Sektion -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">
-
                     <!-- EN rubrik för allt -->
                     <Label Text="💼 Mina Jobb"
-                           Style="{StaticResource SectionTitleLabel}" />
+               Style="{StaticResource SectionTitleLabel}" />
 
-                    <!-- Visa aktivt jobb BARA när det finns 1 jobb -->
-                    <StackLayout IsVisible="{Binding HasMultipleJobs, Converter={StaticResource InvertedBoolConverter}}"
-                                 Spacing="5">
-                        <Frame BackgroundColor="{StaticResource ActiveJobBlue}"
-                               Padding="12,8"
-                               CornerRadius="8"
-                               HasShadow="False">
-                            <Label Text="{Binding ActiveJobText}"
-                                   FontSize="16"
-                                   FontAttributes="Bold"
-                                   TextColor="{StaticResource White}"
-                                   HorizontalOptions="Center" />
-                        </Frame>
-                    </StackLayout>
+                    <CollectionView ItemsSource="{Binding AllJobs}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <!-- SwipeView -->
+                                <SwipeView>
+                                    <!-- Swipe från höger för att radera -->
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="🗑️ Radera"
+                                                      BackgroundColor="{StaticResource ButtonCancel}"
+                                                      Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.DeleteJobCommand}"
+                                                      CommandParameter="{Binding .}" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
 
-                    <!-- Visa radio buttons när det finns flera jobb -->
-                    <StackLayout IsVisible="{Binding HasMultipleJobs}" Spacing="10">
-                        <CollectionView ItemsSource="{Binding AllJobs}"
-                                        SelectionMode="None">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
+                                    <!-- Enhetligt job-kort design -->
                                     <Frame Padding="0"
                                            Margin="0,2"
                                            CornerRadius="8"
                                            HasShadow="False"
                                            BackgroundColor="{Binding IsActive, Converter={StaticResource BoolToJobBackgroundConverter}}">
-                                        <Grid ColumnDefinitions="Auto,*"
-                                              ColumnSpacing="12"
-                                              Padding="12,10">
-
-                                            <!-- Hela raden klickbar -->
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Padding="12,10">
+                                            <!-- Klickbar BARA om det finns flera jobb -->
                                             <Grid.GestureRecognizers>
                                                 <TapGestureRecognizer
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeActiveJobCommand}"
@@ -54,7 +45,7 @@
                                                     NumberOfTapsRequired="1" />
                                             </Grid.GestureRecognizers>
 
-                                            <!-- Ersätt RadioButton med emoji -->
+                                            <!-- Radio-symbol (visa alltid) -->
                                             <Label Grid.Column="0"
                                                    Text="{Binding IsActive, Converter={StaticResource BoolToRadioSymbolConverter}}"
                                                    FontSize="18"
@@ -62,10 +53,8 @@
                                                    VerticalOptions="Center"
                                                    HorizontalOptions="Center" />
 
-                                            <!-- Jobb info -->
-                                            <StackLayout Grid.Column="1"
-                                                         Spacing="3"
-                                                         VerticalOptions="Center">
+                                            <!-- Jobb-information -->
+                                            <StackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
                                                 <Label Text="{Binding JobTitle}"
                                                        FontSize="16"
                                                        FontAttributes="Bold"
@@ -79,7 +68,7 @@
                                                        Margin="0,2,0,0" />
                                             </StackLayout>
 
-                                            <!-- Aktiv indikator med Border -->
+                                            <!-- Aktiv-indikator -->
                                             <Border Grid.Column="1"
                                                     BackgroundColor="{StaticResource ActiveJobBlue}"
                                                     Padding="6,2"
@@ -96,17 +85,16 @@
                                             </Border>
                                         </Grid>
                                     </Frame>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </StackLayout>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
                     <!-- Knappar bredvid varandra -->
                     <StackLayout Orientation="Horizontal"
                                  Spacing="8"
                                  HorizontalOptions="FillAndExpand"
                                  Margin="0,10,0,0">
-
                         <!-- 1. Lägg till (Grön) -->
                         <Button Text="✚ Lägg till"
                                 Command="{Binding AddJobCommand}"
@@ -115,20 +103,22 @@
                                 CornerRadius="8"
                                 Padding="0,12"
                                 HorizontalOptions="FillAndExpand" />
-
                         <!-- 2. Ändra (Orange) -->
                         <Button Text="✏️ Ändra"
                                 Command="{Binding EditActiveJobCommand}"
                                 Style="{StaticResource EditButton}"
                                 HorizontalOptions="FillAndExpand"
                                 IsVisible="{Binding HasActiveJob}" />
-
-                        <!-- 3. Radera (Röd) -->
-                        <Button Text="🗑️"
-                                Command="{Binding DeleteActiveJobCommand}"
-                                Style="{StaticResource DeleteButton}"
-                                IsVisible="{Binding HasActiveJob}" />
                     </StackLayout>
+
+                    <!-- Hjälptext (visa alltid när det finns jobb) -->
+                    <Label Text="💡 Swipa åt vänster på ett jobb för att radera det"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding HasActiveJob}"
+                           Margin="0,5,0,0" />
                 </VerticalStackLayout>
             </Frame>
 

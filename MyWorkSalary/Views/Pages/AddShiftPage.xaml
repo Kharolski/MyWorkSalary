@@ -2,11 +2,10 @@
 <ContentPage x:Class="MyWorkSalary.Views.Pages.AddShiftPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:shifttypes="clr-namespace:MyWorkSalary.Views.Pages.ShiftTypesView"
+             xmlns:shifttypes="clr-namespace:MyWorkSalary.Views.Pages.ShiftTypeView"
              Title="Lägg till pass">
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
-
             <!-- Aktivt jobb info -->
             <Frame Style="{StaticResource ActiveJobFrame}">
                 <VerticalStackLayout Spacing="5">
@@ -49,7 +48,17 @@
                 <shifttypes:VABFormView BindingContext="{Binding VABVM}" />
             </ContentView>
 
-            <!-- ⏰ Vanliga arbetstider - döljs för semester/sjuk/VAB -->
+            <!-- 📞 ONCALL/JOUR FORM - LÄGG TILL DENNA -->
+            <ContentView IsVisible="{Binding ShowOnCallForm}">
+                <shifttypes:OnCallFormView BindingContext="{Binding OnCallVM}" />
+            </ContentView>
+
+            <!-- 🏖️ VACATION FORM (antar att du redan har denna) -->
+            <ContentView IsVisible="{Binding ShowVacationForm}">
+                <shifttypes:VacationFormView BindingContext="{Binding VacationVM}" />
+            </ContentView>
+
+            <!-- ⏰ Vanliga arbetstider - döljs för semester/sjuk/VAB/OnCall -->
             <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowTimeFields}">
                 <Label Text="🕐 Arbetstid"
                        Style="{StaticResource FieldLabel}" />
@@ -95,25 +104,7 @@
                                                    Dark={StaticResource TextSecondaryDark}}" />
             </VerticalStackLayout>
 
-            <!-- Semester/Enkel visning (för framtida semester/ledighet) -->
-            <!--<Frame Style="{StaticResource ActiveJobFrame}"
-                   IsVisible="{Binding ShowSingleDayInfo}">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="{Binding SingleDayInfoTitle}"
-                           Style="{StaticResource ActiveJobTitleLabel}"
-                           FontSize="14" />
-                    <Label Text="{Binding CalculationSummary}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                       Dark={StaticResource White}}" />
-                    <Label Text="{Binding SingleDayInfoTip}"
-                           FontSize="12"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                       Dark={StaticResource TextSecondaryDark}}" />
-                </VerticalStackLayout>
-            </Frame>-->
-
-            <!-- Anteckningar (valfritt) - DÖLJS för sjukskrivning/VAB (hanteras i respektive FormView) -->
+            <!-- Anteckningar (valfritt) - DÖLJS för sjukskrivning/VAB/OnCall/Vacation -->
             <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowGeneralNotes}">
                 <Label Text="📝 Anteckningar (valfritt)"
                        Style="{StaticResource FieldLabel}" />
@@ -123,7 +114,7 @@
                         HeightRequest="80" />
             </VerticalStackLayout>
 
-            <!-- Beräknad information - DÖLJS för sjukskrivning/VAB (hanteras i respektive FormView) -->
+            <!-- Beräknad information - DÖLJS för sjukskrivning/VAB/OnCall/Vacation -->
             <Frame Style="{StaticResource CalculationFrame}"
                    IsVisible="{Binding ShowGeneralCalculation}">
                 <VerticalStackLayout Spacing="5">
@@ -165,7 +156,6 @@
                         HorizontalOptions="FillAndExpand"
                         IsEnabled="{Binding CanSave}" />
             </StackLayout>
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

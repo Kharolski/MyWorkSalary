@@ -11,11 +11,15 @@ namespace MyWorkSalary.Models.Specialized
     /// </summary>
     public class SickLeave
     {
+        #region Primary Key & Foreign Keys
+
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
         [Required]
         public int WorkShiftId { get; set; }  // FK till WorkShift
+
+        #endregion
 
         #region Sjuk-specifik information
 
@@ -33,6 +37,16 @@ namespace MyWorkSalary.Models.Specialized
         /// Om detta är återinsjuknande inom 5 dagar (ingen ny karens)
         /// </summary>
         public bool IsRecurrentSickPeriod { get; set; } = false;
+
+        /// <summary>
+        /// Sjuklöneprocent (vanligtvis 80% efter karensdag)
+        /// </summary>
+        public decimal? SickPayPercentage { get; set; } = 80;
+
+        /// <summary>
+        /// Om detta är karensdag (första dagen i sjukperiod)
+        /// </summary>
+        public bool IsKarensDay { get; set; } = false;
 
         #endregion
 
@@ -101,6 +115,15 @@ namespace MyWorkSalary.Models.Specialized
         /// Sjuktimmar (ScheduledHours - WorkedHours)
         /// </summary>
         public decimal SickHours { get; set; } = 0;
+
+        #endregion
+
+        #region Financial Calculations
+
+        /// <summary>
+        /// Total sjuklön för denna dag
+        /// </summary>
+        public decimal SickPay { get; set; } = 0;
 
         #endregion
 

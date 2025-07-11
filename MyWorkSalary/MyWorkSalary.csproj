@@ -124,6 +124,9 @@
 	  <MauiXaml Update="Views\Pages\EditJobPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\ShiftTypeView\OnCallFormView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\ShiftTypeView\RegularShiftFormView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

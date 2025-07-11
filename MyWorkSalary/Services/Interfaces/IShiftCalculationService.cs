@@ -1,5 +1,4 @@
-﻿using MyWorkSalary.Models;
-using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Calculations;
 

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView x:Class="MyWorkSalary.Views.Pages.ShiftTypeView.OnCallFormView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <VerticalStackLayout Spacing="20">
+        <!-- 📞 Förklaring av jour -->
+        <Frame Style="{StaticResource ActiveJobFrame}">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="📞 Information om jour"
+                       Style="{StaticResource ActiveJobTitleLabel}"
+                       FontSize="14" />
+                <Label Text="{Binding OnCallExplanationText}"
+                       FontSize="13"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                   Dark={StaticResource White}}" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- 🕐 Jourtid -->
+        <VerticalStackLayout Spacing="5">
+            <Label Text="🕐 Jourtid (standby)"
+                   Style="{StaticResource FieldLabel}" />
+            <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                <!-- Starttid -->
+                <VerticalStackLayout Grid.Column="0" Spacing="3">
+                    <Label Text="Från" 
+                           FontSize="12" 
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" 
+                           HorizontalOptions="Center" />
+                    <TimePicker Time="{Binding StandbyStartTime}"
+                                Style="{StaticResource ThemedTimePicker}"
+                                Format="HH:mm" />
+                </VerticalStackLayout>
+                <!-- Separator -->
+                <Label Grid.Column="1"
+                       Text="→"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" />
+                <!-- Sluttid -->
+                <VerticalStackLayout Grid.Column="2" Spacing="3">
+                    <Label Text="Till" 
+                           FontSize="12" 
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" 
+                           HorizontalOptions="Center" />
+                    <TimePicker Time="{Binding StandbyEndTime}"
+                                Style="{StaticResource ThemedTimePicker}"
+                                Format="HH:mm" />
+                </VerticalStackLayout>
+            </Grid>
+            <!-- Jourtimmar info -->
+            <Label Text="{Binding StandbyHoursText}"
+                   FontSize="12"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource SalaryPrimary},
+                                               Dark={StaticResource SalaryPrimaryDark}}"
+                   HorizontalOptions="Center"
+                   Margin="0,5,0,0" />
+            <Label Text="💡 Tips: Jour över midnatt fungerar (t.ex. 18:00-08:00)"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                               Dark={StaticResource TextSecondaryDark}}"
+                   Margin="0,5,0,0" />
+        </VerticalStackLayout>
+
+        <!-- ⚡ Aktiv arbetstid -->
+        <VerticalStackLayout Spacing="5">
+            <Label Text="⚡ Aktiv arbetstid (timmar)"
+                   Style="{StaticResource FieldLabel}" />
+            <Entry Text="{Binding ActiveHours}"
+                   Placeholder="0"
+                   Keyboard="Numeric"
+                   Style="{StaticResource ThemedEntry}" />
+            <Label Text="💡 Antal timmar du blev inkallad och jobbade aktivt"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                               Dark={StaticResource TextSecondaryDark}}" />
+            <!-- Aktiv arbetstid info -->
+            <Frame Style="{StaticResource InfoFrame}"
+                    IsVisible="{Binding ShowActiveHoursInfo}">
+                <VerticalStackLayout Spacing="3">
+                    <Label Text="⚡ Aktiv arbetstid registrerad"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                       Dark={StaticResource White}}" />
+                    <Label Text="Du får vanlig timlön + eventuell OB-ersättning för denna tid"
+                           FontSize="11"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+
+        <!-- 💰 Jourersättning -->
+        <VerticalStackLayout Spacing="5">
+            <Label Text="💰 Jourersättning (kr/timme)"
+                   Style="{StaticResource FieldLabel}" />
+            <Entry Text="{Binding OnCallRate}"
+                   Placeholder="40"
+                   Keyboard="Numeric"
+                   Style="{StaticResource ThemedEntry}" />
+            <Label Text="💡 Vanligt: 30-50 kr/timme enligt kollektivavtal"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                               Dark={StaticResource TextSecondaryDark}}" />
+        </VerticalStackLayout>
+
+        <!-- 📊 Preliminär beräkning -->
+        <Frame Style="{StaticResource CalculationFrame}"
+               IsVisible="{Binding ShowCalculation}">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="📊 Preliminär beräkning"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                   Dark={StaticResource White}}" />
+                <!-- Detaljerad breakdown -->
+                <Label Text="{Binding CalculationSummary}"
+                       FontSize="13"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                   Dark={StaticResource White}}" />
+                <!-- Total ersättning -->
+                <Label Text="{Binding CalculatedPay, StringFormat='Preliminärt totalt: {0:N0} kr'}"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Success}" />
+                <Label Text="⚠️ OB-tillägg beräknas i månadsrapporten"
+                       FontSize="11"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                   Dark={StaticResource TextSecondaryDark}}" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- ⚠️ Validation meddelanden -->
+        <ContentView IsVisible="{Binding HasValidationMessage}">
+            <Label Text="{Binding ValidationMessage}"
+                   FontSize="14"
+                   TextColor="{StaticResource Error}"
+                   FontAttributes="Bold"
+                   Margin="0,0,0,10" />
+        </ContentView>
+
+        <!-- 📝 Anteckningar -->
+        <VerticalStackLayout Spacing="5">
+            <Label Text="📝 Anteckningar (valfritt)"
+                   Style="{StaticResource FieldLabel}" />
+            <Editor Text="{Binding Notes}"
+                    Placeholder="T.ex. antal utryckningar, typ av jour, kontaktinfo..."
+                    Style="{StaticResource ThemedEditor}"
+                    HeightRequest="80" />
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentView>

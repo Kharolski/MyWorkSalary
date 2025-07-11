@@ -2,6 +2,7 @@
 using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
+using MyWorkSalary.Services.Interfaces;
 
 namespace MyWorkSalary.Helpers.Converters
 {

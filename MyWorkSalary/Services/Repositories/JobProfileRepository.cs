@@ -70,31 +70,62 @@ namespace MyWorkSalary.Services.Repositories
                     throw new InvalidOperationException("Kan inte radera jobb som har registrerade pass eller är aktivt");
                 }
 
-                // 2. Radera alla OB-regler för detta jobb FÖRST
+                // 2. Hämta alla WorkShifts för detta jobb
+                var workShifts = _database.Table<WorkShift>().Where(x => x.JobProfileId == id).ToList();
+
+                // 3. För varje WorkShift - radera alla relaterade poster
+                foreach (var shift in workShifts)
+                {
+                    // Radera SickLeaves
+                    var sickLeaves = _database.Table<SickLeave>().Where(x => x.WorkShiftId == shift.Id).ToList();
+                    foreach (var sickLeave in sickLeaves)
+                    {
+                        _database.Delete<SickLeave>(sickLeave.Id);
+                    }
+
+                    // Radera VacationLeaves
+                    var vacationLeaves = _database.Table<VacationLeave>().Where(x => x.WorkShiftId == shift.Id).ToList();
+                    foreach (var vacation in vacationLeaves)
+                    {
+                        _database.Delete<VacationLeave>(vacation.Id);
+                    }
+
+                    // Radera OnCallShifts
+                    var onCallShifts = _database.Table<OnCallShift>().Where(x => x.WorkShiftId == shift.Id).ToList();
+                    foreach (var onCall in onCallShifts)
+                    {
+                        _database.Delete<OnCallShift>(onCall.Id);
+                    }
+
+                    // Radera VABLeaves
+                    var vabLeaves = _database.Table<VABLeave>().Where(x => x.WorkShiftId == shift.Id).ToList();
+                    foreach (var vab in vabLeaves)
+                    {
+                        _database.Delete<VABLeave>(vab.Id);
+                    }
+                }
+
+                // 4. Radera alla WorkShifts
+                foreach (var shift in workShifts)
+                {
+                    _database.Delete<WorkShift>(shift.Id);
+                }
+
+                // 5. Radera OB-regler för detta jobb
                 var obRates = _database.Table<OBRate>().Where(x => x.JobProfileId == id).ToList();
                 foreach (var obRate in obRates)
                 {
                     _database.Delete<OBRate>(obRate.Id);
                 }
 
-                // 3. Radera alla WorkShifts för detta jobb
-                var workShifts = _database.Table<WorkShift>().Where(x => x.JobProfileId == id).ToList();
-                foreach (var shift in workShifts)
+                // 6. Radera FlexTimeBalance för detta jobb
+                var flexTimes = _database.Table<FlexTimeBalance>().Where(x => x.JobProfileId == id).ToList();
+                foreach (var flex in flexTimes)
                 {
-                    _database.Delete<WorkShift>(shift.Id);
+                    _database.Delete<FlexTimeBalance>(flex.Id);
                 }
 
-                // 4. Radera alla SickLeaves kopplade till WorkShifts
-                foreach (var shift in workShifts)
-                {
-                    var sickLeaves = _database.Table<SickLeave>().Where(x => x.WorkShiftId == shift.Id).ToList();
-                    foreach (var sickLeave in sickLeaves)
-                    {
-                        _database.Delete<SickLeave>(sickLeave.Id);
-                    }
-                }
-
-                // 5. Slutligen radera jobbet själv
+                // 7. Slutligen radera jobbet själv
                 return _database.Delete<JobProfile>(id);
             }
             catch (Exception ex)

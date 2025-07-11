@@ -1,8 +1,8 @@
 namespace MyWorkSalary.Views.Pages.ShiftTypeView;
 
-public partial class SickLeaveFormView : ContentView
+public partial class OnCallFormView : ContentView
 {
-    public SickLeaveFormView()
+    public OnCallFormView()
     {
         InitializeComponent();
     }

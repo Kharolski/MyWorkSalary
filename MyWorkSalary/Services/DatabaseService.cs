@@ -28,7 +28,10 @@ namespace MyWorkSalary.Services
         public FlexTimeRepository FlexTime { get; private set; }
         public WorkShiftRepository WorkShifts { get; private set; }
         public SickLeaveRepository SickLeaves { get; private set; }
-        
+        public VABLeaveRepository VABLeaves { get; private set; }
+        public VacationLeaveRepository VacationLeaves { get; private set; }
+        public OnCallShiftRepository OnCallShifts { get; private set; }
+
         #endregion
 
         #region Database Connection 
@@ -54,9 +57,10 @@ namespace MyWorkSalary.Services
             _database.DeleteAll<FlexTimeBalance>();
             _database.DeleteAll<WorkShift>();
             _database.DeleteAll<SickLeave>();
-            
-            
-            
+            _database.DeleteAll<VABLeave>();
+            _database.DeleteAll<VacationLeave>();
+            _database.DeleteAll<OnCallShift>();
+
         }
 
         private void CreateTables()
@@ -67,6 +71,9 @@ namespace MyWorkSalary.Services
             _database.CreateTable<FlexTimeBalance>();
             _database.CreateTable<WorkShift>();
             _database.CreateTable<SickLeave>();
+            _database.CreateTable<VABLeave>();
+            _database.CreateTable<VacationLeave>();
+            _database.CreateTable<OnCallShift>();
         }
 
         private void InitializeRepositories()
@@ -77,7 +84,9 @@ namespace MyWorkSalary.Services
             FlexTime = new FlexTimeRepository(this);
             WorkShifts = new WorkShiftRepository(this);
             SickLeaves = new SickLeaveRepository(this);
-            
+            VABLeaves = new VABLeaveRepository(this);
+            VacationLeaves = new VacationLeaveRepository(this);
+            OnCallShifts = new OnCallShiftRepository(this);
         }
         #endregion
 

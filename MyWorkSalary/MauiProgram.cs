@@ -5,6 +5,7 @@ using MyWorkSalary.Services.Calculations;
 using MyWorkSalary.Services.Conflicts;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Repositories;
 using MyWorkSalary.Services.Validation;
 using MyWorkSalary.ViewModels;
 using MyWorkSalary.ViewModels.ShiftTypes;
@@ -40,6 +41,17 @@ namespace MyWorkSalary
                 System.Diagnostics.Debug.WriteLine($"🚨 Database Error: {ex}");
             }
 
+            // === REPOSITORIES ===
+            builder.Services.AddTransient<IJobProfileRepository, JobProfileRepository>();
+            builder.Services.AddTransient<IWorkShiftRepository, WorkShiftRepository>();
+            builder.Services.AddTransient<ISickLeaveRepository, SickLeaveRepository>();
+            builder.Services.AddSingleton<IVABLeaveRepository, VABLeaveRepository>();
+            builder.Services.AddSingleton<IVacationLeaveRepository, VacationLeaveRepository>();
+            builder.Services.AddSingleton<IOnCallRepository, OnCallShiftRepository>();
+            builder.Services.AddTransient<IAppSettingsRepository, AppSettingsRepository>();
+            builder.Services.AddTransient<IOBRateRepository, OBRateRepository>();
+            builder.Services.AddTransient<IFlexTimeRepository, FlexTimeRepository>();
+
             // Registrera nya Services
             builder.Services.AddTransient<IShiftValidationService, ShiftValidationService>();
             builder.Services.AddTransient<IConflictResolutionService, ConflictResolutionService>();
@@ -49,12 +61,15 @@ namespace MyWorkSalary
             builder.Services.AddTransient<IConflictHandlerService, ConflictHandlerService>();
             builder.Services.AddTransient<IDashboardService, DashboardService>();
 
-            // Handlers
+            // === HANDLERS ===
             builder.Services.AddTransient<ShiftTypeHandler>();
+            //builder.Services.AddTransient<FlexTimeHandler>(); // Inte färdigt än
             builder.Services.AddTransient<VABHandler>();
             builder.Services.AddTransient<SickLeaveHandler>();
+            builder.Services.AddTransient<OnCallHandler>();
+            builder.Services.AddTransient<VacationHandler>();
 
-            // Registrera ViewModels
+            // === VIEWMODELS ===
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<AddJobViewModel>();
@@ -64,7 +79,8 @@ namespace MyWorkSalary
             builder.Services.AddTransient<AddShiftViewModel>();
             builder.Services.AddTransient<VABViewModel>();
             builder.Services.AddTransient<SickLeaveViewModel>();
-            
+            builder.Services.AddTransient<OnCallViewModel>();
+            builder.Services.AddTransient<VacationViewModel>();
             builder.Services.AddTransient<AddOBRateViewModel>();
 
             // Registrera Views

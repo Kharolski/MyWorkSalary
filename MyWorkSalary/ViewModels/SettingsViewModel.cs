@@ -29,7 +29,7 @@ namespace MyWorkSalary.ViewModels
             ChangeActiveJobCommand = new Command<JobProfile>(OnChangeActiveJob);
             AddJobCommand = new Command(OnAddJob);
             EditActiveJobCommand = new Command(OnEditActiveJob);
-            DeleteActiveJobCommand = new Command(OnDeleteActiveJob);
+            DeleteJobCommand = new Command<JobProfile>(OnDeleteJob);
 
             AddOBRateCommand = new Command(OnAddOBRate, () => HasActiveJob);
             DeleteOBRateCommand = new Command<OBRate>(OnDeleteOBRate);
@@ -98,8 +98,8 @@ namespace MyWorkSalary.ViewModels
         public ICommand ChangeActiveJobCommand { get; }
         public ICommand AddJobCommand { get; }
         public ICommand EditActiveJobCommand { get; }
-        public ICommand DeleteActiveJobCommand { get; }
 
+        public ICommand DeleteJobCommand { get; }
         public ICommand AddOBRateCommand { get; }
         public ICommand DeleteOBRateCommand { get; }
 
@@ -119,7 +119,6 @@ namespace MyWorkSalary.ViewModels
 
             // Uppdatera command states
             ((Command)EditActiveJobCommand).ChangeCanExecute();
-            ((Command)DeleteActiveJobCommand).ChangeCanExecute();
             ((Command)AddOBRateCommand).ChangeCanExecute(); 
 
             LoadOBRates(); // Ladda OB-regler när jobb ändras
@@ -218,15 +217,32 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
-        private async void OnDeleteActiveJob()
+        private async void OnDeleteJob(JobProfile jobToDelete)
         {
-            if (ActiveJob == null)
+            if (jobToDelete == null)
                 return;
 
-            // Bekräftelse med jobbnamn
+            bool isLastJob = AllJobs.Count == 1;
+            bool isActiveJob = jobToDelete.IsActive;
+
+            // Varning för aktivt jobb (men tillåt om det är sista)
+            if (isActiveJob && !isLastJob)
+            {
+                await Shell.Current.DisplayAlert(
+                    "Aktivt jobb",
+                    "Du raderar det aktiva jobbet. Välj ett annat jobb som aktivt först, eller radera alla jobb.",
+                    "OK");
+                return;
+            }
+
+            // Extra varning för sista jobbet
+            string warningMessage = isLastJob
+                ? $"Du raderar ditt SISTA jobb '{jobToDelete.JobTitle}'.\n\nDu kommer behöva skapa ett nytt jobb för att använda appen.\n\nFortsätt?"
+                : $"Vill du radera '{jobToDelete.JobTitle}' från {jobToDelete.Workplace}?\n\nDetta raderar alla relaterade pass och data.";
+
             bool confirm = await Shell.Current.DisplayAlert(
-                "Radera jobb",
-                $"Vill du radera '{ActiveJob.JobTitle}' från {ActiveJob.Workplace}?\n\nDetta går inte att ångra.",
+                isLastJob ? "⚠️ Radera sista jobb" : "Radera jobb",
+                warningMessage,
                 "Ja, radera",
                 "Avbryt");
 
@@ -235,24 +251,23 @@ namespace MyWorkSalary.ViewModels
 
             try
             {
-                var allJobs = _databaseService.JobProfiles.GetJobProfiles();
-
-                // Ta bort jobbet
-                _databaseService.JobProfiles.DeleteJobProfile(ActiveJob.Id);
-
-                // Om det fanns fler jobb, sätt nästa som aktivt
-                var remainingJobs = allJobs.Where(j => j.Id != ActiveJob.Id).ToList();
-                if (remainingJobs.Any())
-                {
-                    var nextActiveJob = remainingJobs.First();
-                    nextActiveJob.IsActive = true;
-                    _databaseService.JobProfiles.SaveJobProfile(nextActiveJob);
-                }
+                // Radera jobbet (med alla relaterade data)
+                _databaseService.JobProfiles.DeleteJobProfile(jobToDelete.Id);
 
                 // Uppdatera UI
                 LoadJobs();
 
-                await Shell.Current.DisplayAlert("Raderat", "Jobbet har raderats.", "OK");
+                string successMessage = isLastJob
+                    ? "Sista jobbet raderat. Skapa ett nytt jobb för att fortsätta använda appen."
+                    : "Jobbet har raderats.";
+
+                await Shell.Current.DisplayAlert("Raderat", successMessage, "OK");
+
+                // Om inga jobb kvar, navigera till AddJob
+                if (AllJobs.Count == 0)
+                {
+                    await Shell.Current.GoToAsync($"//{nameof(AddJobPage)}");
+                }
             }
             catch (Exception ex)
             {

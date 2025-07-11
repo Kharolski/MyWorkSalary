@@ -355,4 +355,25 @@
         <Setter Property="FontAttributes" Value="Bold" />
     </Style>
 
+    <!-- InfoFrame Style -->
+    <Style TargetType="Frame" x:Key="InfoFrame">
+        <Setter Property="BackgroundColor"
+            Value="{AppThemeBinding Light={StaticResource InfoFrameBackground},
+                                   Dark={StaticResource InfoFrameBackgroundDark}}" />
+        <Setter Property="Padding" Value="15" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="BorderColor" 
+            Value="{AppThemeBinding Light={StaticResource BorderColor},
+                                   Dark={StaticResource BorderColorDark}}" />
+    </Style>
+
+    <!-- ThemedSlider Style -->
+    <Style TargetType="Slider" x:Key="ThemedSlider">
+        <Setter Property="ThumbColor" Value="{StaticResource SalaryPrimary}" />
+        <Setter Property="MinimumTrackColor" Value="{StaticResource SalaryPrimary}" />
+        <Setter Property="MaximumTrackColor" 
+            Value="{AppThemeBinding Light={StaticResource BorderColor},
+                                   Dark={StaticResource BorderColorDark}}" />
+    </Style>
+
 </ResourceDictionary>

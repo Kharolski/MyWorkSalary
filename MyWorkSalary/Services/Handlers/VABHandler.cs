@@ -1,48 +1,40 @@
 ﻿using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
-using MyWorkSalary.Services;
+using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services.Interfaces;
 
 namespace MyWorkSalary.Services.Handlers
 {
-    /// <summary>
-    /// Hanterar VAB (Vård av barn) registrering och logik
-    /// </summary>
     public class VABHandler
     {
         #region Private Fields
-        private readonly DatabaseService _databaseService;
+        private readonly IWorkShiftRepository _workShiftRepository;
+        private readonly IVABLeaveRepository _vabLeaveRepository;      
+        private readonly IJobProfileRepository _jobProfileRepository;  
         #endregion
 
         #region Constructor
-        /// <summary>
-        /// Konstruktor för VABHandler
-        /// </summary>
-        /// <param name="databaseService">Databas service för att hämta/spara data</param>
-        public VABHandler(DatabaseService databaseService)
+        public VABHandler(
+            IWorkShiftRepository workShiftRepository,
+            IVABLeaveRepository vabLeaveRepository,               
+            IJobProfileRepository jobProfileRepository)           
         {
-            _databaseService = databaseService;
+            _workShiftRepository = workShiftRepository;
+            _vabLeaveRepository = vabLeaveRepository;
+            _jobProfileRepository = jobProfileRepository;
         }
         #endregion
 
         #region Public Methods
-        /// <summary>
-        /// Hanterar VAB-registrering för given datum
-        /// </summary>
-        /// <param name="date">Datum för VAB</param>
-        /// <param name="jobProfile">Jobbprofil för beräkningar</param>
-        /// <returns>Resultat av VAB-hantering</returns>
         public async Task<ShiftHandlerResult> HandleVAB(DateTime date, JobProfile jobProfile, TimeSpan? startTime = null, TimeSpan? endTime = null)
         {
             try
             {
-                // 1. Kolla om det redan finns ett pass denna dag
+                // 1. Kolla befintligt pass
                 var existingShift = await CheckForExistingShift(date, jobProfile.Id);
-
                 if (existingShift != null)
                 {
-                    // Visa bekräftelsedialog
                     return new ShiftHandlerResult
                     {
                         Success = false,
@@ -52,11 +44,13 @@ namespace MyWorkSalary.Services.Handlers
                     };
                 }
 
-                // 2. Skapa VAB-pass
-                var vabShift = await CreateVABShift(date, jobProfile, startTime, endTime);
+                // 2. Skapa WorkShift + VABLeave
+                var (vabShift, vabLeave) = await CreateVABWithDetails(date, jobProfile, startTime, endTime);
 
-                // 3. Spara i databas
+                // 3. Spara båda
                 var savedShift = await SaveVABShift(vabShift);
+                vabLeave.WorkShiftId = savedShift.Id;
+                await _vabLeaveRepository.InsertAsync(vabLeave);
 
                 return new ShiftHandlerResult
                 {
@@ -76,22 +70,18 @@ namespace MyWorkSalary.Services.Handlers
             }
         }
 
-        /// <summary>
-        /// Bekräftar och ersätter befintligt pass med VAB
-        /// </summary>
-        /// <param name="date">Datum</param>
-        /// <param name="jobProfile">Jobbprofil</param>
-        /// <returns>Resultat av ersättning</returns>
         public async Task<ShiftHandlerResult> ConfirmReplaceWithVAB(DateTime date, JobProfile jobProfile)
         {
             try
             {
-                // 1. Ta bort befintligt pass
+                // 1. Ta bort befintligt pass OCH eventuell VABLeave
                 await RemoveExistingShift(date, jobProfile.Id);
 
-                // 2. Skapa nytt VAB-pass (återanvänder HandleVAB logik)
-                var vabShift = await CreateVABShift(date, jobProfile);
+                // 2. Skapa nytt VAB
+                var (vabShift, vabLeave) = await CreateVABWithDetails(date, jobProfile);
                 var savedShift = await SaveVABShift(vabShift);
+                vabLeave.WorkShiftId = savedShift.Id;
+                await _vabLeaveRepository.InsertAsync(vabLeave);
 
                 return new ShiftHandlerResult
                 {
@@ -110,101 +100,144 @@ namespace MyWorkSalary.Services.Handlers
                 };
             }
         }
-        
-
         #endregion
 
         #region Private Methods
-        /// <summary>
-        /// Kollar om det finns befintligt pass för datum
-        /// </summary>
-        /// <param name="date">Datum att kolla</param>
-        /// <param name="jobProfileId">Jobb-ID</param>
-        /// <returns>Befintligt pass eller null</returns>
         private async Task<WorkShift> CheckForExistingShift(DateTime date, int jobProfileId)
         {
-            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId);
+            var shifts = _workShiftRepository.GetWorkShifts(jobProfileId);
             return shifts.FirstOrDefault(s => s.ShiftDate.Date == date.Date);
         }
 
         /// <summary>
-        /// Skapar VAB WorkShift objekt
+        /// Skapar både WorkShift och VABLeave med korrekt beräkning
         /// </summary>
-        /// <param name="date">VAB-datum</param>
-        /// <param name="jobProfile">Jobbprofil</param>
-        /// <returns>VAB WorkShift</returns>
-        private async Task<WorkShift> CreateVABShift(DateTime date, JobProfile jobProfile, TimeSpan? startTime = null, TimeSpan? endTime = null)
+        private async Task<(WorkShift workShift, VABLeave vabLeave)> CreateVABWithDetails(
+            DateTime date,
+            JobProfile jobProfile,
+            TimeSpan? startTime = null,
+            TimeSpan? endTime = null)
         {
-            // Beräkna timmar om tider finns
-            decimal totalHours = 0;
+            // Bestäm VAB-typ och timmar
+            var vabType = (startTime.HasValue && endTime.HasValue) ? VABType.PartialDay : VABType.FullDay;
+
+            decimal scheduledHours = 8; // Default, eller hämta från schema
+            decimal workedHours = 0;
+            decimal vabHours = scheduledHours;
+
             DateTime? startDateTime = null;
             DateTime? endDateTime = null;
 
-            if (!jobProfile.IsHourlyEmployee && startTime.HasValue && endTime.HasValue)
+            if (vabType == VABType.PartialDay && startTime.HasValue && endTime.HasValue)
             {
                 startDateTime = date.Date.Add(startTime.Value);
                 endDateTime = date.Date.Add(endTime.Value);
-                totalHours = -(decimal)(endTime.Value - startTime.Value).TotalHours;  
+                workedHours = (decimal)(endTime.Value - startTime.Value).TotalHours;
+                vabHours = scheduledHours - workedHours;
             }
 
-            var vabShift = new WorkShift
+            // Beräkna VAB-avdrag
+            var (weeklyHours, hourlyRate, weeklyEarnings, vabDeduction, workedPay) =
+                await CalculateVABPayment(jobProfile, vabHours, workedHours);
+
+            // Skapa WorkShift
+            var workShift = new WorkShift
             {
                 JobProfileId = jobProfile.Id,
                 ShiftDate = date,
                 ShiftType = ShiftType.VAB,
-                BreakMinutes = 0,
-                NumberOfDays = 1,
-
                 StartTime = startDateTime,
                 EndTime = endDateTime,
-                TotalHours = totalHours,  
-
-                RegularHours = 0,
-                OBHours = 0,
-                RegularPay = 0,
-                OBPay = 0,
-                TotalPay = 0,
-                SickPayPercentage = null,
-                IsKarensDay = false,
-                Notes = "VAB - Beräkning görs i ShiftCalculationService",
+                TotalHours = workedHours - vabHours, // Netto (kan vara negativt)
+                RegularHours = workedHours,
+                TotalPay = workedPay + vabDeduction,  // workedPay + (negativ vabDeduction)
                 CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
-                IsConfirmed = true
+                IsConfirmed = true,
+                Notes = $"VAB - {vabHours}t förlorade, {workedHours}t jobbade"
             };
 
-            return vabShift;
+            // Skapa VABLeave
+            var vabLeave = new VABLeave
+            {
+                VABType = vabType,
+                WorkedStartTime = startTime,
+                WorkedEndTime = endTime,
+                ScheduledStartTime = TimeSpan.FromHours(8), // Default eller från schema
+                ScheduledEndTime = TimeSpan.FromHours(17),
+                ScheduledHours = scheduledHours,
+                WorkedHours = workedHours,
+                VABHours = vabHours,
+                WeeklyHoursUsed = weeklyHours,
+                HourlyRateUsed = hourlyRate,
+                WeeklyEarningsUsed = weeklyEarnings,
+                WorkedPay = workedPay,
+                VABDeduction = vabDeduction, // NEGATIV
+                CreatedDate = DateTime.Now
+            };
+
+            return (workShift, vabLeave);
         }
 
         /// <summary>
-        /// Sparar VAB-pass i databas
+        /// Beräknar VAB-betalning baserat på anställningstyp
         /// </summary>
-        /// <param name="vabShift">VAB WorkShift att spara</param>
-        /// <returns>Sparat WorkShift</returns>
+        private async Task<(decimal weeklyHours, decimal hourlyRate, decimal weeklyEarnings, decimal vabDeduction, decimal workedPay)>
+            CalculateVABPayment(JobProfile jobProfile, decimal vabHours, decimal workedHours)
+        {
+            if (jobProfile.IsHourlyEmployee)
+            {
+                // Timanställd - använd genomsnitt från 13 veckor
+                var weeklyHours = await GetAverageWeeklyHours(jobProfile);
+                var hourlyRate = jobProfile.HourlyRate ?? 0;
+                var weeklyEarnings = weeklyHours * hourlyRate;
+
+                var vabDeduction = -(vabHours * hourlyRate);  // NEGATIV
+                var workedPay = workedHours * hourlyRate;     // POSITIV
+
+                return (weeklyHours, hourlyRate, weeklyEarnings, vabDeduction, workedPay);
+            }
+            else
+            {
+                // Månadslönad - dagavdrag
+                var monthlySalary = jobProfile.MonthlySalary ?? 0;
+                var dailyDeduction = monthlySalary / 21; // Förenklad beräkning
+
+                var vabDeduction = -(vabHours / 8 * dailyDeduction); // NEGATIV
+                var workedPay = 0; // Månadslönad får ingen extra lön
+
+                return (0, 0, monthlySalary, vabDeduction, workedPay);
+            }
+        }
+
+        private async Task<decimal> GetAverageWeeklyHours(JobProfile jobProfile)
+        {
+            // Implementera logik för att hämta genomsnitt från senaste 13 veckor
+            // Liknande som i SickLeaveHandler
+            return 25; // Placeholder
+        }
+
         private async Task<WorkShift> SaveVABShift(WorkShift vabShift)
         {
-            _databaseService.WorkShifts.SaveWorkShift(vabShift);
-            return vabShift;
+            return _workShiftRepository.SaveWorkShift(vabShift);
         }
 
-        /// <summary>
-        /// Tar bort befintligt pass
-        /// </summary>
-        /// <param name="date">Datum</param>
-        /// <param name="jobProfileId">Jobb-ID</param>
         private async Task RemoveExistingShift(DateTime date, int jobProfileId)
         {
             var existingShift = await CheckForExistingShift(date, jobProfileId);
             if (existingShift != null)
             {
-                _databaseService.WorkShifts.DeleteWorkShift(existingShift.Id);
+                // Ta bort VABLeave först (om det finns)
+                var existingVAB = await _vabLeaveRepository.GetByWorkShiftIdAsync(existingShift.Id);
+                if (existingVAB != null)
+                {
+                    await _vabLeaveRepository.DeleteAsync(existingVAB.Id);
+                }
+
+                // Ta bort WorkShift
+                _workShiftRepository.DeleteWorkShift(existingShift.Id);
             }
         }
 
-        /// <summary>
-        /// Hämtar läsbar text för ShiftType
-        /// </summary>
-        /// <param name="shiftType">ShiftType att konvertera</param>
-        /// <returns>Läsbar text</returns>
         private string GetShiftTypeText(ShiftType shiftType)
         {
             return shiftType switch

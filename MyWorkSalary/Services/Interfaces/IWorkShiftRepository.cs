@@ -10,6 +10,9 @@ namespace MyWorkSalary.Services.Interfaces
         List<WorkShift> GetWorkShifts(int jobProfileId, DateTime fromDate, DateTime toDate);
         WorkShift GetWorkShift(int id);
         WorkShift SaveWorkShift(WorkShift workShift);
+        Task<WorkShift> SaveWorkShiftAsync(WorkShift workShift);
+        List<WorkShift> GetWorkShiftsForDate(int jobProfileId, DateTime date);
+        List<WorkShift> GetWorkShiftsForDateRange(int jobProfileId, DateTime fromDate, DateTime toDate);
         int DeleteWorkShift(int id);
 
         // Queries by ShiftType

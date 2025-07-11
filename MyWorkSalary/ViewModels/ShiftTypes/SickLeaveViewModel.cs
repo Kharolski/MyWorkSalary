@@ -1,5 +1,6 @@
 ﻿using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Handlers;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -287,27 +288,50 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             try
             {
-                TimeSpan? workedHours = null;
-                TimeSpan? scheduledHours = null;
+                TimeSpan? workedStartTime = null;
+                TimeSpan? workedEndTime = null;
+                TimeSpan? scheduledStartTime = null;
+                TimeSpan? scheduledEndTime = null;
 
                 if (_selectedSickType == SickLeaveType.WorkedPartially)
                 {
-                    workedHours = WorkedEndTime - WorkedStartTime;
-                    scheduledHours = ScheduledEndTime - ScheduledStartTime;
+                    workedStartTime = WorkedStartTime;
+                    workedEndTime = WorkedEndTime;
+                    scheduledStartTime = ScheduledStartTime;
+                    scheduledEndTime = ScheduledEndTime;
 
-                    if (workedHours < TimeSpan.Zero)
-                        workedHours = workedHours.Value.Add(TimeSpan.FromDays(1));
-                    if (scheduledHours < TimeSpan.Zero)
-                        scheduledHours = scheduledHours.Value.Add(TimeSpan.FromDays(1));
+                    // Hantera över midnatt
+                    if (workedEndTime < workedStartTime)
+                        workedEndTime = workedEndTime.Value.Add(TimeSpan.FromDays(1));
+                    if (scheduledEndTime < scheduledStartTime)
+                        scheduledEndTime = scheduledEndTime.Value.Add(TimeSpan.FromDays(1));
+                }
+                else if (_selectedSickType == SickLeaveType.ShouldHaveWorked)
+                {
+                    scheduledStartTime = ScheduledStartTime;
+                    scheduledEndTime = ScheduledEndTime;
+
+                    // Hantera över midnatt
+                    if (scheduledEndTime < scheduledStartTime)
+                        scheduledEndTime = scheduledEndTime.Value.Add(TimeSpan.FromDays(1));
                 }
 
-                var workShift = await _sickLeaveHandler.HandleSickLeave(
-                    SelectedDate, ActiveJob, _selectedSickType, workedHours, scheduledHours);
+                // HANTERA TUPLE-RETURVÄRDET
+                var (workShift, sickLeave) = await _sickLeaveHandler.HandleSickLeave(
+                    SelectedDate,
+                    ActiveJob,
+                    _selectedSickType,
+                    workedStartTime,
+                    workedEndTime,
+                    scheduledStartTime,
+                    scheduledEndTime);
 
-                return workShift != null;
+                // KONTROLLERA BÅDA OBJEKTEN
+                return workShift != null && sickLeave != null;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"❌ Fel i SaveSickLeave: {ex.Message}");
                 return false;
             }
         }

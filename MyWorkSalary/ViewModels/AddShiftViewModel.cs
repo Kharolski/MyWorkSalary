@@ -1,7 +1,6 @@
 ﻿using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
-using MyWorkSalary.Services;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.ViewModels.ShiftTypes;
@@ -13,13 +12,16 @@ namespace MyWorkSalary.ViewModels
     public class AddShiftViewModel : INotifyPropertyChanged
     {
         #region Private Fields
-        private readonly DatabaseService _databaseService;
+        private readonly IJobProfileRepository _jobProfileRepository;
+        private readonly IWorkShiftRepository _workShiftRepository;
         private readonly ShiftTypeHandler _shiftTypeHandler;
         private readonly IShiftCalculationService _calculationService;
 
         // Injicerade ViewModels
         public SickLeaveViewModel SickLeaveVM { get; }
         public VABViewModel VABVM { get; }
+        public OnCallViewModel OnCallVM { get; }
+        public VacationViewModel VacationVM { get; }
 
         private JobProfile _activeJob;
         private DateTime _selectedDate = DateTime.Today;
@@ -37,21 +39,29 @@ namespace MyWorkSalary.ViewModels
 
         #region Constructor
         public AddShiftViewModel(
-            DatabaseService databaseService,
+            IJobProfileRepository jobProfileRepository,
+            IWorkShiftRepository workShiftRepository,
             IShiftCalculationService calculationService,
             ShiftTypeHandler shiftTypeHandler,
             SickLeaveViewModel sickLeaveViewModel,
-            VABViewModel vabViewModel)
+            VABViewModel vabViewModel,
+            OnCallViewModel onCallViewModel, 
+            VacationViewModel vacationViewModel)
         {
-            _databaseService = databaseService;
+            _jobProfileRepository = jobProfileRepository;
+            _workShiftRepository = workShiftRepository;
             _calculationService = calculationService;
             _shiftTypeHandler = shiftTypeHandler;
             SickLeaveVM = sickLeaveViewModel;
             VABVM = vabViewModel;
+            OnCallVM = onCallViewModel;
+            VacationVM = vacationViewModel;
 
             // Prenumerera på ValidationChanged events
             SickLeaveVM.ValidationChanged += () => ValidateAndUpdateCanSave();
             VABVM.ValidationChanged += () => ValidateAndUpdateCanSave();
+            OnCallVM.ValidationChanged += () => ValidateAndUpdateCanSave();
+            VacationVM.ValidationChanged += () => ValidateAndUpdateCanSave();
 
             // Commands
             SaveCommand = new Command(OnSave, CanExecuteSave);
@@ -70,8 +80,14 @@ namespace MyWorkSalary.ViewModels
         // VAB
         public bool ShowVABForm => SelectedShiftType == ShiftType.VAB;
 
-        // Vanliga fält (Regular/OnCall)
-        public bool ShowGeneralForm => SelectedShiftType == ShiftType.Regular || SelectedShiftType == ShiftType.OnCall;
+        // OnCall
+        public bool ShowOnCallForm => SelectedShiftType == ShiftType.OnCall;
+
+        // Vacation 
+        public bool ShowVacationForm => SelectedShiftType == ShiftType.Vacation;
+
+        // Vanliga fält (Regular)
+        public bool ShowGeneralForm => SelectedShiftType == ShiftType.Regular;
         public bool ShowTimeFields => ShowGeneralForm;
         public bool ShowBreakField => ShowGeneralForm;
         public bool ShowGeneralNotes => ShowGeneralForm;
@@ -90,7 +106,8 @@ namespace MyWorkSalary.ViewModels
                 // Uppdatera child ViewModels
                 SickLeaveVM.UpdateContext(SelectedDate, _activeJob);
                 VABVM.UpdateContext(SelectedDate, _activeJob);
-
+                OnCallVM.UpdateContext(SelectedDate, _activeJob);
+                VacationVM.UpdateContext(SelectedDate, _activeJob);
                 CalculateHours();
             }
         }
@@ -108,7 +125,8 @@ namespace MyWorkSalary.ViewModels
                 // Uppdatera child ViewModels
                 SickLeaveVM.UpdateContext(_selectedDate, ActiveJob);
                 VABVM.UpdateContext(_selectedDate, ActiveJob);
-
+                OnCallVM.UpdateContext(_selectedDate, ActiveJob);     
+                VacationVM.UpdateContext(_selectedDate, ActiveJob);
                 CalculateHours();
             }
         }
@@ -155,7 +173,6 @@ namespace MyWorkSalary.ViewModels
             {
                 _startTime = value;
                 OnPropertyChanged();
-
                 CalculateHours();
             }
         }
@@ -167,7 +184,6 @@ namespace MyWorkSalary.ViewModels
             {
                 _endTime = value;
                 OnPropertyChanged();
-
                 CalculateHours();
             }
         }
@@ -218,7 +234,6 @@ namespace MyWorkSalary.ViewModels
                 {
                     return $"Arbetstid: {CalculatedHours:F1}h (efter {BreakMinutes} min rast)";
                 }
-
                 return $"Totalt: {CalculatedHours:F1} timmar";
             }
         }
@@ -278,8 +293,7 @@ namespace MyWorkSalary.ViewModels
         {
             try
             {
-                var jobs = _databaseService.JobProfiles.GetJobProfiles();
-                ActiveJob = jobs.FirstOrDefault(j => j.IsActive);
+                ActiveJob = _jobProfileRepository.GetActiveJob();
                 if (ActiveJob == null)
                 {
                     Shell.Current.DisplayAlert("Fel", "Inget aktivt jobb hittades.", "OK");
@@ -297,7 +311,7 @@ namespace MyWorkSalary.ViewModels
         {
             try
             {
-                // Bara beräkna för Regular/OnCall
+                // Bara beräkna för Regular
                 if (!ShowGeneralForm)
                 {
                     CalculatedHours = 0;
@@ -323,7 +337,6 @@ namespace MyWorkSalary.ViewModels
 
                 ShowCalculation = CalculatedHours > 0;
                 ValidateAndUpdateCanSave();
-
                 OnPropertyChanged(nameof(ShowPay));
             }
             catch (Exception ex)
@@ -346,7 +359,8 @@ namespace MyWorkSalary.ViewModels
             {
                 ShiftType.SickLeave => SickLeaveVM.CanSave(),
                 ShiftType.VAB => VABVM.CanSave(),
-                ShiftType.Vacation => true,
+                ShiftType.OnCall => OnCallVM.CanSave(),
+                ShiftType.Vacation => VacationVM.CanSave(),
                 _ => ValidateRegularShift()
             };
 
@@ -381,7 +395,9 @@ namespace MyWorkSalary.ViewModels
                 {
                     ShiftType.SickLeave => await HandleSickLeaveSave(),
                     ShiftType.VAB => await HandleVABSave(),
-                    _ => await ShowNotImplementedMessage()
+                    ShiftType.Regular => await HandleRegularShiftSave(),
+                    ShiftType.OnCall => await HandleOnCallShiftSave(),
+                    ShiftType.Vacation => await HandleVacationSave()
                 };
 
                 if (success)
@@ -393,14 +409,6 @@ namespace MyWorkSalary.ViewModels
             {
                 await Shell.Current.DisplayAlert("Fel", $"Kunde inte spara: {ex.Message}", "OK");
             }
-        }
-
-        private async Task<bool> ShowNotImplementedMessage()
-        {
-            await Shell.Current.DisplayAlert("🚧 Under utveckling",
-                $"{SelectedShiftTypeDisplay} kommer snart!\n\nTillgängligt nu: Sjukskrivning och VAB",
-                "OK");
-            return false;
         }
 
         private async Task<bool> HandleSickLeaveSave()
@@ -428,7 +436,6 @@ namespace MyWorkSalary.ViewModels
             try
             {
                 var success = await VABVM.SaveVAB();
-
                 if (success)
                 {
                     await Shell.Current.DisplayAlert("✅ Sparat!", "VAB-dag registrerad", "OK");
@@ -442,6 +449,103 @@ namespace MyWorkSalary.ViewModels
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara VAB-dag: {ex.Message}", "OK");
+                return false;
+            }
+        }
+
+        // Hantera Regular shifts
+        private async Task<bool> HandleRegularShiftSave()
+        {
+            try
+            {
+                var workShift = new WorkShift
+                {
+                    JobProfileId = ActiveJob.Id,
+                    ShiftDate = SelectedDate,
+                    ShiftType = ShiftType.Regular,
+                    StartTime = DateTime.Today.Add(StartTime),
+                    EndTime = DateTime.Today.Add(EndTime),
+                    BreakMinutes = BreakMinutes,
+                    TotalHours = CalculatedHours,
+                    TotalPay = CalculatedPay,
+                    Notes = Notes,
+                    CreatedDate = DateTime.Now
+                };
+
+                var savedShift = _workShiftRepository.SaveWorkShift(workShift);
+
+                if (savedShift != null && savedShift.Id > 0)
+                {
+                    await Shell.Current.DisplayAlert("✅ Sparat!", "Vanligt pass registrerat", "OK");
+                    return true;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("❌ Fel", "Kunde inte spara passet", "OK");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara passet: {ex.Message}", "OK");
+                return false;
+            }
+        }
+
+        // Hantera OnCall shifts
+        private async Task<bool> HandleOnCallShiftSave()
+        {
+            if (OnCallVM == null)
+            {
+                await Shell.Current.DisplayAlert("❌ Fel", "OnCall ViewModel inte initialiserad", "OK");
+                return false;
+            }
+
+            try
+            {
+                var success = await OnCallVM.SaveOnCall();
+                if (success)
+                {
+                    await Shell.Current.DisplayAlert("✅ Sparat!", "Jourpass registrerat", "OK");
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara jourpass: {OnCallVM.ValidationMessage}", "OK");
+                }
+                return success;
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara jourpass: {ex.Message}", "OK");
+                return false;
+            }
+        }
+
+        // Handle Vacation shifts
+        private async Task<bool> HandleVacationSave()
+        {
+            if (VacationVM == null)
+            {
+                await Shell.Current.DisplayAlert("❌ Fel", "Vacation ViewModel inte initialiserad", "OK");
+                return false;
+            }
+
+            try
+            {
+                var success = await VacationVM.SaveVacation();
+                if (success)
+                {
+                    await Shell.Current.DisplayAlert("✅ Sparat!", "Semester registrerad", "OK");
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara semester: {VacationVM.ValidationMessage}", "OK");
+                }
+                return success;
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara semester: {ex.Message}", "OK");
                 return false;
             }
         }
@@ -511,6 +615,8 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(ShowGeneralCalculation));
             OnPropertyChanged(nameof(ShowSickLeaveForm));
             OnPropertyChanged(nameof(ShowVABForm));
+            OnPropertyChanged(nameof(ShowOnCallForm));
+            OnPropertyChanged(nameof(ShowVacationForm));
             OnPropertyChanged(nameof(CalculationSummary));
 
             // Uppdatera context för child ViewModels
@@ -522,6 +628,14 @@ namespace MyWorkSalary.ViewModels
             {
                 VABVM.UpdateContext(SelectedDate, ActiveJob);
             }
+            else if (SelectedShiftType == ShiftType.OnCall) 
+            {
+                OnCallVM.UpdateContext(SelectedDate, ActiveJob);
+            }
+            else if (SelectedShiftType == ShiftType.Vacation)   
+            {
+                VacationVM.UpdateContext(SelectedDate, ActiveJob);
+            }
 
             CalculateHours();
         }
@@ -529,7 +643,6 @@ namespace MyWorkSalary.ViewModels
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -537,3 +650,4 @@ namespace MyWorkSalary.ViewModels
         #endregion
     }
 }
+

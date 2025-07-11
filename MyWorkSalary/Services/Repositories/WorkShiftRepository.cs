@@ -59,6 +59,25 @@ namespace MyWorkSalary.Services.Repositories
             }
         }
 
+        public async Task<WorkShift> SaveWorkShiftAsync(WorkShift workShift)
+        {
+            return await Task.Run(() => SaveWorkShift(workShift));
+        }
+
+        public List<WorkShift> GetWorkShiftsForDate(int jobProfileId, DateTime date)
+        {
+            return _database.Table<WorkShift>()
+                           .Where(x => x.JobProfileId == jobProfileId &&
+                                      x.ShiftDate.Date == date.Date)
+                           .OrderBy(x => x.StartTime)
+                           .ToList();
+        }
+
+        public List<WorkShift> GetWorkShiftsForDateRange(int jobProfileId, DateTime fromDate, DateTime toDate)
+        {
+            return GetWorkShifts(jobProfileId, fromDate, toDate);
+        }
+
         public int DeleteWorkShift(int id)
         {
             try
@@ -69,7 +88,6 @@ namespace MyWorkSalary.Services.Repositories
                 {
                     _database.Delete<SickLeave>(sickLeave.Id);
                 }
-
                 // Ta bort WorkShift
                 return _database.Delete<WorkShift>(id);
             }
@@ -79,7 +97,6 @@ namespace MyWorkSalary.Services.Repositories
                 throw;
             }
         }
-
         #endregion
 
         #region Queries by ShiftType

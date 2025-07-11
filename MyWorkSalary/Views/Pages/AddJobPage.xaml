@@ -24,6 +24,11 @@
                            Placeholder="t.ex. Ljungby Kommun"
                            Style="{StaticResource ThemedEntry}" />
 
+                    <Label Text="Anställningsdatum *" Style="{StaticResource SecondaryLabel}" />
+                    <DatePicker Date="{Binding EmploymentStartDate}" 
+                                Style="{StaticResource ThemedDatePicker}"
+                                Format="dddd d MMMM yyyy"/>
+
                     <Label Text="Anställningstyp"
                            Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding EmploymentTypes}"
@@ -70,6 +75,30 @@
                            Keyboard="Numeric"
                            Placeholder="t.ex. 165"
                            Style="{StaticResource ThemedEntry}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Semester -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🏖️ Semesterinformation" Style="{StaticResource SectionTitleLabel}" />
+
+                    <Label Text="Semesterdagar per år" Style="{StaticResource SecondaryLabel}" />
+                    <Entry Text="{Binding VacationDaysPerYear}"
+                           Keyboard="Numeric"
+                           Placeholder="25"
+                           Style="{StaticResource ThemedEntry}" />
+
+                    <!-- Visa bara om anställning > 1 månad -->
+                    <StackLayout IsVisible="{Binding ShowInitialVacationBalance}">
+                        <Label Text="Sparade semesterdagar just nu" Style="{StaticResource SecondaryLabel}" />
+                        <Entry Text="{Binding InitialVacationBalance}"
+                               Keyboard="Numeric"
+                               Placeholder="t.ex. 12.5"
+                               Style="{StaticResource ThemedEntry}" />
+                        <Label Text="💡 Ange dina sparade semesterdagar från senaste lönespec"
+                               Style="{StaticResource TipsLabel}" />
+                    </StackLayout>
                 </VerticalStackLayout>
             </Frame>
 

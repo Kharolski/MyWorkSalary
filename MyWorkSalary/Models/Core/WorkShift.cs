@@ -6,10 +6,16 @@ namespace MyWorkSalary.Models.Core
 {
     public class WorkShift
     {
+        #region Primary Key & Foreign Keys
+
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
         public int JobProfileId { get; set; }               // Kopplar till JobProfile
+
+        #endregion
+
+        #region Basic Shift Information
 
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
@@ -19,39 +25,48 @@ namespace MyWorkSalary.Models.Core
 
         public ShiftType ShiftType { get; set; }            // Regular/SickLeave/VAB/Vacation/OnCall
 
-        // Beräknade värden (sparas för snabbhet)
+        #endregion
+
+        #region Regular Shift Calculations (sparas för snabbhet)
+
         public decimal TotalHours { get; set; }
         public decimal RegularHours { get; set; }           // Vanliga arbetstimmar
-
         public int BreakMinutes { get; set; } = 0;          // Rast i minuter (Regular shifts)
         public decimal OBHours { get; set; }                // OB-timmar totalt
 
-        // Ekonomi
+        #endregion
+
+        #region Financial Calculations
+
         public decimal RegularPay { get; set; }             // Grundlön för timmarna
         public decimal OBPay { get; set; }                  // Totalt OB-tillägg
         public decimal TotalPay { get; set; }               // Summa
 
+        #endregion
+
+        #region OB Details
+
         // Detaljerad OB-uppdelning (JSON eller separata tabeller)
         public string OBBreakdown { get; set; } = string.Empty;  // JSON med detaljer
 
-        // Metadata
+        #endregion
+
+        #region Metadata
+
         public string? Notes { get; set; }                  // Anteckningar från användaren
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public bool IsConfirmed { get; set; } = false;     // Användaren har verifierat
 
-        // === TEMPORÄRA FÄLT (kommer flyttas till specialiserade klasser) ===
-        public int? NumberOfDays { get; set; }              // <-- FLYTTAS TILL Vacation/VAB
-        public decimal? SickPayPercentage { get; set; }     // <-- FLYTTAS TILL SickLeave
-        public bool IsKarensDay { get; set; }               // <-- FLYTTAS TILL SickLeave
-        public decimal? WeeklyHoursUsed { get; set; }       // <-- FLYTTAS TILL SickLeave
-        public decimal? HourlyRateUsed { get; set; }        // <-- FLYTTAS TILL SickLeave
-        public decimal? WeeklyEarningsUsed { get; set; }    // <-- FLYTTAS TILL SickLeave
-        public decimal? KarensDeduction { get; set; }       // <-- FLYTTAS TILL SickLeave
-        public decimal? DailySickEarnings { get; set; }     // <-- FLYTTAS TILL SickLeave
-        public int? SickPeriodId { get; set; }              // <-- FLYTTAS TILL SickLeave
-        public bool IsRecurrentSickPeriod { get; set; } = false; // <-- FLYTTAS TILL SickLeave
-        public decimal SickHours { get; set; } = 0;         // <-- FLYTTAS TILL SickLeave
-        public decimal SickPay { get; set; } = 0;           // <-- FLYTTAS TILL SickLeave
+        #endregion
+
+        #region TEMPORÄRA FÄLT (kommer flyttas till specialiserade klasser)
+
+        public int? NumberOfDays { get; set; }              // <-- SKA FLYTTAS TILL Vacation/VAB
+        public decimal? SickPayPercentage { get; set; }     // <-- SKA FLYTTAS TILL SickLeave
+        public bool IsKarensDay { get; set; }               // <-- SKA FLYTTAS TILL SickLeave
+
+
+        #endregion
     }
 }

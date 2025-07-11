@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services;
@@ -21,6 +20,10 @@ namespace MyWorkSalary.ViewModels
         private string _selectedEmploymentType = "Tillsvidare";
         private string _selectedSalaryType = "Månadslön";
         private bool _isSaving = false;
+
+        private DateTime _employmentStartDate = DateTime.Today;
+        private string _vacationDaysPerYear = "25";
+        private string _initialVacationBalance = string.Empty;
         #endregion
 
         #region Constructor
@@ -139,6 +142,41 @@ namespace MyWorkSalary.ViewModels
 
         public bool IsMonthlySalary => SelectedSalaryType == "Månadslön";
         public bool IsHourlySalary => SelectedSalaryType == "Timlön";
+
+        public DateTime EmploymentStartDate
+        {
+            get => _employmentStartDate;
+            set
+            {
+                _employmentStartDate = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowInitialVacationBalance)); // Uppdatera synlighet
+            }
+        }
+
+        public string VacationDaysPerYear
+        {
+            get => _vacationDaysPerYear;
+            set
+            {
+                _vacationDaysPerYear = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string InitialVacationBalance
+        {
+            get => _initialVacationBalance;
+            set
+            {
+                _initialVacationBalance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Visa bara om anställning > 1 månad
+        public bool ShowInitialVacationBalance =>
+            DateTime.Today.Subtract(EmploymentStartDate).TotalDays > 30;
         #endregion
 
         #region Commands
@@ -185,7 +223,11 @@ namespace MyWorkSalary.ViewModels
                     PayPeriodType = PayPeriodType.CalendarMonth,
                     PayPeriodStartDay = 25,
                     TaxMethod = TaxCalculationMethod.Manual,
-                    IsActive = !hasExistingJobs // BARA första jobbet blir aktivt
+                    IsActive = !hasExistingJobs, // BARA första jobbet blir aktivt
+
+                    EmploymentStartDate = EmploymentStartDate,
+                    VacationDaysPerYear = decimal.TryParse(VacationDaysPerYear, out var vacDays) ? vacDays : 25m,
+                    InitialVacationBalance = decimal.TryParse(InitialVacationBalance, out var vacBalance) ? vacBalance : null
                 };
 
                 // Sätt lön
@@ -253,6 +295,10 @@ namespace MyWorkSalary.ViewModels
             TaxRate = "33";
             SelectedEmploymentType = "Tillsvidare";
             SelectedSalaryType = "Månadslön";
+
+            EmploymentStartDate = DateTime.Today;
+            VacationDaysPerYear = "25";
+            InitialVacationBalance = string.Empty;
         }
 
         private EmploymentType ParseEmploymentType(string type)

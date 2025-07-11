@@ -1,11 +1,74 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MyWorkSalary.Views.Pages.ShiftTypeView.VacationFormView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+<ContentView x:Class="MyWorkSalary.Views.Pages.ShiftTypeView.VacationFormView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <VerticalStackLayout Spacing="20">
+
+        <!-- 🏖️ Semestertyp -->
+        <VerticalStackLayout Spacing="5">
+            <Label Text="🏖️ Typ av semester" Style="{StaticResource FieldLabel}" />
+            <Picker ItemsSource="{Binding VacationTypeDisplayNames}"
+                    SelectedItem="{Binding VacationTypeDisplayName}"
+                    Style="{StaticResource ThemedPicker}"
+                    Title="Välj semestertyp" />
+            
+        </VerticalStackLayout>
+
+        <!-- 🧮 Semesterkvot -->
+        <VerticalStackLayout Spacing="5">
+            <Label Text="🧮 Semesterkvot" Style="{StaticResource FieldLabel}" />
+            <Entry Text="{Binding SemesterKvot}"
+                   Placeholder="1.0"
+                   Keyboard="Numeric"
+                   Style="{StaticResource ThemedEntry}" />
+                    <Label Text="💡 Skriv 1.0 som standard. Högre kvot för oplanerad semester (t.ex. 1.5)"
+                   FontSize="12"
+                   Style="{StaticResource TipsLabel}" />
+        </VerticalStackLayout>
+        
+        <!-- 📝 Information -->
+        <Frame Style="{StaticResource ActiveJobFrame}">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="ℹ️ Information" 
+                       Style="{StaticResource ActiveJobTitleLabel}" 
+                       FontSize="14" />
+
+                <Label Text="{Binding EmploymentTypeInfo}" 
+                       FontSize="12" 
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                            Dark={StaticResource White}}" />
+
+                <!-- info -->
+                <Label Text="📅 Registrerar 1 dag semester för valt datum" 
+                       FontSize="12" 
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                            Dark={StaticResource White}}" />
+
+                <Label Text="💰 Lön beräknas i månadsrapporten med aktuell lön" 
+                       FontSize="12" 
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                            Dark={StaticResource White}}" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- 🏠 Obetald ledighet info -->
+        <Frame Style="{StaticResource InfoFrame}" 
+               IsVisible="{Binding ShowUnpaidVacationFields}">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="🏠 Obetald ledighet" 
+                       FontSize="14" 
+                       FontAttributes="Bold" />
+                <Label Text="Ingen lön utbetalas. Registreras för dokumentation och statistik."
+                       FontSize="13" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- ⚠️ Validation -->
+        <ContentView IsVisible="{Binding HasValidationMessage}">
+            <Label Text="{Binding ValidationMessage}" 
+                   Style="{StaticResource ValidationLabel}" />
+        </ContentView>
+
     </VerticalStackLayout>
 </ContentView>

@@ -1,4 +1,4 @@
-namespace MyWorkSalary.Views.Pages.ShiftTypesView;
+namespace MyWorkSalary.Views.Pages.ShiftTypeView;
 
 public partial class VABFormView : ContentView
 {

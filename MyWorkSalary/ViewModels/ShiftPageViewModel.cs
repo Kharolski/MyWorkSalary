@@ -1,10 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
-using MyWorkSalary.Services;
+using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Views.Pages;
 
 namespace MyWorkSalary.ViewModels
@@ -12,15 +11,22 @@ namespace MyWorkSalary.ViewModels
     public class ShiftPageViewModel : INotifyPropertyChanged
     {
         #region Private Fields
-        private readonly DatabaseService _databaseService;
+        private readonly IJobProfileRepository _jobProfileRepository;
+        private readonly IWorkShiftRepository _workShiftRepository;
+        private readonly ISickLeaveRepository _sickLeaveRepository;
         private JobProfile _activeJob;
         private ObservableCollection<WorkShift> _workShifts;
         #endregion
 
         #region Constructor
-        public ShiftPageViewModel(DatabaseService databaseService)
+        public ShiftPageViewModel(
+            IJobProfileRepository jobProfileRepository,
+            IWorkShiftRepository workShiftRepository,
+            ISickLeaveRepository sickLeaveRepository)
         {
-            _databaseService = databaseService;
+            _jobProfileRepository = jobProfileRepository;
+            _workShiftRepository = workShiftRepository;
+            _sickLeaveRepository = sickLeaveRepository;
 
             // Commands
             AddShiftCommand = new Command(OnAddShift);
@@ -46,6 +52,7 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged(nameof(NoShiftsVisible));
             }
         }
+
         public ObservableCollection<WorkShift> WorkShifts
         {
             get => _workShifts;
@@ -65,51 +72,32 @@ namespace MyWorkSalary.ViewModels
         #region Commands
         public ICommand AddShiftCommand { get; }
         public ICommand DeleteShiftCommand { get; }
-
         #endregion
 
         #region Methods
-        
+
         public void LoadData()
         {
-            // Ladda aktivt jobb
-            var jobs = _databaseService.JobProfiles.GetJobProfiles();
-            _activeJob = jobs.FirstOrDefault(j => j.IsActive);
+            // Ladda aktivt jobb - ANVÄNDER REPOSITORY METOD
+            _activeJob = _jobProfileRepository.GetActiveJob();
             OnPropertyChanged(nameof(ActiveJobTitle));
 
             // Ladda pass för aktivt jobb
             if (_activeJob != null)
             {
-                var shifts = _databaseService.WorkShifts.GetWorkShifts(_activeJob.Id)
-                                           .OrderByDescending(s => s.ShiftDate);
-
-                // 🔍 DEBUG - Visa ALLA pass
-                System.Diagnostics.Debug.WriteLine($"🔍 LoadData Debug:");
-                System.Diagnostics.Debug.WriteLine($"   ActiveJob ID: {_activeJob.Id}");
-                System.Diagnostics.Debug.WriteLine($"   Totalt antal pass: {shifts.Count()}");
-
-                foreach (var shift in shifts)
-                {
-                    System.Diagnostics.Debug.WriteLine($"   Pass: {shift.ShiftDate:yyyy-MM-dd} | Typ: {shift.ShiftType} | Timmar: {shift.TotalHours}");
-                }
+                // ANVÄNDER REPOSITORY METOD
+                var shifts = _workShiftRepository.GetWorkShifts(_activeJob.Id)
+                                               .OrderByDescending(s => s.ShiftDate);
 
                 // Gruppering
                 var grouped = shifts.GroupBy(s => GetMonthYearKey(s))
                                    .Select(g => new GroupedWorkShift(g.Key, g))
                                    .ToList();
 
-                System.Diagnostics.Debug.WriteLine($"🔍 Gruppering:");
-                System.Diagnostics.Debug.WriteLine($"   Antal grupper: {grouped.Count}");
-                foreach (var group in grouped)
-                {
-                    System.Diagnostics.Debug.WriteLine($"   Grupp: {group.MonthYear} | Pass: {group.Count} | Timmar: {group.TotalHours}");
-                }
-
                 GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>(grouped);
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Inget aktivt jobb!");
                 GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>();
             }
         }
@@ -131,9 +119,8 @@ namespace MyWorkSalary.ViewModels
             if (shift == null)
                 return;
 
-            // Ampassat bekräftelsemeddelande baserat på passtyp
+            // Anpassat bekräftelsemeddelande baserat på passtyp
             string confirmMessage = GetDeleteConfirmationMessage(shift);
-
             bool confirm = await Shell.Current.DisplayAlert(
                 "Radera pass",
                 confirmMessage,
@@ -144,13 +131,16 @@ namespace MyWorkSalary.ViewModels
             {
                 try
                 {
-                    // Radera från databas
-                    _databaseService.WorkShifts.DeleteWorkShift(shift.Id);
+                    // Radera specialiserad data först (om det finns)
+                    await DeleteSpecializedData(shift);
+
+                    // Radera WorkShift - ANVÄNDER REPOSITORY METOD
+                    _workShiftRepository.DeleteWorkShift(shift.Id);
 
                     // Uppdatera UI
                     LoadData();
 
-                    // bekräftelsemeddelande
+                    // Bekräftelsemeddelande
                     string deletedMessage = GetDeletedMessage(shift);
                     await Shell.Current.DisplayAlert("Raderat", deletedMessage, "OK");
                 }
@@ -161,11 +151,48 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        // NY METOD: Radera specialiserad data
+        private async Task DeleteSpecializedData(WorkShift shift)
+        {
+            switch (shift.ShiftType)
+            {
+                case ShiftType.SickLeave:
+                    // Hitta och radera SickLeave - ANVÄNDER REPOSITORY METOD
+                    var sickLeave = _sickLeaveRepository.GetSickLeaveByWorkShiftId(shift.Id);
+                    if (sickLeave != null)
+                    {
+                        _sickLeaveRepository.DeleteSickLeave(sickLeave.Id);
+                    }
+                    break;
+
+                case ShiftType.VAB:
+                    // TODO: När VABRepository är klart
+                    // var vabLeave = _vabRepository.GetVABByWorkShiftId(shift.Id);
+                    // if (vabLeave != null) _vabRepository.DeleteVAB(vabLeave.Id);
+                    break;
+
+                case ShiftType.Vacation:
+                    // TODO: När VacationRepository är klart
+                    // var vacation = _vacationRepository.GetVacationByWorkShiftId(shift.Id);
+                    // if (vacation != null) _vacationRepository.DeleteVacation(vacation.Id);
+                    break;
+
+                case ShiftType.OnCall:
+                    // TODO: När OnCallRepository är klart
+                    // var onCall = _onCallRepository.GetOnCallByWorkShiftId(shift.Id);
+                    // if (onCall != null) _onCallRepository.DeleteOnCall(onCall.Id);
+                    break;
+
+                case ShiftType.Regular:
+                    // Regular shifts har ingen specialiserad data
+                    break;
+            }
+        }
+
         // Få rätt månad/år för gruppering
         private string GetMonthYearKey(WorkShift shift)
         {
             var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
-
             // Använd ShiftDate för alla passtyper
             return shift.ShiftDate.ToString("MMMM yyyy", swedishCulture);
         }
@@ -180,15 +207,12 @@ namespace MyWorkSalary.ViewModels
             {
                 ShiftType.Vacation =>
                     $"Vill du radera semestern från {dateStr}?\n({shift.NumberOfDays} dagar)",
-
                 ShiftType.SickLeave =>
                     $"Vill du radera sjukskrivningen från {dateStr}?\n({shift.NumberOfDays} dagar)",
-
-                //ShiftType.Training =>
-                //    shift.NumberOfDays.HasValue
-                //        ? $"Vill du radera utbildningen från {dateStr}?\n({shift.NumberOfDays} dagar)"
-                //        : $"Vill du radera utbildningspasset från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})",
-
+                ShiftType.VAB =>
+                    $"Vill du radera VAB från {dateStr}?\n({shift.NumberOfDays} dagar)",
+                ShiftType.OnCall =>
+                    $"Vill du radera jourpasset från {dateStr}?",
                 _ => shift.StartTime.HasValue && shift.EndTime.HasValue
                     ? $"Vill du radera passet från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})"
                     : $"Vill du radera passet från {dateStr}?"
@@ -202,9 +226,8 @@ namespace MyWorkSalary.ViewModels
             {
                 ShiftType.Vacation => "Semestern har raderats",
                 ShiftType.SickLeave => "Sjukskrivningen har raderats",
-                //ShiftType.Training => "Utbildningen har raderats",
+                ShiftType.VAB => "VAB har raderats",
                 ShiftType.OnCall => "Jourpasset har raderats",
-                //ShiftType.Overtime => "Övertidspasset har raderats",
                 _ => "Passet har raderats"
             };
         }
@@ -225,7 +248,7 @@ namespace MyWorkSalary.ViewModels
         public string MonthYear { get; private set; }
         public decimal TotalHours { get; private set; }
 
-        // visa bara timmar
+        // Visa bara timmar
         public string HoursSummary => $"{TotalHours:F1}h";
 
         public GroupedWorkShift(string monthYear, IEnumerable<WorkShift> shifts) : base(shifts)
