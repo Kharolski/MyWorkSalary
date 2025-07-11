@@ -12,7 +12,8 @@ namespace MyWorkSalary.ViewModels
     {
         #region Private Fields
         private readonly DatabaseService _databaseService;
-        private JobProfile _originalJob;
+        private JobProfile _originalJob;        // Orörd original från databas
+        private JobProfile _workingCopy;       // Arbetskopia som vi ändrar
         private string _jobTitle;
         private string _workplace;
         private string _selectedEmploymentType;
@@ -21,6 +22,9 @@ namespace MyWorkSalary.ViewModels
         private string _hourlyRate;
         private string _expectedHoursPerMonth;
         private string _taxRate;
+        private DateTime _employmentStartDate = DateTime.Today;
+        private string _vacationDaysPerYear = "25";
+        private string _initialVacationBalance = string.Empty;
         #endregion
 
         #region Constructor
@@ -28,12 +32,11 @@ namespace MyWorkSalary.ViewModels
         {
             _databaseService = databaseService;
 
-            // Initiera listor (samma som AddJobViewModel)
             EmploymentTypes = new ObservableCollection<string>
             {
-                "Tillsvidare",          // → Permanent
-                "Vikarie/Timanställd",  // → Temporary  
-                "Behovsanställd"        // → OnCall
+                "Tillsvidare",
+                "Vikarie/Timanställd",
+                "Behovsanställd"
             };
 
             SalaryTypes = new ObservableCollection<string>
@@ -42,11 +45,9 @@ namespace MyWorkSalary.ViewModels
                 "Timlön"
             };
 
-            // Commands
             SaveCommand = new Command(OnSave, CanSave);
             CancelCommand = new Command(OnCancel);
 
-            // Lyssna på ändringar för att uppdatera CanSave
             PropertyChanged += (s, e) => ((Command)SaveCommand).ChangeCanExecute();
         }
         #endregion
@@ -137,6 +138,40 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        public DateTime EmploymentStartDate
+        {
+            get => _employmentStartDate;
+            set
+            {
+                _employmentStartDate = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowInitialVacationBalance));
+            }
+        }
+
+        public string VacationDaysPerYear
+        {
+            get => _vacationDaysPerYear;
+            set
+            {
+                _vacationDaysPerYear = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string InitialVacationBalance
+        {
+            get => _initialVacationBalance;
+            set
+            {
+                _initialVacationBalance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShowInitialVacationBalance =>
+            DateTime.Today.Subtract(EmploymentStartDate).TotalDays > 30;
+
         public bool IsMonthlySalary => SelectedSalaryType == "Månadslön";
         public bool IsHourlySalary => SelectedSalaryType == "Timlön";
         #endregion
@@ -149,29 +184,66 @@ namespace MyWorkSalary.ViewModels
         #region Methods
         public void LoadJob(int jobId)
         {
-            var jobs = _databaseService.JobProfiles.GetJobProfiles();
-            _originalJob = jobs.FirstOrDefault(j => j.Id == jobId);
+            // Hämta original från databas (denna förblir orörd)
+            _originalJob = _databaseService.JobProfiles.GetJobProfile(jobId);
 
             if (_originalJob != null)
             {
-                // Fyll i formuläret med befintlig data
-                JobTitle = _originalJob.JobTitle;
-                Workplace = _originalJob.Workplace;
-                SelectedEmploymentType = GetEmploymentTypeString(_originalJob.EmploymentType);
-                ExpectedHoursPerMonth = _originalJob.ExpectedHoursPerMonth.ToString();
-                TaxRate = (_originalJob.ManualTaxRate * 100).ToString(); // Konvertera tillbaka till %
+                // Skapa arbetskopia - DJUP KOPIA av alla värden
+                _workingCopy = CreateWorkingCopy(_originalJob);
 
-                // Sätt lönetyp och värden
-                if (_originalJob.MonthlySalary > 0)
-                {
-                    SelectedSalaryType = "Månadslön";
-                    MonthlySalary = _originalJob.MonthlySalary.ToString();
-                }
-                else
-                {
-                    SelectedSalaryType = "Timlön";
-                    HourlyRate = _originalJob.HourlyRate.ToString();
-                }
+                // Fyll formuläret från arbetskopian
+                PopulateFormFromWorkingCopy();
+            }
+        }
+
+        private JobProfile CreateWorkingCopy(JobProfile original)
+        {
+            return new JobProfile
+            {
+                Id = original.Id,
+                JobTitle = original.JobTitle,
+                Workplace = original.Workplace,
+                EmploymentType = original.EmploymentType,
+                EmploymentStartDate = original.EmploymentStartDate,
+                MonthlySalary = original.MonthlySalary,
+                HourlyRate = original.HourlyRate,
+                ExpectedHoursPerMonth = original.ExpectedHoursPerMonth,
+                ManualTaxRate = original.ManualTaxRate,
+                VacationDaysPerYear = original.VacationDaysPerYear,
+                InitialVacationBalance = original.InitialVacationBalance,
+                PayPeriodType = original.PayPeriodType,
+                PayPeriodStartDay = original.PayPeriodStartDay,
+                TaxMethod = original.TaxMethod,
+                IsActive = original.IsActive,
+                CreatedDate = original.CreatedDate,
+                ModifiedDate = original.ModifiedDate
+            };
+        }
+
+        private void PopulateFormFromWorkingCopy()
+        {
+            JobTitle = _workingCopy.JobTitle;
+            Workplace = _workingCopy.Workplace;
+            SelectedEmploymentType = GetEmploymentTypeString(_workingCopy.EmploymentType);
+            EmploymentStartDate = _workingCopy.EmploymentStartDate;
+            ExpectedHoursPerMonth = _workingCopy.ExpectedHoursPerMonth.ToString();
+            TaxRate = (_workingCopy.ManualTaxRate * 100).ToString();
+            VacationDaysPerYear = _workingCopy.VacationDaysPerYear.ToString();
+            InitialVacationBalance = _workingCopy.InitialVacationBalance?.ToString() ?? string.Empty;
+
+            // Sätt lönetyp och värden
+            if (_workingCopy.MonthlySalary > 0)
+            {
+                SelectedSalaryType = "Månadslön";
+                MonthlySalary = _workingCopy.MonthlySalary.ToString();
+                HourlyRate = string.Empty; // Rensa timlön i formuläret
+            }
+            else
+            {
+                SelectedSalaryType = "Timlön";
+                HourlyRate = _workingCopy.HourlyRate.ToString();
+                MonthlySalary = string.Empty; // Rensa månadslön i formuläret
             }
         }
 
@@ -215,10 +287,13 @@ namespace MyWorkSalary.ViewModels
                 if (_originalJob == null)
                     return;
 
-                // Uppdatera befintligt jobb
+                // Uppdatera ORIGINAL med formulärdata (inte arbetskopian)
                 _originalJob.JobTitle = JobTitle.Trim();
                 _originalJob.Workplace = Workplace.Trim();
                 _originalJob.EmploymentType = ParseEmploymentType(SelectedEmploymentType);
+                _originalJob.EmploymentStartDate = EmploymentStartDate;
+                _originalJob.VacationDaysPerYear = decimal.TryParse(VacationDaysPerYear, out var vacDays) ? vacDays : 25m;
+                _originalJob.InitialVacationBalance = decimal.TryParse(InitialVacationBalance, out var vacBalance) ? vacBalance : null;
 
                 // Uppdatera lön
                 if (IsMonthlySalary && decimal.TryParse(MonthlySalary, out var monthly))
@@ -240,15 +315,13 @@ namespace MyWorkSalary.ViewModels
 
                 if (decimal.TryParse(TaxRate, out var tax))
                 {
-                    _originalJob.ManualTaxRate = tax / 100; // Konvertera % till decimal
+                    _originalJob.ManualTaxRate = tax / 100;
                 }
 
-                // Spara ändringar
+                // Spara ändringar till databas
                 _databaseService.JobProfiles.SaveJobProfile(_originalJob);
 
                 await Shell.Current.DisplayAlert("Framgång", "Jobbet har uppdaterats!", "OK");
-
-                // Tillbaka till Settings
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
@@ -267,6 +340,7 @@ namespace MyWorkSalary.ViewModels
 
             if (confirm)
             {
+                // Inget behöver återställas - _originalJob är orörd!
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -274,6 +348,7 @@ namespace MyWorkSalary.ViewModels
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

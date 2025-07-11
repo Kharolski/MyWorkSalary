@@ -31,21 +31,24 @@ namespace MyWorkSalary.Models.Core
         {
             get
             {
-                if (HourlyRate.HasValue)
+                var employmentText = EmploymentType switch
                 {
-                    var employmentText = EmploymentType switch
-                    {
-                        EmploymentType.Permanent => "Tillsvidare",
-                        EmploymentType.Temporary => "Visstid",
-                        EmploymentType.OnCall => "Timanställd",
-                        _ => "Anställd"
-                    };
+                    EmploymentType.Permanent => "Tillsvidare",
+                    EmploymentType.Temporary => "Visstid",
+                    EmploymentType.OnCall => "Timanställd",
+                    _ => "Anställd"
+                };
+
+                // Kolla MonthlySalary FÖRST (eftersom det är primärt)
+                if (MonthlySalary > 0)
+                {
+                    return $"{MonthlySalary:N0} kr/mån • {employmentText}";
+                }
+                else if (HourlyRate > 0) // Använd > 0 istället för HasValue
+                {
                     return $"{HourlyRate:F0} kr/tim • {employmentText}";
                 }
-                else if (MonthlySalary.HasValue)
-                {
-                    return $"{MonthlySalary:N0} kr/mån • Månadslön";
-                }
+
                 return "Lön ej angiven";
             }
         }

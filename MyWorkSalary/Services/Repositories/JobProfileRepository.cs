@@ -182,14 +182,29 @@ namespace MyWorkSalary.Services.Repositories
 
         public bool CanDeleteJob(int jobProfileId)
         {
-            // Kan inte radera aktivt jobb
+            // Hämta jobbet
             var job = GetJobProfile(jobProfileId);
-            if (job?.IsActive == true)
+            if (job == null)
+                return false;
+
+            // Räkna totalt antal jobb
+            var totalJobs = _database.Table<JobProfile>().Count();
+
+            // Om det är sista jobbet - tillåt radering även om det är aktivt
+            if (totalJobs == 1)
+            {
+                // Kan bara radera om det inte har pass
+                var hasShifts = _database.Table<WorkShift>().Any(x => x.JobProfileId == jobProfileId);
+                return !hasShifts;
+            }
+
+            // Om det finns flera jobb - kan inte radera aktivt jobb
+            if (job.IsActive)
                 return false;
 
             // Kan inte radera jobb som har registrerade pass
-            var hasShifts = _database.Table<WorkShift>().Any(x => x.JobProfileId == jobProfileId);
-            return !hasShifts;
+            var hasWorkShifts = _database.Table<WorkShift>().Any(x => x.JobProfileId == jobProfileId);
+            return !hasWorkShifts;
         }
 
         #endregion

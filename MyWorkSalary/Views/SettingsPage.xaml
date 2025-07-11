@@ -15,6 +15,31 @@
                     <Label Text="💼 Mina Jobb"
                Style="{StaticResource SectionTitleLabel}" />
 
+                    <!-- Visa när inga jobb finns -->
+                    <StackLayout IsVisible="{Binding HasNoJobs}" 
+                             VerticalOptions="CenterAndExpand"
+                             HorizontalOptions="CenterAndExpand"
+                             Spacing="10"
+                             Margin="10">
+
+                        <Label Text="📋" FontSize="48" HorizontalOptions="Center" />
+
+                        <Label Text="Inga jobb registrerade" 
+                               FontSize="18" 
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                               Dark={StaticResource TextPrimaryDark}}" />
+
+                        <Label Text="Lägg till ditt första jobb för att börja använda appen."
+                               FontSize="14"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                               Dark={StaticResource TextPrimaryDark}}" />
+
+                    </StackLayout>
+
                     <CollectionView ItemsSource="{Binding AllJobs}" SelectionMode="None">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
