@@ -15,18 +15,32 @@
             
         </VerticalStackLayout>
 
-        <!-- 🧮 Semesterkvot -->
-        <VerticalStackLayout Spacing="5">
+        <!-- 🧮 Semesterkvot - BARA för betald -->
+        <VerticalStackLayout Spacing="5" IsVisible="{Binding IsPaidVacation}">
             <Label Text="🧮 Semesterkvot" Style="{StaticResource FieldLabel}" />
             <Entry Text="{Binding SemesterKvot}"
                    Placeholder="1.0"
                    Keyboard="Numeric"
                    Style="{StaticResource ThemedEntry}" />
-                    <Label Text="💡 Skriv 1.0 som standard. Högre kvot för oplanerad semester (t.ex. 1.5)"
+            <Label Text="💡 Skriv 1.0 som standard. Högre kvot för oplanerad semester (t.ex. 1.5)" 
                    FontSize="12"
-                   Style="{StaticResource TipsLabel}" />
+                    TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                    Dark={StaticResource TextSecondaryDark}}" />
         </VerticalStackLayout>
-        
+
+        <!-- ⏰ Planerade arbetstimmar - BARA för obetald -->
+        <VerticalStackLayout Spacing="5" IsVisible="{Binding IsUnpaidVacation}">
+            <Label Text="⏰ Timmar du skulle arbetat" Style="{StaticResource FieldLabel}" />
+            <Entry Text="{Binding PlannedWorkHours}"
+                   Placeholder="8.0"
+                   Keyboard="Numeric"
+                   Style="{StaticResource ThemedEntry}" />
+            <Label Text="💡 Ange hur många timmar du skulle arbetat denna dag"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                   Dark={StaticResource TextSecondaryDark}}" />
+        </VerticalStackLayout>
+
         <!-- 📝 Information -->
         <Frame Style="{StaticResource ActiveJobFrame}">
             <VerticalStackLayout Spacing="8">

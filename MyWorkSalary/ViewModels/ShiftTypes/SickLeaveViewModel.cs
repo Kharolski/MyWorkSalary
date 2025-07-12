@@ -216,8 +216,6 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
-        public bool ShowPayCalculation => CalculatedPay > 0;
-
         // Validation feedback
         public bool HasValidationMessage => !string.IsNullOrEmpty(ValidationMessage);
         public string ValidationMessage
@@ -231,18 +229,6 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
-        // Loading state
-        private bool _isCalculating = false;
-        public bool IsCalculating
-        {
-            get => _isCalculating;
-            set
-            {
-                _isCalculating = value;
-                OnPropertyChanged();
-                ((Command)SaveSickLeaveCommand).ChangeCanExecute();
-            }
-        }
         #endregion
 
         #region Commands

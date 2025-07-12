@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using MyWorkSalary.Helpers.Converters;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
@@ -31,6 +32,10 @@ namespace MyWorkSalary.ViewModels
             // Commands
             AddShiftCommand = new Command(OnAddShift);
             DeleteShiftCommand = new Command<WorkShift>(OnDeleteShift);
+
+            // Prenumerera på events
+            ShiftToHoursDisplayConverter.SickLeaveDataUpdated += OnSickLeaveDataUpdated;
+            ShiftToTimeStringConverter.SickLeaveDescriptionUpdated += OnSickLeaveDescriptionUpdated;
 
             // Ladda data
             LoadData();
@@ -151,7 +156,7 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
-        // NY METOD: Radera specialiserad data
+        // Radera specialiserad data
         private async Task DeleteSpecializedData(WorkShift shift)
         {
             switch (shift.ShiftType)
@@ -232,6 +237,23 @@ namespace MyWorkSalary.ViewModels
             };
         }
 
+        private void OnSickLeaveDataUpdated(int workShiftId)
+        {
+            // Trigga UI-refresh
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                LoadData(); 
+            });
+        }
+
+        private void OnSickLeaveDescriptionUpdated(int workShiftId)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                LoadData(); 
+            });
+        }
+
         #endregion
 
         #region INotifyPropertyChanged
@@ -249,16 +271,18 @@ namespace MyWorkSalary.ViewModels
         public decimal TotalHours { get; private set; }
 
         // Visa bara timmar
-        public string HoursSummary => $"{TotalHours:F1}h";
+        public string HoursSummary => $"{TotalHours:F1}t";
 
         public GroupedWorkShift(string monthYear, IEnumerable<WorkShift> shifts) : base(shifts)
         {
             MonthYear = monthYear;
 
-            // Fokus på arbetstimmar
-            TotalHours = this.Where(s => s.ShiftType != ShiftType.Vacation &&
-                                        s.ShiftType != ShiftType.SickLeave)
+            // Räkna arbetstimmar: Regular, Vacation, OnCall
+            TotalHours = this.Where(s => s.ShiftType == ShiftType.Regular ||
+                                        s.ShiftType == ShiftType.Vacation ||
+                                        s.ShiftType == ShiftType.OnCall)
                             .Sum(s => s.TotalHours);
         }
+
     }
 }

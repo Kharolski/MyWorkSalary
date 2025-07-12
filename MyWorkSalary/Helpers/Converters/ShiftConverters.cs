@@ -1,8 +1,9 @@
-﻿using System.Globalization;
-using MyWorkSalary.Models;
+﻿using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
+using System.Collections.Concurrent;
+using System.Globalization;
 
 namespace MyWorkSalary.Helpers.Converters
 {
@@ -93,6 +94,19 @@ namespace MyWorkSalary.Helpers.Converters
     // 3. Konverterar WorkShift till tid-sträng eller period-info
     public class ShiftToTimeStringConverter : IValueConverter
     {
+        private static IWorkShiftService _workShiftService;
+        private static readonly ConcurrentDictionary<int, string> _descriptionCache = new();
+
+        // Static event
+        public static event Action<int> SickLeaveDescriptionUpdated;
+
+        // Metod för DI
+        public static void Initialize(IWorkShiftService workShiftService)
+        {
+            _workShiftService = workShiftService;
+            System.Diagnostics.Debug.WriteLine("✅ ShiftToTimeStringConverter initialiserad");
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is WorkShift shift)
@@ -103,18 +117,30 @@ namespace MyWorkSalary.Helpers.Converters
                     return "Vård av barn - Heldag";
                 }
 
-                // SPECIALHANTERING FÖR SEMESTER/SJUK
+                // SPECIALHANTERING FÖR SEMESTER
                 if (shift.ShiftType == ShiftType.Vacation)
                 {
                     var days = shift.NumberOfDays ?? 1;
                     return $"Semester - {days} dag{(days > 1 ? "ar" : "")}";
                 }
 
+                // SPECIALHANTERING FÖR SJUK - MED ASYNC
                 if (shift.ShiftType == ShiftType.SickLeave)
                 {
-                    var days = shift.NumberOfDays ?? 1;
-                    string karensInfo = shift.IsKarensDay ? " (inkl. karensdag)" : "";
-                    return $"Sjukskrivning - {days} dag{(days > 1 ? "ar" : "")}{karensInfo}";
+                    return GetSickLeaveDescription(shift);  // Async-hantering
+                }
+
+                // SPECIALHANTERING FÖR JOUR
+                if (shift.ShiftType == ShiftType.OnCall)
+                {
+                    if (shift.StartTime.HasValue && shift.EndTime.HasValue)
+                    {
+                        string activeInfo = shift.TotalHours > 0
+                            ? $"{shift.TotalHours:F1}t aktiv"
+                            : "jour";
+                        return $"{shift.StartTime.Value:HH:mm}→{shift.EndTime.Value:HH:mm} ({activeInfo})";
+                    }
+                    return "Jour - Heldag";
                 }
 
                 // VANLIGA PASS MED TIDER
@@ -133,6 +159,126 @@ namespace MyWorkSalary.Helpers.Converters
                 return "Ingen tid registrerad";
             }
             return "";
+        }
+
+        // Metod för async sjukbeskrivning
+        private string GetSickLeaveDescription(WorkShift shift)
+        {
+            // 1. Kolla cache först
+            if (_descriptionCache.TryGetValue(shift.Id, out var cachedResult))
+            {
+                return cachedResult;
+            }
+
+            // 2. Om ingen service, använd fallback
+            if (_workShiftService == null)
+            {
+                return "Sjukskrivning";
+            }
+
+            // 3. Starta async-laddning i bakgrunden
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    var result = await _workShiftService.GetSickLeaveDescriptionAsync(shift.Id);
+
+                    // Spara i cache
+                    _descriptionCache[shift.Id] = result;
+
+                    // Trigga UI-uppdatering
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        SickLeaveDescriptionUpdated?.Invoke(shift.Id);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ Fel vid sjukbeskrivning-laddning för WorkShift {shift.Id}: {ex.Message}");
+                }
+            });
+
+            // 4. Returnera loading-state medan vi väntar
+            return "Sjukskrivning...";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ShiftToHoursDisplayConverter : IValueConverter
+    {
+        private static IWorkShiftService _workShiftService;
+        private static readonly ConcurrentDictionary<int, string> _cache = new();
+
+        // Static event för UI-uppdatering
+        public static event Action<int> SickLeaveDataUpdated;
+
+        // Metod för DI
+        public static void Initialize(IWorkShiftService workShiftService)
+        {
+            _workShiftService = workShiftService;
+        }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is WorkShift shift)
+            {
+                return shift.ShiftType switch
+                {
+                    ShiftType.OnCall => shift.TotalHours > 0
+                        ? $"{shift.TotalHours:F1}t"
+                        : "Jour",
+                    ShiftType.SickLeave => GetSickLeaveHours(shift),  // Async-hantering
+                    ShiftType.VAB => "-8t",
+                    ShiftType.Vacation => "8t",
+                    _ => $"{shift.TotalHours:F1}t"
+                };
+            }
+            return "0t";
+        }
+
+        // Metod för async sjukdata
+        private string GetSickLeaveHours(WorkShift shift)
+        {
+            // 1. Kolla cache först
+            if (_cache.TryGetValue(shift.Id, out var cachedResult))
+            {
+                return cachedResult;
+            }
+
+            // 2. Om ingen service, använd fallback
+            if (_workShiftService == null)
+            {
+                return "0t";
+            }
+
+            // 3. Starta async-laddning i bakgrunden
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    var result = await _workShiftService.GetSickLeaveHoursDisplayAsync(shift.Id);
+
+                    // Spara i cache
+                    _cache[shift.Id] = result;
+
+                    // Trigga event på main thread 
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        SickLeaveDataUpdated?.Invoke(shift.Id);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ Fel vid sjukdata-laddning för WorkShift {shift.Id}: {ex.Message}");
+                }
+            });
+
+            // 4. Returnera loading-state medan vi väntar
+            return "...";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -155,6 +301,16 @@ namespace MyWorkSalary.Helpers.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class SickLeaveDataUpdatedMessage
+    {
+        public int WorkShiftId { get; set; }
+
+        public SickLeaveDataUpdatedMessage(int workShiftId)
+        {
+            WorkShiftId = workShiftId;
         }
     }
 }

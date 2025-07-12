@@ -24,6 +24,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         // Validation
         private string _validationMessage = "";
         private string _semesterKvot = "1.0";
+        private string _plannedWorkHours = "8.0";
         #endregion
 
         #region Constructor
@@ -105,6 +106,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
         // UI Properties 
         public bool ShowUnpaidVacationFields => _selectedVacationType == VacationType.UnpaidVacation;
+        public bool ShowPaidVacationFields => _selectedVacationType == VacationType.PaidVacation;  
+        public bool IsPaidVacation => _selectedVacationType == VacationType.PaidVacation;          
+        public bool IsUnpaidVacation => _selectedVacationType == VacationType.UnpaidVacation;      
 
         public string VacationExplanation
         {
@@ -132,6 +136,17 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             set
             {
                 _semesterKvot = value;
+                OnPropertyChanged();
+                TriggerValidationChanged();
+            }
+        }
+
+        public string PlannedWorkHours
+        {
+            get => _plannedWorkHours;
+            set
+            {
+                _plannedWorkHours = value;
                 OnPropertyChanged();
                 TriggerValidationChanged();
             }
@@ -182,19 +197,43 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             try
             {
-                // Konvertera kvot till decimal
-                if (!decimal.TryParse(SemesterKvot, out decimal kvot))
+                // Normalisera kvot-strängen
+                var normalizedKvot = SemesterKvot.Replace(',', '.');
+                if (!decimal.TryParse(normalizedKvot,
+                    System.Globalization.NumberStyles.Number,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out decimal kvot) || kvot <= 0)
+                {
+                    LogDebug($"❌ Kunde inte konvertera kvot: '{SemesterKvot}' → '{normalizedKvot}'");
                     return false;
+                }
 
-                // Skicka kvot till handler
+                // Hantera planerade arbetstimmar för obetald
+                decimal plannedHours = 0m;
+                if (_selectedVacationType == VacationType.UnpaidVacation)
+                {
+                    var normalizedHours = PlannedWorkHours.Replace(',', '.');
+                    if (!decimal.TryParse(normalizedHours,
+                        System.Globalization.NumberStyles.Number,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        out plannedHours) || plannedHours < 0)
+                    {
+                        LogDebug($"❌ Kunde inte konvertera planerade timmar: '{PlannedWorkHours}' → '{normalizedHours}'");
+                        return false;
+                    }
+                }
+
+                // Skicka både kvot och planerade timmar till handler
                 return await _vacationHandler.SaveSimpleVacation(
                     SelectedDate,
                     ActiveJob,
-                    _selectedVacationType, kvot);
+                    _selectedVacationType,
+                    kvot,
+                    plannedHours); 
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Fel i SaveVacation: {ex.Message}");
+                LogDebug($"❌ Fel i SaveVacation: {ex.Message}");
                 return false;
             }
         }
@@ -205,6 +244,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         private void RefreshUIProperties()
         {
             OnPropertyChanged(nameof(ShowUnpaidVacationFields));
+            OnPropertyChanged(nameof(ShowPaidVacationFields));    
+            OnPropertyChanged(nameof(IsPaidVacation));            
+            OnPropertyChanged(nameof(IsUnpaidVacation));          
             OnPropertyChanged(nameof(VacationExplanation));
         }
 
@@ -230,9 +272,19 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 ActiveJob.EmploymentType == EmploymentType.Temporary)
                 return "Timanställd kan inte ha betald semester - välj 'Obetald ledighet'";
 
-            // Validera semesterkvot
-            if (!decimal.TryParse(SemesterKvot, out decimal kvot) || kvot <= 0)
-                return "Semesterkvot måste vara ett positivt tal (t.ex. 1.0)";
+            // Validera semesterkvot (bara för betald)
+            if (_selectedVacationType == VacationType.PaidVacation)
+            {
+                if (!decimal.TryParse(SemesterKvot, out decimal kvot) || kvot <= 0)
+                    return "Semesterkvot måste vara ett positivt tal (t.ex. 1.0)";
+            }
+
+            // Validera planerade arbetstimmar (bara för obetald)
+            if (_selectedVacationType == VacationType.UnpaidVacation)
+            {
+                if (!decimal.TryParse(PlannedWorkHours, out decimal hours) || hours < 0)
+                    return "Planerade arbetstimmar måste vara ett positivt tal (t.ex. 8.0)";
+            }
 
             return "";
         }
@@ -242,6 +294,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             try
             {
                 var success = await SaveVacation();
+
                 if (success)
                 {
                     await Shell.Current.DisplayAlert("✅ Sparat!",
@@ -256,8 +309,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
             catch (Exception ex)
             {
+                LogDebug($"❌ Exception i OnSaveVacation: {ex.Message}");
                 await Shell.Current.DisplayAlert("❌ Fel",
-                    $"Kunde inte spara: {ex.Message}", "OK");
+                    $"Oväntat fel inträffade", "OK");
             }
         }
 
@@ -288,6 +342,26 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+        #region Debug Helper
+        /// <summary>
+        /// Debug-logging som fungerar på både emulator och riktig enhet
+        /// Aktivera/inaktivera genom att ändra DEBUG_VACATION konstanten
+        /// </summary>
+        private const bool DEBUG_VACATION = false; // Sätt till true för debugging
+
+        private void LogDebug(string message)
+        {
+            if (!DEBUG_VACATION)
+                return;
+
+#if ANDROID
+            Android.Util.Log.Debug("VacationViewModel", message);
+#else
+    System.Diagnostics.Debug.WriteLine(message);
+#endif
         }
         #endregion
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MyWorkSalary.Helpers.Converters;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Builders;
 using MyWorkSalary.Services.Calculations;
@@ -97,7 +98,28 @@ namespace MyWorkSalary
             builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var app = builder.Build();
+
+            // Initialisera converters
+            InitializeConverters(app.Services);
+
+            return app;
+        }
+
+        private static void InitializeConverters(IServiceProvider services)
+        {
+            try
+            {
+                var workShiftService = services.GetRequiredService<IWorkShiftService>();
+
+                // Initialisera befintliga converters med DI
+                ShiftToHoursDisplayConverter.Initialize(workShiftService);
+                ShiftToTimeStringConverter.Initialize(workShiftService); 
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Fel vid converter-initialisering: {ex.Message}");
+            }
         }
     }
 }

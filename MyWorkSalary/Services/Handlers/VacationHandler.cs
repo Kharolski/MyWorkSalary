@@ -23,21 +23,21 @@ namespace MyWorkSalary.Services.Handlers
         #endregion
 
         #region Public Methods
-
         /// <summary>
         /// Spara semester utan beräkningar
         /// </summary>
         public async Task<bool> SaveSimpleVacation(
             DateTime vacationDate,
             JobProfile jobProfile,
-            VacationType vacationType, decimal semesterKvot = 1.0m)
+            VacationType vacationType, decimal semesterKvot = 1.0m, 
+            decimal plannedWorkHours = 0m)
         {
             try
             {
                 // Validering
                 if (jobProfile == null)
                 {
-                    System.Diagnostics.Debug.WriteLine("❌ Inget jobb angivet");
+                    LogDebug("❌ Inget jobb angivet");
                     return false;
                 }
 
@@ -45,22 +45,19 @@ namespace MyWorkSalary.Services.Handlers
                 if (vacationType == VacationType.PaidVacation &&
                     jobProfile.EmploymentType == EmploymentType.Temporary)
                 {
-                    System.Diagnostics.Debug.WriteLine("❌ Timanställd kan inte ha betald semester");
+                    LogDebug("❌ Timanställd kan inte ha betald semester");
                     return false;
                 }
 
-                // Kontrollera återstående semesterdagar med kvot
-                if (vacationType == VacationType.PaidVacation)
+                // Bestäm TotalHours baserat på semestertyp
+                decimal totalHours = vacationType switch
                 {
-                    var remainingDays = await GetRemainingVacationDays(jobProfile.Id);
-                    if (remainingDays < semesterKvot)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"❌ Inte tillräckligt med semesterdagar kvar ({remainingDays:F1})");
-                        return false;
-                    }
-                }
+                    VacationType.PaidVacation => 8.0m,      // Betald = 8h arbetstid
+                    VacationType.UnpaidVacation => 0m,      // Obetald = 0h arbetstid
+                    _ => 8.0m
+                };
 
-                // Skapa WorkShift utan beräkningar
+                // Skapa WorkShift
                 var workShift = new WorkShift
                 {
                     JobProfileId = jobProfile.Id,
@@ -68,36 +65,41 @@ namespace MyWorkSalary.Services.Handlers
                     ShiftType = ShiftType.Vacation,
                     StartTime = null,
                     EndTime = null,
-                    TotalHours = 8.0m,  // Standard arbetsdag
-                    TotalPay = 0,       // Beräknas i rapporten!
-                    Notes = GetVacationNote(vacationType, semesterKvot)
+                    TotalHours = totalHours,
+                    TotalPay = 0,
+                    Notes = GetVacationNote(vacationType, semesterKvot, plannedWorkHours)
                 };
 
                 // Spara WorkShift
                 var savedWorkShift = await _workShiftRepository.SaveWorkShiftAsync(workShift);
 
-                // Skapa VacationLeave utan beräkningar
+                if (savedWorkShift == null)
+                {
+                    LogDebug("❌ SaveWorkShiftAsync returnerade null!");
+                    return false;
+                }
+
+                // Skapa VacationLeave
                 var vacationLeave = new VacationLeave
                 {
                     WorkShiftId = savedWorkShift.Id,
                     VacationType = vacationType,
-                    VacationDaysUsed = 1.0m,  // Alltid 1 dag
-                    VacationHours = 8.0m,     
+                    VacationDaysUsed = 1.0m,
+                    VacationHours = totalHours,
                     TotalVacationDaysPerYear = 25m,
                     SemesterKvot = semesterKvot,
-                    VacationDaysConsumed = semesterKvot
-
+                    VacationDaysConsumed = semesterKvot,
+                    PlannedWorkHours = plannedWorkHours
                 };
 
                 // Spara VacationLeave
                 await _vacationLeaveRepository.InsertAsync(vacationLeave);
 
-                System.Diagnostics.Debug.WriteLine($"✅ Semester sparad: {vacationType} för {vacationDate:yyyy-MM-dd}");
                 return true;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Fel i SaveSimpleVacation: {ex.Message}");
+                LogDebug($"❌ Fel i SaveSimpleVacation: {ex.Message}");
                 return false;
             }
         }
@@ -117,7 +119,7 @@ namespace MyWorkSalary.Services.Handlers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Fel i GetRemainingVacationDays: {ex.Message}");
+                LogDebug($"❌ Fel i GetRemainingVacationDays: {ex.Message}");
                 return 25m; // Returnera max om fel
             }
         }
@@ -162,18 +164,40 @@ namespace MyWorkSalary.Services.Handlers
         /// <summary>
         /// Skapa anteckning baserat på semestertyp
         /// </summary>
-        private string GetVacationNote(VacationType vacationType, decimal kvot = 1.0m)
+        private string GetVacationNote(VacationType vacationType, decimal kvot = 1.0m, decimal plannedWorkHours = 0m)
         {
             var kvotText = kvot != 1.0m ? $" (kvot: {kvot})" : "";
+            var plannedText = plannedWorkHours > 0 ? $" (skulle arbetat: {plannedWorkHours}t)" : "";
 
             return vacationType switch
             {
                 VacationType.PaidVacation => $"Betald semester - 1 dag{kvotText}",
-                VacationType.UnpaidVacation => $"Obetald ledighet - 1 dag{kvotText}",
-                _ => $"Semester - 1 dag{kvotText}"
+                VacationType.UnpaidVacation => $"Obetald ledighet - 1 dag{plannedText}",
+                _ => $"Sem - 1 dag{kvotText}"
             };
         }
 
+        #endregion
+
+        #region Debug Helper
+
+        /// <summary>
+        /// Debug-logging som fungerar på både emulator och riktig enhet
+        /// Aktivera/inaktivera genom att ändra DEBUG_VACATION_HANDLER konstanten
+        /// </summary>
+        private const bool DEBUG_VACATION_HANDLER = false; // Sätt till true för debugging
+
+        private void LogDebug(string message)
+        {
+            if (!DEBUG_VACATION_HANDLER)
+                return;
+
+#if ANDROID
+            Android.Util.Log.Debug("VacationHandler", message);
+#else
+    System.Diagnostics.Debug.WriteLine(message);
+#endif
+        }
         #endregion
     }
 }

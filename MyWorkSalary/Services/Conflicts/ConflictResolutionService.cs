@@ -288,8 +288,8 @@ namespace MyWorkSalary.Services.Conflicts
                     Notes = newShift.Notes,
                     CreatedDate = DateTime.Now,
                     IsConfirmed = false,
-                    IsKarensDay = newShift.ShiftType == ShiftType.SickLeave,
-                    SickPayPercentage = newShift.ShiftType == ShiftType.SickLeave ? 0.8m : null
+                    //IsKarensDay = newShift.ShiftType == ShiftType.SickLeave,
+                    //SickPayPercentage = newShift.ShiftType == ShiftType.SickLeave ? 0.8m : null
                 };
 
                 _databaseService.WorkShifts.SaveWorkShift(mergedShift);

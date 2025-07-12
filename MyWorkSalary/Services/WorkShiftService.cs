@@ -94,5 +94,57 @@ namespace MyWorkSalary.Services
                 return (false, $"Fel vid sparande: {ex.Message}");
             }
         }
+
+        // För converter-logik:
+        public async Task<string> GetSickLeaveHoursDisplayAsync(int workShiftId)
+        {
+            try
+            {
+                // Hämta SickLeave från databas via WorkShiftId
+                var sickLeave = _databaseService.SickLeaves.GetSickLeaveByWorkShiftId(workShiftId);
+                if (sickLeave == null)
+                {
+                    return "0t";
+                }
+
+                return sickLeave.SickType switch
+                {
+                    SickLeaveType.ShouldHaveWorked => "-8t",  // Hel dag sjuk
+                    SickLeaveType.WorkedPartially => $"-{(sickLeave.ScheduledHours - sickLeave.WorkedHours):F1}t",  // Delvis sjuk
+                    SickLeaveType.WouldBeFree => "0t",  // Skulle varit ledig ändå
+                    _ => "0t"
+                };
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Fel i GetSickLeaveHoursDisplayAsync: {ex.Message}");
+                return "0t";
+            }
+        }
+
+        public async Task<string> GetSickLeaveDescriptionAsync(int workShiftId)
+        {
+            try
+            {
+                var sickLeave = _databaseService.SickLeaves.GetSickLeaveByWorkShiftId(workShiftId);
+                if (sickLeave == null)
+                {
+                    return "Sjukskrivning";
+                }
+
+                return sickLeave.SickType switch
+                {
+                    SickLeaveType.WorkedPartially => $"Sjukskrivning - delvis ({sickLeave.WorkedHours:F1}t)",
+                    SickLeaveType.ShouldHaveWorked => "Sjukskrivning - hel dag",
+                    SickLeaveType.WouldBeFree => "Sjukskrivning - ledigt",
+                    _ => "Sjukskrivning"
+                };
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Fel i GetSickLeaveDescriptionAsync: {ex.Message}");
+                return "Sjukskrivning";
+            }
+        }
     }
 }

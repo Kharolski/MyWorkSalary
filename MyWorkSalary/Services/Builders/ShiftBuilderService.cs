@@ -34,8 +34,8 @@ namespace MyWorkSalary.Services.Builders
                 CreatedDate = DateTime.Now,
                 IsConfirmed = false,
                 // Sjukskrivning specifikt
-                IsKarensDay = shiftType == ShiftType.SickLeave && numberOfDays >= 1,
-                SickPayPercentage = shiftType == ShiftType.SickLeave ? 0.8m : null
+                //IsKarensDay = shiftType == ShiftType.SickLeave && numberOfDays >= 1,
+                //SickPayPercentage = shiftType == ShiftType.SickLeave ? 0.8m : null
             };
         }
         #endregion

@@ -17,6 +17,13 @@ namespace MyWorkSalary.Models.Specialized
         public decimal? MonthlySalaryUsed { get; set; }
         public decimal? HourlyRateUsed { get; set; }
         public decimal? VacationAllowanceRate { get; set; }
+
+        // För obetald semester:
+        public decimal PlannedWorkHours { get; set; } = 0;  // Timmar användaren skulle jobbat
+
+        // Helper properties
+        public bool IsPaidVacation => VacationType == VacationType.PaidVacation;
+        public bool IsUnpaidVacation => VacationType == VacationType.UnpaidVacation;
         #endregion
 
         #region Vacation Days Properties

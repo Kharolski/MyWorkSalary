@@ -287,7 +287,7 @@ namespace MyWorkSalary.Services.Handlers
                 RegularPay = regularPay,
                 TotalHours = scheduledHours,
                 TotalPay = totalPay,
-                Notes = $"Delvis sjuk - Jobbat {workedHours:F1}h, sjuk {sickHours:F1}h"
+                Notes = $"Delvis sjuk - Jobbat {workedHours:F1}t, sjuk {sickHours:F1}t"
             };
 
             // Spara WorkShift först för att få ID
@@ -300,6 +300,8 @@ namespace MyWorkSalary.Services.Handlers
                 SickType = SickLeaveType.WorkedPartially,
                 SickPeriodId = sickPeriodId,
                 IsRecurrentSickPeriod = !isFirstSickDay,
+                WorkedHours = workedHours,        // 3.5
+                ScheduledHours = scheduledHours,  // 8.0
 
                 // Frysta värden
                 WeeklyHoursUsed = frozenValues.WeeklyHoursUsed,
@@ -360,6 +362,9 @@ namespace MyWorkSalary.Services.Handlers
                 SickType = SickLeaveType.ShouldHaveWorked,
                 SickPeriodId = sickPeriodId,
                 IsRecurrentSickPeriod = !isFirstSickDay,
+                WorkedHours = 0,                  // 0 för hel sjukdag
+                ScheduledHours = scheduledHours,  // 8.0
+
 
                 // Frysta värden
                 WeeklyHoursUsed = frozenValues.WeeklyHoursUsed,

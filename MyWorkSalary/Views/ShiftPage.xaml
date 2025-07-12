@@ -112,7 +112,7 @@
 
                                                         <!-- TIMMAR -->
                                                         <Label Grid.Row="0" Grid.Column="2"
-                                                               Text="{Binding TotalHours, StringFormat='{0:F1}t'}"
+                                                               Text="{Binding ., Converter={StaticResource ShiftToHoursDisplayConverter}}"
                                                                FontSize="16"
                                                                FontAttributes="Bold"
                                                                TextColor="{StaticResource ButtonPrimary}" />

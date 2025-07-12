@@ -63,9 +63,6 @@ namespace MyWorkSalary.Models.Core
         #region TEMPORÄRA FÄLT (kommer flyttas till specialiserade klasser)
 
         public int? NumberOfDays { get; set; }              // <-- SKA FLYTTAS TILL Vacation/VAB
-        public decimal? SickPayPercentage { get; set; }     // <-- SKA FLYTTAS TILL SickLeave
-        public bool IsKarensDay { get; set; }               // <-- SKA FLYTTAS TILL SickLeave
-
 
         #endregion
     }

@@ -24,13 +24,13 @@ namespace MyWorkSalary.Services.Handlers
         #region Create OnCall Shift
 
         public WorkShift CreateOnCallShift(
-            int jobProfileId,
-            DateTime shiftDate,
-            TimeSpan standbyStartTime,
-            TimeSpan standbyEndTime,
-            decimal activeHours = 0,
-            decimal onCallRatePerHour = 40,
-            string notes = null)
+                int jobProfileId,
+                DateTime shiftDate,
+                TimeSpan standbyStartTime,
+                TimeSpan standbyEndTime,
+                decimal activeHours = 0,
+                decimal onCallRatePerHour = 40,
+                string notes = null)
         {
             var jobProfile = _jobProfileRepository.GetJobProfile(jobProfileId);
             if (jobProfile == null)
@@ -50,7 +50,7 @@ namespace MyWorkSalary.Services.Handlers
                 ShiftType = ShiftType.OnCall,
                 StartTime = shiftDate.Date.Add(standbyStartTime),
                 EndTime = shiftDate.Date.Add(standbyEndTime),
-                TotalHours = standbyHours + activeHours,
+                TotalHours = activeHours,  
                 TotalPay = preliminaryPay,
                 Notes = notes,
                 CreatedDate = DateTime.Now
@@ -59,14 +59,14 @@ namespace MyWorkSalary.Services.Handlers
             // Spara WorkShift
             var savedWorkShift = _workShiftRepository.SaveWorkShift(workShift);
 
-            // Skapa OnCallShift
+            // Skapa OnCallShift (behåll all jour-info här)
             var onCallShift = new OnCallShift
             {
                 WorkShiftId = savedWorkShift.Id,
                 StandbyStartTime = standbyStartTime,
                 StandbyEndTime = standbyEndTime,
-                StandbyHours = standbyHours,
-                ActiveHours = activeHours,
+                StandbyHours = standbyHours,        // 14h (för lön-beräkning)
+                ActiveHours = activeHours,          // 2h (för lön-beräkning)
                 OnCallRatePerHour = onCallRatePerHour,
                 Notes = notes
             };
