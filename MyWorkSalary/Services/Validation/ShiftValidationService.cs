@@ -39,21 +39,69 @@ namespace MyWorkSalary.Services.Validation
             return (true, "");
         }
 
-        // Validera semesterperiod
-        public (bool IsValid, string Message) ValidateVacation(WorkShift vacationShift)
+        /// <summary>
+        /// Kontrollera om semester kan läggas på valt datum
+        /// </summary>
+        public (bool CanAdd, string ErrorMessage, List<WorkShift> ConflictingShifts) ValidateVacationDate(
+            int jobProfileId,
+            DateTime vacationDate,
+            VacationType vacationType)
         {
-            if (vacationShift.ShiftType != ShiftType.Vacation)
-                return (true, "");
+            var conflictingShifts = new List<WorkShift>();
+            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId)
+                .Where(x => x.ShiftDate.Date == vacationDate.Date)
+                .ToList();
 
-            var days = vacationShift.NumberOfDays ?? 1;
+            if (!existingShifts.Any())
+                return (true, "", conflictingShifts);
 
-            if (days <= 0)
-                return (false, "Antal dagar måste vara större än 0");
+            foreach (var existing in existingShifts)
+            {
+                switch (existing.ShiftType)
+                {
+                    case ShiftType.Vacation:
+                        conflictingShifts.Add(existing);
+                        return (false,
+                            $"Det finns redan semester registrerat denna dag.\n\n" +
+                            $"📅 {vacationDate:dddd d MMMM}\n" +
+                            $"🏖️ Befintlig semester\n\n" +
+                            $"Ta bort den befintliga semestern först.",
+                            conflictingShifts);
 
-            if (days > 60)
-                return (false, "Semesterperiod kan inte vara längre än 60 dagar");
+                    case ShiftType.SickLeave:
+                        conflictingShifts.Add(existing);
+                        return (false,
+                            $"Du är sjukskriven denna dag.\n\n" +
+                            $"📅 {vacationDate:dddd d MMMM}\n" +
+                            $"🤒 Sjukskrivning ({existing.NumberOfDays ?? 1} dagar)\n\n" +
+                            $"Ta bort sjukskrivningen först.",
+                            conflictingShifts);
 
-            return (true, "");
+                    case ShiftType.Regular:
+                    case ShiftType.OnCall:
+                        conflictingShifts.Add(existing);
+                        var shiftInfo = existing.StartTime.HasValue
+                            ? $"{existing.StartTime:HH:mm} - {existing.EndTime:HH:mm}"
+                            : "Arbetspass";
+                        return (false,
+                            $"Det finns redan ett arbetspass registrerat denna dag.\n\n" +
+                            $"📅 {vacationDate:dddd d MMMM}\n" +
+                            $"💼 {shiftInfo}\n\n" +
+                            $"Ta bort arbetspasset först.",
+                            conflictingShifts);
+
+                    case ShiftType.VAB:
+                        conflictingShifts.Add(existing);
+                        return (false,
+                            $"Du har VAB registrerat denna dag.\n\n" +
+                            $"📅 {vacationDate:dddd d MMMM}\n" +
+                            $"👶 Vård av barn\n\n" +
+                            $"Ta bort VAB:en först.",
+                            conflictingShifts);
+                }
+            }
+
+            return (true, "", conflictingShifts);
         }
 
         // Hantera Semester/Sjuk korrekt

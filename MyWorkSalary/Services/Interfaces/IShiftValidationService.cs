@@ -7,7 +7,11 @@ namespace MyWorkSalary.Services.Interfaces
     public interface IShiftValidationService
     {
         (bool IsValid, string Message) ValidateSickLeave(WorkShift sickShift);
-        (bool IsValid, string Message) ValidateVacation(WorkShift vacationShift);
+        public (bool CanAdd, string ErrorMessage, List<WorkShift> ConflictingShifts) ValidateVacationDate(
+            int jobProfileId,
+            DateTime vacationDate,
+            VacationType vacationType);
+        //(bool IsValid, string Message) ValidateVacation(WorkShift vacationShift);
         bool HasOverlappingShift(WorkShift newShift);
         WorkShift? GetOverlappingShift(WorkShift newShift);
         bool HasConflictingLeave(WorkShift newShift);

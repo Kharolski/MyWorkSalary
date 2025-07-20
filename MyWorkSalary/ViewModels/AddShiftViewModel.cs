@@ -532,15 +532,18 @@ namespace MyWorkSalary.ViewModels
 
             try
             {
-                var success = await VacationVM.SaveVacation();
+                // Hantera den nya return-typen (bool, string)
+                var (success, message) = await VacationVM.SaveVacation();
+
                 if (success)
                 {
-                    await Shell.Current.DisplayAlert("✅ Sparat!", "Semester registrerad", "OK");
+                    await Shell.Current.DisplayAlert("✅ Sparat!", message, "OK");
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara semester: {VacationVM.ValidationMessage}", "OK");
+                    await Shell.Current.DisplayAlert("❌ Fel", message, "OK");
                 }
+
                 return success;
             }
             catch (Exception ex)

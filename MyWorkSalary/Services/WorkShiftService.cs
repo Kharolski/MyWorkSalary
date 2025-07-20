@@ -56,16 +56,14 @@ namespace MyWorkSalary.Services
                 // Validera semester
                 if (workShift.ShiftType == ShiftType.Vacation)
                 {
-                    var vacationValidation = _validationService.ValidateVacation(workShift);
-                    if (!vacationValidation.IsValid)
-                        return (false, vacationValidation.Message);
-                }
+                    // Använd ValidateVacationDate metod
+                    var (canAdd, errorMessage, conflictingShifts) = _validationService.ValidateVacationDate(
+                           workShift.JobProfileId,
+                           workShift.ShiftDate,
+                           VacationType.PaidVacation); // Standard för nu
 
-                // Kontrollera ledighetskonflikt
-                var conflictCheck = _conflictResolutionService.GetLeaveConflictDetails(workShift);
-                if (conflictCheck.HasConflict)
-                {
-                    return (false, conflictCheck.ConflictMessage);
+                    if (!canAdd)
+                        return (false, errorMessage);
                 }
 
                 // Kontrollera tidsöverlapp för vanliga pass

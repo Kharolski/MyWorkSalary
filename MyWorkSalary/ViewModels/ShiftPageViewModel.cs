@@ -281,7 +281,33 @@ namespace MyWorkSalary.ViewModels
             TotalHours = this.Where(s => s.ShiftType == ShiftType.Regular ||
                                         s.ShiftType == ShiftType.Vacation ||
                                         s.ShiftType == ShiftType.OnCall)
-                            .Sum(s => s.TotalHours);
+                            .Sum(s => GetEffectiveHours(s));
+        }
+
+        private decimal GetEffectiveHours(WorkShift shift)
+        {
+            // Obetald semester: Hämta planerade timmar och gör negativa
+            if (shift.ShiftType == ShiftType.Vacation && shift.TotalHours <= 0)
+            {
+                // Parse PlannedHours från Notes
+                if (shift.Notes != null && shift.Notes.Contains("PlannedHours:"))
+                {
+                    var parts = shift.Notes.Split('|');
+                    var plannedPart = parts.FirstOrDefault(p => p.StartsWith("PlannedHours:"));
+                    if (plannedPart != null)
+                    {
+                        var hoursText = plannedPart.Replace("PlannedHours:", "");
+                        if (decimal.TryParse(hoursText, out decimal plannedHours))
+                        {
+                            return -plannedHours;  // Returnera negativa timmar
+                        }
+                    }
+                }
+                return 0; // Fallback för obetald utan planerade timmar
+            }
+
+            // Alla andra pass: använd TotalHours som vanligt
+            return shift.TotalHours;
         }
 
     }

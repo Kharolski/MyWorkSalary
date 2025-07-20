@@ -120,8 +120,10 @@ namespace MyWorkSalary.Helpers.Converters
                 // SPECIALHANTERING FÖR SEMESTER
                 if (shift.ShiftType == ShiftType.Vacation)
                 {
-                    var days = shift.NumberOfDays ?? 1;
-                    return $"Semester - {days} dag{(days > 1 ? "ar" : "")}";
+                    // Kolla om det är obetald semester
+                    bool isUnpaidVacation = shift.Notes != null && shift.Notes.Contains("PlannedHours:");
+
+                    return isUnpaidVacation ? "Obetald ledighet" : "Semester";
                 }
 
                 // SPECIALHANTERING FÖR SJUK - MED ASYNC
@@ -233,7 +235,7 @@ namespace MyWorkSalary.Helpers.Converters
                         : "Jour",
                     ShiftType.SickLeave => GetSickLeaveHours(shift),  // Async-hantering
                     ShiftType.VAB => "-8t",
-                    ShiftType.Vacation => "8t",
+                    ShiftType.Vacation => GetVacationHours(shift),
                     _ => $"{shift.TotalHours:F1}t"
                 };
             }
@@ -281,6 +283,32 @@ namespace MyWorkSalary.Helpers.Converters
             return "...";
         }
 
+        private string GetVacationHours(WorkShift shift)
+        {
+            // Betald semester
+            if (shift.TotalHours > 0)
+            {
+                return $"{shift.TotalHours:F1}t";
+            }
+
+            // Obetald semester - parse PlannedHours från Notes
+            if (shift.Notes != null && shift.Notes.Contains("PlannedHours:"))
+            {
+                var parts = shift.Notes.Split('|');
+                var plannedPart = parts.FirstOrDefault(p => p.StartsWith("PlannedHours:"));
+                if (plannedPart != null)
+                {
+                    var hoursText = plannedPart.Replace("PlannedHours:", "");
+                    if (decimal.TryParse(hoursText, out decimal plannedHours))
+                    {
+                        return plannedHours > 0 ? $"-{plannedHours:F1}t" : "0t";
+                    }
+                }
+            }
+
+            // Fallback
+            return "0t";
+        }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

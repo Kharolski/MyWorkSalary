@@ -27,7 +27,7 @@
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                     Dark={StaticResource TextSecondaryDark}}" />
         </VerticalStackLayout>
-
+        
         <!-- ⏰ Planerade arbetstimmar - BARA för obetald -->
         <VerticalStackLayout Spacing="5" IsVisible="{Binding IsUnpaidVacation}">
             <Label Text="⏰ Timmar du skulle arbetat" Style="{StaticResource FieldLabel}" />
@@ -52,6 +52,14 @@
                        FontSize="12" 
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
                             Dark={StaticResource White}}" />
+
+                <!-- 📊 Återstående semesterdagar -->
+                <Label Text="{Binding RemainingVacationText}"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource Primary}, 
+                                                  Dark={StaticResource White}}"
+                       IsVisible="{Binding ShowRemainingDays}" />
 
                 <!-- info -->
                 <Label Text="📅 Registrerar 1 dag semester för valt datum" 

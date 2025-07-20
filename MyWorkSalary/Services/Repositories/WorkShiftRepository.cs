@@ -67,10 +67,11 @@ namespace MyWorkSalary.Services.Repositories
         public List<WorkShift> GetWorkShiftsForDate(int jobProfileId, DateTime date)
         {
             return _database.Table<WorkShift>()
-                           .Where(x => x.JobProfileId == jobProfileId &&
-                                      x.ShiftDate.Date == date.Date)
-                           .OrderBy(x => x.StartTime)
-                           .ToList();
+                   .Where(x => x.JobProfileId == jobProfileId)
+                   .ToList()
+                   .Where(x => x.ShiftDate.Date == date.Date)
+                   .OrderBy(x => x.StartTime)
+                   .ToList();
         }
 
         public List<WorkShift> GetWorkShiftsForDateRange(int jobProfileId, DateTime fromDate, DateTime toDate)

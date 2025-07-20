@@ -1,6 +1,7 @@
 ﻿using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Handlers;
+using MyWorkSalary.Services.Interfaces;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -10,6 +11,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
     {
         #region Private Fields
         private readonly VacationHandler _vacationHandler;
+        private readonly IShiftValidationService _validationService;
 
         // Events
         public event Action ValidationChanged;
@@ -17,8 +19,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         // Context
         private DateTime _selectedDate;
         private JobProfile _activeJob;
+        private string _remainingVacationText = "";
 
-        // Semester-specifika fields (SUPER FÖRENKLADE)
+        // Semester-specifika fields
         private VacationType _selectedVacationType = VacationType.PaidVacation;
 
         // Validation
@@ -28,9 +31,11 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         #endregion
 
         #region Constructor
-        public VacationViewModel(VacationHandler vacationHandler)
+        public VacationViewModel(VacationHandler vacationHandler, IShiftValidationService validationService)
         {
             _vacationHandler = vacationHandler;
+            _validationService = validationService;
+
             SaveVacationCommand = new Command(OnSaveVacation, CanSaveVacation);
         }
         #endregion
@@ -83,6 +88,11 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 OnPropertyChanged(nameof(VacationTypeDisplayName));
                 RefreshUIProperties();
                 TriggerValidationChanged();
+
+                if (ActiveJob != null)
+                {
+                    _ = Task.Run(async () => await LoadRemainingVacationDays());
+                }
             }
         }
 
@@ -151,6 +161,18 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 TriggerValidationChanged();
             }
         }
+        public string RemainingVacationText
+        {
+            get => _remainingVacationText;
+            set
+            {
+                _remainingVacationText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShowRemainingDays => _selectedVacationType == VacationType.PaidVacation &&
+                                        ActiveJob != null;
 
         // Validation
         public bool HasValidationMessage => !string.IsNullOrEmpty(ValidationMessage);
@@ -173,10 +195,16 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
         #region Public Methods
 
-        public void UpdateContext(DateTime selectedDate, JobProfile activeJob)
+        public async void UpdateContext(DateTime selectedDate, JobProfile activeJob)
         {
             SelectedDate = selectedDate;
             ActiveJob = activeJob;
+
+            // Ladda återstående dagar för betald semester
+            if (activeJob != null)
+            {
+                await LoadRemainingVacationDays();
+            }
         }
 
         public bool CanSave()
@@ -193,7 +221,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         }
 
         // SaveVacation
-        public async Task<bool> SaveVacation()
+        public async Task<(bool Success, string Message)> SaveVacation()
         {
             try
             {
@@ -205,7 +233,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     out decimal kvot) || kvot <= 0)
                 {
                     LogDebug($"❌ Kunde inte konvertera kvot: '{SemesterKvot}' → '{normalizedKvot}'");
-                    return false;
+                    return (false, "Semesterkvot måste vara ett positivt tal");
                 }
 
                 // Hantera planerade arbetstimmar för obetald
@@ -219,22 +247,22 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                         out plannedHours) || plannedHours < 0)
                     {
                         LogDebug($"❌ Kunde inte konvertera planerade timmar: '{PlannedWorkHours}' → '{normalizedHours}'");
-                        return false;
+                        return (false, "Planerade arbetstimmar måste vara ett positivt tal");
                     }
                 }
 
-                // Skicka både kvot och planerade timmar till handler
+                // Anropa den nya metoden som returnerar (bool, string)
                 return await _vacationHandler.SaveSimpleVacation(
                     SelectedDate,
                     ActiveJob,
                     _selectedVacationType,
                     kvot,
-                    plannedHours); 
+                    plannedHours);
             }
             catch (Exception ex)
             {
                 LogDebug($"❌ Fel i SaveVacation: {ex.Message}");
-                return false;
+                return (false, $"Fel vid sparande: {ex.Message}");
             }
         }
         #endregion
@@ -246,7 +274,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             OnPropertyChanged(nameof(ShowUnpaidVacationFields));
             OnPropertyChanged(nameof(ShowPaidVacationFields));    
             OnPropertyChanged(nameof(IsPaidVacation));            
-            OnPropertyChanged(nameof(IsUnpaidVacation));          
+            OnPropertyChanged(nameof(IsUnpaidVacation));
+            OnPropertyChanged(nameof(ShowRemainingDays));
             OnPropertyChanged(nameof(VacationExplanation));
         }
 
@@ -286,6 +315,15 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     return "Planerade arbetstimmar måste vara ett positivt tal (t.ex. 8.0)";
             }
 
+            // Validera datum mot befintliga pass
+            var (canAdd, errorMessage, conflictingShifts) = _validationService.ValidateVacationDate(
+                ActiveJob.Id,
+                SelectedDate,
+                _selectedVacationType);
+
+            if (!canAdd)
+                return errorMessage;
+
             return "";
         }
 
@@ -293,25 +331,33 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             try
             {
-                var success = await SaveVacation();
+                // Kör validering INNAN sparning
+                var validationError = GetValidationError();
+
+                if (!string.IsNullOrEmpty(validationError))
+                {
+                    await Shell.Current.DisplayAlert("❌ Kan inte spara", validationError, "OK");
+                    return;
+                }
+
+                // Använd den nya return-typen (bool, string)
+                var (success, message) = await SaveVacation();
 
                 if (success)
                 {
-                    await Shell.Current.DisplayAlert("✅ Sparat!",
-                        "Semester registrerad - lön beräknas i rapporten", "OK");
+                    await Shell.Current.DisplayAlert("✅ Sparat", message, "OK");
                     await Shell.Current.GoToAsync("..");
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("❌ Fel",
-                        "Kunde inte spara semester", "OK");
+                    // Visa det riktiga felmeddelandet från VacationHandler
+                    await Shell.Current.DisplayAlert("❌ Kan inte spara", message, "OK");
                 }
             }
             catch (Exception ex)
             {
                 LogDebug($"❌ Exception i OnSaveVacation: {ex.Message}");
-                await Shell.Current.DisplayAlert("❌ Fel",
-                    $"Oväntat fel inträffade", "OK");
+                await Shell.Current.DisplayAlert("❌ Fel", "Oväntat fel inträffade", "OK");
             }
         }
 
@@ -333,6 +379,28 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 "Obetald ledighet" => VacationType.UnpaidVacation,
                 _ => VacationType.PaidVacation
             };
+        }
+
+        private async Task LoadRemainingVacationDays()
+        {
+            try
+            {
+                if (_selectedVacationType != VacationType.PaidVacation || ActiveJob == null)
+                {
+                    RemainingVacationText = "";
+                    return;
+                }
+
+                var remaining = await _vacationHandler.GetRemainingVacationDays(ActiveJob.Id);
+                var total = ActiveJob.VacationDaysPerYear + (ActiveJob.InitialVacationBalance ?? 0);
+
+                RemainingVacationText = $"📊 Semesterdagar: {remaining:F1} av {total:F1} dagar";
+            }
+            catch (Exception ex)
+            {
+                LogDebug($"❌ Fel vid laddning av återstående dagar: {ex.Message}");
+                RemainingVacationText = "📊 Kunde inte ladda semesterinfo";
+            }
         }
         #endregion
 
