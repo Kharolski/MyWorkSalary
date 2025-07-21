@@ -14,7 +14,11 @@ namespace MyWorkSalary.ViewModels
         #region Private Fields
         private readonly IJobProfileRepository _jobProfileRepository;
         private readonly IWorkShiftRepository _workShiftRepository;
+        private readonly IVABLeaveRepository _vabLeaveRepository;
+        private readonly IVacationLeaveRepository _vacationLeaveRepository;
         private readonly ISickLeaveRepository _sickLeaveRepository;
+        private readonly IOnCallRepository _onCallRepository;
+
         private JobProfile _activeJob;
         private ObservableCollection<WorkShift> _workShifts;
         #endregion
@@ -23,11 +27,17 @@ namespace MyWorkSalary.ViewModels
         public ShiftPageViewModel(
             IJobProfileRepository jobProfileRepository,
             IWorkShiftRepository workShiftRepository,
-            ISickLeaveRepository sickLeaveRepository)
+            IVABLeaveRepository vabLeaveRepository,
+            IVacationLeaveRepository vacationLeaveRepository,
+            ISickLeaveRepository sickLeaveRepository,
+            IOnCallRepository onCallRepository)
         {
             _jobProfileRepository = jobProfileRepository;
             _workShiftRepository = workShiftRepository;
+            _vabLeaveRepository = vabLeaveRepository;
+            _vacationLeaveRepository = vacationLeaveRepository;
             _sickLeaveRepository = sickLeaveRepository;
+            _onCallRepository = onCallRepository;
 
             // Commands
             AddShiftCommand = new Command(OnAddShift);
@@ -171,21 +181,29 @@ namespace MyWorkSalary.ViewModels
                     break;
 
                 case ShiftType.VAB:
-                    // TODO: När VABRepository är klart
-                    // var vabLeave = _vabRepository.GetVABByWorkShiftId(shift.Id);
-                    // if (vabLeave != null) _vabRepository.DeleteVAB(vabLeave.Id);
+                    var vabLeave = await _vabLeaveRepository.GetByWorkShiftIdAsync(shift.Id);
+                    if (vabLeave != null)
+                    {
+                        await _vabLeaveRepository.DeleteAsync(vabLeave.Id);
+                    }
                     break;
 
                 case ShiftType.Vacation:
-                    // TODO: När VacationRepository är klart
-                    // var vacation = _vacationRepository.GetVacationByWorkShiftId(shift.Id);
-                    // if (vacation != null) _vacationRepository.DeleteVacation(vacation.Id);
+                    // Hitta VacationLeave via WorkShift relation
+                    var vacationLeaves = await _vacationLeaveRepository.GetByJobProfileAsync(shift.JobProfileId);
+                    var vacationLeave = vacationLeaves.FirstOrDefault(v => v.WorkShiftId == shift.Id);
+                    if (vacationLeave != null)
+                    {
+                        await _vacationLeaveRepository.DeleteAsync(vacationLeave.Id);
+                    }
                     break;
 
                 case ShiftType.OnCall:
-                    // TODO: När OnCallRepository är klart
-                    // var onCall = _onCallRepository.GetOnCallByWorkShiftId(shift.Id);
-                    // if (onCall != null) _onCallRepository.DeleteOnCall(onCall.Id);
+                    var onCallShift = _onCallRepository.GetByWorkShiftId(shift.Id);
+                    if (onCallShift != null)
+                    {
+                        _onCallRepository.Delete(onCallShift.Id);
+                    }
                     break;
 
                 case ShiftType.Regular:
@@ -210,14 +228,10 @@ namespace MyWorkSalary.ViewModels
 
             return shift.ShiftType switch
             {
-                ShiftType.Vacation =>
-                    $"Vill du radera semestern från {dateStr}?\n({shift.NumberOfDays} dagar)",
-                ShiftType.SickLeave =>
-                    $"Vill du radera sjukskrivningen från {dateStr}?\n({shift.NumberOfDays} dagar)",
-                ShiftType.VAB =>
-                    $"Vill du radera VAB från {dateStr}?\n({shift.NumberOfDays} dagar)",
-                ShiftType.OnCall =>
-                    $"Vill du radera jourpasset från {dateStr}?",
+                ShiftType.Vacation => $"Vill du radera semestern från {dateStr}?",
+                ShiftType.SickLeave => $"Vill du radera sjukskrivningen från {dateStr}?",
+                ShiftType.VAB => $"Vill du radera VAB från {dateStr}?",
+                ShiftType.OnCall => $"Vill du radera jourpasset från {dateStr}?",
                 _ => shift.StartTime.HasValue && shift.EndTime.HasValue
                     ? $"Vill du radera passet från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})"
                     : $"Vill du radera passet från {dateStr}?"
@@ -278,36 +292,60 @@ namespace MyWorkSalary.ViewModels
             MonthYear = monthYear;
 
             // Räkna arbetstimmar: Regular, Vacation, OnCall
-            TotalHours = this.Where(s => s.ShiftType == ShiftType.Regular ||
-                                        s.ShiftType == ShiftType.Vacation ||
-                                        s.ShiftType == ShiftType.OnCall)
-                            .Sum(s => GetEffectiveHours(s));
+            TotalHours = this.Sum(s => GetEffectiveHours(s));
         }
 
         private decimal GetEffectiveHours(WorkShift shift)
         {
-            // Obetald semester: Hämta planerade timmar och gör negativa
-            if (shift.ShiftType == ShiftType.Vacation && shift.TotalHours <= 0)
+            switch (shift.ShiftType)
             {
-                // Parse PlannedHours från Notes
-                if (shift.Notes != null && shift.Notes.Contains("PlannedHours:"))
-                {
-                    var parts = shift.Notes.Split('|');
-                    var plannedPart = parts.FirstOrDefault(p => p.StartsWith("PlannedHours:"));
-                    if (plannedPart != null)
+                case ShiftType.VAB:
+                    // VAB: Räkna bara jobbade timmar (inte förlorade)
+                    if (shift.Notes != null && shift.Notes.StartsWith("VABData:"))
                     {
-                        var hoursText = plannedPart.Replace("PlannedHours:", "");
-                        if (decimal.TryParse(hoursText, out decimal plannedHours))
+                        try
                         {
-                            return -plannedHours;  // Returnera negativa timmar
+                            var data = shift.Notes.Replace("VABData:", "");
+                            var parts = data.Split('|');
+                            var workedPart = parts.FirstOrDefault(p => p.StartsWith("Worked="));
+
+                            if (workedPart != null)
+                            {
+                                var worked = decimal.Parse(workedPart.Replace("Worked=", ""));
+                                return worked; // Bara jobbade timmar
+                            }
+                        }
+                        catch
+                        {
+                            // Fallback
                         }
                     }
-                }
-                return 0; // Fallback för obetald utan planerade timmar
-            }
+                    return 0; // Fallback för VAB
 
-            // Alla andra pass: använd TotalHours som vanligt
-            return shift.TotalHours;
+                case ShiftType.Vacation when shift.TotalHours <= 0:
+                    // Obetald semester: Hämta planerade timmar och gör negativa
+                    if (shift.Notes != null && shift.Notes.Contains("PlannedHours:"))
+                    {
+                        var parts = shift.Notes.Split('|');
+                        var plannedPart = parts.FirstOrDefault(p => p.StartsWith("PlannedHours:"));
+                        if (plannedPart != null)
+                        {
+                            var hoursText = plannedPart.Replace("PlannedHours:", "");
+                            if (decimal.TryParse(hoursText, out decimal plannedHours))
+                            {
+                                return -plannedHours;  // Returnera negativa timmar
+                            }
+                        }
+                    }
+                    return 0;
+
+                case ShiftType.SickLeave:
+                    return 0; // Sjukskrivning räknas inte som arbetstid
+
+                default:
+                    // Regular, Vacation (betald), OnCall
+                    return shift.TotalHours;
+            }
         }
 
     }

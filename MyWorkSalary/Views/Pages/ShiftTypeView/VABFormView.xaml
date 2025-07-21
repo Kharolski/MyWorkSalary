@@ -21,11 +21,24 @@
         <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowVABWorkingHours}">
             <Label Text="🕐 Timmar som skulle jobbats"
                    Style="{StaticResource FieldLabel}" />
-            <Entry Text="{Binding WorkingHours}"
+            <Entry Text="{Binding ScheduledHours}"
                    Placeholder="Ange timmar (t.ex. 8, 7.5, 0)"
                    Keyboard="Numeric"
                    Style="{StaticResource ThemedEntry}" />
             <Label Text="💡 Skriv 0 om du skulle vara ledig denna dag"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                               Dark={StaticResource TextSecondaryDark}}" />
+        </VerticalStackLayout>
+
+        <!-- 💼 Timmar som faktiskt jobbades (NYTT FÄLT) -->
+        <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowVABWorkingHours}">
+            <Label Text="💼 Timmar som faktiskt jobbades" Style="{StaticResource FieldLabel}" />
+            <Entry Text="{Binding WorkedHours}"
+                   Placeholder="Ange timmar (t.ex. 4, 0)"
+                   Keyboard="Numeric"
+                   Style="{StaticResource ThemedEntry}" />
+            <Label Text="💡 Skriv 0 om du inte jobbade alls denna dag" 
                    FontSize="12"
                    TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                Dark={StaticResource TextSecondaryDark}}" />

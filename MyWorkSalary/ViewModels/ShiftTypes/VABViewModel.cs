@@ -1,7 +1,4 @@
-﻿using MyWorkSalary.Models;
-using MyWorkSalary.Models.Core;
-using MyWorkSalary.Models.Enums;
-using MyWorkSalary.Services.Interfaces;
+﻿using MyWorkSalary.Models.Core;
 using MyWorkSalary.Services.Handlers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -10,38 +7,33 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 {
     public class VABViewModel : INotifyPropertyChanged
     {
-        private readonly IWorkShiftRepository _workShiftRepository;
-        private readonly IShiftValidationService _validationService;
-        private readonly VABHandler _vabHandler;                    
+        #region Field
+        private readonly VABHandler _vabHandler;
 
         private DateTime _selectedDate;
         private JobProfile _activeJob;
-        private string _workingHours = "";
-        private string _notes = "";
+        private string _scheduledHours = "";
+        private string _workedHours = "";
         private string _validationMessage = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event Action ValidationChanged;
+        #endregion
 
         #region Constructor
-        public VABViewModel(
-            IWorkShiftRepository workShiftRepository,
-            IShiftValidationService validationService,
-            VABHandler vabHandler)                               
+        public VABViewModel(VABHandler vabHandler)                               
         {
-            _workShiftRepository = workShiftRepository;
-            _validationService = validationService;
             _vabHandler = vabHandler;                            
         }
         #endregion
 
         #region Properties
-        public string WorkingHours
+        public string ScheduledHours
         {
-            get => _workingHours;
+            get => _scheduledHours;
             set
             {
-                _workingHours = value;
+                _scheduledHours = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CalculationSummary));
                 OnPropertyChanged(nameof(PayDeductionText));
@@ -51,13 +43,18 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
-        public string Notes
+        public string WorkedHours
         {
-            get => _notes;
+            get => _workedHours;
             set
             {
-                _notes = value;
+                _workedHours = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(CalculationSummary));
+                OnPropertyChanged(nameof(PayDeductionText));
+                OnPropertyChanged(nameof(ShowPayDeduction));
+                ValidateInput();
+                ValidationChanged?.Invoke();
             }
         }
 
@@ -77,7 +74,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         // Visibility
         public bool ShowVABWorkingHours => _activeJob?.IsHourlyEmployee != true;
         public bool ShowCalculation => true;
-        public bool ShowPayDeduction => ShowVABWorkingHours && GetWorkingHoursValue() > 0;
+        public bool ShowPayDeduction => ShowVABWorkingHours && GetScheduledHoursValue() > 0;
 
         // Beräkningar
         public string VABExplanationText
@@ -105,12 +102,15 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 }
                 else
                 {
-                    var hours = GetWorkingHoursValue();
-                    if (hours > 0)
+                    var scheduledHours = GetScheduledHoursValue();
+                    var workedHours = GetWorkedHoursValue();
+
+                    if (scheduledHours > 0 && workedHours >= 0)
                     {
-                        return $"VAB-dag: {hours:F1} timmar skulle jobbats";
+                        var nettoHours = workedHours - scheduledHours;
+                        return $"VAB: Jobbade {workedHours:F1}t, skulle {scheduledHours:F1}t = {nettoHours:F1}t netto";
                     }
-                    else if (hours == 0)
+                    else if (scheduledHours == 0)
                     {
                         return "VAB-dag: Skulle varit ledig (0 timmar)";
                     }
@@ -129,21 +129,32 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 if (!ShowPayDeduction)
                     return "";
 
-                var hours = GetWorkingHoursValue();
+                var scheduledHours = GetScheduledHoursValue();
+                var workedHours = GetWorkedHoursValue();
+
+                if (scheduledHours <= 0 || workedHours < 0)
+                    return "";
 
                 if (_activeJob?.IsHourlyEmployee != true && _activeJob?.MonthlySalary > 0)
                 {
-                    // Månadslönad - visa dagavdrag
+                    // Månadslönad - visa både lön och avdrag
                     var dailyDeduction = _activeJob.MonthlySalary.Value / 21;
-                    var totalDeduction = (hours / 8) * dailyDeduction;
-                    return $"Löneavdrag: {totalDeduction:N0} kr (dagavdrag för {hours:F1}t)";
+                    var hourlyRate = GetHourlyRate();
+
+                    var workedPay = workedHours * hourlyRate;
+                    var scheduledDeduction = (scheduledHours / 8) * dailyDeduction;
+                    var nettoEffect = workedPay - scheduledDeduction;
+
+                    return $"Lön: +{workedPay:N0} kr, Avdrag: -{scheduledDeduction:N0} kr = {nettoEffect:N0} kr netto";
                 }
                 else
                 {
-                    // Timanställd - visa förlorad timlön
+                    // Timanställd - bara förlorad lön
                     var hourlyRate = GetHourlyRate();
-                    var deduction = hours * hourlyRate;
-                    return $"Förlorad lön: {deduction:N0} kr ({hours:F1}t × {hourlyRate:N0} kr/t)";
+                    var workedPay = workedHours * hourlyRate;
+                    var lostPay = (scheduledHours - workedHours) * hourlyRate;
+
+                    return $"Lön: {workedPay:N0} kr, Förlorat: -{lostPay:N0} kr";
                 }
             }
         }
@@ -169,14 +180,18 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             if (_activeJob == null)
                 return false;
 
-            // För fast anställda: kräv timmar
+            // För fast anställda: kräv båda timmar-fält
             if (ShowVABWorkingHours)
             {
-                if (string.IsNullOrWhiteSpace(WorkingHours))
+                if (string.IsNullOrWhiteSpace(ScheduledHours))
+                    return false;
+                if (string.IsNullOrWhiteSpace(WorkedHours))
                     return false;
 
-                var hoursValue = GetWorkingHoursValue();
-                if (hoursValue < 0)
+                var scheduledValue = GetScheduledHoursValue();
+                var workedValue = GetWorkedHoursValue();
+
+                if (scheduledValue < 0 || workedValue < 0)
                     return false;
             }
 
@@ -196,24 +211,24 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     return false;
                 }
 
+                // Hämta båda värdena
+                decimal scheduledHours = GetScheduledHoursValue();
+                decimal workedHours = GetWorkedHoursValue();
+
                 // Förbered tider för delvis VAB (om relevant)
                 TimeSpan? startTime = null;
                 TimeSpan? endTime = null;
 
-                // Om det är delvis VAB (månadslönad som jobbade en del)
-                if (!_activeJob.IsHourlyEmployee)
+                // Om det är delvis VAB (jobbade en del av dagen)
+                if (workedHours > 0 && workedHours < scheduledHours)
                 {
-                    var scheduledHours = GetWorkingHoursValue();
-                    if (scheduledHours > 0 && scheduledHours < 8) // Delvis dag
-                    {
-                        // Exempel: Om 4h skulle jobbats, sätt 08:00-12:00
-                        startTime = TimeSpan.FromHours(8);
-                        endTime = TimeSpan.FromHours(8 + (double)scheduledHours);
-                    }
+                    // Exempel: Om 4h jobbades, sätt 08:00-12:00
+                    startTime = TimeSpan.FromHours(8);
+                    endTime = TimeSpan.FromHours(8 + (double)workedHours);
                 }
 
                 // Använd VABHandler för att hantera logik
-                var result = await _vabHandler.HandleVAB(_selectedDate, _activeJob, startTime, endTime);
+                var result = await _vabHandler.HandleVAB(_selectedDate, _activeJob, startTime, endTime, scheduledHours, workedHours);
 
                 if (!result.Success)
                 {
@@ -230,7 +245,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                         if (userConfirmed)
                         {
                             // Bekräfta ersättning
-                            var confirmResult = await _vabHandler.ConfirmReplaceWithVAB(_selectedDate, _activeJob);
+                            var confirmResult = await _vabHandler.ConfirmReplaceWithVAB(_selectedDate, _activeJob, scheduledHours, workedHours);
                             if (!confirmResult.Success)
                             {
                                 ValidationMessage = confirmResult.Message;
@@ -239,21 +254,16 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                         }
                         else
                         {
-                            return false; // Användaren avbröt
+                            // Användaren avbröt - rensa eventuellt felmeddelande
+                            ValidationMessage = "";
+                            return false;
                         }
                     }
                     else
                     {
-                        ValidationMessage = result.Message;
+                        ValidationMessage = $"Konstig meddelande efter avbryt:  result.Message";
                         return false;
                     }
-                }
-
-                // Lägg till användarens anteckningar om det behövs
-                if (!string.IsNullOrWhiteSpace(_notes) && result.CreatedShift != null)
-                {
-                    result.CreatedShift.Notes = _notes;
-                    _workShiftRepository.SaveWorkShift(result.CreatedShift);
                 }
 
                 return true;
@@ -283,12 +293,24 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             return 0;
         }
 
-        private decimal GetWorkingHoursValue()
+        private decimal GetScheduledHoursValue()
         {
-            if (string.IsNullOrWhiteSpace(WorkingHours))
+            if (string.IsNullOrWhiteSpace(ScheduledHours))
                 return -1;
+            var normalizedInput = ScheduledHours.Replace(',', '.');
+            if (decimal.TryParse(normalizedInput, System.Globalization.NumberStyles.Float,
+                               System.Globalization.CultureInfo.InvariantCulture, out decimal result))
+            {
+                return result;
+            }
+            return -1;
+        }
 
-            var normalizedInput = WorkingHours.Replace(',', '.');
+        private decimal GetWorkedHoursValue()
+        {
+            if (string.IsNullOrWhiteSpace(WorkedHours))
+                return -1;
+            var normalizedInput = WorkedHours.Replace(',', '.');
             if (decimal.TryParse(normalizedInput, System.Globalization.NumberStyles.Float,
                                System.Globalization.CultureInfo.InvariantCulture, out decimal result))
             {
@@ -303,22 +325,55 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
             if (ShowVABWorkingHours)
             {
-                if (string.IsNullOrWhiteSpace(WorkingHours))
+                // Validera ScheduledHours (obligatoriskt)
+                if (string.IsNullOrWhiteSpace(ScheduledHours))
                 {
                     ValidationMessage = "* Ange antal timmar som skulle jobbats";
                     return;
                 }
 
-                var hours = GetWorkingHoursValue();
-                if (hours < 0)
+                var scheduledHours = GetScheduledHoursValue();
+                if (scheduledHours < 0)
                 {
-                    ValidationMessage = "Ogiltigt timvärde. Använd siffror (t.ex. 8 eller 7.5)";
+                    ValidationMessage = "Ogiltigt värde för 'skulle jobbat'. Använd siffror (t.ex. 8 eller 7.5)";
                     return;
                 }
 
-                if (hours > 24)
+                if (scheduledHours > 24)
                 {
                     ValidationMessage = "Arbetstid kan inte vara längre än 24 timmar";
+                    return;
+                }
+
+                // Validera WorkedHours (obligatoriskt)
+                if (string.IsNullOrWhiteSpace(WorkedHours))
+                {
+                    ValidationMessage = "* Ange antal timmar som faktiskt jobbades";
+                    return;
+                }
+
+                var workedHours = GetWorkedHoursValue();
+                if (workedHours < 0)
+                {
+                    ValidationMessage = "Ogiltigt värde för 'jobbade timmar'. Använd siffror (t.ex. 4 eller 0)";
+                    return;
+                }
+
+                if (workedHours > 24)
+                {
+                    ValidationMessage = "Jobbade timmar kan inte vara längre än 24 timmar";
+                    return;
+                }
+
+                if (workedHours > scheduledHours)
+                {
+                    ValidationMessage = "Jobbade timmar kan inte vara fler än planerade timmar";
+                    return;
+                }
+
+                if (workedHours == scheduledHours && scheduledHours > 0)
+                {
+                    ValidationMessage = "💡 Ingen VAB behövs - du jobbade alla planerade timmar. Registrera som vanligt arbetspass istället.";
                     return;
                 }
             }
@@ -329,5 +384,24 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #region Debug Helper
+        /// <summary>
+        /// Debug-logging som fungerar på både emulator och riktig enhet
+        /// Aktivera/inaktivera genom att ändra DEBUG_VAB konstanten
+        /// </summary>
+        private const bool DEBUG_VAB = false; // Sätt till true för debugging
+
+        private void LogDebug(string message)
+        {
+            if (!DEBUG_VAB)
+                return;
+#if ANDROID
+            Android.Util.Log.Debug("VABViewModel", message);
+#else
+    System.Diagnostics.Debug.WriteLine($"VABViewModel: {message}");
+#endif
+        }
+        #endregion
     }
 }

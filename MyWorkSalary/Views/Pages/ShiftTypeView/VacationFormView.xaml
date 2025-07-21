@@ -57,7 +57,7 @@
                 <Label Text="{Binding RemainingVacationText}"
                        FontSize="12"
                        FontAttributes="Bold"
-                       TextColor="{AppThemeBinding Light={StaticResource Primary}, 
+                       TextColor="{AppThemeBinding Light={StaticResource SalaryPrimary}, 
                                                   Dark={StaticResource White}}"
                        IsVisible="{Binding ShowRemainingDays}" />
 

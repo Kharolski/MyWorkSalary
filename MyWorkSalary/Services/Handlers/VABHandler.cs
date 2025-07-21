@@ -27,7 +27,8 @@ namespace MyWorkSalary.Services.Handlers
         #endregion
 
         #region Public Methods
-        public async Task<ShiftHandlerResult> HandleVAB(DateTime date, JobProfile jobProfile, TimeSpan? startTime = null, TimeSpan? endTime = null)
+
+        public async Task<ShiftHandlerResult> HandleVAB(DateTime date, JobProfile jobProfile, TimeSpan? startTime = null, TimeSpan? endTime = null, decimal scheduledHours = 8, decimal workedHours = 0)
         {
             try
             {
@@ -45,7 +46,7 @@ namespace MyWorkSalary.Services.Handlers
                 }
 
                 // 2. Skapa WorkShift + VABLeave
-                var (vabShift, vabLeave) = await CreateVABWithDetails(date, jobProfile, startTime, endTime);
+                var (vabShift, vabLeave) = await CreateVABWithDetails(date, jobProfile, startTime, endTime, scheduledHours, workedHours);
 
                 // 3. Spara båda
                 var savedShift = await SaveVABShift(vabShift);
@@ -70,7 +71,8 @@ namespace MyWorkSalary.Services.Handlers
             }
         }
 
-        public async Task<ShiftHandlerResult> ConfirmReplaceWithVAB(DateTime date, JobProfile jobProfile)
+
+        public async Task<ShiftHandlerResult> ConfirmReplaceWithVAB(DateTime date, JobProfile jobProfile, decimal scheduledHours = 8, decimal workedHours = 0)
         {
             try
             {
@@ -78,7 +80,7 @@ namespace MyWorkSalary.Services.Handlers
                 await RemoveExistingShift(date, jobProfile.Id);
 
                 // 2. Skapa nytt VAB
-                var (vabShift, vabLeave) = await CreateVABWithDetails(date, jobProfile);
+                var (vabShift, vabLeave) = await CreateVABWithDetails(date, jobProfile, null, null, scheduledHours, workedHours);
                 var savedShift = await SaveVABShift(vabShift);
                 vabLeave.WorkShiftId = savedShift.Id;
                 await _vabLeaveRepository.InsertAsync(vabLeave);
@@ -116,14 +118,13 @@ namespace MyWorkSalary.Services.Handlers
             DateTime date,
             JobProfile jobProfile,
             TimeSpan? startTime = null,
-            TimeSpan? endTime = null)
+            TimeSpan? endTime = null,
+            decimal scheduledHours = 8,
+            decimal workedHours = 0)
         {
-            // Bestäm VAB-typ och timmar
-            var vabType = (startTime.HasValue && endTime.HasValue) ? VABType.PartialDay : VABType.FullDay;
-
-            decimal scheduledHours = 8; // Default, eller hämta från schema
-            decimal workedHours = 0;
-            decimal vabHours = scheduledHours;
+            // Bestäm VAB-typ
+            var vabType = (workedHours > 0 && workedHours < scheduledHours) ? VABType.PartialDay : VABType.FullDay;
+            decimal vabHours = scheduledHours - workedHours; // Förlorade timmar
 
             DateTime? startDateTime = null;
             DateTime? endDateTime = null;
@@ -132,8 +133,6 @@ namespace MyWorkSalary.Services.Handlers
             {
                 startDateTime = date.Date.Add(startTime.Value);
                 endDateTime = date.Date.Add(endTime.Value);
-                workedHours = (decimal)(endTime.Value - startTime.Value).TotalHours;
-                vabHours = scheduledHours - workedHours;
             }
 
             // Beräkna VAB-avdrag
@@ -148,12 +147,14 @@ namespace MyWorkSalary.Services.Handlers
                 ShiftType = ShiftType.VAB,
                 StartTime = startDateTime,
                 EndTime = endDateTime,
-                TotalHours = workedHours - vabHours, // Netto (kan vara negativt)
+                TotalHours = workedHours - scheduledHours, // Netto (negativt för VAB)
                 RegularHours = workedHours,
                 TotalPay = workedPay + vabDeduction,  // workedPay + (negativ vabDeduction)
                 CreatedDate = DateTime.Now,
                 IsConfirmed = true,
-                Notes = $"VAB - {vabHours}t förlorade, {workedHours}t jobbade"
+
+                // Används av converter att får data
+                Notes = $"VABData:Scheduled={scheduledHours}|Worked={workedHours}|IsHourly={jobProfile.IsHourlyEmployee}"
             };
 
             // Skapa VABLeave
@@ -163,7 +164,7 @@ namespace MyWorkSalary.Services.Handlers
                 WorkedStartTime = startTime,
                 WorkedEndTime = endTime,
                 ScheduledStartTime = TimeSpan.FromHours(8), // Default eller från schema
-                ScheduledEndTime = TimeSpan.FromHours(17),
+                ScheduledEndTime = TimeSpan.FromHours(8 + (double)scheduledHours),
                 ScheduledHours = scheduledHours,
                 WorkedHours = workedHours,
                 VABHours = vabHours,

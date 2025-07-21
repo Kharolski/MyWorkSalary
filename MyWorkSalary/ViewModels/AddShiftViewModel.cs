@@ -442,7 +442,11 @@ namespace MyWorkSalary.ViewModels
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara VAB-dag: {VABVM.ValidationMessage}", "OK");
+                    if (!string.IsNullOrEmpty(VABVM.ValidationMessage))
+                    {
+                        await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara VAB-dag: {VABVM.ValidationMessage}", "OK");
+                    }
+                    // Om ValidationMessage är tom = användaren avbröt, visa inget meddelande
                 }
                 return success;
             }

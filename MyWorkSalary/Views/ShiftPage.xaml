@@ -9,14 +9,18 @@
 
             <!-- Header med aktivt jobb -->
             <Frame Style="{StaticResource CardFrame}">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="📋 Aktivt jobb"
-                           Style="{StaticResource ActiveJobTitleLabel}" />
-                    <Label Text="{Binding ActiveJobTitle}"
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label Grid.Column="0"
+                           Text="📋 Aktivt jobb - "
+                           Style="{StaticResource ActiveJobTitleLabel}"
+                           VerticalOptions="Center" />
+                    <Label Grid.Column="1"
+                           Text="{Binding ActiveJobTitle}"
                            FontSize="18"
-                           TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight}, 
-                                                      Dark={StaticResource ActiveJobDark}}" />
-                </VerticalStackLayout>
+                           TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
+                                                       Dark={StaticResource ActiveJobDark}}"
+                           VerticalOptions="Center" />
+                </Grid>
             </Frame>
 
             <!-- Lägg till pass knapp -->

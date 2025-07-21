@@ -104,7 +104,6 @@ namespace MyWorkSalary.Helpers.Converters
         public static void Initialize(IWorkShiftService workShiftService)
         {
             _workShiftService = workShiftService;
-            System.Diagnostics.Debug.WriteLine("✅ ShiftToTimeStringConverter initialiserad");
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -114,7 +113,7 @@ namespace MyWorkSalary.Helpers.Converters
                 // SPECIALHANTERING FÖR VAB
                 if (shift.ShiftType == ShiftType.VAB)
                 {
-                    return "Vård av barn - Heldag";
+                    return GetVABDescription(shift);
                 }
 
                 // SPECIALHANTERING FÖR SEMESTER
@@ -204,6 +203,51 @@ namespace MyWorkSalary.Helpers.Converters
             return "Sjukskrivning...";
         }
 
+        private string GetVABDescription(WorkShift shift)
+        {
+            // Parse VAB-data från Notes
+            if (shift.Notes != null && shift.Notes.StartsWith("VABData:"))
+            {
+                try
+                {
+                    var data = shift.Notes.Replace("VABData:", "");
+                    var parts = data.Split('|');
+
+                    var scheduledPart = parts.FirstOrDefault(p => p.StartsWith("Scheduled="));
+                    var workedPart = parts.FirstOrDefault(p => p.StartsWith("Worked="));
+                    var isHourlyPart = parts.FirstOrDefault(p => p.StartsWith("IsHourly="));
+
+                    if (scheduledPart != null && workedPart != null && isHourlyPart != null)
+                    {
+                        var scheduled = decimal.Parse(scheduledPart.Replace("Scheduled=", ""));
+                        var worked = decimal.Parse(workedPart.Replace("Worked=", ""));
+                        var isHourly = bool.Parse(isHourlyPart.Replace("IsHourly=", ""));
+
+                        if (isHourly)
+                        {
+                            return "Vab - Timanställd";
+                        }
+                        else if (worked == 0)
+                        {
+                            return "Vab - Heldag";
+                        }
+                        else
+                        {
+                            var lostHours = scheduled - worked;
+                            return $"Vab - Delvis (-{lostHours:F1}t)"; // Visa förlorade timmar i beskrivningen
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ Fel vid VAB-beskrivning: {ex.Message}");
+                }
+            }
+
+            // Fallback
+            return "Vård av barn - Heldag";
+        }
+
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
@@ -234,7 +278,7 @@ namespace MyWorkSalary.Helpers.Converters
                         ? $"{shift.TotalHours:F1}t"
                         : "Jour",
                     ShiftType.SickLeave => GetSickLeaveHours(shift),  // Async-hantering
-                    ShiftType.VAB => "-8t",
+                    ShiftType.VAB => GetVABHours(shift),
                     ShiftType.Vacation => GetVacationHours(shift),
                     _ => $"{shift.TotalHours:F1}t"
                 };
@@ -309,6 +353,54 @@ namespace MyWorkSalary.Helpers.Converters
             // Fallback
             return "0t";
         }
+
+        private string GetVABHours(WorkShift shift)
+        {
+            // Parse VAB-data från Notes
+            if (shift.Notes != null && shift.Notes.StartsWith("VABData:"))
+            {
+                try
+                {
+                    var data = shift.Notes.Replace("VABData:", "");
+                    var parts = data.Split('|');
+
+                    var scheduledPart = parts.FirstOrDefault(p => p.StartsWith("Scheduled="));
+                    var workedPart = parts.FirstOrDefault(p => p.StartsWith("Worked="));
+                    var isHourlyPart = parts.FirstOrDefault(p => p.StartsWith("IsHourly="));
+
+                    if (scheduledPart != null && workedPart != null && isHourlyPart != null)
+                    {
+                        var scheduled = decimal.Parse(scheduledPart.Replace("Scheduled=", ""));
+                        var worked = decimal.Parse(workedPart.Replace("Worked=", ""));
+                        var isHourly = bool.Parse(isHourlyPart.Replace("IsHourly=", ""));
+
+                        if (isHourly)
+                        {
+                            return "VAB"; // Timanställd
+                        }
+                        else
+                        {
+                            if (worked == 0)
+                            {
+                                return "0t"; // Heldag VAB = 0 arbetade timmar
+                            }
+                            else
+                            {
+                                return $"{worked:F1}t"; // Delvis VAB = bara arbetade timmar
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ Fel vid VAB-parsing: {ex.Message}");
+                }
+            }
+
+            // Fallback
+            return "VAB";
+        }
+
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
