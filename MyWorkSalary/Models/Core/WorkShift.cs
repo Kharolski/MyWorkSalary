@@ -33,6 +33,7 @@ namespace MyWorkSalary.Models.Core
         public decimal RegularHours { get; set; }           // Vanliga arbetstimmar
         public int BreakMinutes { get; set; } = 0;          // Rast i minuter (Regular shifts)
         public decimal OBHours { get; set; }                // OB-timmar totalt
+        public bool IsExtraShift { get; set; } = false;     // Markerar inbeordrat pass
 
         #endregion
 

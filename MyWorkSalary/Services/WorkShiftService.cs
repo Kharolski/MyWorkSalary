@@ -107,8 +107,8 @@ namespace MyWorkSalary.Services
 
                 return sickLeave.SickType switch
                 {
-                    SickLeaveType.ShouldHaveWorked => "-8t",  // Hel dag sjuk
-                    SickLeaveType.WorkedPartially => $"-{(sickLeave.ScheduledHours - sickLeave.WorkedHours):F1}t",  // Delvis sjuk
+                    SickLeaveType.ShouldHaveWorked => "0t",  // Hel dag sjuk
+                    SickLeaveType.WorkedPartially => $"{sickLeave.WorkedHours:F1}t",  // Delvis sjuk
                     SickLeaveType.WouldBeFree => "0t",  // Skulle varit ledig ändå
                     _ => "0t"
                 };

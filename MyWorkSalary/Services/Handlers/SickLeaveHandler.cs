@@ -505,6 +505,84 @@ namespace MyWorkSalary.Services.Handlers
         }
 
         #endregion
+
+        #region Validation Methods
+        /// <summary>
+        /// Kontrollerar konflikter för sjukskrivning (från HandleSickLeave)
+        /// </summary>
+        private ConflictCheckResult CheckForConflicts(DateTime date, int jobProfileId, SickLeaveType sickType)
+        {
+            // Konvertera SickLeaveType till ShiftType och använd huvudmetoden
+            return CheckForConflicts(date, jobProfileId, ShiftType.SickLeave);
+        }
+
+        /// <summary>
+        /// Kontrollerar om det finns konflikter för valt datum
+        /// </summary>
+        public ConflictCheckResult CheckForConflicts(DateTime date, int jobProfileId, ShiftType newShiftType)  // ✨ ÄNDRA från SickLeaveType till ShiftType
+        {
+            // Kolla om det redan finns registreringar för detta datum
+            var existingShifts = _workShiftRepository.GetWorkShiftsForDate(jobProfileId, date);
+
+            if (existingShifts.Any())
+            {
+                var shift = existingShifts.First();
+
+                return shift.ShiftType switch
+                {
+                    ShiftType.VAB => new ConflictCheckResult
+                    {
+                        CanProceed = false,
+                        ErrorMessage = "Du kan inte vara sjuk när du VAB:ar"
+                    },
+
+                    ShiftType.Vacation => new ConflictCheckResult
+                    {
+                        CanProceed = false,
+                        ErrorMessage = "Du har redan beviljad semester denna dag"
+                    },
+
+                    ShiftType.SickLeave => new ConflictCheckResult
+                    {
+                        CanProceed = false,
+                        ErrorMessage = "Det finns redan en sjukskrivning denna dag"
+                    },
+
+                    // Bara Regular arbetstid kan ersättas
+                    ShiftType.Regular => new ConflictCheckResult
+                    {
+                        CanProceed = true,
+                        RequiresConfirmation = true,
+                        ConfirmationMessage = $"Vill du ersätta arbetstiden ({shift.StartTime:HH:mm}-{shift.EndTime:HH:mm}) med {GetShiftTypeDisplayName(newShiftType)}?"
+                    },
+
+                    // OnCall kan ersättas
+                    ShiftType.OnCall => new ConflictCheckResult
+                    {
+                        CanProceed = true,
+                        RequiresConfirmation = true,
+                        ConfirmationMessage = $"Vill du ersätta jourpasset med {GetShiftTypeDisplayName(newShiftType)}?"
+                    },
+
+                    _ => new ConflictCheckResult { CanProceed = true }
+                };
+            }
+
+            return new ConflictCheckResult { CanProceed = true };
+        }
+
+        private string GetShiftTypeDisplayName(ShiftType shiftType)
+        {
+            return shiftType switch
+            {
+                ShiftType.SickLeave => "sjukskrivning",
+                ShiftType.Vacation => "semester",
+                ShiftType.OnCall => "jour",
+                _ => "nytt pass"
+            };
+        }
+
+        #endregion
     }
 
     #region Helper Classes
@@ -534,6 +612,16 @@ namespace MyWorkSalary.Services.Handlers
         public string ErrorMessage { get; set; }
     }
 
+    /// <summary>
+    /// Resultat från konflikt-kontroll
+    /// </summary>
+    public class ConflictCheckResult
+    {
+        public bool CanProceed { get; set; }
+        public bool RequiresConfirmation { get; set; }
+        public string ErrorMessage { get; set; }
+        public string ConfirmationMessage { get; set; }
+    }
     #endregion
 
 }

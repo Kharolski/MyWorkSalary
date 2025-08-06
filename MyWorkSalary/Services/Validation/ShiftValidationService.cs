@@ -16,28 +16,28 @@ namespace MyWorkSalary.Services.Validation
         }
 
         // Validera att sjukperiod är rimlig
-        public (bool IsValid, string Message) ValidateSickLeave(WorkShift sickShift)
-        {
-            if (sickShift.ShiftType != ShiftType.SickLeave)
-                return (true, "");
+        //public (bool IsValid, string Message) ValidateSickLeave(WorkShift sickShift)
+        //{
+        //    if (sickShift.ShiftType != ShiftType.SickLeave)
+        //        return (true, "");
 
-            var days = sickShift.NumberOfDays ?? 1;
+        //    var days = sickShift.NumberOfDays ?? 1;
 
-            // Kontrollera rimliga värden
-            if (days <= 0)
-                return (false, "Antal dagar måste vara större än 0");
+        //    // Kontrollera rimliga värden
+        //    if (days <= 0)
+        //        return (false, "Antal dagar måste vara större än 0");
 
-            if (days > 365)
-                return (false, "Sjukperiod kan inte vara längre än 365 dagar");
+        //    if (days > 365)
+        //        return (false, "Sjukperiod kan inte vara längre än 365 dagar");
 
-            // Varna för långa perioder
-            if (days > 14)
-            {
-                return (true, $"⚠️ Lång sjukperiod ({days} dagar). Efter dag 7 betalar Försäkringskassan.");
-            }
+        //    // Varna för långa perioder
+        //    if (days > 14)
+        //    {
+        //        return (true, $"⚠️ Lång sjukperiod ({days} dagar). Efter dag 7 betalar Försäkringskassan.");
+        //    }
 
-            return (true, "");
-        }
+        //    return (true, "");
+        //}
 
         /// <summary>
         /// Kontrollera om semester kan läggas på valt datum
@@ -105,39 +105,39 @@ namespace MyWorkSalary.Services.Validation
         }
 
         // Hantera Semester/Sjuk korrekt
-        public bool HasOverlappingShift(WorkShift newShift)
-        {
-            // SKIPPA kontrol för semester/sjuk - de har inga tider
-            if (newShift.ShiftType == ShiftType.Vacation ||
-                newShift.ShiftType == ShiftType.SickLeave ||
-                !newShift.StartTime.HasValue ||
-                !newShift.EndTime.HasValue)
-            {
-                return false;
-            }
+        //public bool HasOverlappingShift(WorkShift newShift)
+        //{
+        //    // SKIPPA kontrol för semester/sjuk - de har inga tider
+        //    if (newShift.ShiftType == ShiftType.Vacation ||
+        //        newShift.ShiftType == ShiftType.SickLeave ||
+        //        !newShift.StartTime.HasValue ||
+        //        !newShift.EndTime.HasValue)
+        //    {
+        //        return false;
+        //    }
 
-            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(newShift.JobProfileId);
+        //    var existingShifts = _databaseService.WorkShifts.GetWorkShifts(newShift.JobProfileId);
 
-            foreach (var existing in existingShifts)
-            {
-                // Skippa om vi uppdaterar samma pass
-                if (existing.Id == newShift.Id)
-                    continue;
+        //    foreach (var existing in existingShifts)
+        //    {
+        //        // Skippa om vi uppdaterar samma pass
+        //        if (existing.Id == newShift.Id)
+        //            continue;
 
-                // SKIPPA befintliga pass utan tider
-                if (!existing.StartTime.HasValue || !existing.EndTime.HasValue)
-                    continue;
+        //        // SKIPPA befintliga pass utan tider
+        //        if (!existing.StartTime.HasValue || !existing.EndTime.HasValue)
+        //            continue;
 
-                // Kontrollera överlapp mellan tidsperioder
-                if (newShift.StartTime < existing.EndTime &&
-                    newShift.EndTime > existing.StartTime)
-                {
-                    return true;
-                }
-            }
+        //        // Kontrollera överlapp mellan tidsperioder
+        //        if (newShift.StartTime < existing.EndTime &&
+        //            newShift.EndTime > existing.StartTime)
+        //        {
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         // Returnera överlappande pass med säker null-hantering
         public WorkShift? GetOverlappingShift(WorkShift newShift)
@@ -175,72 +175,72 @@ namespace MyWorkSalary.Services.Validation
         }
 
         // Kontrollera om samma typ av ledighet redan finns på datum
-        public bool HasConflictingLeave(WorkShift newShift)
-        {
-            // Endast för Semester/Sjuk
-            if (newShift.ShiftType != ShiftType.Vacation &&
-                newShift.ShiftType != ShiftType.SickLeave)
-            {
-                return false;
-            }
+        //public bool HasConflictingLeave(WorkShift newShift)
+        //{
+        //    // Endast för Semester/Sjuk
+        //    if (newShift.ShiftType != ShiftType.Vacation &&
+        //        newShift.ShiftType != ShiftType.SickLeave)
+        //    {
+        //        return false;
+        //    }
 
-            var existingShifts = _databaseService.WorkShifts.GetWorkShifts(newShift.JobProfileId);
+        //    var existingShifts = _databaseService.WorkShifts.GetWorkShifts(newShift.JobProfileId);
 
-            foreach (var existing in existingShifts)
-            {
-                // Skippa om vi uppdaterar samma pass
-                if (existing.Id == newShift.Id)
-                    continue;
+        //    foreach (var existing in existingShifts)
+        //    {
+        //        // Skippa om vi uppdaterar samma pass
+        //        if (existing.Id == newShift.Id)
+        //            continue;
 
-                // Kontrollera överlappande perioder
-                if (existing.ShiftType == ShiftType.Vacation ||
-                    existing.ShiftType == ShiftType.SickLeave)
-                {
-                    // Beräkna start- och slutdatum för båda passen
-                    var newStart = newShift.ShiftDate.Date;
-                    var newEnd = newStart.AddDays((newShift.NumberOfDays ?? 1) - 1);
+        //        // Kontrollera överlappande perioder
+        //        if (existing.ShiftType == ShiftType.Vacation ||
+        //            existing.ShiftType == ShiftType.SickLeave)
+        //        {
+        //            // Beräkna start- och slutdatum för båda passen
+        //            var newStart = newShift.ShiftDate.Date;
+        //            var newEnd = newStart.AddDays((newShift.NumberOfDays ?? 1) - 1);
 
-                    var existingStart = existing.ShiftDate.Date;
-                    var existingEnd = existingStart.AddDays((existing.NumberOfDays ?? 1) - 1);
+        //            var existingStart = existing.ShiftDate.Date;
+        //            var existingEnd = existingStart.AddDays((existing.NumberOfDays ?? 1) - 1);
 
-                    // Kontrollera om perioderna överlappar
-                    if (newStart <= existingEnd && newEnd >= existingStart)
-                    {
-                        return true;
-                    }
-                }
+        //            // Kontrollera om perioderna överlappar
+        //            if (newStart <= existingEnd && newEnd >= existingStart)
+        //            {
+        //                return true;
+        //            }
+        //        }
 
-                // Kontrollera mot vanliga pass också
-                if (existing.StartTime.HasValue && newShift.ShiftType == ShiftType.SickLeave)
-                {
-                    var existingDate = existing.StartTime.Value.Date;
-                    var newStart = newShift.ShiftDate.Date;
-                    var newEnd = newStart.AddDays((newShift.NumberOfDays ?? 1) - 1);
+        //        // Kontrollera mot vanliga pass också
+        //        if (existing.StartTime.HasValue && newShift.ShiftType == ShiftType.SickLeave)
+        //        {
+        //            var existingDate = existing.StartTime.Value.Date;
+        //            var newStart = newShift.ShiftDate.Date;
+        //            var newEnd = newStart.AddDays((newShift.NumberOfDays ?? 1) - 1);
 
-                    // Kan inte jobba när man är sjuk
-                    if (existingDate >= newStart && existingDate <= newEnd)
-                    {
-                        return true;
-                    }
-                }
-            }
+        //            // Kan inte jobba när man är sjuk
+        //            if (existingDate >= newStart && existingDate <= newEnd)
+        //            {
+        //                return true;
+        //            }
+        //        }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         // Kontrollera om datum redan har pass
-        public bool HasShiftOnDate(int jobProfileId, DateTime date, ShiftType? shiftType = null)
-        {
-            var query = _databaseService.WorkShifts.GetWorkShifts(jobProfileId)
-                                       .Where(x => x.ShiftDate.Date == date.Date);
+        //public bool HasShiftOnDate(int jobProfileId, DateTime date, ShiftType? shiftType = null)
+        //{
+        //    var query = _databaseService.WorkShifts.GetWorkShifts(jobProfileId)
+        //                               .Where(x => x.ShiftDate.Date == date.Date);
 
-            if (shiftType.HasValue)
-            {
-                query = query.Where(x => x.ShiftType == shiftType.Value);
-            }
+        //    if (shiftType.HasValue)
+        //    {
+        //        query = query.Where(x => x.ShiftType == shiftType.Value);
+        //    }
 
-            return query.Any();
-        }
+        //    return query.Any();
+        //}
 
         // Kontrollera arbetspass mot hela dagen sjuk/semester
         public (bool HasConflict, string ConflictMessage, WorkShift ConflictingLeave) CheckWorkShiftAgainstFullDayLeave(WorkShift workShift)

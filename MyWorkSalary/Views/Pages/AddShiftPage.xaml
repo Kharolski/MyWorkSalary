@@ -58,82 +58,10 @@
                 <shifttypes:VacationFormView BindingContext="{Binding VacationVM}" />
             </ContentView>
 
-            <!-- ⏰ Vanliga arbetstider - döljs för semester/sjuk/VAB/OnCall -->
-            <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowTimeFields}">
-                <Label Text="🕐 Arbetstid"
-                       Style="{StaticResource FieldLabel}" />
-                <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
-                    <!-- Starttid -->
-                    <VerticalStackLayout Grid.Column="0" Spacing="3">
-                        <Label Text="Från" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
-                        <TimePicker Time="{Binding StartTime}"
-                                    Style="{StaticResource ThemedTimePicker}"
-                                    Format="HH:mm" />
-                    </VerticalStackLayout>
-                    <!-- Separator -->
-                    <Label Grid.Column="1"
-                           Text="→"
-                           FontSize="20"
-                           VerticalOptions="Center"
-                           TextColor="Gray" />
-                    <!-- Sluttid -->
-                    <VerticalStackLayout Grid.Column="2" Spacing="3">
-                        <Label Text="Till" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
-                        <TimePicker Time="{Binding EndTime}"
-                                    Style="{StaticResource ThemedTimePicker}"
-                                    Format="HH:mm" />
-                    </VerticalStackLayout>
-                </Grid>
-                <Label Text="💡 Tips: Om passet går över midnatt kommer sluttiden att räknas som nästa dag"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                   Dark={StaticResource TextSecondaryDark}}"
-                       Margin="0,5,0,0" />
-            </VerticalStackLayout>
-
-            <!-- Rast-fält (visas bara för arbetstid) -->
-            <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowBreakField}">
-                <Label Text="☕ Rast (minuter)" Style="{StaticResource FieldLabel}" />
-                <Entry Text="{Binding BreakMinutes}"
-                       Placeholder="0"
-                       Keyboard="Numeric"
-                       Style="{StaticResource ThemedEntry}" />
-                <Label Text="{Binding BreakSuggestionText}"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                   Dark={StaticResource TextSecondaryDark}}" />
-            </VerticalStackLayout>
-
-            <!-- Anteckningar (valfritt) - DÖLJS för sjukskrivning/VAB/OnCall/Vacation -->
-            <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowGeneralNotes}">
-                <Label Text="📝 Anteckningar (valfritt)"
-                       Style="{StaticResource FieldLabel}" />
-                <Editor Text="{Binding Notes}"
-                        Placeholder="T.ex. övertid, speciella omständigheter..."
-                        Style="{StaticResource ThemedEditor}"
-                        HeightRequest="80" />
-            </VerticalStackLayout>
-
-            <!-- Beräknad information - DÖLJS för sjukskrivning/VAB/OnCall/Vacation -->
-            <Frame Style="{StaticResource CalculationFrame}"
-                   IsVisible="{Binding ShowGeneralCalculation}">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="📊 Beräkning"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                       Dark={StaticResource White}}" />
-                    <Label Text="{Binding CalculationSummary}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                       Dark={StaticResource White}}" />
-                    <Label Text="{Binding CalculatedPay, StringFormat='Beräknad lön: {0:N0} kr'}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Light={StaticResource Success},
-                                                       Dark={StaticResource Success}}"
-                           IsVisible="{Binding ShowPay}" />
-                </VerticalStackLayout>
-            </Frame>
+            <!-- REGULAR SHIFT FORM -->
+            <ContentView IsVisible="{Binding ShowGeneralForm}">
+                <shifttypes:RegularShiftFormView BindingContext="{Binding RegularShiftVM}" />
+            </ContentView>
 
             <!-- Knappar -->
             <StackLayout Orientation="Horizontal"
