@@ -61,20 +61,20 @@
                                        HorizontalOptions="Center" />
                             </StackLayout>
 
-                             <!--Intjänat--> 
+                            <!--OB-timmar-->
                             <StackLayout Grid.Column="1">
-                                <Label Text="💰" FontSize="24" HorizontalOptions="Center" />
-                                <Label Text="{Binding MonthlyEarningsText}"
+                                <Label Text="🌙" FontSize="24" HorizontalOptions="Center" />
+                                <Label Text="{Binding MonthlyObHoursText}"
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        HorizontalOptions="Center" />
-                                <Label Text="Intjänat"
+                                                            <Label Text="OB-timmar"
                                        Style="{StaticResource SecondaryLabel}"
                                        FontSize="12"
                                        HorizontalOptions="Center" />
                             </StackLayout>
 
-                             <!--Arbetsdagar--> 
+                            <!--Arbetsdagar--> 
                             <StackLayout Grid.Column="2">
                                 <Label Text="📅" FontSize="24" HorizontalOptions="Center" />
                                 <Label Text="{Binding WorkDaysThisMonth}"
@@ -97,21 +97,15 @@
 
                          <!--Aktuellt saldo--> 
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10">
-                            <Label Text="{Binding FlexStatusIcon}"
-                                   FontSize="24"
-                                   VerticalOptions="Center" />
-                            <Label Text="{Binding FlexBalanceText}"
-                                   FontAttributes="Bold"
-                                   FontSize="18"
-                                   TextColor="{Binding FlexBalanceColor}"
-                                   VerticalOptions="Center" />
+                            <Label Text="{Binding FlexStatusIcon}" FontSize="24" VerticalOptions="Center" />
+                            <Label Text="{Binding FlexBalanceText}" FontAttributes="Bold" FontSize="18" TextColor="{Binding FlexBalanceColor}" VerticalOptions="Center" />
                         </StackLayout>
 
-                         <!--Denna månad--> 
-                        <Label Text="{Binding MonthlyFlexText}"
-                               Style="{StaticResource SecondaryLabel}"
-                               FontSize="14"
-                               HorizontalOptions="Center" />
+                        <!-- Total saldo + Föregående månad saldo -->
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                            <Label Text="{Binding TotalFlexBalanceText}" Style="{StaticResource SecondaryLabel}" FontSize="14" />
+                            <Label Text="{Binding PreviousMonthFlexText}" Style="{StaticResource SecondaryLabel}" FontSize="14" />
+                        </HorizontalStackLayout>
 
                     </VerticalStackLayout>
                 </Frame>

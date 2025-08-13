@@ -17,16 +17,18 @@ namespace MyWorkSalary.ViewModels
         private JobProfile _activeJob;
         private bool _hasActiveJob;
         private decimal _monthlyHours;
-        private decimal _monthlyEarnings;
+        private decimal _monthlyObHours;
         private int _workDaysThisMonth;
+        private decimal _expectedHoursThisMonth;
+        private decimal _totalFlexBalanceExcludingCurrentMonth;
         private ObservableCollection<RecentActivityItem> _recentActivities;
 
         // Flex fields
         private decimal _currentFlexBalance;
-        private string _flexBalanceText;
         private string _flexStatusIcon;
         private decimal _monthlyFlexDifference;
         private string _monthlyFlexText;
+        private decimal _previousMonthFlexDifference;
         private bool _hasFlexTime;
         #endregion
 
@@ -40,13 +42,10 @@ namespace MyWorkSalary.ViewModels
             SetupJobCommand = new Command(OnSetupJob);
             AddShiftCommand = new Command(OnAddShift, () => HasActiveJob);
             ViewReportsCommand = new Command(OnViewReports, () => HasActiveJob);
-            ViewFlexHistoryCommand = new Command(OnViewFlexHistory, () => HasActiveJob && HasFlexTime); 
 
             // Initialize collections
             RecentActivities = new ObservableCollection<RecentActivityItem>();
 
-            // FLYTTA DENNA TILL OnAppearing istället för konstruktor
-            //LoadDashboardData();
         }
         #endregion
 
@@ -65,7 +64,8 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged(nameof(JobDisplayText));
                 OnPropertyChanged(nameof(SalaryTypeInfo));
                 OnPropertyChanged(nameof(WorkplaceText)); 
-                OnPropertyChanged(nameof(HasFlexTime)); 
+                OnPropertyChanged(nameof(HasFlexTime));
+                OnPropertyChanged(nameof(FlexBalanceText));
             }
         }
 
@@ -82,7 +82,6 @@ namespace MyWorkSalary.ViewModels
                 // Uppdatera command states
                 ((Command)AddShiftCommand).ChangeCanExecute();
                 ((Command)ViewReportsCommand).ChangeCanExecute();
-                ((Command)ViewFlexHistoryCommand).ChangeCanExecute(); 
             }
         }
 
@@ -110,18 +109,19 @@ namespace MyWorkSalary.ViewModels
                 _monthlyHours = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(MonthlyHoursText));
+                OnPropertyChanged(nameof(FlexBalanceText));
             }
         }
 
-        public string MonthlyEarningsText => MonthlyEarnings.ToString("N0") + " kr";
-        public decimal MonthlyEarnings
+        public string MonthlyObHoursText => MonthlyObHours.ToString("F1");
+        public decimal MonthlyObHours
         {
-            get => _monthlyEarnings;
+            get => _monthlyObHours;
             set
             {
-                _monthlyEarnings = value;
+                _monthlyObHours = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(MonthlyEarningsText));
+                OnPropertyChanged(nameof(MonthlyObHoursText));
             }
         }
 
@@ -161,6 +161,7 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region FlexTime Properties
+        
         /// <summary>
         /// Aktuellt totalt flex-saldo
         /// </summary>
@@ -175,15 +176,33 @@ namespace MyWorkSalary.ViewModels
         }
 
         /// <summary>
-        /// Formaterad text för flex-saldo ("+12.5h kompledighet")
+        /// Formaterad text för flex-saldo ("+12.5t kompledighet")
         /// </summary>
         public string FlexBalanceText
         {
-            get => _flexBalanceText;
+            get
+            {
+                if (!HasFlexTime || ActiveJob == null)
+                    return "";
+
+                var kvar = ExpectedHoursThisMonth - MonthlyHours;
+                if (kvar > 0)
+                    return $"{kvar:F1} timmar skuld";
+                else if (kvar < 0)
+                    return $"{Math.Abs(kvar):F1} timmar kompledighet";
+                else
+                    return "Månadens mål uppnått!";
+            }
+        }
+
+        public decimal ExpectedHoursThisMonth
+        {
+            get => _expectedHoursThisMonth;
             set
             {
-                _flexBalanceText = value;
+                _expectedHoursThisMonth = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(FlexBalanceText));
             }
         }
 
@@ -214,7 +233,7 @@ namespace MyWorkSalary.ViewModels
         }
 
         /// <summary>
-        /// Text för månadsvis flex ("+2.5h denna månad")
+        /// Text för månadsvis flex ("+2.5t denna månad")
         /// </summary>
         public string MonthlyFlexText
         {
@@ -225,6 +244,33 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        // Föregående månad (förändring)
+        public decimal PreviousMonthFlexDifference
+        {
+            get => _previousMonthFlexDifference;
+            set
+            {
+                _previousMonthFlexDifference = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PreviousMonthFlexText));
+            }
+        }
+        public string PreviousMonthFlexText => $"{PreviousMonthFlexDifference:F1} tim förra månaden";
+
+        public decimal TotalFlexBalanceExcludingCurrentMonth
+        {
+            get => _totalFlexBalanceExcludingCurrentMonth;
+            set
+            {
+                _totalFlexBalanceExcludingCurrentMonth = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalFlexBalanceText));
+            }
+        }
+
+        // Total flex-saldo (hela anställningen)
+        public string TotalFlexBalanceText => $"{TotalFlexBalanceExcludingCurrentMonth:F1} tim saldo";
 
         /// <summary>
         /// Om jobbet har flex-tid (månadslön)
@@ -237,7 +283,7 @@ namespace MyWorkSalary.ViewModels
                 _hasFlexTime = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ShowFlexSection));
-                ((Command)ViewFlexHistoryCommand).ChangeCanExecute();
+                OnPropertyChanged(nameof(FlexBalanceText));
             }
         }
 
@@ -261,7 +307,6 @@ namespace MyWorkSalary.ViewModels
         public ICommand SetupJobCommand { get; }
         public ICommand AddShiftCommand { get; }
         public ICommand ViewReportsCommand { get; }
-        public ICommand ViewFlexHistoryCommand { get; }
         #endregion
 
         #region Methods
@@ -294,8 +339,9 @@ namespace MyWorkSalary.ViewModels
 
             var stats = _dashboardService.GetMonthlyStats(ActiveJob.Id);
             MonthlyHours = stats.TotalHours;
-            MonthlyEarnings = stats.TotalEarnings;
+            MonthlyObHours = stats.TotalObHours;
             WorkDaysThisMonth = stats.WorkDays;
+            ExpectedHoursThisMonth = stats.ExpectedHours;
 
             // Uppdatera flex när shifts ändras
             if (HasFlexTime)
@@ -309,7 +355,7 @@ namespace MyWorkSalary.ViewModels
             if (ActiveJob == null)
                 return;
 
-            var activities = _dashboardService.GetRecentActivities(ActiveJob.Id, 4);
+            var activities = _dashboardService.GetRecentActivities(ActiveJob.Id, 4);  // <-- 4 max aktiviteter
             RecentActivities.Clear();
             foreach (var activity in activities)
             {
@@ -329,13 +375,23 @@ namespace MyWorkSalary.ViewModels
             {
                 var flexStatus = _dashboardService.GetFlexStatus(ActiveJob.Id);
 
-                CurrentFlexBalance = flexStatus.CurrentBalance;
-                FlexBalanceText = flexStatus.BalanceText;
+                // Hämta och visa aktuellt saldo
+                CurrentFlexBalance = flexStatus.CurrentBalance; 
                 FlexStatusIcon = flexStatus.StatusIcon;
                 MonthlyFlexDifference = flexStatus.MonthlyDifference;
                 MonthlyFlexText = flexStatus.MonthlyText;
 
+                // Hämta föregående månads diff
+                var previousMonth = DateTime.Now.AddMonths(-1);
+                var prevBalance = _dashboardService.GetFlexTimeHistory(ActiveJob.Id, 2)
+                    .FirstOrDefault(f => f.Month == previousMonth.Month && f.Year == previousMonth.Year);
+
+                PreviousMonthFlexDifference = prevBalance?.MonthlyDifference ?? 0;
+
+                TotalFlexBalanceExcludingCurrentMonth = _dashboardService.GetTotalFlexBalanceExcludingCurrentMonth(ActiveJob.Id);
+
                 OnPropertyChanged(nameof(FlexBalanceColor));
+                OnPropertyChanged(nameof(TotalFlexBalanceText)); // <-- tvinga UI att uppdatera
             }
             catch (Exception ex)
             {
@@ -343,7 +399,6 @@ namespace MyWorkSalary.ViewModels
 
                 // Fallback values
                 CurrentFlexBalance = 0;
-                FlexBalanceText = "Kunde inte ladda flex-data";
                 FlexStatusIcon = "⚠️";
                 MonthlyFlexDifference = 0;
                 MonthlyFlexText = "";
@@ -370,17 +425,6 @@ namespace MyWorkSalary.ViewModels
         private async void OnViewReports()
         {
             await Shell.Current.GoToAsync("//SalaryPage");
-        }
-
-        /// <summary>
-        /// Visa flex-historik TODO: Skapa FlexHistoryPage
-        /// </summary>
-        private async void OnViewFlexHistory()
-        {
-            // TODO: Skapa FlexHistoryPage
-            await Shell.Current.DisplayAlert("Flex-historik",
-                $"Aktuellt saldo: {FlexBalanceText}\n{MonthlyFlexText}",
-                "OK");
         }
         #endregion
 

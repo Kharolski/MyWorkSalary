@@ -111,6 +111,19 @@ namespace MyWorkSalary.Services.Repositories
         #endregion
 
         #region Business Queries
+        public decimal GetTotalFlexBalanceExcludingCurrentMonth(int jobProfileId)
+        {
+            var now = DateTime.Now;
+            // Hämta senaste posten före nuvarande månad
+            var previous = _database.Table<FlexTimeBalance>()
+                .Where(x => x.JobProfileId == jobProfileId &&
+                           (x.Year < now.Year || (x.Year == now.Year && x.Month < now.Month)))
+                .OrderByDescending(x => x.Year)
+                .ThenByDescending(x => x.Month)
+                .FirstOrDefault();
+
+            return previous?.RunningBalance ?? 0;
+        }
 
         /// <summary>
         /// Hämta aktuellt totalt saldo (senaste månaden)

@@ -59,6 +59,8 @@ namespace MyWorkSalary.Services.Interfaces
         /// <returns>Aktuellt totalt flex-saldo</returns>
         decimal GetCurrentFlexBalance(int jobProfileId);
 
+        decimal GetTotalFlexBalanceExcludingCurrentMonth(int jobProfileId);
+
         /// <summary>
         /// Hämta flex-historik för rapporter
         /// </summary>
@@ -90,14 +92,19 @@ namespace MyWorkSalary.Services.Interfaces
     public class MonthlyStats
     {
         public decimal TotalHours { get; set; }
-        public decimal TotalEarnings { get; set; }
+        public decimal TotalObHours { get; set; }
         public int WorkDays { get; set; }
         public decimal RegularHours { get; set; }
         public decimal OvertimeHours { get; set; }
         public int SickDays { get; set; }
+        public decimal SickLeaveHours { get; set; }
         public int VacationDays { get; set; }
         public DateTime MonthStart { get; set; }
         public DateTime MonthEnd { get; set; }
+
+        // VAB-fält
+        public int VabDays { get; set; }
+        public decimal VabHours { get; set; } 
 
         // NYA PROPERTIES FÖR FLEX
         public decimal ExpectedHours { get; set; }        // Förväntade timmar denna månad
@@ -127,7 +134,7 @@ namespace MyWorkSalary.Services.Interfaces
         public decimal TodaysHours { get; set; }
         public decimal WeeklyHours { get; set; }
         public decimal MonthlyHours { get; set; }
-        public decimal MonthlyEarnings { get; set; }
+        public decimal MonthlyObHours { get; set; }
         public string NextScheduledShift { get; set; }
         public bool HasUpcomingVacation { get; set; }
         public bool IsCurrentlySick { get; set; }

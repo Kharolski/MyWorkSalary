@@ -2,6 +2,7 @@
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
+using System.Data;
 using System.Globalization;
 
 namespace MyWorkSalary.Services
@@ -20,6 +21,15 @@ namespace MyWorkSalary.Services
         #endregion
 
         #region Monthly Stats
+        /// <summary>
+        /// Beräknar statistik för aktuell månad för en given anställningsprofil.
+        /// 
+        /// Flexlogik:
+        /// - Sjukdagar (hel eller delvis) drar bort hela planerade timmar från `ExpectedHours`.
+        ///   Detta gör att sjukfrånvaro inte skapar skuldtimmar i flex.
+        /// - Faktisk arbetstid på delvis sjukdagar registreras enbart för rapporter/statistik,
+        ///   men påverkar inte flexbalansen.
+        /// </summary>
         public MonthlyStats GetMonthlyStats(int jobProfileId)
         {
             var currentMonth = DateTime.Now;
@@ -31,12 +41,13 @@ namespace MyWorkSalary.Services
                 .ToList();
 
             var jobProfile = _databaseService.JobProfiles.GetJobProfile(jobProfileId);
-
             var stats = new MonthlyStats
             {
                 MonthStart = monthStart,
                 MonthEnd = monthEnd
             };
+
+            decimal hoursToDeduct = 0; // Samma för sjuk, VAB osv.
 
             foreach (var shift in shifts)
             {
@@ -44,32 +55,81 @@ namespace MyWorkSalary.Services
                 {
                     case ShiftType.Regular:
                         stats.TotalHours += shift.TotalHours;
-                        stats.TotalEarnings += shift.TotalPay;
                         stats.WorkDays++;
                         stats.RegularHours += shift.RegularHours;
+                        stats.TotalObHours += CalculateObHoursForShift(shift);
                         break;
+
                     case ShiftType.SickLeave:
                         stats.SickDays++;
+
+                        var sickLeave = _databaseService.SickLeaves.GetSickLeaveByWorkShiftId(shift.Id);
+
+                        if (sickLeave != null)
+                        {
+                            if (sickLeave.SickType == SickLeaveType.ShouldHaveWorked)
+                            {
+                                // Hel dag sjuk - dra bort hela planerade tiden
+                                hoursToDeduct += sickLeave.ScheduledHours;
+                                stats.SickLeaveHours += sickLeave.ScheduledHours;
+                            }
+                            else if (sickLeave.SickType == SickLeaveType.WorkedPartially)
+                            {
+                                // Delvis sjuk - dra bara bort den TID MAN INTE JOBBAT
+                                decimal scheduled = sickLeave.ScheduledHours;
+                                decimal worked = sickLeave.WorkedHours;
+                                decimal notWorked = scheduled - worked;
+
+                                hoursToDeduct += notWorked; // Bara de timmar man inte jobbade
+
+                                stats.SickLeaveHours += notWorked;
+                                stats.TotalHours += worked; // Räkna arbetade timmar
+                                stats.WorkDays++; // Räkna som arbetsdag
+                            }
+                            // Sjuk på ledighet - inget att dra bort
+                        }
                         break;
+
                     case ShiftType.Vacation:
+                        stats.TotalHours += shift.TotalHours;
                         stats.VacationDays++;
+                        stats.RegularHours += shift.RegularHours;
+                        break;
+
+                    case ShiftType.VAB: // Vård av barn
+                        stats.VabDays++;
+
+                        var vabLeave = _databaseService.VABLeaves.GetByWorkShiftId(shift.Id);
+                        if (vabLeave != null)
+                        {
+                            // Alltid delvis VAB - räkna bara bort de timmar man inte jobbat
+                            decimal scheduled = vabLeave.ScheduledHours;
+                            decimal worked = vabLeave.WorkedHours;
+                            decimal notWorked = scheduled - worked;
+
+                            hoursToDeduct += notWorked;
+                            stats.VabHours += notWorked;
+                            stats.TotalHours += worked;
+
+                            // Räkna som arbetsdag om man jobbat något
+                            if (worked > 0)
+                                stats.WorkDays++;
+                        }
                         break;
                 }
             }
 
-            // Beräkna flex för månadslön
+            // FLEXLOGIK: Beräkna förväntade timmar efter sjukfrånvaro
             if (jobProfile?.ExpectedHoursPerMonth > 0)
             {
-                stats.ExpectedHours = jobProfile.ExpectedHoursPerMonth;
+                stats.ExpectedHours = jobProfile.ExpectedHoursPerMonth - hoursToDeduct;
                 stats.FlexDifference = stats.TotalHours - stats.ExpectedHours;
                 stats.OvertimeHours = Math.Max(0, stats.FlexDifference);
 
-                // Hämta aktuellt flex-saldo
                 stats.CurrentFlexBalance = GetCurrentFlexBalance(jobProfileId);
             }
             else
             {
-                // Timanställda - ingen flex
                 stats.ExpectedHours = 0;
                 stats.FlexDifference = 0;
                 stats.OvertimeHours = 0;
@@ -77,6 +137,36 @@ namespace MyWorkSalary.Services
             }
 
             return stats;
+        }
+
+        private decimal CalculateObHoursForShift(WorkShift shift)
+        {
+            if (shift.ShiftType != ShiftType.Regular || !shift.StartTime.HasValue || !shift.EndTime.HasValue)
+                return 0;
+
+            var start = shift.StartTime.Value;
+            var end = shift.EndTime.Value;
+
+            // Hantera pass över midnatt
+            if (end < start)
+                end = end.AddDays(1);
+
+            decimal obHours = 0;
+            var current = start;
+
+            while (current < end)
+            {
+                var next = current.AddMinutes(1);
+                var hour = current.TimeOfDay;
+
+                // OB-tid: mellan 18:00 och 06:00
+                if (hour >= new TimeSpan(18, 0, 0) || hour < new TimeSpan(6, 0, 0))
+                    obHours += 1.0m / 60.0m; // 1 minut = 1/60 timme
+
+                current = next;
+            }
+
+            return Math.Round(obHours, 2);
         }
         #endregion
 
@@ -110,13 +200,50 @@ namespace MyWorkSalary.Services
                     case ShiftType.SickLeave:
                         activity.Icon = "🏥";
                         activity.TimeText = GetDateDisplayText(shift.ShiftDate);
-                        activity.Description = "Sjukdag";
-                        activity.Duration = "(1 dag)";
+
+                        // Hämta sjuktyp från SickLeave-objektet
+                        var sickLeave = _databaseService.SickLeaves.GetSickLeaveByWorkShiftId(shift.Id);
+
+                        if (sickLeave != null)
+                        {
+                            switch (sickLeave.SickType)
+                            {
+                                case SickLeaveType.ShouldHaveWorked:
+                                    activity.Description = "Sjukdag (1 dag)";
+                                    activity.Duration = $"({sickLeave.ScheduledHours:F1}t)";
+                                    break;
+                                case SickLeaveType.WorkedPartially:
+                                    activity.Description = "Delvis sjuk";
+                                    activity.Duration = $"({sickLeave.WorkedHours:F1}t)";
+                                    break;
+                                case SickLeaveType.WouldBeFree:
+                                    activity.Description = "Sjuk på ledighet";
+                                    activity.Duration = "(Ingen förlust)";
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            activity.Description = "Sjukdag";
+                            activity.Duration = "(1 dag)";
+                        }
                         break;
                     case ShiftType.Vacation:
                         activity.Icon = "🏖️";
                         activity.TimeText = GetDateDisplayText(shift.ShiftDate);
                         activity.Description = "Semester";
+                        activity.Duration = "(1 dag)";
+                        break;
+                    case ShiftType.OnCall: // Jour
+                        activity.Icon = "📞";
+                        activity.TimeText = GetTimeDisplayText(shift);
+                        activity.Description = "Jourpass";
+                        activity.Duration = "Jour";
+                        break;
+                    case ShiftType.VAB: // Vård av barn
+                        activity.Icon = "👶";
+                        activity.TimeText = GetDateDisplayText(shift.ShiftDate);
+                        activity.Description = "VAB";
                         activity.Duration = "(1 dag)";
                         break;
                 }
@@ -167,7 +294,7 @@ namespace MyWorkSalary.Services
                 TodaysHours = GetTodaysHours(jobProfileId),
                 WeeklyHours = weeklyHours,
                 MonthlyHours = monthlyStats.TotalHours,
-                MonthlyEarnings = monthlyStats.TotalEarnings,
+                MonthlyObHours = monthlyStats.TotalObHours,
                 NextScheduledShift = GetNextScheduledShift(jobProfileId),
                 HasUpcomingVacation = HasUpcomingVacation(jobProfileId),
                 IsCurrentlySick = IsCurrentlySick(jobProfileId),
@@ -184,6 +311,11 @@ namespace MyWorkSalary.Services
         public decimal GetCurrentFlexBalance(int jobProfileId)
         {
             return _databaseService.FlexTime.GetCurrentFlexBalance(jobProfileId);
+        }
+
+        public decimal GetTotalFlexBalanceExcludingCurrentMonth(int jobProfileId)
+        {
+            return _databaseService.FlexTime.GetTotalFlexBalanceExcludingCurrentMonth(jobProfileId);
         }
 
         public List<FlexTimeBalance> GetFlexTimeHistory(int jobProfileId, int monthsBack = 12)
@@ -207,9 +339,12 @@ namespace MyWorkSalary.Services
 
             // Hämta faktiska timmar för månaden
             var monthlyStats = GetMonthlyStats(jobProfileId);
+
             var actualHours = monthlyStats.TotalHours;
-            var expectedHours = jobProfile.ExpectedHoursPerMonth;
+            var expectedHours = monthlyStats.ExpectedHours;
             var difference = actualHours - expectedHours;
+
+            //System.Diagnostics.Debug.WriteLine($"[FLEX] Uppdaterar flex: expected={expectedHours}, actual={actualHours}, diff={difference}");
 
             // Hämta eller skapa FlexTimeBalance
             var existingBalance = _databaseService.FlexTime.GetFlexTimeBalance(jobProfileId, year, month);
@@ -235,6 +370,7 @@ namespace MyWorkSalary.Services
             else
             {
                 // Uppdatera befintlig
+                existingBalance.ExpectedHours = expectedHours;
                 existingBalance.ActualHours = actualHours;
                 existingBalance.MonthlyDifference = difference;
 

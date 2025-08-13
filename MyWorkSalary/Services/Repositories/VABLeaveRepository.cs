@@ -40,6 +40,13 @@ namespace MyWorkSalary.Services.Repositories
                     .FirstOrDefault());
         }
 
+        public VABLeave GetByWorkShiftId(int workShiftId)
+        {
+            return Database.Table<VABLeave>()
+                .Where(v => v.WorkShiftId == workShiftId)
+                .FirstOrDefault();
+        }
+
         public async Task<List<VABLeave>> GetByJobProfileIdAsync(int jobProfileId)
         {
             return await Task.Run(() =>

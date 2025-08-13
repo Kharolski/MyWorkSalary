@@ -11,6 +11,7 @@ namespace MyWorkSalary.Services.Interfaces
 
         // Query Operations
         Task<VABLeave> GetByWorkShiftIdAsync(int workShiftId);
+        VABLeave GetByWorkShiftId(int workShiftId);
         Task<List<VABLeave>> GetByJobProfileIdAsync(int jobProfileId);
         Task<List<VABLeave>> GetByDateRangeAsync(int jobProfileId, DateTime startDate, DateTime endDate);
         Task<List<VABLeave>> GetAllAsync();
