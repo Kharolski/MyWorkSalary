@@ -101,10 +101,10 @@
                             <Label Text="{Binding FlexBalanceText}" FontAttributes="Bold" FontSize="18" TextColor="{Binding FlexBalanceColor}" VerticalOptions="Center" />
                         </StackLayout>
 
-                        <!-- Total saldo + Föregående månad saldo -->
+                        <!--Förklaringstext-->
                         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-                            <Label Text="{Binding TotalFlexBalanceText}" Style="{StaticResource SecondaryLabel}" FontSize="14" />
-                            <Label Text="{Binding PreviousMonthFlexText}" Style="{StaticResource SecondaryLabel}" FontSize="14" />
+
+                            <Label Text="💡 Timmar kvar/över månadens mål" Style="{StaticResource SecondaryLabel}" FontSize="12" HorizontalOptions="Center" />
                         </HorizontalStackLayout>
 
                     </VerticalStackLayout>

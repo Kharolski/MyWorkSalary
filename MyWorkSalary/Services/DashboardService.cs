@@ -313,11 +313,6 @@ namespace MyWorkSalary.Services
             return _databaseService.FlexTime.GetCurrentFlexBalance(jobProfileId);
         }
 
-        public decimal GetTotalFlexBalanceExcludingCurrentMonth(int jobProfileId)
-        {
-            return _databaseService.FlexTime.GetTotalFlexBalanceExcludingCurrentMonth(jobProfileId);
-        }
-
         public List<FlexTimeBalance> GetFlexTimeHistory(int jobProfileId, int monthsBack = 12)
         {
             return _databaseService.FlexTime.GetFlexTimeHistory(jobProfileId)
@@ -343,8 +338,6 @@ namespace MyWorkSalary.Services
             var actualHours = monthlyStats.TotalHours;
             var expectedHours = monthlyStats.ExpectedHours;
             var difference = actualHours - expectedHours;
-
-            //System.Diagnostics.Debug.WriteLine($"[FLEX] Uppdaterar flex: expected={expectedHours}, actual={actualHours}, diff={difference}");
 
             // Hämta eller skapa FlexTimeBalance
             var existingBalance = _databaseService.FlexTime.GetFlexTimeBalance(jobProfileId, year, month);

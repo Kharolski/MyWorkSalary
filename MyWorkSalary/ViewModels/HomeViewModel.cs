@@ -20,7 +20,6 @@ namespace MyWorkSalary.ViewModels
         private decimal _monthlyObHours;
         private int _workDaysThisMonth;
         private decimal _expectedHoursThisMonth;
-        private decimal _totalFlexBalanceExcludingCurrentMonth;
         private ObservableCollection<RecentActivityItem> _recentActivities;
 
         // Flex fields
@@ -28,7 +27,6 @@ namespace MyWorkSalary.ViewModels
         private string _flexStatusIcon;
         private decimal _monthlyFlexDifference;
         private string _monthlyFlexText;
-        private decimal _previousMonthFlexDifference;
         private bool _hasFlexTime;
         #endregion
 
@@ -161,7 +159,6 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region FlexTime Properties
-        
         /// <summary>
         /// Aktuellt totalt flex-saldo
         /// </summary>
@@ -244,33 +241,6 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        // Föregående månad (förändring)
-        public decimal PreviousMonthFlexDifference
-        {
-            get => _previousMonthFlexDifference;
-            set
-            {
-                _previousMonthFlexDifference = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(PreviousMonthFlexText));
-            }
-        }
-        public string PreviousMonthFlexText => $"{PreviousMonthFlexDifference:F1} tim förra månaden";
-
-        public decimal TotalFlexBalanceExcludingCurrentMonth
-        {
-            get => _totalFlexBalanceExcludingCurrentMonth;
-            set
-            {
-                _totalFlexBalanceExcludingCurrentMonth = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(TotalFlexBalanceText));
-            }
-        }
-
-        // Total flex-saldo (hela anställningen)
-        public string TotalFlexBalanceText => $"{TotalFlexBalanceExcludingCurrentMonth:F1} tim saldo";
 
         /// <summary>
         /// Om jobbet har flex-tid (månadslön)
@@ -386,12 +356,7 @@ namespace MyWorkSalary.ViewModels
                 var prevBalance = _dashboardService.GetFlexTimeHistory(ActiveJob.Id, 2)
                     .FirstOrDefault(f => f.Month == previousMonth.Month && f.Year == previousMonth.Year);
 
-                PreviousMonthFlexDifference = prevBalance?.MonthlyDifference ?? 0;
-
-                TotalFlexBalanceExcludingCurrentMonth = _dashboardService.GetTotalFlexBalanceExcludingCurrentMonth(ActiveJob.Id);
-
                 OnPropertyChanged(nameof(FlexBalanceColor));
-                OnPropertyChanged(nameof(TotalFlexBalanceText)); // <-- tvinga UI att uppdatera
             }
             catch (Exception ex)
             {

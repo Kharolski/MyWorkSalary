@@ -59,7 +59,7 @@ namespace MyWorkSalary.Services.Interfaces
         /// <returns>Aktuellt totalt flex-saldo</returns>
         decimal GetCurrentFlexBalance(int jobProfileId);
 
-        decimal GetTotalFlexBalanceExcludingCurrentMonth(int jobProfileId);
+        //decimal GetTotalFlexBalanceExcludingCurrentMonth(int jobProfileId);
 
         /// <summary>
         /// Hämta flex-historik för rapporter
@@ -157,9 +157,6 @@ namespace MyWorkSalary.Services.Interfaces
         public string BalanceText { get; set; }           // "+12.5h kompledighet"
         public string MonthlyText { get; set; }           // "+2.5h denna månad"
         public string StatusIcon { get; set; }            // 📈📉⚖️
-        public bool HasFlexTime => CurrentBalance != 0;
-        public bool IsPositive => CurrentBalance > 0;
-        public bool IsNegative => CurrentBalance < 0;
     }
     #endregion
 }
