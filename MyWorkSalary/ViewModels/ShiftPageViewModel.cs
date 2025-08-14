@@ -55,6 +55,11 @@ namespace MyWorkSalary.ViewModels
         #region Properties
         public string ActiveJobTitle => _activeJob?.JobTitle ?? "Inget aktivt jobb";
 
+        public string Workplace => _activeJob?.Workplace ?? "";
+        public string SalaryDisplayText => _activeJob?.ExpectedHoursPerMonth > 0
+            ? $"{_activeJob.SalaryDisplayText:NO} • Flex-tid"
+            : "Timlön";
+
         private ObservableCollection<GroupedWorkShift> _groupedWorkShifts;
         public ObservableCollection<GroupedWorkShift> GroupedWorkShifts
         {
@@ -96,6 +101,8 @@ namespace MyWorkSalary.ViewModels
             // Ladda aktivt jobb - ANVÄNDER REPOSITORY METOD
             _activeJob = _jobProfileRepository.GetActiveJob();
             OnPropertyChanged(nameof(ActiveJobTitle));
+            OnPropertyChanged(nameof(Workplace));
+            OnPropertyChanged(nameof(SalaryDisplayText));
 
             // Ladda pass för aktivt jobb
             if (_activeJob != null)
@@ -104,10 +111,16 @@ namespace MyWorkSalary.ViewModels
                 var shifts = _workShiftRepository.GetWorkShifts(_activeJob.Id)
                                                .OrderByDescending(s => s.ShiftDate);
 
-                // Gruppering
+                // Gruppering med expand/collapse
                 var grouped = shifts.GroupBy(s => GetMonthYearKey(s))
                                    .Select(g => new GroupedWorkShift(g.Key, g))
                                    .ToList();
+
+                // första månaden Expanded
+                for (int i = 0; i < grouped.Count; i++)
+                {
+                    grouped[i].IsExpanded = (i == 0);
+                }
 
                 GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>(grouped);
             }
@@ -279,13 +292,32 @@ namespace MyWorkSalary.ViewModels
         #endregion
     }
 
-    public class GroupedWorkShift : List<WorkShift>
+    public class GroupedWorkShift : List<WorkShift>, INotifyPropertyChanged
     {
         public string MonthYear { get; private set; }
         public decimal TotalHours { get; private set; }
 
         // Visa bara timmar
         public string HoursSummary => $"{TotalHours:F1}t";
+
+        #region Expand/Collapse
+        private bool _isExpanded = true; // Default: öppen
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set
+            {
+                _isExpanded = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ExpandIcon));
+            }
+        }
+
+        public ICommand ToggleExpandCommand => new Command(() => IsExpanded = !IsExpanded);
+
+        // Pil-ikon
+        public string ExpandIcon => IsExpanded ? "▼" : "▶";
+        #endregion
 
         public GroupedWorkShift(string monthYear, IEnumerable<WorkShift> shifts) : base(shifts)
         {
@@ -348,5 +380,10 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

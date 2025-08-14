@@ -40,10 +40,12 @@ namespace MyWorkSalary.Helpers.Converters
             if (startHour >= 21 || startHour < 7)
                 return "🌙 Natt";
             // Kvällspass: 16:00-21:00
-            if (startHour >= 16 && startHour < 21)
+            if (startHour >= 13 && startHour < 21)
                 return "🌅 Kväll";
-            // Dagpass: 06:00-16:00
-            return "☀️ Dag";
+            if (startHour >= 6 && startHour < 16)
+                return "☀️ Dag";
+            
+            return "📋 Pass";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

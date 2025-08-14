@@ -9,18 +9,29 @@
 
             <!-- Header med aktivt jobb -->
             <Frame Style="{StaticResource CardFrame}">
-                <Grid ColumnDefinitions="Auto,*">
-                    <Label Grid.Column="0"
-                           Text="📋 Aktivt jobb - "
-                           Style="{StaticResource ActiveJobTitleLabel}"
-                           VerticalOptions="Center" />
-                    <Label Grid.Column="1"
-                           Text="{Binding ActiveJobTitle}"
-                           FontSize="18"
+                <VerticalStackLayout Spacing="5">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Label Grid.Column="0" 
+                               Text="📋 Aktivt jobb - "
+                               Style="{StaticResource ActiveJobTitleLabel}"
+                               TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
+                                            Dark={StaticResource ActiveJobDark}}"/>
+                        <Label Grid.Column="1" 
+                               Text="{Binding ActiveJobTitle}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
+                                                           Dark={StaticResource ActiveJobDark}}" />
+                    </Grid>
+
+                    <!-- Företag och lön under i separata rader -->
+                    <Label Text="{Binding Workplace}" FontSize="14" 
+                           Style="{StaticResource SecondaryLabel}" Padding="23,0,0,0"
                            TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
-                                                       Dark={StaticResource ActiveJobDark}}"
-                           VerticalOptions="Center" />
-                </Grid>
+                            Dark={StaticResource ActiveJobDark}}"/>
+
+                    <Label Text="{Binding SalaryDisplayText}" Padding="23,0,0,0" FontSize="12" Style="{StaticResource SecondaryLabel}" />
+                </VerticalStackLayout>
             </Frame>
 
             <!-- Lägg till pass knapp -->
@@ -60,11 +71,11 @@
                     <DataTemplate>
                         <VerticalStackLayout Spacing="10" Margin="0,0,0,20">
 
-                            <!-- MÅNADS-HEADER -->
+                            <!-- MÅNADS-HEADER MED EXPAND/COLLAPSE -->
                             <Frame BackgroundColor="{StaticResource ActiveJobLight}"
                                    Padding="15,10"
                                    CornerRadius="8">
-                                <Grid ColumnDefinitions="*,Auto">
+                                <Grid ColumnDefinitions="*,Auto,Auto">
                                     <Label Grid.Column="0"
                                            Text="{Binding MonthYear, StringFormat='{0}'}"
                                            FontSize="18"
@@ -74,12 +85,20 @@
                                            Text="{Binding TotalHours, StringFormat='({0:F1}t)'}"
                                            FontSize="16"
                                            FontAttributes="Bold"
-                                           TextColor="{StaticResource White}" />
+                                           TextColor="{StaticResource White}"
+                                           Margin="0,4,10,0" />
+
+                                    <!-- EXPAND/COLLAPSE PIL -->
+                                    <Label Grid.Column="2" Text="{Binding ExpandIcon}" FontSize="20" TextColor="{StaticResource White}" VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding ToggleExpandCommand}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
                                 </Grid>
                             </Frame>
 
                             <!-- PASS I DENNA MÅNAD MED SWIPE -->
-                            <CollectionView ItemsSource="{Binding .}">
+                            <CollectionView ItemsSource="{Binding}" IsVisible="{Binding IsExpanded}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
                                         <SwipeView>
