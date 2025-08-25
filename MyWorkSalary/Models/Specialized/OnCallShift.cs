@@ -1,5 +1,6 @@
 ﻿using SQLite;
 using MyWorkSalary.Models.Enums;
+using MyWorkSalary.Models.Core;
 
 namespace MyWorkSalary.Models.Specialized
 {
@@ -9,6 +10,8 @@ namespace MyWorkSalary.Models.Specialized
         public int Id { get; set; }
 
         public int WorkShiftId { get; set; }  // FK till WorkShift
+        [Ignore]
+        public WorkShift? WorkShift { get; set; }
 
         // Grundläggande tider
         public TimeSpan StandbyStartTime { get; set; }    // 18:00

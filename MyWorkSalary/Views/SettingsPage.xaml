@@ -154,6 +154,13 @@
                     <Label Text="⏰ OB-Inställningar"
                            Style="{StaticResource SectionTitleLabel}" />
 
+                    <!-- Hjälptext / Tips -->
+                    <Label Text="💡 Tips: Kolla din senaste lönespec för att se vilka OB-tillägg som gäller för dig. 
+Konfigurera OB-regler så att löneberäkningen blir korrekt."
+                           Style="{StaticResource TipsLabel}"
+                           LineBreakMode="WordWrap"
+                           FontSize="12" />
+
                     <!-- Visa befintliga OB-regler med SwipeView -->
                     <CollectionView ItemsSource="{Binding OBRates}">
                         <CollectionView.ItemTemplate>
@@ -204,7 +211,7 @@
                             CornerRadius="8"
                             Padding="0,12" />
 
-                    <!--  HJÄLPTEXT -->
+                    <!--  HJÄLPTEXT visas när det FINNS OB-regler -->
                     <Label Text="💡 Swipa åt vänster på en OB-regel för att radera den"
                            FontSize="12"
                            TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 

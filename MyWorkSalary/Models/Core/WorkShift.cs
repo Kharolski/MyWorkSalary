@@ -34,6 +34,7 @@ namespace MyWorkSalary.Models.Core
         public int BreakMinutes { get; set; } = 0;          // Rast i minuter (Regular shifts)
         public decimal OBHours { get; set; }                // OB-timmar totalt
         public bool IsExtraShift { get; set; } = false;     // Markerar inbeordrat pass
+        public bool IsHoliday { get; set; } = false;        // Markerar om passet är på röd dag / helgdag.
 
         #endregion
 
@@ -42,13 +43,6 @@ namespace MyWorkSalary.Models.Core
         public decimal RegularPay { get; set; }             // Grundlön för timmarna
         public decimal OBPay { get; set; }                  // Totalt OB-tillägg
         public decimal TotalPay { get; set; }               // Summa
-
-        #endregion
-
-        #region OB Details
-
-        // Detaljerad OB-uppdelning (JSON eller separata tabeller)
-        public string OBBreakdown { get; set; } = string.Empty;  // JSON med detaljer
 
         #endregion
 

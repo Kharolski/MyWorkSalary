@@ -43,6 +43,10 @@ namespace MyWorkSalary.ViewModels
 
             // Initialize collections
             RecentActivities = new ObservableCollection<RecentActivityItem>();
+            RecentActivities.CollectionChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(RecentActivitiesHeight));
+            };
 
         }
         #endregion
@@ -156,6 +160,16 @@ namespace MyWorkSalary.ViewModels
             }
         }
         public string TodayDate => DateTime.Now.ToString("dddd d MMMM yyyy", new System.Globalization.CultureInfo("sv-SE"));
+
+        public double RecentActivitiesHeight
+        {
+            get
+            {
+                if (RecentActivities == null || RecentActivities.Count == 0)
+                    return 150; // tom höjd
+                return RecentActivities.Count * 60; // ca 60 px per rad
+            }
+        }
         #endregion
 
         #region FlexTime Properties
@@ -331,6 +345,8 @@ namespace MyWorkSalary.ViewModels
             {
                 RecentActivities.Add(activity);
             }
+            // Uppdatera HeightRequest
+            OnPropertyChanged(nameof(RecentActivitiesHeight));
         }
 
         /// <summary>

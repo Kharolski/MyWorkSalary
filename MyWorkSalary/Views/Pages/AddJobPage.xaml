@@ -17,23 +17,31 @@
                     <Entry Text="{Binding JobTitle}"
                            Placeholder="t.ex. Undersköterska"
                            Style="{StaticResource ThemedEntry}" />
+                    <Label Text="{Binding JobTitleError}" TextColor="Red" FontSize="12" IsVisible="{Binding JobTitleError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
 
                     <Label Text="Arbetsplats *"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding Workplace}"
                            Placeholder="t.ex. Ljungby Kommun"
                            Style="{StaticResource ThemedEntry}" />
+                    <Label Text="{Binding WorkplaceError}" TextColor="Red" FontSize="12" IsVisible="{Binding WorkplaceError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
 
                     <Label Text="Anställningsdatum *" Style="{StaticResource SecondaryLabel}" />
                     <DatePicker Date="{Binding EmploymentStartDate}" 
                                 Style="{StaticResource ThemedDatePicker}"
                                 Format="dddd d MMMM yyyy"/>
 
-                    <Label Text="Anställningstyp"
-                           Style="{StaticResource SecondaryLabel}" />
+                    <Label Text="Anställningstyp" Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding EmploymentTypes}"
                             SelectedItem="{Binding SelectedEmploymentType}"
                             Style="{StaticResource ThemedPicker}" />
+
+                    <Label Text="Land *" Style="{StaticResource SecondaryLabel}" />
+                    <Picker ItemsSource="{Binding Countries}"
+                            SelectedItem="{Binding SelectedCountry, Mode=TwoWay}"
+                            ItemDisplayBinding="{Binding DisplayName}" />
+                    <Label Text="💡 Välj det land där jobbet utförs. Detta används för att hämta rätt helgdagar."
+                            Style="{StaticResource TipsLabel}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -43,20 +51,18 @@
                     <Label Text="💰 Löneinformation"
                            Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Lönetyp"
-                           Style="{StaticResource SecondaryLabel}" />
+                    <Label Text="Lönetyp" Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding SalaryTypes}"
                             SelectedItem="{Binding SelectedSalaryType}"
                             Style="{StaticResource ThemedPicker}" />
 
                     <!-- Månadslön -->
                     <StackLayout IsVisible="{Binding IsMonthlySalary}">
-                        <Label Text="Månadslön (kr)"
-                               Style="{StaticResource SecondaryLabel}" />
+                        <Label Text="Månadslön (kr)" Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding MonthlySalary}"
-                               Keyboard="Numeric"
-                               Placeholder="t.ex. 28500"
+                               Keyboard="Numeric" Placeholder="t.ex. 28500"
                                Style="{StaticResource ThemedEntry}" />
+                        <Label Text="{Binding MonthlySalaryError}" TextColor="Red" FontSize="12" IsVisible="{Binding MonthlySalaryError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                     </StackLayout>
 
                     <!-- Timlön -->
@@ -64,16 +70,15 @@
                         <Label Text="Timlön (kr)"
                                Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding HourlyRate}"
-                               Keyboard="Numeric"
-                               Placeholder="t.ex. 185"
+                               Keyboard="Numeric" Placeholder="t.ex. 185"
                                Style="{StaticResource ThemedEntry}" />
+                        <Label Text="{Binding HourlyRateError}" TextColor="Red" FontSize="12" IsVisible="{Binding HourlyRateError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                     </StackLayout>
 
                     <Label Text="Förväntade timmar per månad"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding ExpectedHoursPerMonth}"
-                           Keyboard="Numeric"
-                           Placeholder="t.ex. 165"
+                           Keyboard="Numeric" Placeholder="t.ex. 160"
                            Style="{StaticResource ThemedEntry}" />
                 </VerticalStackLayout>
             </Frame>
@@ -83,12 +88,15 @@
                 <VerticalStackLayout Spacing="10">
                     <Label Text="🏖️ Semesterinformation" Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Semesterdagar per år" Style="{StaticResource SecondaryLabel}" />
-                    <Entry Text="{Binding VacationDaysPerYear}"
-                           Keyboard="Numeric"
-                           Placeholder="25"
-                           Style="{StaticResource ThemedEntry}" />
-
+                    <!-- Visas bara om man är fastanställd -->
+                    <StackLayout IsVisible="{Binding IsPermanentEmployment}">
+                        <Label Text="Semesterdagar per år" Style="{StaticResource SecondaryLabel}" />
+                        <Entry Text="{Binding VacationDaysPerYear}"
+                               Keyboard="Numeric"
+                               Placeholder="25"
+                               Style="{StaticResource ThemedEntry}" />
+                    </StackLayout>
+                    
                     <!-- Visa bara om anställning > 1 månad -->
                     <StackLayout IsVisible="{Binding ShowInitialVacationBalance}">
                         <Label Text="Sparade semesterdagar just nu" Style="{StaticResource SecondaryLabel}" />
@@ -98,6 +106,16 @@
                                Style="{StaticResource ThemedEntry}" />
                         <Label Text="💡 Ange dina sparade semesterdagar från senaste lönespec"
                                Style="{StaticResource TipsLabel}" />
+                    </StackLayout>
+
+                    <!-- Info för timanställda -->
+                    <StackLayout IsVisible="{Binding IsTemporaryEmployment}">
+                        <Label Text="ℹ️ Som timanställd har du oftast inte rätt till betald semesterledighet.
+Du får istället en semesterersättning som minst ska vara 12 % av din intjänade lön.
+Den betalas ut antingen månadsvis tillsammans med lönen eller som en klumpsumma
+när anställningen upphör (senast en månad efteråt)."
+                   Style="{StaticResource TipsLabel}"
+                   LineBreakMode="WordWrap" />
                     </StackLayout>
                 </VerticalStackLayout>
             </Frame>

@@ -64,68 +64,64 @@ namespace MyWorkSalary.Services.Repositories
         {
             try
             {
-                // 1. Kontrollera om jobbet kan raderas
-                if (!CanDeleteJob(id))
+                var job = GetJobProfile(id);
+                if (job == null)
+                    throw new InvalidOperationException("Jobbet finns inte");
+
+                var totalJobs = _database.Table<JobProfile>().Count();
+
+                // Om jobbet är aktivt och det finns fler jobb
+                if (job.IsActive && totalJobs > 1)
                 {
-                    throw new InvalidOperationException("Kan inte radera jobb som har registrerade pass eller är aktivt");
+                    // Hitta ett annat jobb som kan bli aktivt
+                    var newActiveJob = _database.Table<JobProfile>()
+                                                .FirstOrDefault(x => x.Id != id);
+                    if (newActiveJob != null)
+                    {
+                        newActiveJob.IsActive = true;
+                        newActiveJob.ModifiedDate = DateTime.Now;
+                        _database.Update(newActiveJob);
+                    }
                 }
 
-                // 2. Hämta alla WorkShifts för detta jobb
+                // 1. Hämta alla WorkShifts för jobbet
                 var workShifts = _database.Table<WorkShift>().Where(x => x.JobProfileId == id).ToList();
 
-                // 3. För varje WorkShift - radera alla relaterade poster
+                // 2. Radera alla relaterade poster för varje WorkShift
                 foreach (var shift in workShifts)
                 {
-                    // Radera SickLeaves
                     var sickLeaves = _database.Table<SickLeave>().Where(x => x.WorkShiftId == shift.Id).ToList();
                     foreach (var sickLeave in sickLeaves)
-                    {
                         _database.Delete<SickLeave>(sickLeave.Id);
-                    }
 
-                    // Radera VacationLeaves
                     var vacationLeaves = _database.Table<VacationLeave>().Where(x => x.WorkShiftId == shift.Id).ToList();
                     foreach (var vacation in vacationLeaves)
-                    {
                         _database.Delete<VacationLeave>(vacation.Id);
-                    }
 
-                    // Radera OnCallShifts
                     var onCallShifts = _database.Table<OnCallShift>().Where(x => x.WorkShiftId == shift.Id).ToList();
                     foreach (var onCall in onCallShifts)
-                    {
                         _database.Delete<OnCallShift>(onCall.Id);
-                    }
 
-                    // Radera VABLeaves
                     var vabLeaves = _database.Table<VABLeave>().Where(x => x.WorkShiftId == shift.Id).ToList();
                     foreach (var vab in vabLeaves)
-                    {
                         _database.Delete<VABLeave>(vab.Id);
-                    }
                 }
 
-                // 4. Radera alla WorkShifts
+                // 3. Radera alla WorkShifts
                 foreach (var shift in workShifts)
-                {
                     _database.Delete<WorkShift>(shift.Id);
-                }
 
-                // 5. Radera OB-regler för detta jobb
+                // 4. Radera OB-regler
                 var obRates = _database.Table<OBRate>().Where(x => x.JobProfileId == id).ToList();
                 foreach (var obRate in obRates)
-                {
                     _database.Delete<OBRate>(obRate.Id);
-                }
 
-                // 6. Radera FlexTimeBalance för detta jobb
+                // 5. Radera FlexTimeBalance
                 var flexTimes = _database.Table<FlexTimeBalance>().Where(x => x.JobProfileId == id).ToList();
                 foreach (var flex in flexTimes)
-                {
                     _database.Delete<FlexTimeBalance>(flex.Id);
-                }
 
-                // 7. Slutligen radera jobbet själv
+                // 6. Slutligen radera själva jobbet
                 return _database.Delete<JobProfile>(id);
             }
             catch (Exception ex)
@@ -182,29 +178,8 @@ namespace MyWorkSalary.Services.Repositories
 
         public bool CanDeleteJob(int jobProfileId)
         {
-            // Hämta jobbet
-            var job = GetJobProfile(jobProfileId);
-            if (job == null)
-                return false;
-
-            // Räkna totalt antal jobb
-            var totalJobs = _database.Table<JobProfile>().Count();
-
-            // Om det är sista jobbet - tillåt radering även om det är aktivt
-            if (totalJobs == 1)
-            {
-                // Kan bara radera om det inte har pass
-                var hasShifts = _database.Table<WorkShift>().Any(x => x.JobProfileId == jobProfileId);
-                return !hasShifts;
-            }
-
-            // Om det finns flera jobb - kan inte radera aktivt jobb
-            if (job.IsActive)
-                return false;
-
-            // Kan inte radera jobb som har registrerade pass
-            var hasWorkShifts = _database.Table<WorkShift>().Any(x => x.JobProfileId == jobProfileId);
-            return !hasWorkShifts;
+            // Force-delete: tillåt alltid radering
+            return true;
         }
 
         #endregion

@@ -15,6 +15,8 @@
                            Placeholder="T.ex. 'Kväll OB vardagar'"
                            FontSize="16"
                            Style="{StaticResource ThemedEntry}" />
+                    <Label Text="{Binding NameError}" TextColor="Red" FontSize="12"
+                            IsVisible="{Binding NameError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -28,10 +30,10 @@
                         <!-- Starttid -->
                         <VerticalStackLayout Grid.Column="0" Spacing="5">
                             <Label Text="Från tid:" 
-                                   FontSize="14"
+                                   FontSize="14" 
                                    Style="{StaticResource SecondaryLabel}" />
-                            <TimePicker Time="{Binding StartTime}"
-                                       FontSize="16"
+                            <TimePicker Time="{Binding StartTime}" 
+                                       FontSize="16" Format="HH:mm"
                                        Style="{StaticResource ThemedTimePicker}" />
                         </VerticalStackLayout>
 
@@ -41,7 +43,7 @@
                                    FontSize="14"
                                    Style="{StaticResource SecondaryLabel}" />
                             <TimePicker Time="{Binding EndTime}"
-                                       FontSize="16"
+                                       FontSize="16" Format="HH:mm"
                                        Style="{StaticResource ThemedTimePicker}" />
                         </VerticalStackLayout>
                     </Grid>
@@ -54,12 +56,12 @@
                     <Label Text="💰 Lön per timme"
                            Style="{StaticResource FieldTitleLabel}" />
                     <Entry Text="{Binding RatePerHour}"
-                           Placeholder="T.ex. 56.70"
-                           Keyboard="Numeric"
-                           FontSize="16"
+                           Placeholder="T.ex. 56.70" Keyboard="Numeric" FontSize="16"
                            Style="{StaticResource ThemedEntry}" />
                     <Label Text="Ange OB-lönen per timme (inklusive grundlön + tillägg)"
                            Style="{StaticResource TipsLabel}" />
+                    <Label Text="{Binding RateError}" TextColor="Red" FontSize="12"
+                            IsVisible="{Binding RateError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -72,6 +74,8 @@
                             SelectedItem="{Binding SelectedCategory}"
                             FontSize="16"
                             Style="{StaticResource ThemedPicker}" />
+                    <Label Text="{Binding CategoryError}" TextColor="Red" FontSize="12" 
+                            IsVisible="{Binding CategoryError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -168,6 +172,9 @@
                                 Command="{Binding SelectAllDaysCommand}"
                                 Style="{StaticResource AllDaysButton}" />
                     </StackLayout>
+
+                    <Label Text="{Binding DaysError}" TextColor="Red" FontSize="12"
+                            IsVisible="{Binding DaysError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                 </VerticalStackLayout>
             </Frame>
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MyWorkSalary.Helpers.Converters;
 using MyWorkSalary.Services;
+using MyWorkSalary.Services.ApiClients;
 using MyWorkSalary.Services.Builders;
 using MyWorkSalary.Services.Calculations;
 using MyWorkSalary.Services.Conflicts;
@@ -52,6 +53,11 @@ namespace MyWorkSalary
             builder.Services.AddTransient<IAppSettingsRepository, AppSettingsRepository>();
             builder.Services.AddTransient<IOBRateRepository, OBRateRepository>();
             builder.Services.AddTransient<IFlexTimeRepository, FlexTimeRepository>();
+            builder.Services.AddTransient<ISalaryRepository, SalaryRepository>();
+            builder.Services.AddTransient<HolidayRepository>();
+
+            // Registrera nya Api
+            builder.Services.AddTransient<HolidayApiClient>();
 
             // Registrera nya Services
             builder.Services.AddTransient<IShiftValidationService, ShiftValidationService>();
@@ -62,13 +68,15 @@ namespace MyWorkSalary
             builder.Services.AddTransient<IConflictHandlerService, ConflictHandlerService>();
             builder.Services.AddTransient<IDashboardService, DashboardService>();
 
+            builder.Services.AddTransient<HolidayService>();
+
             // === HANDLERS ===
             builder.Services.AddTransient<ShiftTypeHandler>();
-            //builder.Services.AddTransient<FlexTimeHandler>(); // Inte färdigt än
             builder.Services.AddTransient<VABHandler>();
             builder.Services.AddTransient<SickLeaveHandler>();
             builder.Services.AddTransient<OnCallHandler>();
             builder.Services.AddTransient<VacationHandler>();
+            builder.Services.AddTransient<SalaryStatsHandler>();
 
             // === VIEWMODELS ===
             builder.Services.AddTransient<HomeViewModel>();
@@ -84,6 +92,8 @@ namespace MyWorkSalary
             builder.Services.AddTransient<VacationViewModel>();
             builder.Services.AddTransient<AddOBRateViewModel>();
 
+            builder.Services.AddTransient<SalaryPageViewModel>();
+
             // Registrera Views
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<SettingsPage>();
@@ -92,6 +102,7 @@ namespace MyWorkSalary
             builder.Services.AddTransient<ShiftPage>();
             builder.Services.AddTransient<AddShiftPage>();
             builder.Services.AddTransient<AddOBRatePage>();
+            builder.Services.AddTransient<SalaryPage>();
 
 
 #if DEBUG

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services;
+using MyWorkSalary.Services.Handlers;
 
 namespace MyWorkSalary.ViewModels
 {
@@ -15,11 +16,13 @@ namespace MyWorkSalary.ViewModels
         private string _workplace = string.Empty;
         private string _monthlySalary = string.Empty;
         private string _hourlyRate = string.Empty;
-        private string _expectedHoursPerMonth = "165";
+        private string _expectedHoursPerMonth = "160";
         private string _taxRate = "33";
         private string _selectedEmploymentType = "Tillsvidare";
         private string _selectedSalaryType = "Månadslön";
         private bool _isSaving = false;
+        private CountryOption _selectedCountry;
+        private readonly HolidayService _holidayService;
 
         private DateTime _employmentStartDate = DateTime.Today;
         private string _vacationDaysPerYear = "25";
@@ -27,16 +30,16 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Constructor
-        public AddJobViewModel(DatabaseService databaseService)
+        public AddJobViewModel(DatabaseService databaseService, HolidayService holidayService)
         {
             _databaseService = databaseService;
+            _holidayService = holidayService;
 
             // Initiera listor
             EmploymentTypes = new ObservableCollection<string>
             {
                 "Tillsvidare",          // → Permanent
-                "Vikarie/Timanställd",  // → Temporary  
-                "Behovsanställd"        // → OnCall
+                "Vikarie/Timanställd"   // → Temporary/OnCall 
             };
 
             SalaryTypes = new ObservableCollection<string>
@@ -44,6 +47,17 @@ namespace MyWorkSalary.ViewModels
                 "Månadslön",
                 "Timlön"
             };
+
+            Countries = new ObservableCollection<CountryOption>(
+                Enum.GetValues(typeof(SupportedCountry))
+                    .Cast<SupportedCountry>()
+                    .Select(c => new CountryOption { Country = c })
+                    .OrderBy(c => c.DisplayName)
+            );
+
+            // Standardval
+            SelectedCountry = Countries.FirstOrDefault(c => c.Country == SupportedCountry.Sweden)
+                          ?? Countries.FirstOrDefault();
 
             // Commands
             SaveCommand = new Command(OnSave, CanSave);
@@ -62,6 +76,7 @@ namespace MyWorkSalary.ViewModels
             {
                 _jobTitle = value;
                 OnPropertyChanged();
+                JobTitleError = string.IsNullOrWhiteSpace(value) ? "Jobbtitel är obligatoriskt" : null;
             }
         }
 
@@ -72,6 +87,7 @@ namespace MyWorkSalary.ViewModels
             {
                 _workplace = value;
                 OnPropertyChanged();
+                WorkplaceError = string.IsNullOrWhiteSpace(value) ? "Arbetsplats är obligatoriskt" : null;
             }
         }
 
@@ -82,6 +98,7 @@ namespace MyWorkSalary.ViewModels
             {
                 _monthlySalary = value;
                 OnPropertyChanged();
+                MonthlySalaryError = string.IsNullOrWhiteSpace(value) ? "Månadslön är obligatoriskt" : null;
             }
         }
 
@@ -92,6 +109,7 @@ namespace MyWorkSalary.ViewModels
             {
                 _hourlyRate = value;
                 OnPropertyChanged();
+                HourlyRateError = string.IsNullOrWhiteSpace(value) ? "Timlön är obligatoriskt" : null;
             }
         }
 
@@ -122,6 +140,8 @@ namespace MyWorkSalary.ViewModels
             {
                 _selectedEmploymentType = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsTemporaryEmployment));
+                OnPropertyChanged(nameof(IsPermanentEmployment));
             }
         }
 
@@ -139,6 +159,19 @@ namespace MyWorkSalary.ViewModels
 
         public ObservableCollection<string> EmploymentTypes { get; }
         public ObservableCollection<string> SalaryTypes { get; }
+        public ObservableCollection<CountryOption> Countries { get; }
+        public CountryOption SelectedCountry
+        {
+            get => _selectedCountry;
+            set
+            {
+                if (_selectedCountry != value)
+                {
+                    _selectedCountry = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public bool IsMonthlySalary => SelectedSalaryType == "Månadslön";
         public bool IsHourlySalary => SelectedSalaryType == "Timlön";
@@ -177,6 +210,44 @@ namespace MyWorkSalary.ViewModels
         // Visa bara om anställning > 1 månad
         public bool ShowInitialVacationBalance =>
             DateTime.Today.Subtract(EmploymentStartDate).TotalDays > 30;
+        public bool IsPermanentEmployment => SelectedEmploymentType == "Tillsvidare";
+        public bool IsTemporaryEmployment => SelectedEmploymentType == "Vikarie/Timanställd";
+
+        // Validation properties
+        private string _jobTitleError;
+        public string JobTitleError
+        {
+            get => _jobTitleError;
+            set { _jobTitleError = value; OnPropertyChanged(); }
+        }
+
+        private string _workplaceError;
+        public string WorkplaceError
+        {
+            get => _workplaceError;
+            set { _workplaceError = value; OnPropertyChanged(); }
+        }
+
+        private string _monthlySalaryError;
+        public string MonthlySalaryError
+        {
+            get => _monthlySalaryError;
+            set { _monthlySalaryError = value; OnPropertyChanged(); }
+        }
+
+        private string _hourlyRateError;
+        public string HourlyRateError
+        {
+            get => _hourlyRateError;
+            set { _hourlyRateError = value; OnPropertyChanged(); }
+        }
+
+        private string _vacationDaysError;
+        public string VacationDaysError
+        {
+            get => _vacationDaysError;
+            set { _vacationDaysError = value; OnPropertyChanged(); }
+        }
         #endregion
 
         #region Commands
@@ -194,16 +265,16 @@ namespace MyWorkSalary.ViewModels
         private async void OnSave()
         {
             if (_isSaving)
-            {
-                System.Diagnostics.Debug.WriteLine("REDAN SPARAR - hoppar över");
                 return;
-            }
 
             _isSaving = true;
 
             try
             {
                 // Validering
+                if (!Validate())
+                    return;
+
                 if (string.IsNullOrWhiteSpace(JobTitle) || string.IsNullOrWhiteSpace(Workplace))
                 {
                     await Shell.Current.DisplayAlert("Fel", "Fyll i alla obligatoriska fält", "OK");
@@ -224,6 +295,7 @@ namespace MyWorkSalary.ViewModels
                     PayPeriodStartDay = 25,
                     TaxMethod = TaxCalculationMethod.Manual,
                     IsActive = !hasExistingJobs, // BARA första jobbet blir aktivt
+                    Country = SelectedCountry.Country,
 
                     EmploymentStartDate = EmploymentStartDate,
                     VacationDaysPerYear = decimal.TryParse(VacationDaysPerYear, out var vacDays) ? vacDays : 25m,
@@ -264,6 +336,11 @@ namespace MyWorkSalary.ViewModels
                 // Spara nytt jobb
                 _databaseService.JobProfiles.SaveJobProfile(jobProfile);
 
+                // Hämta röda dagar för innevarande år
+                await _holidayService.SyncFromApiAsync(jobProfile, DateTime.Now.Year);
+                // Hämta röda dagar för nästa år också
+                await _holidayService.SyncFromApiAsync(jobProfile, DateTime.Now.Year + 1);
+
                 // Kolla resultat
                 var allJobsAfter = _databaseService.JobProfiles.GetJobProfiles();
 
@@ -291,7 +368,7 @@ namespace MyWorkSalary.ViewModels
             Workplace = string.Empty;
             MonthlySalary = string.Empty;
             HourlyRate = string.Empty;
-            ExpectedHoursPerMonth = "165";
+            ExpectedHoursPerMonth = "160";
             TaxRate = "33";
             SelectedEmploymentType = "Tillsvidare";
             SelectedSalaryType = "Månadslön";
@@ -310,6 +387,57 @@ namespace MyWorkSalary.ViewModels
                 "Behovsanställd" => EmploymentType.OnCall,
                 _ => EmploymentType.Permanent
             };
+        }
+        #endregion
+
+        #region UI Validation
+        private bool Validate()
+        {
+            bool isValid = true;
+
+            // JobTitle
+            if (string.IsNullOrWhiteSpace(JobTitle))
+            {
+                JobTitleError = "Fyll i jobbtitel";
+                isValid = false;
+            }
+            else
+                JobTitleError = string.Empty;
+
+            // Workplace
+            if (string.IsNullOrWhiteSpace(Workplace))
+            {
+                WorkplaceError = "Fyll i arbetsplats";
+                isValid = false;
+            }
+            else
+                WorkplaceError = string.Empty;
+
+            // Lön
+            if (IsMonthlySalary && !decimal.TryParse(MonthlySalary, out var _))
+            {
+                MonthlySalaryError = "Ange giltig månadslön";
+                isValid = false;
+            }
+            else if (IsHourlySalary && !decimal.TryParse(HourlyRate, out var _))
+            {
+                HourlyRateError = "Ange giltig timlön";
+                isValid = false;
+            }
+
+            // Semester (endast för permanent)
+            if (SelectedEmploymentType == "Tillsvidare")
+            {
+                if (!decimal.TryParse(VacationDaysPerYear, out var _))
+                {
+                    VacationDaysError = "Ange giltiga semesterdagar";
+                    isValid = false;
+                }
+                else
+                    VacationDaysError = string.Empty;
+            }
+
+            return isValid;
         }
         #endregion
 

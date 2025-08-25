@@ -10,6 +10,8 @@ namespace MyWorkSalary.Models.Specialized
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public int WorkShiftId { get; set; }
+        [Ignore]
+        public WorkShift? WorkShift { get; set; }
         public VacationType VacationType { get; set; }
         #endregion
 

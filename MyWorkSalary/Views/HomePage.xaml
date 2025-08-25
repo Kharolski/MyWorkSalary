@@ -7,7 +7,7 @@
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
 
-             <!--Välkomst-kort--> 
+            <!--Välkomst-kort--> 
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="{Binding WelcomeText}"
@@ -140,7 +140,7 @@
                     <VerticalStackLayout Spacing="15">
                         <Label Text="Senaste aktiviteter" Style="{StaticResource SectionTitleLabel}" />
 
-                        <CollectionView ItemsSource="{Binding RecentActivities}" SelectionMode="None">
+                        <CollectionView ItemsSource="{Binding RecentActivities}" SelectionMode="None" HeightRequest="{Binding RecentActivitiesHeight}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid ColumnDefinitions="Auto,*,Auto" 

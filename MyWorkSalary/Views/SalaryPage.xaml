@@ -2,14 +2,83 @@
 <ContentPage x:Class="MyWorkSalary.Views.SalaryPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Lönerapporter">
-    <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
-        <Label Text="Lönerapporter"
-               FontSize="24"
-               HorizontalOptions="Center" />
+             Title="Månads lönerapport">
+    <VerticalStackLayout Spacing="20" Padding="20,10" VerticalOptions="Start">
 
-        <Label Text="Här kommer månadsrapporter och statistik"
+        <!-- visas bara när det INTE finns ett aktivt jobb -->
+        <StackLayout IsVisible="{Binding HasActiveJob, Converter={StaticResource InvertedBoolConverter}}"
+             Spacing="5">
+            <Frame Style="{StaticResource CardFrame}">
+                <Label Text="Ingen lönerapport än – skapa ett jobb först."
+               Style="{StaticResource SecondaryLabel}"
                HorizontalOptions="Center" />
+            </Frame>
+        </StackLayout>
 
+        <!-- visas när det FINNS ett aktivt jobb -->
+        <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Lön denna månad" FontSize="20" FontAttributes="Bold" Style="{StaticResource SectionTitleLabel}" />
+                <Label Text="{Binding MonthlySalaryText}" FontSize="20" FontAttributes="Bold"
+                       TextColor="{StaticResource ActiveJobBlue}" />
+                <Label Text="{Binding HoursSummaryText}" FontSize="14" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Statistics Section -->
+        <Frame Style="{StaticResource CardFrame}">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Beräkning Statistik" FontSize="20" FontAttributes="Bold" Style="{StaticResource SectionTitleLabel}" />
+                
+                <!-- Grundlön -->
+                <Label Text="{Binding BaseSalaryText}" FontSize="14" />
+                <Label Text="{Binding TotalHoursText}" FontSize="14" />
+                
+                <Label Text="{Binding TotalObHoursText}" FontSize="14" />
+                <Label Text="{Binding ObPayText}" FontSize="14" />
+
+                <!--Ska går genom att dem ska visa rätt data-->
+                <Label Text="{Binding FlexBalanceText}" FontSize="14" />
+                <Label Text="{Binding SickDaysText}" FontSize="14" />
+                <Label Text="{Binding VacationDaysText}" FontSize="14" />
+                <Label Text="{Binding VabDaysText}" FontSize="14" />
+                <Label Text="{Binding JourText}" FontSize="14" />
+            </VerticalStackLayout>
+        </Frame>
+
+        
+
+        <!-- Monthly Reports -->
+        <!--<Frame Style="{StaticResource CardFrame}">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Månadsrapporter"
+                       FontSize="18" Style="{StaticResource SectionTitleLabel}"
+                       FontAttributes="Bold" />
+                <CollectionView ItemsSource="{Binding MonthlyReports}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="{Binding MonthYear}"
+                                       FontSize="16"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding ReportDetails}"
+                                       FontSize="14" />
+                                <Button Text="Visa detaljer"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewReportCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="{StaticResource ButtonPrimary}"
+                                        TextColor="{StaticResource White}" />
+                                <Button Text="Ladda ner som PDF"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DownloadReportCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="{StaticResource ButtonPrimary}"
+                                        TextColor="{StaticResource White}" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Frame>-->
+        
     </VerticalStackLayout>
 </ContentPage>

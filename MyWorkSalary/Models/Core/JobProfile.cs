@@ -22,6 +22,10 @@ namespace MyWorkSalary.Models.Core
         public EmploymentType EmploymentType { get; set; }
         #endregion
 
+        #region Country Properties
+        public SupportedCountry Country { get; set; }
+        #endregion
+
         #region Salary Properties
         public decimal? MonthlySalary { get; set; }
         public decimal? HourlyRate { get; set; }
@@ -34,8 +38,8 @@ namespace MyWorkSalary.Models.Core
                 var employmentText = EmploymentType switch
                 {
                     EmploymentType.Permanent => "Tillsvidare",
-                    EmploymentType.Temporary => "Visstid",
-                    EmploymentType.OnCall => "Timanställd",
+                    EmploymentType.Temporary => "Timanställd",
+                    EmploymentType.OnCall => "Visstid",
                     _ => "Anställd"
                 };
 

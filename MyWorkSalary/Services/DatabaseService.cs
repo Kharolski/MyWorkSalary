@@ -31,6 +31,7 @@ namespace MyWorkSalary.Services
         public VABLeaveRepository VABLeaves { get; private set; }
         public VacationLeaveRepository VacationLeaves { get; private set; }
         public OnCallShiftRepository OnCallShifts { get; private set; }
+        public HolidayRepository Holidays { get; private set; }
 
         #endregion
 
@@ -60,6 +61,7 @@ namespace MyWorkSalary.Services
             _database.DeleteAll<VABLeave>();
             _database.DeleteAll<VacationLeave>();
             _database.DeleteAll<OnCallShift>();
+            _database.DeleteAll<Holiday>();
 
         }
 
@@ -74,6 +76,7 @@ namespace MyWorkSalary.Services
             _database.CreateTable<VABLeave>();
             _database.CreateTable<VacationLeave>();
             _database.CreateTable<OnCallShift>();
+            _database.CreateTable<Holiday>();
         }
 
         private void InitializeRepositories()
@@ -87,6 +90,7 @@ namespace MyWorkSalary.Services
             VABLeaves = new VABLeaveRepository(this);
             VacationLeaves = new VacationLeaveRepository(this);
             OnCallShifts = new OnCallShiftRepository(this);
+            Holidays = new HolidayRepository(this);
         }
         #endregion
 

@@ -150,8 +150,4 @@
 	  </MauiXaml>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Models\Calculations\" />
-	</ItemGroup>
-
 </Project>

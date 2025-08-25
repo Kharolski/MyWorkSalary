@@ -8,6 +8,8 @@ public class VABLeave
     public int Id { get; set; }
 
     public int WorkShiftId { get; set; }
+    [Ignore]
+    public WorkShift? WorkShift { get; set; }
 
     public VABType VABType { get; set; }
 
