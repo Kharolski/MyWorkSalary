@@ -2,83 +2,97 @@
 <ContentPage x:Class="MyWorkSalary.Views.Pages.AddJobPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Lägg till nytt jobb">
+             xmlns:resx="clr-namespace:MyWorkSalary.Resources.Resx"
+             Title="{x:Static resx:Resources.AddJobPage_Title}">
+
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
 
             <!-- Grundläggande info -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="📋 Grundläggande information"
+                    <Label Text="{x:Static resx:Resources.AddJobPage_BasicInfo}"
                            Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Jobbtitel *"
+                    <Label Text="{x:Static resx:Resources.AddJobPage_JobTitle}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding JobTitle}"
-                           Placeholder="t.ex. Undersköterska"
+                           Placeholder="{x:Static resx:Resources.AddJobPage_JobTitle_Placeholder}"
                            Style="{StaticResource ThemedEntry}" />
-                    <Label Text="{Binding JobTitleError}" TextColor="Red" FontSize="12" IsVisible="{Binding JobTitleError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                    <Label Text="{Binding JobTitleError}" TextColor="Red" FontSize="12"
+                           IsVisible="{Binding JobTitleError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
 
-                    <Label Text="Arbetsplats *"
+                    <Label Text="{x:Static resx:Resources.AddJobPage_Workplace}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding Workplace}"
-                           Placeholder="t.ex. Ljungby Kommun"
+                           Placeholder="{x:Static resx:Resources.AddJobPage_Workplace_Placeholder}"
                            Style="{StaticResource ThemedEntry}" />
-                    <Label Text="{Binding WorkplaceError}" TextColor="Red" FontSize="12" IsVisible="{Binding WorkplaceError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                    <Label Text="{Binding WorkplaceError}" TextColor="Red" FontSize="12"
+                           IsVisible="{Binding WorkplaceError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
 
-                    <Label Text="Anställningsdatum *" Style="{StaticResource SecondaryLabel}" />
+                    <Label Text="{x:Static resx:Resources.AddJobPage_EmploymentDate}"
+                           Style="{StaticResource SecondaryLabel}" />
                     <DatePicker Date="{Binding EmploymentStartDate}" 
                                 Style="{StaticResource ThemedDatePicker}"
                                 Format="dddd d MMMM yyyy"/>
 
-                    <Label Text="Anställningstyp" Style="{StaticResource SecondaryLabel}" />
+                    <Label Text="{x:Static resx:Resources.AddJobPage_EmploymentType}"
+                           Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding EmploymentTypes}"
                             SelectedItem="{Binding SelectedEmploymentType}"
                             Style="{StaticResource ThemedPicker}" />
 
-                    <Label Text="Land *" Style="{StaticResource SecondaryLabel}" />
+                    <Label Text="{x:Static resx:Resources.AddJobPage_Country}"
+                           Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding Countries}"
                             SelectedItem="{Binding SelectedCountry, Mode=TwoWay}"
                             ItemDisplayBinding="{Binding DisplayName}" />
-                    <Label Text="💡 Välj det land där jobbet utförs. Detta används för att hämta rätt helgdagar."
-                            Style="{StaticResource TipsLabel}" />
+                    <Label Text="{x:Static resx:Resources.AddJobPage_CountryTip}"
+                           Style="{StaticResource TipsLabel}" />
                 </VerticalStackLayout>
             </Frame>
 
             <!-- Lön -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="💰 Löneinformation"
+                    <Label Text="{x:Static resx:Resources.AddJobPage_SalarySection}"
                            Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Lönetyp" Style="{StaticResource SecondaryLabel}" />
+                    <Label Text="{x:Static resx:Resources.AddJobPage_SalaryType}"
+                           Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding SalaryTypes}"
                             SelectedItem="{Binding SelectedSalaryType}"
                             Style="{StaticResource ThemedPicker}" />
 
                     <!-- Månadslön -->
                     <StackLayout IsVisible="{Binding IsMonthlySalary}">
-                        <Label Text="Månadslön (kr)" Style="{StaticResource SecondaryLabel}" />
+                        <Label Text="{x:Static resx:Resources.AddJobPage_MonthlySalary}"
+                               Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding MonthlySalary}"
-                               Keyboard="Numeric" Placeholder="t.ex. 28500"
+                               Keyboard="Numeric"
+                               Placeholder="28500"
                                Style="{StaticResource ThemedEntry}" />
-                        <Label Text="{Binding MonthlySalaryError}" TextColor="Red" FontSize="12" IsVisible="{Binding MonthlySalaryError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                        <Label Text="{Binding MonthlySalaryError}" TextColor="Red" FontSize="12"
+                               IsVisible="{Binding MonthlySalaryError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                     </StackLayout>
 
                     <!-- Timlön -->
                     <StackLayout IsVisible="{Binding IsHourlySalary}">
-                        <Label Text="Timlön (kr)"
+                        <Label Text="{x:Static resx:Resources.AddJobPage_HourlyRate}"
                                Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding HourlyRate}"
-                               Keyboard="Numeric" Placeholder="t.ex. 185"
+                               Keyboard="Numeric"
+                               Placeholder="185"
                                Style="{StaticResource ThemedEntry}" />
-                        <Label Text="{Binding HourlyRateError}" TextColor="Red" FontSize="12" IsVisible="{Binding HourlyRateError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                        <Label Text="{Binding HourlyRateError}" TextColor="Red" FontSize="12"
+                               IsVisible="{Binding HourlyRateError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                     </StackLayout>
 
-                    <Label Text="Förväntade timmar per månad"
+                    <Label Text="{x:Static resx:Resources.AddJobPage_ExpectedHours}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding ExpectedHoursPerMonth}"
-                           Keyboard="Numeric" Placeholder="t.ex. 160"
+                           Keyboard="Numeric"
+                           Placeholder="160"
                            Style="{StaticResource ThemedEntry}" />
                 </VerticalStackLayout>
             </Frame>
@@ -86,36 +100,36 @@
             <!-- Semester -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="🏖️ Semesterinformation" Style="{StaticResource SectionTitleLabel}" />
+                    <Label Text="{x:Static resx:Resources.AddJobPage_VacationSection}"
+                           Style="{StaticResource SectionTitleLabel}" />
 
                     <!-- Visas bara om man är fastanställd -->
                     <StackLayout IsVisible="{Binding IsPermanentEmployment}">
-                        <Label Text="Semesterdagar per år" Style="{StaticResource SecondaryLabel}" />
+                        <Label Text="{x:Static resx:Resources.AddJobPage_VacationDays}"
+                               Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding VacationDaysPerYear}"
                                Keyboard="Numeric"
                                Placeholder="25"
                                Style="{StaticResource ThemedEntry}" />
                     </StackLayout>
-                    
+
                     <!-- Visa bara om anställning > 1 månad -->
                     <StackLayout IsVisible="{Binding ShowInitialVacationBalance}">
-                        <Label Text="Sparade semesterdagar just nu" Style="{StaticResource SecondaryLabel}" />
+                        <Label Text="{x:Static resx:Resources.AddJobPage_SavedVacation}"
+                               Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding InitialVacationBalance}"
                                Keyboard="Numeric"
-                               Placeholder="t.ex. 12.5"
+                               Placeholder="12.5"
                                Style="{StaticResource ThemedEntry}" />
-                        <Label Text="💡 Ange dina sparade semesterdagar från senaste lönespec"
+                        <Label Text="{x:Static resx:Resources.AddJobPage_SavedVacationTip}"
                                Style="{StaticResource TipsLabel}" />
                     </StackLayout>
 
                     <!-- Info för timanställda -->
                     <StackLayout IsVisible="{Binding IsTemporaryEmployment}">
-                        <Label Text="ℹ️ Som timanställd har du oftast inte rätt till betald semesterledighet.
-Du får istället en semesterersättning som minst ska vara 12 % av din intjänade lön.
-Den betalas ut antingen månadsvis tillsammans med lönen eller som en klumpsumma
-när anställningen upphör (senast en månad efteråt)."
-                   Style="{StaticResource TipsLabel}"
-                   LineBreakMode="WordWrap" />
+                        <Label Text="{x:Static resx:Resources.AddJobPage_TemporaryInfo}"
+                               Style="{StaticResource TipsLabel}"
+                               LineBreakMode="WordWrap" />
                     </StackLayout>
                 </VerticalStackLayout>
             </Frame>
@@ -123,17 +137,17 @@ när anställningen upphör (senast en månad efteråt)."
             <!-- Skatt -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="🏛️ Skatteinformation"
+                    <Label Text="{x:Static resx:Resources.AddJobPage_TaxSection}"
                            Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Skattesats (%)"
+                    <Label Text="{x:Static resx:Resources.AddJobPage_TaxRate}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding TaxRate}"
                            Keyboard="Numeric"
-                           Placeholder="t.ex. 33"
+                           Placeholder="33"
                            Style="{StaticResource ThemedEntry}" />
 
-                    <Label Text="💡 Tips: Kolla din senaste lönespec för exakt skattesats"
+                    <Label Text="{x:Static resx:Resources.AddJobPage_TaxTip}"
                            Style="{StaticResource TipsLabel}" />
                 </VerticalStackLayout>
             </Frame>
@@ -144,12 +158,12 @@ när anställningen upphör (senast en månad efteråt)."
                          Spacing="10"
                          Margin="0,20,0,0">
 
-                <Button Text="Avbryt"
+                <Button Text="{x:Static resx:Resources.Cancel}"
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource SecondaryButton}"
                         HorizontalOptions="FillAndExpand" />
 
-                <Button Text="Spara jobb"
+                <Button Text="{x:Static resx:Resources.Save}"
                         Command="{Binding SaveCommand}"
                         Style="{StaticResource ButtonAdd}"
                         HorizontalOptions="FillAndExpand" />

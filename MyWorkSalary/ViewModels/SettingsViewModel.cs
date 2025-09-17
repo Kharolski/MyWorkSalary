@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Input;
-using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Views.Pages;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
@@ -16,8 +17,10 @@ namespace MyWorkSalary.ViewModels
         private JobProfile _activeJob;
         private ObservableCollection<JobProfile> _allJobs;
         private bool _isChangingJob = false;
-        private AppSettings _appSettings;  
+        private AppSettings _appSettings; 
+        
         private bool _isDarkTheme;
+        private LanguageOption _selectedLanguage;
         #endregion
 
         #region Constructor
@@ -66,7 +69,7 @@ namespace MyWorkSalary.ViewModels
 
         public string ActiveJobText => ActiveJob != null
             ? $"{ActiveJob.JobTitle} - {ActiveJob.Workplace}"
-            : "Inget aktivt jobb";
+            : Resources.Resx.Resources.NoActiveJob;
 
         public bool HasActiveJob => ActiveJob != null;
         public bool HasMultipleJobs => AllJobs?.Count > 1;
@@ -92,7 +95,34 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
-        public string ThemeDescription => IsDarkTheme ? "Mörkt utseende aktiverat" : "Ljust utseende aktiverat";
+        public string ThemeDescription => IsDarkTheme
+            ? Resources.Resx.Resources.DarkThemeActive
+            : Resources.Resx.Resources.LightThemeActive;
+
+        // Tillgängliga språk i appen
+
+        public ObservableCollection<LanguageOption> AvailableLanguages { get; } =
+            new ObservableCollection<LanguageOption>
+            {
+                new LanguageOption { DisplayName = Resources.Resx.Resources.LanguageEnglish, Code = "en" },
+                new LanguageOption { DisplayName = Resources.Resx.Resources.LanguageSwedish, Code = "sv" }
+
+                // TODO: Lägg till fransk i framtiden och lägg till tillgängliga språk i LanguageInitializer i supportedLanguages
+                // new LanguageOption { DisplayName = "Français", Code = "fr" } 
+            };
+
+        // Det språk som är valt i pickern
+        public LanguageOption SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set
+            {
+                if (_selectedLanguage != value && value != null)
+                {
+                    ApplyLanguage(value);
+                }
+            }
+        }
         #endregion
 
         #region Commands
@@ -186,12 +216,16 @@ namespace MyWorkSalary.ViewModels
                 // Uppdatera OB property för aktiv job
                 LoadOBRates();
 
-                await Shell.Current.DisplayAlert("Framgång", $"Bytte till: {selectedJob.JobTitle}", "OK");
+                await Shell.Current.DisplayAlert(Resources.Resx.Resources.Success,
+                    string.Format(Resources.Resx.Resources.JobChangedMessageFormat, selectedJob.JobTitle),
+                    Resources.Resx.Resources.Ok);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"FEL vid jobbyte: {ex.Message}");
-                await Shell.Current.DisplayAlert("Fel", $"Kunde inte byta jobb: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.ErrorTitle,
+                    string.Format(MyWorkSalary.Resources.Resx.Resources.ChangeJobFailedMessageFormat, ex.Message),
+                    Resources.Resx.Resources.Ok);
             }
             finally
             {
@@ -225,28 +259,35 @@ namespace MyWorkSalary.ViewModels
             bool isLastJob = AllJobs.Count == 1;
             bool isActiveJob = jobToDelete.IsActive;
 
+            // Varningstext om det är det aktiva jobbet och det finns fler jobb kvar
             if (isActiveJob && !isLastJob)
             {
                 await Shell.Current.DisplayAlert(
-                    "Aktivt jobb",
-                    "Du raderar det aktiva jobbet. Välj ett annat jobb som aktivt först, eller radera alla jobb.",
-                    "OK");
+                    Resources.Resx.Resources.ActiveJob,
+                    Resources.Resx.Resources.DeleteActiveJobMessage,
+                    Resources.Resx.Resources.Ok);
                 return;
             }
 
+            // Varningstext (olika för sista jobb / vanligt jobb)
             string warningMessage = isLastJob
-                ? $"Du raderar ditt SISTA jobb '{jobToDelete.JobTitle}'.\n\nDu kommer behöva skapa ett nytt jobb för att använda appen.\n\nFortsätt?"
-                : $"Vill du radera '{jobToDelete.JobTitle}' från {jobToDelete.Workplace}?\n\nDetta raderar alla relaterade pass och data.";
+                ? string.Format(Resources.Resx.Resources.DeleteLastJobMessageFormat, jobToDelete.JobTitle)
+                : string.Format(
+                    Resources.Resx.Resources.DeleteJobMessageFormat, jobToDelete.JobTitle, jobToDelete.Workplace);
 
+            // Bekräftelsedialog
             bool confirm = await Shell.Current.DisplayAlert(
-                isLastJob ? "⚠️ Radera sista jobb" : "Radera jobb",
+                isLastJob
+                    ? Resources.Resx.Resources.DeleteLastJobTitle
+                    : Resources.Resx.Resources.DeleteJobTitle,
                 warningMessage,
-                "Ja, radera",
-                "Avbryt");
+                Resources.Resx.Resources.ConfirmDelete,
+                Resources.Resx.Resources.Cancel);
 
             if (!confirm)
                 return;
 
+            // Kör radering
             try
             {
                 // Radera jobbet (med alla relaterade data)
@@ -256,15 +297,20 @@ namespace MyWorkSalary.ViewModels
                 LoadJobs();
 
                 string successMessage = isLastJob
-                    ? "Sista jobbet raderat. Du kan skapa ett nytt jobb via 'Lägg till'-fliken."
-                    : "Jobbet har raderats.";
+                    ? Resources.Resx.Resources.LastJobDeletedSuccessMessage
+                    : Resources.Resx.Resources.JobDeletedSuccessMessage;
 
-                await Shell.Current.DisplayAlert("Raderat", successMessage, "OK");
-
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.JobDeletedTitle,
+                    successMessage,
+                    Resources.Resx.Resources.Ok);
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Fel", $"Kunde inte radera jobbet: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.ErrorTitle,
+                    string.Format(Resources.Resx.Resources.DeleteJobFailedMessageFormat, ex.Message),
+                    Resources.Resx.Resources.Ok);
             }
         }
 
@@ -273,13 +319,16 @@ namespace MyWorkSalary.ViewModels
             if (obRate == null)
                 return;
 
+            // 1) Bekräftelse-dialog
             bool confirm = await Shell.Current.DisplayAlert(
-                "Radera OB-regel",
-                $"Vill du radera '{obRate.Name}'?",
-                "Ja", "Nej");
+                Resources.Resx.Resources.DeleteOBRateTitle,
+                string.Format(Resources.Resx.Resources.DeleteOBRateMessageFormat, obRate.Name),
+                Resources.Resx.Resources.ConfirmDelete,
+                Resources.Resx.Resources.Cancel);
 
             if (confirm)
             {
+                // Försök radera
                 int deletedRows = _databaseService.OBRates.DeleteOBRate(obRate.Id);
 
                 if (deletedRows > 0)
@@ -288,11 +337,13 @@ namespace MyWorkSalary.ViewModels
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("Fel", "Kunde inte radera OB-regeln", "OK");
+                    await Shell.Current.DisplayAlert(
+                        Resources.Resx.Resources.ErrorTitle,
+                        Resources.Resx.Resources.DeleteOBRateFailedMessage,
+                        Resources.Resx.Resources.Ok);
                 }
             }
         }
-
         #endregion
 
         #region Theme Methods
@@ -302,18 +353,34 @@ namespace MyWorkSalary.ViewModels
             {
                 _appSettings = _databaseService.AppSettings.GetAppSettings();
                 _isDarkTheme = _appSettings.IsDarkTheme;
+
+                // Hämta språk från settings eller fallback
+                var savedCode = string.IsNullOrEmpty(_appSettings.LanguageCode)
+                    ? "en"
+                    : _appSettings.LanguageCode;
+
+                var lang = AvailableLanguages.FirstOrDefault(l => l.Code == savedCode)
+                           ?? AvailableLanguages.First();
+
+                ApplyLanguage(lang);
+
                 OnPropertyChanged(nameof(IsDarkTheme));
                 OnPropertyChanged(nameof(ThemeDescription));
 
                 // Applicera tema direkt
                 ApplyTheme(_isDarkTheme);
+
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"FEL vid laddning av app-inställningar: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"ERROR loading app settings: {ex.Message}");
+                
                 // Fallback till ljust tema
                 _isDarkTheme = false;
                 ApplyTheme(false);
+
+                // fallback språk = engelska
+                SelectedLanguage = AvailableLanguages.FirstOrDefault(l => l.Code == "en");
             }
         }
 
@@ -327,8 +394,9 @@ namespace MyWorkSalary.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"FEL vid tema-ändring: {ex.Message}");
-                await Shell.Current.DisplayAlert("Fel", "Kunde inte spara tema-inställning", "OK");
+                await Shell.Current.DisplayAlert(Resources.Resx.Resources.ErrorTitle,
+                    Resources.Resx.Resources.ThemeSaveErrorMessage,
+                    Resources.Resx.Resources.Ok);
             }
         }
 
@@ -339,6 +407,25 @@ namespace MyWorkSalary.ViewModels
         }
         #endregion
 
+        #region Language Methods
+        private void ApplyLanguage(LanguageOption lang)
+        {
+            if (lang == null)
+                return;
+
+            _selectedLanguage = lang;
+            OnPropertyChanged(nameof(SelectedLanguage));
+
+            var culture = new CultureInfo(lang.Code);
+            TranslationManager.Instance.ChangeCulture(culture);
+
+            _appSettings.LanguageCode = lang.Code;
+            _databaseService.AppSettings.SaveAppSettings(_appSettings);
+
+            OnPropertyChanged(nameof(ThemeDescription));
+        }
+        #endregion
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
@@ -346,5 +433,11 @@ namespace MyWorkSalary.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+    }
+
+    public class LanguageOption
+    {
+        public string DisplayName { get; set; }
+        public string Code { get; set; }
     }
 }

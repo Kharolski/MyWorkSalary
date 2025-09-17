@@ -33,10 +33,78 @@
                 <!-- Grundlön -->
                 <Label Text="{Binding BaseSalaryText}" FontSize="14" />
                 <Label Text="{Binding TotalHoursText}" FontSize="14" />
-                
-                <Label Text="{Binding TotalObHoursText}" FontSize="14" />
-                <Label Text="{Binding ObPayText}" FontSize="14" />
 
+                <!-- OB Card -->
+                <Frame HasShadow="True" CornerRadius="12" Padding="10" Margin="0,5"
+                        BackgroundColor="White" BorderColor="#E0E0E0">
+
+                    <VerticalStackLayout>
+                        <!-- Header row -->
+                        <Grid ColumnDefinitions="40,*,Auto" Padding="5">
+                            <!-- Ikon -->
+                            <Label Text="🌙" FontSize="20" VerticalOptions="Center" />
+
+                            <!-- Titel + värde -->
+                            <HorizontalStackLayout Grid.Column="1" Spacing="5">
+                                <Label Text="OB-timmar:" FontAttributes="Bold" VerticalOptions="Center" Padding="0,0,10,0" />
+                                <Label Text="{Binding TotalObHoursText}"
+                                       FontAttributes="Bold"
+                                       TextColor="{Binding ObHoursColor}"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <!-- Chevron -->
+                            <Label Text="{Binding ObCardChevronIcon}"
+                                   FontSize="18"
+                                   Grid.Column="2"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="End" />
+
+                            <!-- 👈 Viktigt: gör headern klickbar -->
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleObCardCommand}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <!-- Expandable content -->
+                        <StackLayout x:Name="ObDetailsPanel" IsVisible="False" Opacity="0" Padding="5,10,5,0" Spacing="5">
+                            <CollectionView ItemsSource="{Binding ObDetails}">
+                                <CollectionView.EmptyView>
+                                    <StackLayout Padding="10" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Label Text="Inga OB-timmar registrerade denna månad."
+                                               TextColor="Gray"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="Center" />
+                                    </StackLayout>
+                                </CollectionView.EmptyView>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="*,*,*,*">
+                                            <Label Text="{Binding Date, StringFormat='{0:MM-dd}'}" />
+                                            <Label Text="{Binding CategoryName}" Grid.Column="1"/>
+                                            <Label Text="{Binding Hours, StringFormat='{0:0.##} h'}" Grid.Column="2" />
+                                            <Label Text="{Binding Pay, StringFormat='{0:C}'}" Grid.Column="3" TextColor="Green" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- Total OB-lön -->
+                            <Label Padding="0,10,0,0">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Total ersättning:    " FontAttributes="Bold"/>
+                                        <Span Text="{Binding ObPayText, StringFormat='{}{0:C}'}" TextColor="{Binding ObHoursColor}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Label Text="{Binding ObPayText}" FontSize="14" />           <!-- Just nu försöker fixa detta -->
+                
                 <!--Ska går genom att dem ska visa rätt data-->
                 <Label Text="{Binding FlexBalanceText}" FontSize="14" />
                 <Label Text="{Binding SickDaysText}" FontSize="14" />
@@ -79,6 +147,7 @@
                 </CollectionView>
             </VerticalStackLayout>
         </Frame>-->
+        
         
     </VerticalStackLayout>
 </ContentPage>

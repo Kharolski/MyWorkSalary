@@ -2,9 +2,10 @@
 <ContentPage x:Class="MyWorkSalary.Views.SettingsPage"
              x:Name="SettingsPageRef"
              xmlns:local="clr-namespace:MyWorkSalary.Views"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Inställningar">
+             Title="{resx:Translate AppSettings}">
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
 
@@ -12,29 +13,20 @@
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">
                     <!-- EN rubrik för allt -->
-                    <Label Text="💼 Mina Jobb"
-               Style="{StaticResource SectionTitleLabel}" />
-
+                    <Label Text="{resx:Translate MyJobs}" Style="{StaticResource SectionTitleLabel}"/>
+                    
                     <!-- Visa när inga jobb finns -->
-                    <StackLayout IsVisible="{Binding HasNoJobs}" 
-                             VerticalOptions="CenterAndExpand"
-                             HorizontalOptions="CenterAndExpand"
-                             Spacing="10"
-                             Margin="10">
+                    <StackLayout IsVisible="{Binding HasNoJobs}" Spacing="10" Margin="10"
+                             VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
 
                         <Label Text="📋" FontSize="48" HorizontalOptions="Center" />
-
-                        <Label Text="Inga jobb registrerade" 
-                               FontSize="18" 
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
+                        <Label Text="{resx:Translate NoJobsRegistered}" FontSize="18" 
+                               FontAttributes="Bold" HorizontalOptions="Center"
                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
                                                Dark={StaticResource TextPrimaryDark}}" />
 
-                        <Label Text="Lägg till ditt första jobb för att börja använda appen."
-                               FontSize="14"
-                               HorizontalOptions="Center"
-                               HorizontalTextAlignment="Center"
+                        <Label Text="{resx:Translate AddFirstJobText}" FontSize="14"
+                               HorizontalOptions="Center" HorizontalTextAlignment="Center"
                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
                                                Dark={StaticResource TextPrimaryDark}}" />
 
@@ -48,7 +40,7 @@
                                     <!-- Swipe från höger för att radera -->
                                     <SwipeView.RightItems>
                                         <SwipeItems>
-                                            <SwipeItem Text="🗑️ Radera"
+                                            <SwipeItem Text="{resx:Translate Delete}"
                                                       BackgroundColor="{StaticResource ButtonCancel}"
                                                       Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.DeleteJobCommand}"
                                                       CommandParameter="{Binding .}" />
@@ -101,7 +93,7 @@
                                                     HorizontalOptions="End"
                                                     VerticalOptions="Start"
                                                     IsVisible="{Binding IsActive}">
-                                                <Label Text="✓ AKTIV"
+                                                <Label Text="{resx:Translate Active}"
                                                        FontSize="12"
                                                        FontAttributes="Bold"
                                                        TextColor="{StaticResource White}"
@@ -121,7 +113,7 @@
                                  HorizontalOptions="FillAndExpand"
                                  Margin="0,10,0,0">
                         <!-- 1. Lägg till (Grön) -->
-                        <Button Text="✚ Lägg till"
+                        <Button Text="{resx:Translate AddJob}"
                                 Command="{Binding AddJobCommand}"
                                 BackgroundColor="{StaticResource ButtonPrimary}"
                                 TextColor="{StaticResource White}"
@@ -129,7 +121,7 @@
                                 Padding="0,12"
                                 HorizontalOptions="FillAndExpand" />
                         <!-- 2. Ändra (Orange) -->
-                        <Button Text="✏️ Ändra"
+                        <Button Text="{resx:Translate EditJob}"
                                 Command="{Binding EditActiveJobCommand}"
                                 Style="{StaticResource EditButton}"
                                 HorizontalOptions="FillAndExpand"
@@ -137,7 +129,7 @@
                     </StackLayout>
 
                     <!-- Hjälptext (visa alltid när det finns jobb) -->
-                    <Label Text="💡 Swipa åt vänster på ett jobb för att radera det"
+                    <Label Text="{resx:Translate SwipeDeleteJobHint}"
                            FontSize="12"
                            TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                        Dark={StaticResource TextSecondaryDark}}"
@@ -151,12 +143,11 @@
             <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
                 <VerticalStackLayout Spacing="15">
 
-                    <Label Text="⏰ OB-Inställningar"
+                    <Label Text="{resx:Translate OBSettings}"
                            Style="{StaticResource SectionTitleLabel}" />
 
                     <!-- Hjälptext / Tips -->
-                    <Label Text="💡 Tips: Kolla din senaste lönespec för att se vilka OB-tillägg som gäller för dig. 
-Konfigurera OB-regler så att löneberäkningen blir korrekt."
+                    <Label Text="{resx:Translate OBTips}"
                            Style="{StaticResource TipsLabel}"
                            LineBreakMode="WordWrap"
                            FontSize="12" />
@@ -169,7 +160,7 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt."
                                     <!-- Swipe från höger för att radera -->
                                     <SwipeView.RightItems>
                                         <SwipeItems>
-                                            <SwipeItem Text="🗑️ Radera"
+                                            <SwipeItem Text="{resx:Translate Delete}"
                                                        BackgroundColor="{StaticResource ButtonCancel}"
                                                        Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.DeleteOBRateCommand}"
                                                        CommandParameter="{Binding .}" />
@@ -191,7 +182,7 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt."
                                                                                   Dark={StaticResource TextSecondaryDark}}" />
                                             </StackLayout>
                                             <Label Grid.Column="1"
-                                                   Text="{Binding RatePerHour, StringFormat='{0:C}/t'}"
+                                                   Text="{Binding RatePerHour, StringFormat='{0:C}'}"
                                                    FontAttributes="Bold"
                                                    VerticalOptions="Center"
                                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
@@ -204,7 +195,7 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt."
                     </CollectionView>
 
                     <!-- Lägg till OB-regel knapp -->
-                    <Button Text="➕ Lägg till OB-regel"
+                    <Button Text="{resx:Translate AddOBRule}"
                             Command="{Binding AddOBRateCommand}"
                             BackgroundColor="{StaticResource ButtonPrimary}"
                             TextColor="{StaticResource White}"
@@ -212,7 +203,7 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt."
                             Padding="0,12" />
 
                     <!--  HJÄLPTEXT visas när det FINNS OB-regler -->
-                    <Label Text="💡 Swipa åt vänster på en OB-regel för att radera den"
+                    <Label Text="{resx:Translate SwipeDeleteOBHint}"
                            FontSize="12"
                            TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
                                                       Dark={StaticResource TextSecondaryDark}}"
@@ -225,7 +216,7 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt."
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">
 
-                    <Label Text="🔧 App-inställningar"
+                    <Label Text="{resx:Translate AppSettings}"
                            Style="{StaticResource SectionTitleLabel}" />
 
                     <!-- Tema-växlare -->
@@ -245,7 +236,7 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt."
                         <StackLayout Grid.Column="1"
                                      Spacing="2"
                                      VerticalOptions="Center">
-                            <Label Text="Mörkt tema"
+                            <Label Text="{resx:Translate DarkTheme}"
                                    FontSize="16"
                                    FontAttributes="Bold"
                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
@@ -274,11 +265,26 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt."
                         </Frame>
                     </Grid>
 
-                    <!-- Framtida inställningar -->
-                    <Label Text="🌍 Språk: Svenska (mer språk kommer snart)"
-                           FontSize="14"
-                           Style="{StaticResource SecondaryLabel}"
-                           Margin="8,10,8,0" />
+                    <!-- Språk-växlare -->
+                    <Grid ColumnDefinitions="Auto,*" Padding="8,4" ColumnSpacing="12">
+                        <!-- Ikon -->
+                        <Label Grid.Column="0"
+                               Text="🌍"
+                               FontSize="20"
+                               VerticalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                              Dark={StaticResource TextPrimaryDark}}" />
+
+                        <!-- Dropdown för språk -->
+                        <Picker Grid.Column="1"
+                                Title="{resx:Translate ChooseLanguage}"
+                                ItemsSource="{Binding AvailableLanguages}"
+                                ItemDisplayBinding="{Binding DisplayName}"
+                                SelectedItem="{Binding SelectedLanguage}"
+                                FontSize="14"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                               Dark={StaticResource TextPrimaryDark}}" />
+                    </Grid>
                 </VerticalStackLayout>
             </Frame>
         </VerticalStackLayout>

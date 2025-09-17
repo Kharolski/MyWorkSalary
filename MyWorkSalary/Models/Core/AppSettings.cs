@@ -10,12 +10,14 @@ namespace MyWorkSalary.Models.Core
 
         // Tema-inställningar
         public bool IsDarkTheme { get; set; } = false;      // Default: ljust tema
-
-        // Språk (framtida funktion)
-        public string Language { get; set; } = "sv";        // Svenska som default
+        
+        // Språk
+        public string LanguageCode { get; set; } = "";  // default tom
 
         // Metadata
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime LastModified { get; set; } = DateTime.Now;
+
+        
     }
 }

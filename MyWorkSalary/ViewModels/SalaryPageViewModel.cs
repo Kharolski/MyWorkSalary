@@ -1,13 +1,12 @@
-﻿using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Reports;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
-using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
@@ -20,6 +19,8 @@ namespace MyWorkSalary.ViewModels
 
         private JobProfile _activeJob;
         private SalaryStats _currentStats;
+
+        private bool _isObExpanded;
         #endregion
 
         #region Public Properties
@@ -112,9 +113,22 @@ namespace MyWorkSalary.ViewModels
 
         public string TotalHoursText => CurrentStats == null ? "" : $"{CurrentStats.TotalHours:F1} timmar denna månad";
 
-        public string TotalObHoursText => CurrentStats == null ? "" : $"Total OB-timmar: {CurrentStats.TotalObHours:F1}";
+        public string TotalObHoursText => CurrentStats == null ? "" : $"{CurrentStats.TotalObHours:F1}";
+        public Color ObHoursColor => (CurrentStats?.TotalObHours ?? 0) > 0 ? Colors.Green : Colors.Gray;
+        public IReadOnlyList<ObDetails> ObDetails =>
+            CurrentStats?.ObDetails?
+                .Where(x => x.Hours > 0)
+                .Select(x => new ObDetails
+                {
+                    Date = x.Date,
+                    Hours = x.Hours,
+                    RatePerHour = x.RatePerHour,
+                    Category = x.Category,
+                    Pay = x.Pay,
+                    CategoryName = LocalizationHelper.Translate($"OBCategory_{x.Category}") // Översättning
+                }).ToList() ?? new List<ObDetails>();
 
-        public string ObPayText => CurrentStats == null ? "" : $"OB-lön: {CurrentStats.ObPay:N0} kr";
+        public decimal ObPayText => CurrentStats?.ObPay ?? 0;
 
         public string FlexBalanceText => CurrentStats == null ? "" : $"Flex-tid: {CurrentStats.FlexBalance:F1}";
 
@@ -127,6 +141,29 @@ namespace MyWorkSalary.ViewModels
         // Jour kommer vi lägga till i SalaryStats sen
         public string JourText => CurrentStats == null ? "" : $"Jour: {CurrentStats.JourHours:F1}";
 
+        // expand/collapse
+        public bool IsObExpanded
+        {
+            get => _isObExpanded;
+            set
+            {
+                if (_isObExpanded != value)
+                {
+                    _isObExpanded = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(ObCardChevronIcon));
+                }
+            }
+        }
+        public string ObCardChevronIcon => IsObExpanded ? "▼" : "▶";
+        #endregion
+
+        #region Commands
+        // Command för att toggla
+        public ICommand ToggleObCardCommand => new Command(() =>
+        {
+            IsObExpanded = !IsObExpanded;
+        });
         #endregion
 
         #region Constructor
@@ -159,14 +196,22 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(HoursSummaryText));
             OnPropertyChanged(nameof(BaseSalaryText));
             OnPropertyChanged(nameof(TotalHoursText));
+
             OnPropertyChanged(nameof(TotalObHoursText));
+            OnPropertyChanged(nameof(ObDetails));
             OnPropertyChanged(nameof(ObPayText));
+            OnPropertyChanged(nameof(ObHoursColor));
+
             OnPropertyChanged(nameof(FlexBalanceText));
             OnPropertyChanged(nameof(SickDaysText));
             OnPropertyChanged(nameof(VacationDaysText));
             OnPropertyChanged(nameof(VabDaysText));
             OnPropertyChanged(nameof(JourText));
         }
+        #endregion
+
+        #region Help Methods
+        
         #endregion
 
         #region INotifyPropertyChanged

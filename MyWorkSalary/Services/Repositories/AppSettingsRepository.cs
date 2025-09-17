@@ -21,7 +21,7 @@ namespace MyWorkSalary.Services.Repositories
                 settings = new AppSettings
                 {
                     IsDarkTheme = false,
-                    Language = "sv"
+                    LanguageCode = "" // inget sparat språk än
                 };
                 _database.Insert(settings);
             }
@@ -65,13 +65,13 @@ namespace MyWorkSalary.Services.Repositories
 
         public string GetLanguage()
         {
-            return GetAppSettings().Language;
+            return GetAppSettings().LanguageCode;
         }
 
-        public void SetLanguage(string language)
+        public void SetLanguage(string languageCode)
         {
             var settings = GetAppSettings();
-            settings.Language = language;
+            settings.LanguageCode = languageCode;
             SaveAppSettings(settings);
         }
 
@@ -79,7 +79,7 @@ namespace MyWorkSalary.Services.Repositories
         {
             var settings = GetAppSettings();
             settings.IsDarkTheme = false;
-            settings.Language = "sv";
+            settings.LanguageCode = "";
             SaveAppSettings(settings);
         }
     }

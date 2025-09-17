@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Active" xml:space="preserve">
+    <value>✓  AKTIVE</value>
+  </data>
+  <data name="ActiveJob" xml:space="preserve">
+    <value>Active Work</value>
+  </data>
+  <data name="AddFirstJobText" xml:space="preserve">
+    <value>Add your first job to start using the app.</value>
+  </data>
+  <data name="AddJob" xml:space="preserve">
+    <value>✚  Add</value>
+  </data>
+  <data name="AddJobPage_BasicInfo" xml:space="preserve">
+    <value>📋 Basic information</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="AddJobPage_Country" xml:space="preserve">
+    <value>Country *</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_CountryTip" xml:space="preserve">
+    <value>💡 Select the country where the job is performed…</value>
+    <comment>Tip text</comment>
+  </data>
+  <data name="AddJobPage_EmploymentDate" xml:space="preserve">
+    <value>Employment start date *</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_EmploymentType" xml:space="preserve">
+    <value>Employment type</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_ExpectedHours" xml:space="preserve">
+    <value>Expected hours / month</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_HourlyRate" xml:space="preserve">
+    <value>Hourly rate</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_JobTitle" xml:space="preserve">
+    <value>Job title *</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_JobTitle_Placeholder" xml:space="preserve">
+    <value>e.g. Nurse</value>
+    <comment>Placeholder text</comment>
+  </data>
+  <data name="AddJobPage_MonthlySalary" xml:space="preserve">
+    <value>Monthly salary</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_SalarySection" xml:space="preserve">
+    <value>💰 Salary information</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="AddJobPage_SalaryType" xml:space="preserve">
+    <value>Salary type</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_SavedVacation" xml:space="preserve">
+    <value>Saved vacation days now</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_SavedVacationTip" xml:space="preserve">
+    <value>💡 Enter your saved days…</value>
+    <comment>Tip text</comment>
+  </data>
+  <data name="AddJobPage_TaxRate" xml:space="preserve">
+    <value>Tax rate (%)</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_TaxSection" xml:space="preserve">
+    <value>🏛️ Tax information</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="AddJobPage_TaxTip" xml:space="preserve">
+    <value>💡 Tip: Check your latest salary spec</value>
+    <comment>Tip text</comment>
+  </data>
+  <data name="AddJobPage_TemporaryInfo" xml:space="preserve">
+    <value>ℹ️ As a temp employee, you are usually not entitled to paid vacation leave.
+Instead, you receive a vacation allowance that must be at least 12% of your earned salary.
+It is paid either monthly together with your salary or as a lump sum
+when employment ends (no later than one month afterwards).</value>
+    <comment>Info text</comment>
+  </data>
+  <data name="AddJobPage_Title" xml:space="preserve">
+    <value>Add new job</value>
+    <comment>Page title</comment>
+  </data>
+  <data name="AddJobPage_VacationDays" xml:space="preserve">
+    <value>Vacation days / year</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_VacationSection" xml:space="preserve">
+    <value>🏖️ Vacation information</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="AddJobPage_Workplace" xml:space="preserve">
+    <value>Workplace *</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="AddJobPage_Workplace_Placeholder" xml:space="preserve">
+    <value>e.g. Municipality</value>
+    <comment>Placeholder text</comment>
+  </data>
+  <data name="AddOBRule" xml:space="preserve">
+    <value>➕ Add Unsocial Hours Rule</value>
+  </data>
+  <data name="AppSettings" xml:space="preserve">
+    <value>🔧 App Settings</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ChangeJobFailedMessageFormat" xml:space="preserve">
+    <value>Could not switch job: {0}</value>
+  </data>
+  <data name="ChooseLanguage" xml:space="preserve">
+    <value>Choose Language</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Yes, delete</value>
+  </data>
+  <data name="DarkTheme" xml:space="preserve">
+    <value>Dark Theme</value>
+  </data>
+  <data name="DarkThemeActive" xml:space="preserve">
+    <value>Dark theme enabled</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>🗑️ Delete</value>
+  </data>
+  <data name="DeleteActiveJobMessage" xml:space="preserve">
+    <value>You are deleting the active job. Select another job as active first, or delete all jobs.</value>
+  </data>
+  <data name="DeleteJobFailedMessageFormat" xml:space="preserve">
+    <value>Couldn't delete the job: {0}</value>
+  </data>
+  <data name="DeleteJobMessageFormat" xml:space="preserve">
+    <value>Do you want to delete '{0}' from {1}? This will delete all related shifts and data.</value>
+  </data>
+  <data name="DeleteJobTitle" xml:space="preserve">
+    <value>Delete job</value>
+  </data>
+  <data name="DeleteLastJobMessageFormat" xml:space="preserve">
+    <value>You are deleting your LAST job '{0}'.  You will need to create a new job to use the app. Continue?</value>
+  </data>
+  <data name="DeleteLastJobTitle" xml:space="preserve">
+    <value>⚠️ Delete last job</value>
+  </data>
+  <data name="DeleteOBRateFailedMessage" xml:space="preserve">
+    <value>Could not delete the rule</value>
+  </data>
+  <data name="DeleteOBRateMessageFormat" xml:space="preserve">
+    <value>Do you want to delete '{0}'?</value>
+  </data>
+  <data name="DeleteOBRateTitle" xml:space="preserve">
+    <value>Delete rule</value>
+  </data>
+  <data name="EditJob" xml:space="preserve">
+    <value>✏️  Edit</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ExactSchedule" xml:space="preserve">
+    <value>Exactly on schedule</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>For</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="HoursToBank" xml:space="preserve">
+    <value>hours to hour bank</value>
+  </data>
+  <data name="JobChangedMessageFormat" xml:space="preserve">
+    <value>Changed to: {0}</value>
+  </data>
+  <data name="JobDeletedSuccessMessage" xml:space="preserve">
+    <value>The job has been deleted.</value>
+  </data>
+  <data name="JobDeletedTitle" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="LanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="LanguageSwedish" xml:space="preserve">
+    <value>Swedish</value>
+  </data>
+  <data name="LastJobDeletedSuccessMessage" xml:space="preserve">
+    <value>Last job deleted. You can create a new job via the 'Add' button.</value>
+  </data>
+  <data name="LightThemeActive" xml:space="preserve">
+    <value>Bright appearance enabled</value>
+  </data>
+  <data name="MyJobs" xml:space="preserve">
+    <value>💼 My Jobs</value>
+  </data>
+  <data name="NoActiveJob" xml:space="preserve">
+    <value>No active job</value>
+  </data>
+  <data name="NoJobsRegistered" xml:space="preserve">
+    <value>No jobs registered</value>
+  </data>
+  <data name="OBCategory_Evening" xml:space="preserve">
+    <value>Evening</value>
+    <comment>OB category for evening</comment>
+  </data>
+  <data name="OBCategory_Night" xml:space="preserve">
+    <value>Night</value>
+    <comment>OB category for night</comment>
+  </data>
+  <data name="OBCategory_Weekend" xml:space="preserve">
+    <value>Weekend</value>
+    <comment>OB category for weekend</comment>
+  </data>
+  <data name="OBSettings" xml:space="preserve">
+    <value>⏰ Unsocial hours settings</value>
+  </data>
+  <data name="OBTips" xml:space="preserve">
+    <value>💡 Tip: Check your latest salary spec to see which Inconvenient Working Hours allowances apply to you. Configure unsocial hours rules so that salary calculations are accurate.</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>Button</comment>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="SwipeDeleteJobHint" xml:space="preserve">
+    <value>💡 Swipe left to delete a job</value>
+  </data>
+  <data name="SwipeDeleteOBHint" xml:space="preserve">
+    <value>💡 Swipe left to delete a rule</value>
+  </data>
+  <data name="ThemeSaveErrorMessage" xml:space="preserve">
+    <value>Could not save theme setting</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Welcome to your payroll app!</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+</root>

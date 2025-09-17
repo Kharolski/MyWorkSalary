@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Services;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Services;
 
 namespace MyWorkSalary
 {
@@ -13,8 +14,38 @@ namespace MyWorkSalary
 
         protected override void OnStart()
         {
-            // Ladda tema Efter DI är redo
+            // Ladda språk & tema (efter DI är redo)
+            LoadAndApplyLanguage();
             LoadAndApplyTheme();
+        }
+
+        private void LoadAndApplyLanguage()
+        {
+            try
+            {
+                var databaseService = Handler.MauiContext?.Services.GetService<DatabaseService>();
+
+                if (databaseService != null)
+                {
+                    var appSettings = databaseService.AppSettings.GetAppSettings();
+
+                    // 🟢 Debug före init
+                    System.Diagnostics.Debug.WriteLine($"[LANG] Före init - LanguageCode: {appSettings.LanguageCode}");
+
+                    // Initiera språk
+                    LanguageInitializer.InitializeLanguage(appSettings);
+
+                    // 🟢 Debug efter init
+                    System.Diagnostics.Debug.WriteLine($"[LANG] Efter init - LanguageCode: {appSettings.LanguageCode}, Culture: {System.Globalization.CultureInfo.CurrentUICulture}");
+
+                    // Spara så att användarens språkval alltid finns kvar
+                    databaseService.AppSettings.SaveAppSettings(appSettings);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"FEL vid språk-laddning: {ex.Message}");
+            }
         }
 
         private void LoadAndApplyTheme()

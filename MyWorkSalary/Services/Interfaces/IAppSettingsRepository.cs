@@ -12,7 +12,7 @@ namespace MyWorkSalary.Services.Interfaces
         bool IsDarkTheme();
         void SetDarkTheme(bool isDark);
         string GetLanguage();
-        void SetLanguage(string language);
+        void SetLanguage(string languageCode);
 
         // Reset
         void ResetToDefaults();

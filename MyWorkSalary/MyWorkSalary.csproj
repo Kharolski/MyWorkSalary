@@ -98,17 +98,31 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Helpers\L.cs" />
 	  <Compile Remove="Models\AppSettings.cs" />
 	  <Compile Remove="Models\FlexTimeBalance.cs" />
 	  <Compile Remove="Models\JobProfile.cs" />
 	  <Compile Remove="Models\OBRate.cs" />
 	  <Compile Remove="Models\WorkShift.cs" />
+	  <Compile Remove="Resources\TranslateExtension.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Resources\Resx\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\HomePage.xaml.cs">
 	    <DependentUpon>HomePage.xaml</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Resx\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
