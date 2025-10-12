@@ -28,6 +28,8 @@ namespace MyWorkSalary.ViewModels
         {
             _databaseService = databaseService;
 
+            TranslationManager.Instance.CultureChanged += OnCultureChanged;
+
             // Commands
             ChangeActiveJobCommand = new Command<JobProfile>(OnChangeActiveJob);
             AddJobCommand = new Command(OnAddJob);
@@ -76,7 +78,17 @@ namespace MyWorkSalary.ViewModels
         public bool HasNoJobs => AllJobs?.Count == 0;
 
         // Property för OB-regler
-        public ObservableCollection<OBRate> OBRates { get; } = new ObservableCollection<OBRate>();
+        private ObservableCollection<OBRate> _obRates = new();
+        public ObservableCollection<OBRate> OBRates
+        {
+            get => _obRates;
+            set
+            {
+                _obRates = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasOBRates));
+            }
+        }
         public bool HasOBRates => OBRates?.Count > 0;
 
         // Tema-properties
@@ -160,11 +172,7 @@ namespace MyWorkSalary.ViewModels
             {
                 var obRates = _databaseService.OBRates.GetOBRates(ActiveJob.Id);
 
-                OBRates.Clear();
-                foreach (var rate in obRates)
-                {
-                    OBRates.Add(rate);
-                }
+                OBRates = new ObservableCollection<OBRate>(obRates);
 
                 OnPropertyChanged(nameof(HasOBRates));
             }
@@ -416,13 +424,38 @@ namespace MyWorkSalary.ViewModels
             _selectedLanguage = lang;
             OnPropertyChanged(nameof(SelectedLanguage));
 
-            var culture = new CultureInfo(lang.Code);
+            // Mappar "en"/"sv" till fullständig kultur med region (så valutasymbolen också blir rätt)
+            var cultureMap = new Dictionary<string, string>
+            {
+                { "sv", "sv-SE" }, // svenska -> Sverige (SEK)
+                { "en", "en-IE" }  // engelska -> Irland (EUR). Byt till en-GB eller en-US om du vill ha pund/dollar
+            };
+
+            string fullCultureCode = cultureMap.ContainsKey(lang.Code) ? cultureMap[lang.Code] : lang.Code;
+
+            var culture = new CultureInfo(fullCultureCode);
+
+            // Uppdatera TranslationManager + trådculture (säkerställ att formatering uppdateras)
             TranslationManager.Instance.ChangeCulture(culture);
 
+            // Spara inställningen (spara fortfarande enkel code "en"/"sv" om du vill)
             _appSettings.LanguageCode = lang.Code;
             _databaseService.AppSettings.SaveAppSettings(_appSettings);
 
+            // Trigger UI-uppdateringar som behöver omrendering (t.ex CollectionView valutaformat)
+            // Om du ser CollectionView med OBRates, rebinda så formaten uppdateras:
+            var old = OBRates;
+            OBRates = null;
+            OBRates = old;
+
             OnPropertyChanged(nameof(ThemeDescription));
+        }
+
+        private void OnCultureChanged(object sender, EventArgs e)
+        {
+            // Tvinga UI att uppdatera valutor & datum när språk byts
+            var currentRates = OBRates.ToList();
+            OBRates = new ObservableCollection<OBRate>(currentRates);
         }
         #endregion
 

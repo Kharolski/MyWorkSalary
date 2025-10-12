@@ -29,14 +29,8 @@ namespace MyWorkSalary
                 {
                     var appSettings = databaseService.AppSettings.GetAppSettings();
 
-                    // 🟢 Debug före init
-                    System.Diagnostics.Debug.WriteLine($"[LANG] Före init - LanguageCode: {appSettings.LanguageCode}");
-
                     // Initiera språk
                     LanguageInitializer.InitializeLanguage(appSettings);
-
-                    // 🟢 Debug efter init
-                    System.Diagnostics.Debug.WriteLine($"[LANG] Efter init - LanguageCode: {appSettings.LanguageCode}, Culture: {System.Globalization.CultureInfo.CurrentUICulture}");
 
                     // Spara så att användarens språkval alltid finns kvar
                     databaseService.AppSettings.SaveAppSettings(appSettings);

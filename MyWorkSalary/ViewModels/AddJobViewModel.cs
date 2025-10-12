@@ -18,8 +18,6 @@ namespace MyWorkSalary.ViewModels
         private string _hourlyRate = string.Empty;
         private string _expectedHoursPerMonth = "160";
         private string _taxRate = "33";
-        private string _selectedEmploymentType = "Tillsvidare";
-        private string _selectedSalaryType = "Månadslön";
         private bool _isSaving = false;
         private CountryOption _selectedCountry;
         private readonly HolidayService _holidayService;
@@ -36,17 +34,7 @@ namespace MyWorkSalary.ViewModels
             _holidayService = holidayService;
 
             // Initiera listor
-            EmploymentTypes = new ObservableCollection<string>
-            {
-                "Tillsvidare",          // → Permanent
-                "Vikarie/Timanställd"   // → Temporary/OnCall 
-            };
-
-            SalaryTypes = new ObservableCollection<string>
-            {
-                "Månadslön",
-                "Timlön"
-            };
+            InitializeEmploymentAndSalaryTypes();
 
             Countries = new ObservableCollection<CountryOption>(
                 Enum.GetValues(typeof(SupportedCountry))
@@ -76,7 +64,9 @@ namespace MyWorkSalary.ViewModels
             {
                 _jobTitle = value;
                 OnPropertyChanged();
-                JobTitleError = string.IsNullOrWhiteSpace(value) ? "Jobbtitel är obligatoriskt" : null;
+                JobTitleError = string.IsNullOrWhiteSpace(value) 
+                    ? Resources.Resx.Resources.Validation_JobTitleRequired 
+                    : null;
             }
         }
 
@@ -87,7 +77,9 @@ namespace MyWorkSalary.ViewModels
             {
                 _workplace = value;
                 OnPropertyChanged();
-                WorkplaceError = string.IsNullOrWhiteSpace(value) ? "Arbetsplats är obligatoriskt" : null;
+                WorkplaceError = string.IsNullOrWhiteSpace(value) 
+                    ? Resources.Resx.Resources.Validation_WorkplaceRequired
+                    : null;
             }
         }
 
@@ -98,7 +90,9 @@ namespace MyWorkSalary.ViewModels
             {
                 _monthlySalary = value;
                 OnPropertyChanged();
-                MonthlySalaryError = string.IsNullOrWhiteSpace(value) ? "Månadslön är obligatoriskt" : null;
+                MonthlySalaryError = string.IsNullOrWhiteSpace(value) 
+                    ? Resources.Resx.Resources.Validation_MonthlySalary 
+                    : null;
             }
         }
 
@@ -109,7 +103,9 @@ namespace MyWorkSalary.ViewModels
             {
                 _hourlyRate = value;
                 OnPropertyChanged();
-                HourlyRateError = string.IsNullOrWhiteSpace(value) ? "Timlön är obligatoriskt" : null;
+                HourlyRateError = string.IsNullOrWhiteSpace(value) 
+                    ? Resources.Resx.Resources.Validation_HourlyRate 
+                    : null;
             }
         }
 
@@ -133,32 +129,6 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
-        public string SelectedEmploymentType
-        {
-            get => _selectedEmploymentType;
-            set
-            {
-                _selectedEmploymentType = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsTemporaryEmployment));
-                OnPropertyChanged(nameof(IsPermanentEmployment));
-            }
-        }
-
-        public string SelectedSalaryType
-        {
-            get => _selectedSalaryType;
-            set
-            {
-                _selectedSalaryType = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsMonthlySalary));
-                OnPropertyChanged(nameof(IsHourlySalary));
-            }
-        }
-
-        public ObservableCollection<string> EmploymentTypes { get; }
-        public ObservableCollection<string> SalaryTypes { get; }
         public ObservableCollection<CountryOption> Countries { get; }
         public CountryOption SelectedCountry
         {
@@ -172,9 +142,6 @@ namespace MyWorkSalary.ViewModels
                 }
             }
         }
-
-        public bool IsMonthlySalary => SelectedSalaryType == "Månadslön";
-        public bool IsHourlySalary => SelectedSalaryType == "Timlön";
 
         public DateTime EmploymentStartDate
         {
@@ -210,9 +177,7 @@ namespace MyWorkSalary.ViewModels
         // Visa bara om anställning > 1 månad
         public bool ShowInitialVacationBalance =>
             DateTime.Today.Subtract(EmploymentStartDate).TotalDays > 30;
-        public bool IsPermanentEmployment => SelectedEmploymentType == "Tillsvidare";
-        public bool IsTemporaryEmployment => SelectedEmploymentType == "Vikarie/Timanställd";
-
+        
         // Validation properties
         private string _jobTitleError;
         public string JobTitleError
@@ -277,7 +242,10 @@ namespace MyWorkSalary.ViewModels
 
                 if (string.IsNullOrWhiteSpace(JobTitle) || string.IsNullOrWhiteSpace(Workplace))
                 {
-                    await Shell.Current.DisplayAlert("Fel", "Fyll i alla obligatoriska fält", "OK");
+                    await Shell.Current.DisplayAlert(
+                        Resources.Resx.Resources.Dialog_ErrorTitle,
+                        Resources.Resx.Resources.Dialog_RequiredFieldsMessage,
+                        Resources.Resx.Resources.Dialog_Ok);
                     return;
                 }
 
@@ -290,7 +258,7 @@ namespace MyWorkSalary.ViewModels
                 {
                     JobTitle = JobTitle.Trim(),
                     Workplace = Workplace.Trim(),
-                    EmploymentType = ParseEmploymentType(SelectedEmploymentType),
+                    EmploymentType = SelectedEmploymentType.Value,
                     PayPeriodType = PayPeriodType.CalendarMonth,
                     PayPeriodStartDay = 25,
                     TaxMethod = TaxCalculationMethod.Manual,
@@ -344,12 +312,18 @@ namespace MyWorkSalary.ViewModels
                 // Kolla resultat
                 var allJobsAfter = _databaseService.JobProfiles.GetJobProfiles();
 
-                await Shell.Current.DisplayAlert("Framgång", "Jobbet har sparats!", "OK");
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.Dialog_SuccessTitle,
+                    Resources.Resx.Resources.Dialog_JobSavedMessage,
+                    Resources.Resx.Resources.Dialog_Ok);
                 await Shell.Current.GoToAsync("//SettingsPage");
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Fel", $"Kunde inte spara jobbet: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.Dialog_ErrorTitle,
+                    string.Format(Resources.Resx.Resources.Dialog_JobSaveFailedMessageFormat, ex.Message),
+                    Resources.Resx.Resources.Dialog_Ok);
             }
             finally
             {
@@ -370,24 +344,14 @@ namespace MyWorkSalary.ViewModels
             HourlyRate = string.Empty;
             ExpectedHoursPerMonth = "160";
             TaxRate = "33";
-            SelectedEmploymentType = "Tillsvidare";
-            SelectedSalaryType = "Månadslön";
+            SelectedEmploymentType = EmploymentTypes.FirstOrDefault(e => e.Value == EmploymentType.Permanent);
+            SelectedSalaryType = SalaryTypes.FirstOrDefault(s => s.Value == "Monthly");
 
             EmploymentStartDate = DateTime.Today;
             VacationDaysPerYear = "25";
             InitialVacationBalance = string.Empty;
         }
 
-        private EmploymentType ParseEmploymentType(string type)
-        {
-            return type switch
-            {
-                "Tillsvidare" => EmploymentType.Permanent,
-                "Vikarie/Timanställd" => EmploymentType.Temporary,
-                "Behovsanställd" => EmploymentType.OnCall,
-                _ => EmploymentType.Permanent
-            };
-        }
         #endregion
 
         #region UI Validation
@@ -398,7 +362,7 @@ namespace MyWorkSalary.ViewModels
             // JobTitle
             if (string.IsNullOrWhiteSpace(JobTitle))
             {
-                JobTitleError = "Fyll i jobbtitel";
+                JobTitleError = Resources.Resx.Resources.Validation_JobTitleRequired;
                 isValid = false;
             }
             else
@@ -407,30 +371,30 @@ namespace MyWorkSalary.ViewModels
             // Workplace
             if (string.IsNullOrWhiteSpace(Workplace))
             {
-                WorkplaceError = "Fyll i arbetsplats";
+                WorkplaceError = Resources.Resx.Resources.Validation_WorkplaceRequired;
                 isValid = false;
             }
             else
                 WorkplaceError = string.Empty;
 
             // Lön
-            if (IsMonthlySalary && !decimal.TryParse(MonthlySalary, out var _))
+            if (IsMonthlySalary && !decimal.TryParse(MonthlySalary, out _))
             {
-                MonthlySalaryError = "Ange giltig månadslön";
+                MonthlySalaryError = Resources.Resx.Resources.Validation_MonthlySalary;
                 isValid = false;
             }
-            else if (IsHourlySalary && !decimal.TryParse(HourlyRate, out var _))
+            else if (IsHourlySalary && !decimal.TryParse(HourlyRate, out _))
             {
-                HourlyRateError = "Ange giltig timlön";
+                HourlyRateError = Resources.Resx.Resources.Validation_HourlyRate;
                 isValid = false;
             }
 
             // Semester (endast för permanent)
-            if (SelectedEmploymentType == "Tillsvidare")
+            if (IsPermanentEmployment)
             {
-                if (!decimal.TryParse(VacationDaysPerYear, out var _))
+                if (!decimal.TryParse(VacationDaysPerYear, out _))
                 {
-                    VacationDaysError = "Ange giltiga semesterdagar";
+                    VacationDaysError = Resources.Resx.Resources.Validation_VacationDays;
                     isValid = false;
                 }
                 else
@@ -447,6 +411,122 @@ namespace MyWorkSalary.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+
+        #region Employment & Salary Types
+        // Hjälpklass för lokaliserade listor
+        public class LocalizedOption<T>
+        {
+            public T Value { get; set; }
+            public string DisplayName { get; set; }
+        }
+
+        // Egenskaper
+        public ObservableCollection<LocalizedOption<EmploymentType>> EmploymentTypes { get; private set; }
+        public ObservableCollection<LocalizedOption<string>> SalaryTypes { get; private set; }
+
+        private LocalizedOption<EmploymentType> _selectedEmploymentType;
+        public LocalizedOption<EmploymentType> SelectedEmploymentType
+        {
+            get => _selectedEmploymentType;
+            set
+            {
+                if (_selectedEmploymentType != value)
+                {
+                    _selectedEmploymentType = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsTemporaryEmployment));
+                    OnPropertyChanged(nameof(IsPermanentEmployment));
+                }
+            }
+        }
+
+        private LocalizedOption<string> _selectedSalaryType;
+        public LocalizedOption<string> SelectedSalaryType
+        {
+            get => _selectedSalaryType;
+            set
+            {
+                if (_selectedSalaryType != value)
+                {
+                    _selectedSalaryType = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsMonthlySalary));
+                    OnPropertyChanged(nameof(IsHourlySalary));
+                }
+            }
+        }
+
+        // Hjälpegenskaper
+        public bool IsMonthlySalary => SelectedSalaryType?.Value == "Monthly";
+        public bool IsHourlySalary => SelectedSalaryType?.Value == "Hourly";
+
+        public bool IsPermanentEmployment => SelectedEmploymentType?.Value == EmploymentType.Permanent;
+        public bool IsTemporaryEmployment => SelectedEmploymentType?.Value == EmploymentType.Temporary;
+
+        // Initiera listor (kallas från konstruktorn)
+        private void InitializeEmploymentAndSalaryTypes()
+        {
+            EmploymentTypes = new ObservableCollection<LocalizedOption<EmploymentType>>
+            {
+                new LocalizedOption<EmploymentType>
+                {
+                    Value = EmploymentType.Permanent,
+                    DisplayName = Resources.Resx.Resources.EmploymentType_Permanent
+                },
+                new LocalizedOption<EmploymentType>
+                {
+                    Value = EmploymentType.Temporary,
+                    DisplayName = Resources.Resx.Resources.EmploymentType_Temporary
+                }
+            };
+
+            SalaryTypes = new ObservableCollection<LocalizedOption<string>>
+            {
+                new LocalizedOption<string>
+                {
+                    Value = "Monthly",
+                    DisplayName = Resources.Resx.Resources.SalaryType_Monthly
+                },
+                new LocalizedOption<string>
+                {
+                    Value = "Hourly",
+                    DisplayName = Resources.Resx.Resources.SalaryType_Hourly
+                }
+            };
+
+            // Standardval
+            SelectedEmploymentType = EmploymentTypes.FirstOrDefault();
+            SelectedSalaryType = SalaryTypes.FirstOrDefault();
+        }
+
+        // Uppdatera listorna vid språkbyte (om användaren byter språk i appen)
+        public void RefreshLocalizedTexts()
+        {
+            foreach (var e in EmploymentTypes)
+            {
+                e.DisplayName = e.Value switch
+                {
+                    EmploymentType.Permanent => Resources.Resx.Resources.EmploymentType_Permanent,
+                    EmploymentType.Temporary => Resources.Resx.Resources.EmploymentType_Temporary,
+                    _ => e.DisplayName
+                };
+            }
+
+            foreach (var s in SalaryTypes)
+            {
+                s.DisplayName = s.Value switch
+                {
+                    "Monthly" => Resources.Resx.Resources.SalaryType_Monthly,
+                    "Hourly" => Resources.Resx.Resources.SalaryType_Hourly,
+                    _ => s.DisplayName
+                };
+            }
+
+            OnPropertyChanged(nameof(EmploymentTypes));
+            OnPropertyChanged(nameof(SalaryTypes));
+        }
+
         #endregion
     }
 }

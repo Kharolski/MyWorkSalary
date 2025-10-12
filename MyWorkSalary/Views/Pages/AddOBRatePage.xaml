@@ -2,17 +2,18 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MyWorkSalary.Views.Pages.AddOBRatePage"
-             Title="Lägg till OB-regel">
+             xmlns:resx="clr-namespace:MyWorkSalary.Resources.Resx"
+             Title="{x:Static resx:Resources.OBRule_Title}">
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
 
             <!-- Namn på OB-regel -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="📝 Namn på OB-regel"
+                    <Label Text="{x:Static resx:Resources.OBRule_Name_Label}"
                            Style="{StaticResource FieldTitleLabel}" />
                     <Entry Text="{Binding Name}"
-                           Placeholder="T.ex. 'Kväll OB vardagar'"
+                           Placeholder="{x:Static resx:Resources.OBRule_Name_Placeholder}"
                            FontSize="16"
                            Style="{StaticResource ThemedEntry}" />
                     <Label Text="{Binding NameError}" TextColor="Red" FontSize="12"
@@ -23,13 +24,13 @@
             <!-- Tider -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">
-                    <Label Text="⏰ Tidsperiod"
+                    <Label Text="{x:Static resx:Resources.OBRule_TimeSection_Label}"
                            Style="{StaticResource FieldTitleLabel}" />
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
 
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
                         <!-- Starttid -->
                         <VerticalStackLayout Grid.Column="0" Spacing="5">
-                            <Label Text="Från tid:" 
+                            <Label Text="{x:Static resx:Resources.OBRule_From_Label}"
                                    FontSize="14" 
                                    Style="{StaticResource SecondaryLabel}" />
                             <TimePicker Time="{Binding StartTime}" 
@@ -39,7 +40,7 @@
 
                         <!-- Sluttid -->
                         <VerticalStackLayout Grid.Column="1" Spacing="5">
-                            <Label Text="Till tid:" 
+                            <Label Text="{x:Static resx:Resources.OBRule_To_Label}"
                                    FontSize="14"
                                    Style="{StaticResource SecondaryLabel}" />
                             <TimePicker Time="{Binding EndTime}"
@@ -53,12 +54,12 @@
             <!-- Lön per timme -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="💰 Lön per timme"
+                    <Label Text="{x:Static resx:Resources.OBRule_Rate_Label}"
                            Style="{StaticResource FieldTitleLabel}" />
                     <Entry Text="{Binding RatePerHour}"
-                           Placeholder="T.ex. 56.70" Keyboard="Numeric" FontSize="16"
+                           Placeholder="{x:Static resx:Resources.OBRule_Rate_Placeholder}" Keyboard="Numeric" FontSize="16"
                            Style="{StaticResource ThemedEntry}" />
-                    <Label Text="Ange OB-lönen per timme (inklusive grundlön + tillägg)"
+                    <Label Text="{x:Static resx:Resources.OBRule_Rate_Tip}"
                            Style="{StaticResource TipsLabel}" />
                     <Label Text="{Binding RateError}" TextColor="Red" FontSize="12"
                             IsVisible="{Binding RateError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
@@ -68,7 +69,7 @@
             <!-- Kategori -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="🏷️ Kategori"
+                    <Label Text="{x:Static resx:Resources.OBRule_Category_Label}"
                            Style="{StaticResource FieldTitleLabel}" />
                     <Picker ItemsSource="{Binding Categories}"
                             SelectedItem="{Binding SelectedCategory}"
@@ -82,7 +83,7 @@
             <!-- Veckodagar -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">
-                    <Label Text="📅 Gäller dessa dagar"
+                    <Label Text="{x:Static resx:Resources.OBRule_Days_Label}"
                            Style="{StaticResource FieldTitleLabel}" />
 
                     <Grid ColumnDefinitions="*,*" 
@@ -95,7 +96,7 @@
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Monday}"
                                      Style="{StaticResource ThemedCheckBox}" />
-                            <Label Text="Måndag" Style="{StaticResource DayLabel}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_Monday}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
 
                         <!-- Tisdag -->
@@ -103,7 +104,7 @@
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Tuesday}"
                                      Style="{StaticResource ThemedCheckBox}" />
-                            <Label Text="Tisdag" Style="{StaticResource DayLabel}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_Tuesday}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
 
                         <!-- Onsdag -->
@@ -111,7 +112,7 @@
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Wednesday}"
                                      Style="{StaticResource ThemedCheckBox}" />
-                            <Label Text="Onsdag" Style="{StaticResource DayLabel}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_Wednesday}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
 
                         <!-- Torsdag -->
@@ -119,7 +120,7 @@
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Thursday}"
                                      Style="{StaticResource ThemedCheckBox}" />
-                            <Label Text="Torsdag" Style="{StaticResource DayLabel}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_Thursday}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
 
                         <!-- Fredag -->
@@ -127,7 +128,7 @@
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Friday}"
                                      Style="{StaticResource ThemedCheckBox}" />
-                            <Label Text="Fredag" Style="{StaticResource DayLabel}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_Friday}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
 
                         <!-- Lördag -->
@@ -135,7 +136,7 @@
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Saturday}"
                                      Style="{StaticResource ThemedCheckBox}" />
-                            <Label Text="Lördag" Style="{StaticResource DayLabel}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_Saturday}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
 
                         <!-- Söndag -->
@@ -143,7 +144,7 @@
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Sunday}"
                                      Style="{StaticResource ThemedCheckBox}" />
-                            <Label Text="Söndag" Style="{StaticResource DayLabel}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_Sunday}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
 
                         <!-- Helgdagar -->
@@ -151,7 +152,7 @@
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Holidays}"
                                      Style="{StaticResource ThemedCheckBox}" />
-                            <Label Text="Helgdagar" Style="{StaticResource DayLabel}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_Holidays}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
                     </Grid>
 
@@ -160,15 +161,15 @@
                                  Spacing="10" 
                                  HorizontalOptions="Center">
 
-                        <Button Text="Vardagar"
+                        <Button Text="{x:Static resx:Resources.OBRule_SelectWeekdays}"
                                 Command="{Binding SelectWeekdaysCommand}"
                                 Style="{StaticResource WeekdaysButton}" />
 
-                        <Button Text="Helger"
+                        <Button Text="{x:Static resx:Resources.OBRule_SelectWeekends}"
                                 Command="{Binding SelectWeekendsCommand}"
                                 Style="{StaticResource WeekendsButton}" />
 
-                        <Button Text="Alla"
+                        <Button Text="{x:Static resx:Resources.OBRule_SelectAll}"
                                 Command="{Binding SelectAllDaysCommand}"
                                 Style="{StaticResource AllDaysButton}" />
                     </StackLayout>
@@ -179,7 +180,7 @@
             </Frame>
 
             <!-- Spara knapp -->
-            <Button Text="💾 Spara OB-regel"
+            <Button Text="{x:Static resx:Resources.OBRule_Save_Button}"
                     Command="{Binding SaveCommand}"
                     BackgroundColor="{StaticResource SalaryPrimary}"
                     TextColor="{StaticResource White}"

@@ -2,54 +2,61 @@
 <ContentPage x:Class="MyWorkSalary.Views.Pages.EditJobPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Redigera jobb">
+             xmlns:resx="clr-namespace:MyWorkSalary.Resources.Resx"
+             xmlns:loc="clr-namespace:MyWorkSalary.Helpers.Localization"
+             Title="{x:Static resx:Resources.EditJob_Header}">
+    
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
-            <!-- Header -->
-            <Label Text="✏️ Redigera jobb"
-                   Style="{StaticResource TitleLabel}"
-                   Margin="0,0,0,20" />
-
+            
             <!-- Grundläggande info -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="📋 Grundläggande information"
+                    <Label Text="{x:Static resx:Resources.BasicInfo_SectionTitle}"
                            Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Jobbtitel *"
+                    <Label Text="{x:Static resx:Resources.JobTitle_Label}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding JobTitle}"
-                           Placeholder="t.ex. Undersköterska"
+                           Placeholder="{x:Static resx:Resources.JobTitle_Placeholder}"
                            Style="{StaticResource ThemedEntry}" />
 
-                    <Label Text="Arbetsplats *"
+                    <Label Text="{x:Static resx:Resources.Workplace_Label}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding Workplace}"
-                           Placeholder="t.ex. Ljungby Kommun"
+                           Placeholder="{x:Static resx:Resources.Workplace_Placeholder}"
                            Style="{StaticResource ThemedEntry}" />
 
                     <!-- Anställningsdatum -->
-                    <Label Text="Anställningsdatum *" 
+                    <Label Text="{x:Static resx:Resources.EmploymentDate_Label}"
                            Style="{StaticResource SecondaryLabel}" />
                     <DatePicker Date="{Binding EmploymentStartDate}"
-                                Style="{StaticResource ThemedDatePicker}"
-                                Format="dddd d MMMM yyyy"/>
+                            Style="{StaticResource ThemedDatePicker}"
+                            Format="{Binding DatePickerFormat, Source={x:Static loc:TranslationManager.Instance}}" />
 
-                    <Label Text="Anställningstyp"
+                    <Label Text="{x:Static resx:Resources.EmploymentType_Label}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding EmploymentTypes}"
                             SelectedItem="{Binding SelectedEmploymentType}"
                             Style="{StaticResource ThemedPicker}" />
+
+                    <!-- Land -->
+                    <Label Text="{Binding CountryDisplayName}" 
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Margin="0,10,0,10" />
+                    
                 </VerticalStackLayout>
             </Frame>
 
             <!-- Lön -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="💰 Löneinformation"
+                    <Label Text="{x:Static resx:Resources.Salary_SectionTitle}"
                            Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Lönetyp"
+                    <Label Text="{x:Static resx:Resources.SalaryType_Label}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding SalaryTypes}"
                             SelectedItem="{Binding SelectedSalaryType}"
@@ -57,29 +64,29 @@
 
                     <!-- Månadslön -->
                     <StackLayout IsVisible="{Binding IsMonthlySalary}">
-                        <Label Text="Månadslön (kr)"
+                        <Label Text="{x:Static resx:Resources.MonthlySalary_Label}"
                                Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding MonthlySalary}"
                                Keyboard="Numeric"
-                               Placeholder="t.ex. 28500"
+                               Placeholder="{x:Static resx:Resources.MonthlySalary_Placeholder}"
                                Style="{StaticResource ThemedEntry}" />
                     </StackLayout>
 
                     <!-- Timlön -->
                     <StackLayout IsVisible="{Binding IsHourlySalary}">
-                        <Label Text="Timlön (kr)"
+                        <Label Text="{x:Static resx:Resources.HourlySalary_Label}"
                                Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding HourlyRate}"
                                Keyboard="Numeric"
-                               Placeholder="t.ex. 185"
+                               Placeholder="{x:Static resx:Resources.HourlySalary_Placeholder}"
                                Style="{StaticResource ThemedEntry}" />
                     </StackLayout>
 
-                    <Label Text="Förväntade timmar per månad"
+                    <Label Text="{x:Static resx:Resources.ExpectedHours_Label}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding ExpectedHoursPerMonth}"
                            Keyboard="Numeric"
-                           Placeholder="t.ex. 165"
+                           Placeholder="{x:Static resx:Resources.ExpectedHours_Placeholder}"
                            Style="{StaticResource ThemedEntry}" />
                 </VerticalStackLayout>
             </Frame>
@@ -87,10 +94,10 @@
             <!-- Semester -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="🏖️ Semesterinformation" 
+                    <Label Text="{x:Static resx:Resources.Vacation_SectionTitle}"
                            Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Semesterdagar per år" 
+                    <Label Text="{x:Static resx:Resources.VacationDays_Label}" 
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding VacationDaysPerYear}"
                            Keyboard="Numeric"
@@ -99,13 +106,13 @@
 
                     <!-- Visa bara om anställning > 1 månad -->
                     <StackLayout IsVisible="{Binding ShowInitialVacationBalance}">
-                        <Label Text="Sparade semesterdagar just nu" 
+                        <Label Text="{x:Static resx:Resources.InitialVacation_Label}" 
                                Style="{StaticResource SecondaryLabel}" />
                         <Entry Text="{Binding InitialVacationBalance}"
                                Keyboard="Numeric"
-                               Placeholder="t.ex. 12.5"
+                               Placeholder="{x:Static resx:Resources.InitialVacation_Placeholder}"
                                Style="{StaticResource ThemedEntry}" />
-                        <Label Text="💡 Ange dina sparade semesterdagar från senaste lönespec"
+                        <Label Text="{x:Static resx:Resources.Vacation_Tip}"
                                Style="{StaticResource TipsLabel}" />
                     </StackLayout>
                 </VerticalStackLayout>
@@ -114,17 +121,17 @@
             <!-- Skatt -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="🏛️ Skatteinformation"
+                    <Label Text="{x:Static resx:Resources.Tax_SectionTitle}"
                            Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="Skattesats (%)"
+                    <Label Text="{x:Static resx:Resources.TaxRate_Label}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding TaxRate}"
                            Keyboard="Numeric"
-                           Placeholder="t.ex. 33"
+                           Placeholder="{x:Static resx:Resources.TaxRate_Placeholder}"
                            Style="{StaticResource ThemedEntry}" />
 
-                    <Label Text="💡 Tips: Kolla din senaste lönespec för exakt skattesats"
+                    <Label Text="{x:Static resx:Resources.Tax_Tip}"
                            Style="{StaticResource TipsLabel}" />
                 </VerticalStackLayout>
             </Frame>
@@ -134,11 +141,11 @@
                          HorizontalOptions="FillAndExpand"
                          Spacing="10"
                          Margin="0,20,0,0">
-                <Button Text="Avbryt"
+                <Button Text="{x:Static resx:Resources.Button_Cancel}"
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource SecondaryButton}"
                         HorizontalOptions="FillAndExpand" />
-                <Button Text="💾 Spara ändringar"
+                <Button Text="{x:Static resx:Resources.Button_SaveChanges}"
                         Command="{Binding SaveCommand}"
                         Style="{StaticResource EditButton}"
                         HorizontalOptions="FillAndExpand" />

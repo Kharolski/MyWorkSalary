@@ -1,10 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Input;
-using MyWorkSalary.Models;
-using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
@@ -34,15 +33,14 @@ namespace MyWorkSalary.ViewModels
 
             EmploymentTypes = new ObservableCollection<string>
             {
-                "Tillsvidare",
-                "Vikarie/Timanställd",
-                "Behovsanställd"
+                Resources.Resx.Resources.EmploymentType_Permanent,
+                Resources.Resx.Resources.EmploymentType_Temporary
             };
 
             SalaryTypes = new ObservableCollection<string>
             {
-                "Månadslön",
-                "Timlön"
+                Resources.Resx.Resources.SalaryType_Monthly,
+                Resources.Resx.Resources.SalaryType_Hourly
             };
 
             SaveCommand = new Command(OnSave, CanSave);
@@ -53,6 +51,22 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Properties
+        private SupportedCountry _country;
+        public SupportedCountry Country
+        {
+            get => _country;
+            set
+            {
+                if (_country != value)
+                {
+                    _country = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(CountryDisplayName));
+                }
+            }
+        }
+        public string CountryDisplayName => Country.GetDisplayName();
+
         public ObservableCollection<string> EmploymentTypes { get; }
         public ObservableCollection<string> SalaryTypes { get; }
 
@@ -172,8 +186,8 @@ namespace MyWorkSalary.ViewModels
         public bool ShowInitialVacationBalance =>
             DateTime.Today.Subtract(EmploymentStartDate).TotalDays > 30;
 
-        public bool IsMonthlySalary => SelectedSalaryType == "Månadslön";
-        public bool IsHourlySalary => SelectedSalaryType == "Timlön";
+        public bool IsMonthlySalary => SelectedSalaryType == Resources.Resx.Resources.SalaryType_Monthly;
+        public bool IsHourlySalary => SelectedSalaryType == Resources.Resx.Resources.SalaryType_Hourly;
         #endregion
 
         #region Commands
@@ -232,16 +246,18 @@ namespace MyWorkSalary.ViewModels
             VacationDaysPerYear = _workingCopy.VacationDaysPerYear.ToString();
             InitialVacationBalance = _workingCopy.InitialVacationBalance?.ToString() ?? string.Empty;
 
+            Country = _workingCopy.Country;
+
             // Sätt lönetyp och värden
             if (_workingCopy.MonthlySalary > 0)
             {
-                SelectedSalaryType = "Månadslön";
+                SelectedSalaryType = Resources.Resx.Resources.SalaryType_Monthly;
                 MonthlySalary = _workingCopy.MonthlySalary.ToString();
                 HourlyRate = string.Empty; // Rensa timlön i formuläret
             }
             else
             {
-                SelectedSalaryType = "Timlön";
+                SelectedSalaryType = Resources.Resx.Resources.SalaryType_Hourly;
                 HourlyRate = _workingCopy.HourlyRate.ToString();
                 MonthlySalary = string.Empty; // Rensa månadslön i formuläret
             }
@@ -251,22 +267,20 @@ namespace MyWorkSalary.ViewModels
         {
             return employmentType switch
             {
-                EmploymentType.Permanent => "Tillsvidare",
-                EmploymentType.Temporary => "Vikarie/Timanställd",
-                EmploymentType.OnCall => "Behovsanställd",
-                _ => "Tillsvidare"
+                EmploymentType.Permanent => Resources.Resx.Resources.EmploymentType_Permanent,
+                EmploymentType.Temporary => Resources.Resx.Resources.EmploymentType_Temporary,
+                _ => Resources.Resx.Resources.EmploymentType_Permanent
             };
         }
 
         private EmploymentType ParseEmploymentType(string type)
         {
-            return type switch
-            {
-                "Tillsvidare" => EmploymentType.Permanent,
-                "Vikarie/Timanställd" => EmploymentType.Temporary,
-                "Behovsanställd" => EmploymentType.OnCall,
-                _ => EmploymentType.Permanent
-            };
+            if (type == Resources.Resx.Resources.EmploymentType_Permanent)
+                return EmploymentType.Permanent;
+            if (type == Resources.Resx.Resources.EmploymentType_Temporary)
+                return EmploymentType.Temporary;
+
+            return EmploymentType.Permanent;
         }
 
         private bool CanSave()
@@ -321,22 +335,29 @@ namespace MyWorkSalary.ViewModels
                 // Spara ändringar till databas
                 _databaseService.JobProfiles.SaveJobProfile(_originalJob);
 
-                await Shell.Current.DisplayAlert("Framgång", "Jobbet har uppdaterats!", "OK");
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.EditJob_SuccessTitle,
+                    Resources.Resx.Resources.EditJob_SuccessMessage,
+                    Resources.Resx.Resources.EditJob_Ok);
+
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Fel", $"Kunde inte uppdatera jobbet: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.EditJob_ErrorTitle,
+                    string.Format(Resources.Resx.Resources.EditJob_ErrorMessage, ex.Message),
+                    Resources.Resx.Resources.EditJob_Ok);
             }
         }
 
         private async void OnCancel()
         {
             bool confirm = await Shell.Current.DisplayAlert(
-                "Avbryt",
-                "Är du säker på att du vill avbryta? Ändringar kommer inte att sparas.",
-                "Ja, avbryt",
-                "Nej, fortsätt");
+                Resources.Resx.Resources.EditJob_CancelTitle,
+                Resources.Resx.Resources.EditJob_CancelMessage,
+                Resources.Resx.Resources.EditJob_CancelYes,
+                Resources.Resx.Resources.EditJob_CancelNo);
 
             if (confirm)
             {

@@ -21,7 +21,7 @@ namespace MyWorkSalary.ViewModels
         private TimeSpan _startTime = new TimeSpan(18, 0, 0); // Default 18:00
         private TimeSpan _endTime = new TimeSpan(22, 0, 0);   // Default 22:00
         private string _ratePerHour = string.Empty;
-        private string _selectedCategory = "Välj en kategori"; // default text
+        private string _selectedCategory = Resources.Resx.Resources.Category_Placeholder; // default text
 
         // Veckodagar
         private bool _monday;
@@ -49,12 +49,12 @@ namespace MyWorkSalary.ViewModels
             // Initiera kategorier
             Categories = new ObservableCollection<string> 
             {
-                "Välj en kategori", // <--- placeholder
-                "Kväll", 
-                "Natt", 
-                "Helg", 
-                "Helg Extra", 
-                "Storhelg" 
+                Resources.Resx.Resources.Category_Placeholder,
+                Resources.Resx.Resources.Category_Evening,
+                Resources.Resx.Resources.Category_Night,
+                Resources.Resx.Resources.Category_Weekend,
+                Resources.Resx.Resources.Category_WeekendExtra,
+                Resources.Resx.Resources.Category_Holiday
             };
         }
         #endregion
@@ -67,7 +67,7 @@ namespace MyWorkSalary.ViewModels
             {
                 if (SetProperty(ref _name, value))
                 {
-                    ValidateNotEmpty(value, msg => NameError = msg, "Ange ett namn för OB-regeln");
+                    ValidateNotEmpty(value, msg => NameError = msg, Resources.Resx.Resources.Validation_OBNameRequired);
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace MyWorkSalary.ViewModels
             {
                 if (SetProperty(ref _ratePerHour, value))
                 {
-                    ValidateNotEmpty(value, msg => RateError = msg, "Ange lön per timme");
+                    ValidateNotEmpty(value, msg => RateError = msg, Resources.Resx.Resources.Validation_OBRateRequired);
                 }
             }
         }
@@ -106,8 +106,8 @@ namespace MyWorkSalary.ViewModels
                 if (SetProperty(ref _selectedCategory, value))
                 {
                     // Validation: placeholder eller tom = fel
-                    CategoryError = string.IsNullOrWhiteSpace(value) || value == "Välj en kategori"
-                        ? "Välj en kategori"
+                    CategoryError = string.IsNullOrWhiteSpace(value) || value == Resources.Resx.Resources.Category_Placeholder
+                        ? Resources.Resx.Resources.Validation_OBCategoryRequired
                         : string.Empty;
                 }
             }
@@ -243,7 +243,10 @@ namespace MyWorkSalary.ViewModels
             {
                 if (!decimal.TryParse(RatePerHour, out decimal rate))
                 {
-                    await Shell.Current.DisplayAlert("Fel", "Ange en giltig lön per timme", "OK");
+                    await Shell.Current.DisplayAlert(
+                        Resources.Resx.Resources.Save_Error_Title,
+                        Resources.Resx.Resources.Validation_OBRateRequired,
+                        "OK");
                     return;
                 }
 
@@ -270,8 +273,8 @@ namespace MyWorkSalary.ViewModels
                 _databaseService.OBRates.SaveOBRate(obRate);
 
                 await Shell.Current.DisplayAlert(
-                    "Sparat!",
-                    $"OB-regel '{Name}' har sparats.",
+                    Resources.Resx.Resources.Save_Success_Title,
+                    string.Format(Resources.Resx.Resources.Save_Success_Message, Name),
                     "OK");
 
                 await Shell.Current.GoToAsync("..");
@@ -279,8 +282,8 @@ namespace MyWorkSalary.ViewModels
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert(
-                    "Fel",
-                    $"Kunde inte spara OB-regel: {ex.Message}",
+                    Resources.Resx.Resources.Save_Error_Title,
+                    string.Format(Resources.Resx.Resources.Save_Error_Message, ex.Message),
                     "OK");
             }
         }
@@ -311,7 +314,7 @@ namespace MyWorkSalary.ViewModels
             // Namn
             if (string.IsNullOrWhiteSpace(Name))
             {
-                NameError = "Ange ett namn för OB-regeln";
+                NameError = Resources.Resx.Resources.Validation_OBNameRequired;
                 isValid = false;
             }
             else
@@ -322,7 +325,7 @@ namespace MyWorkSalary.ViewModels
             // Lön
             if (string.IsNullOrWhiteSpace(RatePerHour) || !decimal.TryParse(RatePerHour, out _))
             {
-                RateError = "Ange en giltig lön per timme";
+                RateError = Resources.Resx.Resources.Validation_OBRateRequired;
                 isValid = false;
             }
             else
@@ -331,9 +334,9 @@ namespace MyWorkSalary.ViewModels
             }
 
             // Kategori
-            if (string.IsNullOrWhiteSpace(SelectedCategory) || SelectedCategory == "Välj en kategori")
+            if (string.IsNullOrWhiteSpace(SelectedCategory) || SelectedCategory == Resources.Resx.Resources.Category_Placeholder)
             {
-                CategoryError = "Välj en kategori för OB-regeln";
+                CategoryError = Resources.Resx.Resources.Validation_OBCategoryRequired;
                 isValid = false;
             }
             else
@@ -344,7 +347,7 @@ namespace MyWorkSalary.ViewModels
             // Minst en dag vald
             if (!Monday && !Tuesday && !Wednesday && !Thursday && !Friday && !Saturday && !Sunday && !Holidays)
             {
-                DaysError = "Välj minst en dag som regeln gäller för";
+                DaysError = Resources.Resx.Resources.Validation_OBDaysRequired;
                 isValid = false;
             }
             else
@@ -368,7 +371,7 @@ namespace MyWorkSalary.ViewModels
         private void ValidateDays()
         {
             if (!Monday && !Tuesday && !Wednesday && !Thursday && !Friday && !Saturday && !Sunday && !Holidays)
-                DaysError = "Välj minst en dag";
+                DaysError = Resources.Resx.Resources.Validation_OBDaysRequired;
             else
                 DaysError = string.Empty;
         }
@@ -377,11 +380,11 @@ namespace MyWorkSalary.ViewModels
         {
             return category switch
             {
-                "Kväll" => OBCategory.Evening,
-                "Natt" => OBCategory.Night,
-                "Helg" => OBCategory.Weekend,
-                "Helg Extra" => OBCategory.WeekendExtra,
-                "Storhelg" => OBCategory.Holiday,
+                var c when c == Resources.Resx.Resources.Category_Evening => OBCategory.Evening,
+                var c when c == Resources.Resx.Resources.Category_Night => OBCategory.Night,
+                var c when c == Resources.Resx.Resources.Category_Weekend => OBCategory.Weekend,
+                var c when c == Resources.Resx.Resources.Category_WeekendExtra => OBCategory.WeekendExtra,
+                var c when c == Resources.Resx.Resources.Category_Holiday => OBCategory.Holiday,
                 _ => OBCategory.Evening // default fallback (men borde aldrig hända)
             };
         }

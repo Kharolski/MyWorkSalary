@@ -230,8 +230,35 @@ when employment ends (no later than one month afterwards).</value>
   <data name="AppSettings" xml:space="preserve">
     <value>🔧 App Settings</value>
   </data>
+  <data name="BasicInfo_SectionTitle" xml:space="preserve">
+    <value>📋 Basic information</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Button_SaveChanges" xml:space="preserve">
+    <value>💾 Save changes</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="Category_Evening" xml:space="preserve">
+    <value>Evening</value>
+  </data>
+  <data name="Category_Holiday" xml:space="preserve">
+    <value>Public Holiday</value>
+  </data>
+  <data name="Category_Night" xml:space="preserve">
+    <value>Night</value>
+  </data>
+  <data name="Category_Placeholder" xml:space="preserve">
+    <value>Select a category</value>
+  </data>
+  <data name="Category_Weekend" xml:space="preserve">
+    <value>Weekend</value>
+  </data>
+  <data name="Category_WeekendExtra" xml:space="preserve">
+    <value>Weekend Extra</value>
   </data>
   <data name="ChangeJobFailedMessageFormat" xml:space="preserve">
     <value>Could not switch job: {0}</value>
@@ -241,6 +268,24 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="ConfirmDelete" xml:space="preserve">
     <value>Yes, delete</value>
+  </data>
+  <data name="Country_Denmark" xml:space="preserve">
+    <value>Denmark</value>
+  </data>
+  <data name="Country_Finland" xml:space="preserve">
+    <value>Finland</value>
+  </data>
+  <data name="Country_France" xml:space="preserve">
+    <value>France</value>
+  </data>
+  <data name="Country_Ireland" xml:space="preserve">
+    <value>Ireland</value>
+  </data>
+  <data name="Country_Norway" xml:space="preserve">
+    <value>Norway</value>
+  </data>
+  <data name="Country_Sweden" xml:space="preserve">
+    <value>Sweden</value>
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Dark Theme</value>
@@ -278,8 +323,71 @@ when employment ends (no later than one month afterwards).</value>
   <data name="DeleteOBRateTitle" xml:space="preserve">
     <value>Delete rule</value>
   </data>
+  <data name="Dialog_ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Dialog_JobSavedMessage" xml:space="preserve">
+    <value>The job has been saved!</value>
+  </data>
+  <data name="Dialog_JobSaveFailedMessageFormat" xml:space="preserve">
+    <value>Could not save the job: {0}</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Dialog_RequiredFieldsMessage" xml:space="preserve">
+    <value>Please fill in all required fields</value>
+  </data>
+  <data name="Dialog_SuccessTitle" xml:space="preserve">
+    <value>Success</value>
+  </data>
   <data name="EditJob" xml:space="preserve">
     <value>✏️  Edit</value>
+  </data>
+  <data name="EditJob_CancelMessage" xml:space="preserve">
+    <value>Are you sure you want to cancel? Changes will not be saved.</value>
+  </data>
+  <data name="EditJob_CancelNo" xml:space="preserve">
+    <value>No, continue</value>
+  </data>
+  <data name="EditJob_CancelTitle" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="EditJob_CancelYes" xml:space="preserve">
+    <value>Yes, cancel</value>
+  </data>
+  <data name="EditJob_ErrorMessage" xml:space="preserve">
+    <value>Could not update the job: {0}</value>
+  </data>
+  <data name="EditJob_ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="EditJob_Header" xml:space="preserve">
+    <value>✏️  Edit job</value>
+  </data>
+  <data name="EditJob_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="EditJob_SuccessMessage" xml:space="preserve">
+    <value>The job has been updated!</value>
+  </data>
+  <data name="EditJob_SuccessTitle" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="EditJob_Title" xml:space="preserve">
+    <value>Edit job</value>
+  </data>
+  <data name="EmploymentDate_Label" xml:space="preserve">
+    <value>Employment date *</value>
+  </data>
+  <data name="EmploymentType_Label" xml:space="preserve">
+    <value>Employment type</value>
+  </data>
+  <data name="EmploymentType_Permanent" xml:space="preserve">
+    <value>Permanent</value>
+  </data>
+  <data name="EmploymentType_Temporary" xml:space="preserve">
+    <value>Temporary / On-call</value>
   </data>
   <data name="ErrorTitle" xml:space="preserve">
     <value>Error</value>
@@ -287,14 +395,32 @@ when employment ends (no later than one month afterwards).</value>
   <data name="ExactSchedule" xml:space="preserve">
     <value>Exactly on schedule</value>
   </data>
+  <data name="ExpectedHours_Label" xml:space="preserve">
+    <value>Expected hours per month</value>
+  </data>
+  <data name="ExpectedHours_Placeholder" xml:space="preserve">
+    <value>e.g. 165</value>
+  </data>
   <data name="For" xml:space="preserve">
     <value>For</value>
+  </data>
+  <data name="HourlySalary_Label" xml:space="preserve">
+    <value>Hourly rate </value>
+  </data>
+  <data name="HourlySalary_Placeholder" xml:space="preserve">
+    <value>e.g. 185</value>
   </data>
   <data name="Hours" xml:space="preserve">
     <value>hours</value>
   </data>
   <data name="HoursToBank" xml:space="preserve">
     <value>hours to hour bank</value>
+  </data>
+  <data name="InitialVacation_Label" xml:space="preserve">
+    <value>Saved vacation days right now</value>
+  </data>
+  <data name="InitialVacation_Placeholder" xml:space="preserve">
+    <value>e.g. 12.5</value>
   </data>
   <data name="JobChangedMessageFormat" xml:space="preserve">
     <value>Changed to: {0}</value>
@@ -304,6 +430,15 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="JobDeletedTitle" xml:space="preserve">
     <value>Deleted</value>
+  </data>
+  <data name="JobTitle_Label" xml:space="preserve">
+    <value>Job title *</value>
+  </data>
+  <data name="JobTitle_Placeholder" xml:space="preserve">
+    <value>e.g. Nursing assistant</value>
+  </data>
+  <data name="Label_Country" xml:space="preserve">
+    <value>Country:</value>
   </data>
   <data name="LanguageEnglish" xml:space="preserve">
     <value>English</value>
@@ -316,6 +451,12 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="LightThemeActive" xml:space="preserve">
     <value>Bright appearance enabled</value>
+  </data>
+  <data name="MonthlySalary_Label" xml:space="preserve">
+    <value>Monthly salary </value>
+  </data>
+  <data name="MonthlySalary_Placeholder" xml:space="preserve">
+    <value>e.g. 28500</value>
   </data>
   <data name="MyJobs" xml:space="preserve">
     <value>💼 My Jobs</value>
@@ -338,6 +479,75 @@ when employment ends (no later than one month afterwards).</value>
     <value>Weekend</value>
     <comment>OB category for weekend</comment>
   </data>
+  <data name="OBRule_Category_Label" xml:space="preserve">
+    <value>🏷️ Category</value>
+  </data>
+  <data name="OBRule_Days_Label" xml:space="preserve">
+    <value>📅 Applies on these days</value>
+  </data>
+  <data name="OBRule_Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="OBRule_From_Label" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="OBRule_Holidays" xml:space="preserve">
+    <value>Holidays</value>
+  </data>
+  <data name="OBRule_Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="OBRule_Name_Label" xml:space="preserve">
+    <value>📝 Unsocial Hours Name</value>
+  </data>
+  <data name="OBRule_Name_Placeholder" xml:space="preserve">
+    <value>e.g. “Evening unsocial hours (weekdays)”</value>
+  </data>
+  <data name="OBRule_Rate_Label" xml:space="preserve">
+    <value>💰 Pay per hour</value>
+  </data>
+  <data name="OBRule_Rate_Placeholder" xml:space="preserve">
+    <value>e.g. 56.70</value>
+  </data>
+  <data name="OBRule_Rate_Tip" xml:space="preserve">
+    <value>Enter pay per hour (including base + unsocial hours bonus)</value>
+  </data>
+  <data name="OBRule_Saturday" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="OBRule_Save_Button" xml:space="preserve">
+    <value>💾 Save Unsocial Hours Rule</value>
+  </data>
+  <data name="OBRule_SelectAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="OBRule_SelectWeekdays" xml:space="preserve">
+    <value>Weekdays</value>
+  </data>
+  <data name="OBRule_SelectWeekends" xml:space="preserve">
+    <value>Weekends</value>
+  </data>
+  <data name="OBRule_Sunday" xml:space="preserve">
+    <value>Sunday</value>
+  </data>
+  <data name="OBRule_Thursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="OBRule_TimeSection_Label" xml:space="preserve">
+    <value>⏰ Time Period</value>
+  </data>
+  <data name="OBRule_Title" xml:space="preserve">
+    <value>Add Unsocial Hours Rule</value>
+  </data>
+  <data name="OBRule_To_Label" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="OBRule_Tuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="OBRule_Wednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
   <data name="OBSettings" xml:space="preserve">
     <value>⏰ Unsocial hours settings</value>
   </data>
@@ -347,9 +557,33 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="SalaryType_Hourly" xml:space="preserve">
+    <value>Hourly rate</value>
+  </data>
+  <data name="SalaryType_Label" xml:space="preserve">
+    <value>Salary type</value>
+  </data>
+  <data name="SalaryType_Monthly" xml:space="preserve">
+    <value>Monthly salary</value>
+  </data>
+  <data name="Salary_SectionTitle" xml:space="preserve">
+    <value>💰 Salary information</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
     <comment>Button</comment>
+  </data>
+  <data name="Save_Error_Message" xml:space="preserve">
+    <value>Could not save unsocial hours rule: {0}</value>
+  </data>
+  <data name="Save_Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Save_Success_Message" xml:space="preserve">
+    <value>Unsocial hours rule '{0}' has been saved.</value>
+  </data>
+  <data name="Save_Success_Title" xml:space="preserve">
+    <value>Saved!</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>
@@ -360,11 +594,65 @@ when employment ends (no later than one month afterwards).</value>
   <data name="SwipeDeleteOBHint" xml:space="preserve">
     <value>💡 Swipe left to delete a rule</value>
   </data>
+  <data name="TaxRate_Label" xml:space="preserve">
+    <value>Tax rate (%)</value>
+  </data>
+  <data name="TaxRate_Placeholder" xml:space="preserve">
+    <value>e.g. 33</value>
+  </data>
+  <data name="Tax_SectionTitle" xml:space="preserve">
+    <value>🏛️ Tax information</value>
+  </data>
+  <data name="Tax_Tip" xml:space="preserve">
+    <value>💡 Tip: Check your latest payslip for exact tax rate</value>
+  </data>
   <data name="ThemeSaveErrorMessage" xml:space="preserve">
     <value>Could not save theme setting</value>
   </data>
+  <data name="VacationDays_Label" xml:space="preserve">
+    <value>Vacation days per year</value>
+  </data>
+  <data name="Vacation_SectionTitle" xml:space="preserve">
+    <value>🏖️ Vacation information</value>
+  </data>
+  <data name="Vacation_Tip" xml:space="preserve">
+    <value>💡 Enter your saved vacation days from your latest payslip</value>
+  </data>
+  <data name="Validation_HourlyRate" xml:space="preserve">
+    <value>Enter a valid hourly rate</value>
+  </data>
+  <data name="Validation_JobTitleRequired" xml:space="preserve">
+    <value>Job title is required</value>
+  </data>
+  <data name="Validation_MonthlySalary" xml:space="preserve">
+    <value>Enter a valid monthly salary</value>
+  </data>
+  <data name="Validation_OBCategoryRequired" xml:space="preserve">
+    <value>Select a category</value>
+  </data>
+  <data name="Validation_OBDaysRequired" xml:space="preserve">
+    <value>Select at least one day</value>
+  </data>
+  <data name="Validation_OBNameRequired" xml:space="preserve">
+    <value>Enter a name for the unsocial hours rule</value>
+  </data>
+  <data name="Validation_OBRateRequired" xml:space="preserve">
+    <value>Enter a valid hourly rate</value>
+  </data>
+  <data name="Validation_VacationDays" xml:space="preserve">
+    <value>Enter valid vacation days</value>
+  </data>
+  <data name="Validation_WorkplaceRequired" xml:space="preserve">
+    <value>Workplace is required</value>
+  </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Welcome to your payroll app!</value>
+  </data>
+  <data name="Workplace_Label" xml:space="preserve">
+    <value>Workplace *</value>
+  </data>
+  <data name="Workplace_Placeholder" xml:space="preserve">
+    <value>e.g. Municipality</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

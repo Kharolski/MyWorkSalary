@@ -10,29 +10,53 @@ namespace MyWorkSalary.Helpers.Localization
         /// </summary>
         public static void InitializeLanguage(AppSettings appSettings)
         {
-            // 1. Om användaren redan har ett sparat språk → använd det
+            string cultureCode;
+
+            // Använd sparat språk om det finns
             if (!string.IsNullOrWhiteSpace(appSettings.LanguageCode))
             {
-                var culture = new CultureInfo(appSettings.LanguageCode);
-                TranslationManager.Instance.ChangeCulture(culture);
-                System.Diagnostics.Debug.WriteLine($"[LANG] Använder sparat språk: {appSettings.LanguageCode}");
-                return;
+                cultureCode = appSettings.LanguageCode;
+            }
+            else
+            {
+                // Kolla systemets språk första gången
+                var deviceCulture = CultureInfo.CurrentUICulture;
+
+                var supportedLanguages = new[] { "en", "sv" }; // kan byggas ut senare
+
+                cultureCode = supportedLanguages.Contains(deviceCulture.TwoLetterISOLanguageName)
+                    ? deviceCulture.TwoLetterISOLanguageName
+                    : "en"; // fallback
+
+                appSettings.LanguageCode = cultureCode;
+                System.Diagnostics.Debug.WriteLine($"[LANG] Första start, sparar språk: {cultureCode}");
             }
 
-            // 2. Om inget språk sparat → kolla systemets språk
-            var deviceCulture = CultureInfo.CurrentUICulture;
-            var supportedLanguages = new[] { "en", "sv" }; // Lägg till fler språk senare
+            // 3️⃣ Matcha språk → kultur (inkl. valuta)
+            var cultureMap = new Dictionary<string, string>
+            {
+                { "sv", "sv-SE" }, // Svenska → SEK (kr)
+                { "en", "en-IE" }, // Engelska → Euro (Irland)
+                // framtida exempel:
+                // { "de", "de-DE" }, // Tyska → EUR
+                // { "fr", "fr-FR" }, // Franska → EUR
+                // { "pl", "pl-PL" }  // Polska → PLN
+            };
 
-            var cultureCode = supportedLanguages.Contains(deviceCulture.TwoLetterISOLanguageName)
-                ? deviceCulture.TwoLetterISOLanguageName
-                : "en"; // fallback → engelska
+            string fullCultureCode = cultureMap.ContainsKey(cultureCode)
+                ? cultureMap[cultureCode]
+                : "en-IE"; // fallback
 
-            // 3. Sätt språk i resx
-            TranslationManager.Instance.ChangeCulture(new CultureInfo(cultureCode));
+            var cultureInfo = new CultureInfo(fullCultureCode);
 
-            // 4. Spara språk i AppSettings
-            appSettings.LanguageCode = cultureCode;
-            System.Diagnostics.Debug.WriteLine($"[LANG] Första start, sparar språk: {cultureCode}");
+            // 4️⃣ Sätt global kultur (både språk + valuta + datumformat)
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+            // 5️⃣ Uppdatera resx och översättningar
+            TranslationManager.Instance.ChangeCulture(cultureInfo);
+
+            System.Diagnostics.Debug.WriteLine($"[LANG] Initierad kultur: {cultureInfo.Name} ({cultureInfo.DisplayName})");
         }
     }
 }

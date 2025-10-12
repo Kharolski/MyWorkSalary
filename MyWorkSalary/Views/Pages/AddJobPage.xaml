@@ -40,6 +40,7 @@
                            Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding EmploymentTypes}"
                             SelectedItem="{Binding SelectedEmploymentType}"
+                            ItemDisplayBinding="{Binding DisplayName}"
                             Style="{StaticResource ThemedPicker}" />
 
                     <Label Text="{x:Static resx:Resources.AddJobPage_Country}"
@@ -62,6 +63,7 @@
                            Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding SalaryTypes}"
                             SelectedItem="{Binding SelectedSalaryType}"
+                            ItemDisplayBinding="{Binding DisplayName}"
                             Style="{StaticResource ThemedPicker}" />
 
                     <!-- Månadslön -->

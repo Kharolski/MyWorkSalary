@@ -325,11 +325,92 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 📋 Basic information.
+        /// </summary>
+        internal static string BasicInfo_SectionTitle {
+            get {
+                return ResourceManager.GetString("BasicInfo_SectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Button_Cancel {
+            get {
+                return ResourceManager.GetString("Button_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💾 Save changes.
+        /// </summary>
+        internal static string Button_SaveChanges {
+            get {
+                return ResourceManager.GetString("Button_SaveChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening.
+        /// </summary>
+        internal static string Category_Evening {
+            get {
+                return ResourceManager.GetString("Category_Evening", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public Holiday.
+        /// </summary>
+        internal static string Category_Holiday {
+            get {
+                return ResourceManager.GetString("Category_Holiday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Night.
+        /// </summary>
+        internal static string Category_Night {
+            get {
+                return ResourceManager.GetString("Category_Night", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a category.
+        /// </summary>
+        internal static string Category_Placeholder {
+            get {
+                return ResourceManager.GetString("Category_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend.
+        /// </summary>
+        internal static string Category_Weekend {
+            get {
+                return ResourceManager.GetString("Category_Weekend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend Extra.
+        /// </summary>
+        internal static string Category_WeekendExtra {
+            get {
+                return ResourceManager.GetString("Category_WeekendExtra", resourceCulture);
             }
         }
         
@@ -357,6 +438,60 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ConfirmDelete {
             get {
                 return ResourceManager.GetString("ConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denmark.
+        /// </summary>
+        internal static string Country_Denmark {
+            get {
+                return ResourceManager.GetString("Country_Denmark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finland.
+        /// </summary>
+        internal static string Country_Finland {
+            get {
+                return ResourceManager.GetString("Country_Finland", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to France.
+        /// </summary>
+        internal static string Country_France {
+            get {
+                return ResourceManager.GetString("Country_France", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ireland.
+        /// </summary>
+        internal static string Country_Ireland {
+            get {
+                return ResourceManager.GetString("Country_Ireland", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Norway.
+        /// </summary>
+        internal static string Country_Norway {
+            get {
+                return ResourceManager.GetString("Country_Norway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sweden.
+        /// </summary>
+        internal static string Country_Sweden {
+            get {
+                return ResourceManager.GetString("Country_Sweden", resourceCulture);
             }
         }
         
@@ -469,11 +604,200 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string Dialog_ErrorTitle {
+            get {
+                return ResourceManager.GetString("Dialog_ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The job has been saved!.
+        /// </summary>
+        internal static string Dialog_JobSavedMessage {
+            get {
+                return ResourceManager.GetString("Dialog_JobSavedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save the job: {0}.
+        /// </summary>
+        internal static string Dialog_JobSaveFailedMessageFormat {
+            get {
+                return ResourceManager.GetString("Dialog_JobSaveFailedMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string Dialog_Ok {
+            get {
+                return ResourceManager.GetString("Dialog_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please fill in all required fields.
+        /// </summary>
+        internal static string Dialog_RequiredFieldsMessage {
+            get {
+                return ResourceManager.GetString("Dialog_RequiredFieldsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string Dialog_SuccessTitle {
+            get {
+                return ResourceManager.GetString("Dialog_SuccessTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ✏️  Edit.
         /// </summary>
         internal static string EditJob {
             get {
                 return ResourceManager.GetString("EditJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to cancel? Changes will not be saved..
+        /// </summary>
+        internal static string EditJob_CancelMessage {
+            get {
+                return ResourceManager.GetString("EditJob_CancelMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No, continue.
+        /// </summary>
+        internal static string EditJob_CancelNo {
+            get {
+                return ResourceManager.GetString("EditJob_CancelNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string EditJob_CancelTitle {
+            get {
+                return ResourceManager.GetString("EditJob_CancelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes, cancel.
+        /// </summary>
+        internal static string EditJob_CancelYes {
+            get {
+                return ResourceManager.GetString("EditJob_CancelYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not update the job: {0}.
+        /// </summary>
+        internal static string EditJob_ErrorMessage {
+            get {
+                return ResourceManager.GetString("EditJob_ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string EditJob_ErrorTitle {
+            get {
+                return ResourceManager.GetString("EditJob_ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ✏️  Edit job.
+        /// </summary>
+        internal static string EditJob_Header {
+            get {
+                return ResourceManager.GetString("EditJob_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string EditJob_Ok {
+            get {
+                return ResourceManager.GetString("EditJob_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The job has been updated!.
+        /// </summary>
+        internal static string EditJob_SuccessMessage {
+            get {
+                return ResourceManager.GetString("EditJob_SuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string EditJob_SuccessTitle {
+            get {
+                return ResourceManager.GetString("EditJob_SuccessTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit job.
+        /// </summary>
+        internal static string EditJob_Title {
+            get {
+                return ResourceManager.GetString("EditJob_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employment date *.
+        /// </summary>
+        internal static string EmploymentDate_Label {
+            get {
+                return ResourceManager.GetString("EmploymentDate_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employment type.
+        /// </summary>
+        internal static string EmploymentType_Label {
+            get {
+                return ResourceManager.GetString("EmploymentType_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permanent.
+        /// </summary>
+        internal static string EmploymentType_Permanent {
+            get {
+                return ResourceManager.GetString("EmploymentType_Permanent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temporary / On-call.
+        /// </summary>
+        internal static string EmploymentType_Temporary {
+            get {
+                return ResourceManager.GetString("EmploymentType_Temporary", resourceCulture);
             }
         }
         
@@ -496,11 +820,47 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected hours per month.
+        /// </summary>
+        internal static string ExpectedHours_Label {
+            get {
+                return ResourceManager.GetString("ExpectedHours_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. 165.
+        /// </summary>
+        internal static string ExpectedHours_Placeholder {
+            get {
+                return ResourceManager.GetString("ExpectedHours_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For.
         /// </summary>
         internal static string For {
             get {
                 return ResourceManager.GetString("For", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hourly rate .
+        /// </summary>
+        internal static string HourlySalary_Label {
+            get {
+                return ResourceManager.GetString("HourlySalary_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. 185.
+        /// </summary>
+        internal static string HourlySalary_Placeholder {
+            get {
+                return ResourceManager.GetString("HourlySalary_Placeholder", resourceCulture);
             }
         }
         
@@ -519,6 +879,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string HoursToBank {
             get {
                 return ResourceManager.GetString("HoursToBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved vacation days right now.
+        /// </summary>
+        internal static string InitialVacation_Label {
+            get {
+                return ResourceManager.GetString("InitialVacation_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. 12.5.
+        /// </summary>
+        internal static string InitialVacation_Placeholder {
+            get {
+                return ResourceManager.GetString("InitialVacation_Placeholder", resourceCulture);
             }
         }
         
@@ -546,6 +924,33 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string JobDeletedTitle {
             get {
                 return ResourceManager.GetString("JobDeletedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job title *.
+        /// </summary>
+        internal static string JobTitle_Label {
+            get {
+                return ResourceManager.GetString("JobTitle_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. Nursing assistant.
+        /// </summary>
+        internal static string JobTitle_Placeholder {
+            get {
+                return ResourceManager.GetString("JobTitle_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country:.
+        /// </summary>
+        internal static string Label_Country {
+            get {
+                return ResourceManager.GetString("Label_Country", resourceCulture);
             }
         }
         
@@ -582,6 +987,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string LightThemeActive {
             get {
                 return ResourceManager.GetString("LightThemeActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly salary .
+        /// </summary>
+        internal static string MonthlySalary_Label {
+            get {
+                return ResourceManager.GetString("MonthlySalary_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. 28500.
+        /// </summary>
+        internal static string MonthlySalary_Placeholder {
+            get {
+                return ResourceManager.GetString("MonthlySalary_Placeholder", resourceCulture);
             }
         }
         
@@ -640,6 +1063,213 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🏷️ Category.
+        /// </summary>
+        internal static string OBRule_Category_Label {
+            get {
+                return ResourceManager.GetString("OBRule_Category_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📅 Applies on these days.
+        /// </summary>
+        internal static string OBRule_Days_Label {
+            get {
+                return ResourceManager.GetString("OBRule_Days_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friday.
+        /// </summary>
+        internal static string OBRule_Friday {
+            get {
+                return ResourceManager.GetString("OBRule_Friday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From:.
+        /// </summary>
+        internal static string OBRule_From_Label {
+            get {
+                return ResourceManager.GetString("OBRule_From_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holidays.
+        /// </summary>
+        internal static string OBRule_Holidays {
+            get {
+                return ResourceManager.GetString("OBRule_Holidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monday.
+        /// </summary>
+        internal static string OBRule_Monday {
+            get {
+                return ResourceManager.GetString("OBRule_Monday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📝 Unsocial Hours Name.
+        /// </summary>
+        internal static string OBRule_Name_Label {
+            get {
+                return ResourceManager.GetString("OBRule_Name_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. “Evening unsocial hours (weekdays)”.
+        /// </summary>
+        internal static string OBRule_Name_Placeholder {
+            get {
+                return ResourceManager.GetString("OBRule_Name_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💰 Pay per hour.
+        /// </summary>
+        internal static string OBRule_Rate_Label {
+            get {
+                return ResourceManager.GetString("OBRule_Rate_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. 56.70.
+        /// </summary>
+        internal static string OBRule_Rate_Placeholder {
+            get {
+                return ResourceManager.GetString("OBRule_Rate_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter pay per hour (including base + unsocial hours bonus).
+        /// </summary>
+        internal static string OBRule_Rate_Tip {
+            get {
+                return ResourceManager.GetString("OBRule_Rate_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saturday.
+        /// </summary>
+        internal static string OBRule_Saturday {
+            get {
+                return ResourceManager.GetString("OBRule_Saturday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💾 Save Unsocial Hours Rule.
+        /// </summary>
+        internal static string OBRule_Save_Button {
+            get {
+                return ResourceManager.GetString("OBRule_Save_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string OBRule_SelectAll {
+            get {
+                return ResourceManager.GetString("OBRule_SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekdays.
+        /// </summary>
+        internal static string OBRule_SelectWeekdays {
+            get {
+                return ResourceManager.GetString("OBRule_SelectWeekdays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekends.
+        /// </summary>
+        internal static string OBRule_SelectWeekends {
+            get {
+                return ResourceManager.GetString("OBRule_SelectWeekends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sunday.
+        /// </summary>
+        internal static string OBRule_Sunday {
+            get {
+                return ResourceManager.GetString("OBRule_Sunday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thursday.
+        /// </summary>
+        internal static string OBRule_Thursday {
+            get {
+                return ResourceManager.GetString("OBRule_Thursday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⏰ Time Period.
+        /// </summary>
+        internal static string OBRule_TimeSection_Label {
+            get {
+                return ResourceManager.GetString("OBRule_TimeSection_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Unsocial Hours Rule.
+        /// </summary>
+        internal static string OBRule_Title {
+            get {
+                return ResourceManager.GetString("OBRule_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To:.
+        /// </summary>
+        internal static string OBRule_To_Label {
+            get {
+                return ResourceManager.GetString("OBRule_To_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tuesday.
+        /// </summary>
+        internal static string OBRule_Tuesday {
+            get {
+                return ResourceManager.GetString("OBRule_Tuesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wednesday.
+        /// </summary>
+        internal static string OBRule_Wednesday {
+            get {
+                return ResourceManager.GetString("OBRule_Wednesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ⏰ Unsocial hours settings.
         /// </summary>
         internal static string OBSettings {
@@ -667,11 +1297,83 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 💰 Salary information.
+        /// </summary>
+        internal static string Salary_SectionTitle {
+            get {
+                return ResourceManager.GetString("Salary_SectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hourly rate.
+        /// </summary>
+        internal static string SalaryType_Hourly {
+            get {
+                return ResourceManager.GetString("SalaryType_Hourly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary type.
+        /// </summary>
+        internal static string SalaryType_Label {
+            get {
+                return ResourceManager.GetString("SalaryType_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly salary.
+        /// </summary>
+        internal static string SalaryType_Monthly {
+            get {
+                return ResourceManager.GetString("SalaryType_Monthly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save unsocial hours rule: {0}.
+        /// </summary>
+        internal static string Save_Error_Message {
+            get {
+                return ResourceManager.GetString("Save_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string Save_Error_Title {
+            get {
+                return ResourceManager.GetString("Save_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsocial hours rule &apos;{0}&apos; has been saved..
+        /// </summary>
+        internal static string Save_Success_Message {
+            get {
+                return ResourceManager.GetString("Save_Success_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved!.
+        /// </summary>
+        internal static string Save_Success_Title {
+            get {
+                return ResourceManager.GetString("Save_Success_Title", resourceCulture);
             }
         }
         
@@ -703,6 +1405,42 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🏛️ Tax information.
+        /// </summary>
+        internal static string Tax_SectionTitle {
+            get {
+                return ResourceManager.GetString("Tax_SectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💡 Tip: Check your latest payslip for exact tax rate.
+        /// </summary>
+        internal static string Tax_Tip {
+            get {
+                return ResourceManager.GetString("Tax_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax rate (%).
+        /// </summary>
+        internal static string TaxRate_Label {
+            get {
+                return ResourceManager.GetString("TaxRate_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. 33.
+        /// </summary>
+        internal static string TaxRate_Placeholder {
+            get {
+                return ResourceManager.GetString("TaxRate_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not save theme setting.
         /// </summary>
         internal static string ThemeSaveErrorMessage {
@@ -712,11 +1450,137 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🏖️ Vacation information.
+        /// </summary>
+        internal static string Vacation_SectionTitle {
+            get {
+                return ResourceManager.GetString("Vacation_SectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💡 Enter your saved vacation days from your latest payslip.
+        /// </summary>
+        internal static string Vacation_Tip {
+            get {
+                return ResourceManager.GetString("Vacation_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vacation days per year.
+        /// </summary>
+        internal static string VacationDays_Label {
+            get {
+                return ResourceManager.GetString("VacationDays_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a valid hourly rate.
+        /// </summary>
+        internal static string Validation_HourlyRate {
+            get {
+                return ResourceManager.GetString("Validation_HourlyRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job title is required.
+        /// </summary>
+        internal static string Validation_JobTitleRequired {
+            get {
+                return ResourceManager.GetString("Validation_JobTitleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a valid monthly salary.
+        /// </summary>
+        internal static string Validation_MonthlySalary {
+            get {
+                return ResourceManager.GetString("Validation_MonthlySalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a category.
+        /// </summary>
+        internal static string Validation_OBCategoryRequired {
+            get {
+                return ResourceManager.GetString("Validation_OBCategoryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select at least one day.
+        /// </summary>
+        internal static string Validation_OBDaysRequired {
+            get {
+                return ResourceManager.GetString("Validation_OBDaysRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a name for the unsocial hours rule.
+        /// </summary>
+        internal static string Validation_OBNameRequired {
+            get {
+                return ResourceManager.GetString("Validation_OBNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a valid hourly rate.
+        /// </summary>
+        internal static string Validation_OBRateRequired {
+            get {
+                return ResourceManager.GetString("Validation_OBRateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter valid vacation days.
+        /// </summary>
+        internal static string Validation_VacationDays {
+            get {
+                return ResourceManager.GetString("Validation_VacationDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workplace is required.
+        /// </summary>
+        internal static string Validation_WorkplaceRequired {
+            get {
+                return ResourceManager.GetString("Validation_WorkplaceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Welcome to your payroll app!.
         /// </summary>
         internal static string WelcomeMessage {
             get {
                 return ResourceManager.GetString("WelcomeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workplace *.
+        /// </summary>
+        internal static string Workplace_Label {
+            get {
+                return ResourceManager.GetString("Workplace_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. Municipality.
+        /// </summary>
+        internal static string Workplace_Placeholder {
+            get {
+                return ResourceManager.GetString("Workplace_Placeholder", resourceCulture);
             }
         }
         
