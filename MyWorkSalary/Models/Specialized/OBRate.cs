@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models.Enums;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Enums;
 using SQLite;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,6 +23,8 @@ namespace MyWorkSalary.Models.Specialized
         public decimal RatePerHour { get; set; }            // 56.70
         public OBCategory Category { get; set; }
 
+        public string CurrencyCode { get; set; } = "SEK";
+
         // Vilka dagar gäller detta? (Flexibel approach)
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }
@@ -35,5 +38,15 @@ namespace MyWorkSalary.Models.Specialized
         // Metadata
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
+
+        [Ignore] // så att SQLite inte försöker spara den
+        public string RateDisplayText
+        {
+            get
+            {
+                var currency = CurrencyCode ?? "SEK"; // kommer alltid sättas i LoadOBRates()
+                return CurrencyHelper.FormatCurrency(RatePerHour, currency);
+            }
+        }
     }
 }

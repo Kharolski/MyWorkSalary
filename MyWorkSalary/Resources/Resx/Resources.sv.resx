@@ -138,6 +138,12 @@
   <data name="AddJobPage_CountryTip" xml:space="preserve">
     <value>💡 Välj det land där jobbet utförs…</value>
   </data>
+  <data name="AddJobPage_Currency" xml:space="preserve">
+    <value>Valuta</value>
+  </data>
+  <data name="AddJobPage_CurrencyTip" xml:space="preserve">
+    <value>Välj den valuta du får betalt.</value>
+  </data>
   <data name="AddJobPage_EmploymentDate" xml:space="preserve">
     <value>Anställningsdatum *</value>
   </data>
@@ -258,11 +264,35 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="Country_Ireland" xml:space="preserve">
     <value>Irland</value>
   </data>
+  <data name="Country_Label" xml:space="preserve">
+    <value>Land</value>
+  </data>
   <data name="Country_Norway" xml:space="preserve">
     <value>Norge</value>
   </data>
   <data name="Country_Sweden" xml:space="preserve">
     <value>Sverige</value>
+  </data>
+  <data name="Currency_DKK" xml:space="preserve">
+    <value>Danska kronor (DKK)</value>
+  </data>
+  <data name="Currency_EUR" xml:space="preserve">
+    <value>Euro (EUR)</value>
+  </data>
+  <data name="Currency_Label" xml:space="preserve">
+    <value>Valuta</value>
+  </data>
+  <data name="Currency_NOK" xml:space="preserve">
+    <value>Norska kronor (NOK)</value>
+  </data>
+  <data name="Currency_PLN" xml:space="preserve">
+    <value>Polska zloty (PLN)</value>
+  </data>
+  <data name="Currency_SEK" xml:space="preserve">
+    <value>Svenska kronor (SEK)</value>
+  </data>
+  <data name="Currency_USD" xml:space="preserve">
+    <value>US Dollar (USD)</value>
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Mörkt tema</value>
@@ -356,6 +386,9 @@ när anställningen upphör (senast en månad efteråt).</value>
   </data>
   <data name="EmploymentDate_Label" xml:space="preserve">
     <value>Anställningsdatum *</value>
+  </data>
+  <data name="EmploymentType_Default" xml:space="preserve">
+    <value>Anställd</value>
   </data>
   <data name="EmploymentType_Label" xml:space="preserve">
     <value>Anställningstyp</value>
@@ -531,6 +564,15 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt.</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="PerHour" xml:space="preserve">
+    <value>kr/tim</value>
+  </data>
+  <data name="PerMonth" xml:space="preserve">
+    <value>kr/mån</value>
+  </data>
+  <data name="SalaryNotSpecified" xml:space="preserve">
+    <value>Lön ej angiven</value>
   </data>
   <data name="SalaryType_Hourly" xml:space="preserve">
     <value>Timlön</value>

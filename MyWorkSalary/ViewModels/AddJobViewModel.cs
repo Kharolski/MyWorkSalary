@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services;
@@ -35,6 +36,7 @@ namespace MyWorkSalary.ViewModels
 
             // Initiera listor
             InitializeEmploymentAndSalaryTypes();
+            InitializeCurrencies();
 
             Countries = new ObservableCollection<CountryOption>(
                 Enum.GetValues(typeof(SupportedCountry))
@@ -270,6 +272,12 @@ namespace MyWorkSalary.ViewModels
                     InitialVacationBalance = decimal.TryParse(InitialVacationBalance, out var vacBalance) ? vacBalance : null
                 };
 
+                jobProfile.CurrencyCode = SelectedCurrency?.Value
+                ?? SelectedCountry.Country.GetCurrencyCode()
+                ?? "Euro";
+
+                System.Diagnostics.Debug.WriteLine($"[SAVE] Saving job with CurrencyCode={jobProfile.CurrencyCode}");
+
                 // Sätt lön
                 if (IsMonthlySalary && decimal.TryParse(MonthlySalary, out var monthly))
                 {
@@ -414,12 +422,6 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Employment & Salary Types
-        // Hjälpklass för lokaliserade listor
-        public class LocalizedOption<T>
-        {
-            public T Value { get; set; }
-            public string DisplayName { get; set; }
-        }
 
         // Egenskaper
         public ObservableCollection<LocalizedOption<EmploymentType>> EmploymentTypes { get; private set; }
@@ -525,6 +527,46 @@ namespace MyWorkSalary.ViewModels
 
             OnPropertyChanged(nameof(EmploymentTypes));
             OnPropertyChanged(nameof(SalaryTypes));
+        }
+
+        #endregion
+
+        #region Currency Selection
+
+        // Lista med tillgängliga valutor
+        public ObservableCollection<LocalizedOption<string>> AvailableCurrencies { get; private set; }
+
+        // Vald valuta
+        private LocalizedOption<string> _selectedCurrency;
+        public LocalizedOption<string> SelectedCurrency
+        {
+            get => _selectedCurrency;
+            set
+            {
+                if (_selectedCurrency != value)
+                {
+                    _selectedCurrency = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // Initiera valutalistan (kallas i konstruktorn)
+        private void InitializeCurrencies()
+        {
+            var currencies = CurrencyHelper.GetAllCurrenciesLocalized();
+            AvailableCurrencies = new ObservableCollection<LocalizedOption<string>>(currencies);
+
+            SelectedCurrency = AvailableCurrencies.FirstOrDefault(c => c.Value == "SEK");
+        }
+
+        // Uppdatera visade texter om språket byts
+        public void RefreshCurrencyTexts()
+        {
+            var currencies = CurrencyHelper.GetAllCurrenciesLocalized();
+            AvailableCurrencies.Clear();
+            foreach (var c in currencies)
+                AvailableCurrencies.Add(c);
         }
 
         #endregion

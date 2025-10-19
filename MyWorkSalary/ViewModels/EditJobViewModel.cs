@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services;
 using System.Collections.ObjectModel;
@@ -43,6 +44,8 @@ namespace MyWorkSalary.ViewModels
                 Resources.Resx.Resources.SalaryType_Hourly
             };
 
+            AvailableCurrencies = new ObservableCollection<LocalizedOption<string>>(CurrencyHelper.GetAllCurrenciesLocalized());
+
             SaveCommand = new Command(OnSave, CanSave);
             CancelCommand = new Command(OnCancel);
 
@@ -65,6 +68,39 @@ namespace MyWorkSalary.ViewModels
                 }
             }
         }
+
+        private string _currencyCode;
+        public string CurrencyCode
+        {
+            get => _currencyCode;
+            set
+            {
+                if (_currencyCode != value)
+                {
+                    _currencyCode = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private LocalizedOption<string> _selectedCurrency;
+        public ObservableCollection<LocalizedOption<string>> AvailableCurrencies { get; private set; }
+
+        public LocalizedOption<string> SelectedCurrency
+        {
+            get => _selectedCurrency;
+            set
+            {
+                if (_selectedCurrency != value)
+                {
+                    _selectedCurrency = value;
+                    if (value != null)
+                        CurrencyCode = value.Value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public string CountryDisplayName => Country.GetDisplayName();
 
         public ObservableCollection<string> EmploymentTypes { get; }
@@ -208,6 +244,8 @@ namespace MyWorkSalary.ViewModels
 
                 // Fyll formuläret från arbetskopian
                 PopulateFormFromWorkingCopy();
+
+                System.Diagnostics.Debug.WriteLine($"[LOAD] Loaded job with CurrencyCode={_workingCopy.CurrencyCode}");
             }
         }
 
@@ -231,7 +269,10 @@ namespace MyWorkSalary.ViewModels
                 TaxMethod = original.TaxMethod,
                 IsActive = original.IsActive,
                 CreatedDate = original.CreatedDate,
-                ModifiedDate = original.ModifiedDate
+                ModifiedDate = original.ModifiedDate,
+
+                CurrencyCode = original.CurrencyCode,
+                Country = original.Country
             };
         }
 
@@ -248,6 +289,17 @@ namespace MyWorkSalary.ViewModels
 
             Country = _workingCopy.Country;
 
+            // Säkerställ att AvailableCurrencies är fylld
+            if (AvailableCurrencies == null || !AvailableCurrencies.Any())
+                AvailableCurrencies = new ObservableCollection<LocalizedOption<string>>(CurrencyHelper.GetAllCurrenciesLocalized());
+
+            // Sätt valutan korrekt
+            var currency = AvailableCurrencies.FirstOrDefault(c => c.Value == _workingCopy.CurrencyCode);
+            if (currency != null)
+                SelectedCurrency = currency;
+            else
+                SelectedCurrency = AvailableCurrencies.FirstOrDefault(c => c.Value == "SEK");
+
             // Sätt lönetyp och värden
             if (_workingCopy.MonthlySalary > 0)
             {
@@ -261,6 +313,14 @@ namespace MyWorkSalary.ViewModels
                 HourlyRate = _workingCopy.HourlyRate.ToString();
                 MonthlySalary = string.Empty; // Rensa månadslön i formuläret
             }
+        }
+
+        public void RefreshCurrencyTexts()
+        {
+            var currencies = CurrencyHelper.GetAllCurrenciesLocalized();
+            AvailableCurrencies.Clear();
+            foreach (var c in currencies)
+                AvailableCurrencies.Add(c);
         }
 
         private string GetEmploymentTypeString(EmploymentType employmentType)
@@ -308,6 +368,9 @@ namespace MyWorkSalary.ViewModels
                 _originalJob.EmploymentStartDate = EmploymentStartDate;
                 _originalJob.VacationDaysPerYear = decimal.TryParse(VacationDaysPerYear, out var vacDays) ? vacDays : 25m;
                 _originalJob.InitialVacationBalance = decimal.TryParse(InitialVacationBalance, out var vacBalance) ? vacBalance : null;
+
+                _originalJob.CurrencyCode = CurrencyCode;
+                _originalJob.Country = Country;
 
                 // Uppdatera lön
                 if (IsMonthlySalary && decimal.TryParse(MonthlySalary, out var monthly))

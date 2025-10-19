@@ -4,6 +4,5 @@
     {
         Permanent,      // Fast anställning
         Temporary,      // Timanställning
-        OnCall          // Jour/behovsanställning
     }
 }

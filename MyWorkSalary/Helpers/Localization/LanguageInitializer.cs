@@ -29,34 +29,19 @@ namespace MyWorkSalary.Helpers.Localization
                     : "en"; // fallback
 
                 appSettings.LanguageCode = cultureCode;
-                System.Diagnostics.Debug.WriteLine($"[LANG] Första start, sparar språk: {cultureCode}");
             }
 
-            // 3️⃣ Matcha språk → kultur (inkl. valuta)
-            var cultureMap = new Dictionary<string, string>
-            {
-                { "sv", "sv-SE" }, // Svenska → SEK (kr)
-                { "en", "en-IE" }, // Engelska → Euro (Irland)
-                // framtida exempel:
-                // { "de", "de-DE" }, // Tyska → EUR
-                // { "fr", "fr-FR" }, // Franska → EUR
-                // { "pl", "pl-PL" }  // Polska → PLN
-            };
+            // Skapa en neutral kultur (utan landsvaluta)
+            // "en" istället för "en-IE", "sv" istället för "sv-SE"
+            var cultureInfo = new CultureInfo(cultureCode);
 
-            string fullCultureCode = cultureMap.ContainsKey(cultureCode)
-                ? cultureMap[cultureCode]
-                : "en-IE"; // fallback
-
-            var cultureInfo = new CultureInfo(fullCultureCode);
-
-            // 4️⃣ Sätt global kultur (både språk + valuta + datumformat)
+            // Sätt språk (utan att påverka valutainställning)
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-            // 5️⃣ Uppdatera resx och översättningar
+            // Uppdatera resx och översättningar
             TranslationManager.Instance.ChangeCulture(cultureInfo);
 
-            System.Diagnostics.Debug.WriteLine($"[LANG] Initierad kultur: {cultureInfo.Name} ({cultureInfo.DisplayName})");
         }
     }
 }

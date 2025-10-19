@@ -1,14 +1,24 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+﻿using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using SQLite;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace MyWorkSalary.Models.Core
 {
     public class JobProfile : INotifyPropertyChanged
     {
+        public JobProfile()
+        {
+            // När språk ändras (ex. svenska -> engelska), uppdatera UI
+            TranslationManager.Instance.CultureChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(SalaryDisplayText));
+            };
+        }
+
         #region Database Properties
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -26,6 +36,11 @@ namespace MyWorkSalary.Models.Core
         public SupportedCountry Country { get; set; }
         #endregion
 
+        #region Currency / Country
+        public string CurrencyCode { get; set; } // t.ex. "SEK", "EUR", "USD"
+        public string CountryCode { get; set; } = "SE";   // ISO 2-letter, t.ex. "SE", "IE", "US"
+        #endregion
+
         #region Salary Properties
         public decimal? MonthlySalary { get; set; }
         public decimal? HourlyRate { get; set; }
@@ -37,23 +52,21 @@ namespace MyWorkSalary.Models.Core
             {
                 var employmentText = EmploymentType switch
                 {
-                    EmploymentType.Permanent => "Tillsvidare",
-                    EmploymentType.Temporary => "Timanställd",
-                    EmploymentType.OnCall => "Visstid",
-                    _ => "Anställd"
+                    EmploymentType.Permanent => TranslationManager.Instance["EmploymentType_Permanent"],
+                    EmploymentType.Temporary => TranslationManager.Instance["EmploymentType_Temporary"],
+                    _ => TranslationManager.Instance["EmploymentType_Default"]
                 };
 
-                // Kolla MonthlySalary FÖRST (eftersom det är primärt)
-                if (MonthlySalary > 0)
-                {
-                    return $"{MonthlySalary:N0} kr/mån • {employmentText}";
-                }
-                else if (HourlyRate > 0) // Använd > 0 istället för HasValue
-                {
-                    return $"{HourlyRate:F0} kr/tim • {employmentText}";
-                }
+                // Hämta rätt valutasymbol
+                string currencySymbol = CurrencyHelper.GetSymbol(CurrencyCode);
 
-                return "Lön ej angiven";
+                // Format enligt vald valuta
+                if (MonthlySalary > 0)
+                    return $"{CurrencyHelper.FormatCurrency(MonthlySalary.Value, CurrencyCode)} • {employmentText}";
+                if (HourlyRate > 0)
+                    return $"{CurrencyHelper.FormatCurrency(HourlyRate.Value, CurrencyCode)} • {employmentText}";
+
+                return TranslationManager.Instance["SalaryNotSpecified"];
             }
         }
         #endregion

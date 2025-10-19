@@ -141,6 +141,12 @@
     <value>💡 Select the country where the job is performed…</value>
     <comment>Tip text</comment>
   </data>
+  <data name="AddJobPage_Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="AddJobPage_CurrencyTip" xml:space="preserve">
+    <value>Select the currency you get paid in.</value>
+  </data>
   <data name="AddJobPage_EmploymentDate" xml:space="preserve">
     <value>Employment start date *</value>
     <comment>Field label</comment>
@@ -281,11 +287,35 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Country_Ireland" xml:space="preserve">
     <value>Ireland</value>
   </data>
+  <data name="Country_Label" xml:space="preserve">
+    <value>Country</value>
+  </data>
   <data name="Country_Norway" xml:space="preserve">
     <value>Norway</value>
   </data>
   <data name="Country_Sweden" xml:space="preserve">
     <value>Sweden</value>
+  </data>
+  <data name="Currency_DKK" xml:space="preserve">
+    <value>Danish krone (DKK)</value>
+  </data>
+  <data name="Currency_EUR" xml:space="preserve">
+    <value>Euro (EUR)</value>
+  </data>
+  <data name="Currency_Label" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="Currency_NOK" xml:space="preserve">
+    <value>Norwegian krone (NOK)</value>
+  </data>
+  <data name="Currency_PLN" xml:space="preserve">
+    <value>Polish zloty (PLN)</value>
+  </data>
+  <data name="Currency_SEK" xml:space="preserve">
+    <value>Swedish kronor (SEK)</value>
+  </data>
+  <data name="Currency_USD" xml:space="preserve">
+    <value>US Dollar (USD)</value>
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Dark Theme</value>
@@ -379,6 +409,9 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="EmploymentDate_Label" xml:space="preserve">
     <value>Employment date *</value>
+  </data>
+  <data name="EmploymentType_Default" xml:space="preserve">
+    <value>Employee</value>
   </data>
   <data name="EmploymentType_Label" xml:space="preserve">
     <value>Employment type</value>
@@ -556,6 +589,15 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="PerHour" xml:space="preserve">
+    <value>€/hour</value>
+  </data>
+  <data name="PerMonth" xml:space="preserve">
+    <value>€/month</value>
+  </data>
+  <data name="SalaryNotSpecified" xml:space="preserve">
+    <value>Salary not specified</value>
   </data>
   <data name="SalaryType_Hourly" xml:space="preserve">
     <value>Hourly rate</value>

@@ -124,6 +124,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currency.
+        /// </summary>
+        internal static string AddJobPage_Currency {
+            get {
+                return ResourceManager.GetString("AddJobPage_Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the currency you get paid in..
+        /// </summary>
+        internal static string AddJobPage_CurrencyTip {
+            get {
+                return ResourceManager.GetString("AddJobPage_CurrencyTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employment start date *.
         /// </summary>
         internal static string AddJobPage_EmploymentDate {
@@ -478,6 +496,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        internal static string Country_Label {
+            get {
+                return ResourceManager.GetString("Country_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Norway.
         /// </summary>
         internal static string Country_Norway {
@@ -492,6 +519,69 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Country_Sweden {
             get {
                 return ResourceManager.GetString("Country_Sweden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Danish krone (DKK).
+        /// </summary>
+        internal static string Currency_DKK {
+            get {
+                return ResourceManager.GetString("Currency_DKK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Euro (EUR).
+        /// </summary>
+        internal static string Currency_EUR {
+            get {
+                return ResourceManager.GetString("Currency_EUR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency.
+        /// </summary>
+        internal static string Currency_Label {
+            get {
+                return ResourceManager.GetString("Currency_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Norwegian krone (NOK).
+        /// </summary>
+        internal static string Currency_NOK {
+            get {
+                return ResourceManager.GetString("Currency_NOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Polish zloty (PLN).
+        /// </summary>
+        internal static string Currency_PLN {
+            get {
+                return ResourceManager.GetString("Currency_PLN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swedish kronor (SEK).
+        /// </summary>
+        internal static string Currency_SEK {
+            get {
+                return ResourceManager.GetString("Currency_SEK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to US Dollar (USD).
+        /// </summary>
+        internal static string Currency_USD {
+            get {
+                return ResourceManager.GetString("Currency_USD", resourceCulture);
             }
         }
         
@@ -771,6 +861,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string EmploymentDate_Label {
             get {
                 return ResourceManager.GetString("EmploymentDate_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee.
+        /// </summary>
+        internal static string EmploymentType_Default {
+            get {
+                return ResourceManager.GetString("EmploymentType_Default", resourceCulture);
             }
         }
         
@@ -1297,11 +1396,38 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to €/hour.
+        /// </summary>
+        internal static string PerHour {
+            get {
+                return ResourceManager.GetString("PerHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to €/month.
+        /// </summary>
+        internal static string PerMonth {
+            get {
+                return ResourceManager.GetString("PerMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 💰 Salary information.
         /// </summary>
         internal static string Salary_SectionTitle {
             get {
                 return ResourceManager.GetString("Salary_SectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary not specified.
+        /// </summary>
+        internal static string SalaryNotSpecified {
+            get {
+                return ResourceManager.GetString("SalaryNotSpecified", resourceCulture);
             }
         }
         

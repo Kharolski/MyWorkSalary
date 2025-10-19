@@ -172,6 +172,12 @@ namespace MyWorkSalary.ViewModels
             {
                 var obRates = _databaseService.OBRates.GetOBRates(ActiveJob.Id);
 
+                // Sätt rätt valuta för varje OBRate
+                foreach (var ob in obRates)
+                {
+                    ob.CurrencyCode = ActiveJob.CurrencyCode ?? "SEK";
+                }
+
                 OBRates = new ObservableCollection<OBRate>(obRates);
 
                 OnPropertyChanged(nameof(HasOBRates));

@@ -182,7 +182,7 @@
                                                                                   Dark={StaticResource TextSecondaryDark}}" />
                                             </StackLayout>
                                             <Label Grid.Column="1"
-                                                   Text="{Binding RatePerHour, StringFormat='{0:C}'}"
+                                                   Text="{Binding RateDisplayText}"
                                                    FontAttributes="Bold"
                                                    VerticalOptions="Center"
                                                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 

@@ -112,7 +112,7 @@ namespace MyWorkSalary.Services.Calculations
         public VABDeductionResult CalculateVABDeduction(DateTime date, JobProfile jobProfile)
         {
             // Timanställd - inget avdrag (FK betalar)
-            if (jobProfile.EmploymentType == EmploymentType.OnCall)
+            if (jobProfile.EmploymentType == EmploymentType.Temporary)
             {
                 return new VABDeductionResult
                 {

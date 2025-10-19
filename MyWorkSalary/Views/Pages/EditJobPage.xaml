@@ -41,12 +41,15 @@
                             Style="{StaticResource ThemedPicker}" />
 
                     <!-- Land -->
-                    <Label Text="{Binding CountryDisplayName}" 
-                        FontAttributes="Bold"
-                        FontSize="16"
-                        HorizontalOptions="Center"
-                        Margin="0,10,0,10" />
-                    
+                    <HorizontalStackLayout HorizontalOptions="Center">
+                        <Label Text="{x:Static resx:Resources.Country_Label}"
+                               Style="{StaticResource SecondaryLabel}" />
+                        <Label Text="{Binding CountryDisplayName}" 
+                               FontAttributes="Bold"
+                               FontSize="16"
+                               Margin="5,0,0,0" />
+                    </HorizontalStackLayout>
+
                 </VerticalStackLayout>
             </Frame>
 
@@ -54,36 +57,70 @@
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="{x:Static resx:Resources.Salary_SectionTitle}"
-                           Style="{StaticResource SectionTitleLabel}" />
+               Style="{StaticResource SectionTitleLabel}" />
 
                     <Label Text="{x:Static resx:Resources.SalaryType_Label}"
-                           Style="{StaticResource SecondaryLabel}" />
+               Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding SalaryTypes}"
-                            SelectedItem="{Binding SelectedSalaryType}"
-                            Style="{StaticResource ThemedPicker}" />
+                SelectedItem="{Binding SelectedSalaryType}"
+                Style="{StaticResource ThemedPicker}" />
 
-                    <!-- Månadslön -->
-                    <StackLayout IsVisible="{Binding IsMonthlySalary}">
-                        <Label Text="{x:Static resx:Resources.MonthlySalary_Label}"
-                               Style="{StaticResource SecondaryLabel}" />
-                        <Entry Text="{Binding MonthlySalary}"
-                               Keyboard="Numeric"
-                               Placeholder="{x:Static resx:Resources.MonthlySalary_Placeholder}"
-                               Style="{StaticResource ThemedEntry}" />
-                    </StackLayout>
+                    <!-- Månadslön + Valuta -->
+                    <Grid IsVisible="{Binding IsMonthlySalary}" ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <!-- Label + Entry -->
+                            <ColumnDefinition Width="1*" />
+                            <!-- Picker -->
+                        </Grid.ColumnDefinitions>
 
-                    <!-- Timlön -->
-                    <StackLayout IsVisible="{Binding IsHourlySalary}">
-                        <Label Text="{x:Static resx:Resources.HourlySalary_Label}"
-                               Style="{StaticResource SecondaryLabel}" />
-                        <Entry Text="{Binding HourlyRate}"
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="{x:Static resx:Resources.MonthlySalary_Label}"
+                                    Style="{StaticResource SecondaryLabel}" />
+                            <Entry Text="{Binding MonthlySalary}"
+                                   Keyboard="Numeric"
+                                   Placeholder="{x:Static resx:Resources.MonthlySalary_Placeholder}"
+                                   Style="{StaticResource ThemedEntry}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="{x:Static resx:Resources.Currency_Label}"
+                                    Style="{StaticResource SecondaryLabel}" />
+                            <Picker ItemsSource="{Binding AvailableCurrencies}"
+                                    ItemDisplayBinding="{Binding DisplayName}"
+                                    SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
+                                    Style="{StaticResource ThemedPicker}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Timlön + Valuta -->
+                    <Grid IsVisible="{Binding IsHourlySalary}" ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="{x:Static resx:Resources.HourlySalary_Label}"
+                                Style="{StaticResource SecondaryLabel}" />
+                            <Entry Text="{Binding HourlyRate}"
                                Keyboard="Numeric"
                                Placeholder="{x:Static resx:Resources.HourlySalary_Placeholder}"
                                Style="{StaticResource ThemedEntry}" />
-                    </StackLayout>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="{x:Static resx:Resources.Currency_Label}"
+                                Style="{StaticResource SecondaryLabel}" />
+                            <Picker ItemsSource="{Binding AvailableCurrencies}"
+                                ItemDisplayBinding="{Binding DisplayName}"
+                                SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
+                                Style="{StaticResource ThemedPicker}" />
+                        </VerticalStackLayout>
+                    </Grid>
 
                     <Label Text="{x:Static resx:Resources.ExpectedHours_Label}"
-                           Style="{StaticResource SecondaryLabel}" />
+                            Style="{StaticResource SecondaryLabel}" />
                     <Entry Text="{Binding ExpectedHoursPerMonth}"
                            Keyboard="Numeric"
                            Placeholder="{x:Static resx:Resources.ExpectedHours_Placeholder}"
