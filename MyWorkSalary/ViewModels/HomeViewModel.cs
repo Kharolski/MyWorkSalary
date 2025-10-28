@@ -1,10 +1,12 @@
-﻿using MyWorkSalary.Models;
+using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Views.Pages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
@@ -88,8 +90,8 @@ namespace MyWorkSalary.ViewModels
         }
 
         public string WelcomeText => HasActiveJob && ActiveJob != null
-            ? $"Aktivt jobb - {ActiveJob.JobTitle}"
-            : "Välkommen till din löneapp!";
+            ? $"{LocalizationHelper.Translate("ActiveJob")} - {ActiveJob.JobTitle}"
+            : LocalizationHelper.Translate("WelcomeToApp");
 
         public string WorkplaceText => ActiveJob?.Workplace ?? "";
         public bool ShowSetupButton => !HasActiveJob;
@@ -97,9 +99,17 @@ namespace MyWorkSalary.ViewModels
 
         // Jobb info 
         public string JobDisplayText => ActiveJob?.JobTitle ?? "";
-        public string SalaryTypeInfo => ActiveJob?.ExpectedHoursPerMonth > 0
-            ? $"Månadslön • {ActiveJob.ExpectedHoursPerMonth} tim/månad • Flex-tid"
-            : "Timlön • Ingen flex-tid";
+        public string SalaryTypeInfo
+        {
+            get
+            {
+                if (ActiveJob?.ExpectedHoursPerMonth > 0)
+                {
+                    return $"{LocalizationHelper.Translate("MonthlySalary")} • {ActiveJob.ExpectedHoursPerMonth} {LocalizationHelper.Translate("HoursPerMonth")} • {LocalizationHelper.Translate("FlexTime")}";
+                }
+                return $"{LocalizationHelper.Translate("HourlyWage")} • {LocalizationHelper.Translate("NoFlexTime")}";
+            }
+        }
 
         // Månadens statistik
         public string MonthlyHoursText => MonthlyHours.ToString("F1");
@@ -152,14 +162,12 @@ namespace MyWorkSalary.ViewModels
         {
             get
             {
-                var culture = new System.Globalization.CultureInfo("sv-SE");
+                var culture = CultureInfo.CurrentCulture;
                 var monthYear = DateTime.Now.ToString("MMMM yyyy", culture);
-
-                // Använd TextInfo för korrekt kapitalisering
                 return culture.TextInfo.ToTitleCase(monthYear);
             }
         }
-        public string TodayDate => DateTime.Now.ToString("dddd d MMMM yyyy", new System.Globalization.CultureInfo("sv-SE"));
+        public string TodayDate => DateTime.Now.ToString("dddd d MMMM yyyy", CultureInfo.CurrentCulture);
 
         public double RecentActivitiesHeight
         {
@@ -198,11 +206,11 @@ namespace MyWorkSalary.ViewModels
 
                 var kvar = ExpectedHoursThisMonth - MonthlyHours;
                 if (kvar > 0)
-                    return $"{kvar:F1} timmar skuld";
+                    return $"{kvar:F1} {LocalizationHelper.Translate("HoursOwed")}";
                 else if (kvar < 0)
-                    return $"{Math.Abs(kvar):F1} timmar kompledighet";
+                    return $"{Math.Abs(kvar):F1} {LocalizationHelper.Translate("HoursCredit")}";
                 else
-                    return "Månadens mål uppnått!";
+                    return LocalizationHelper.Translate("MonthlyGoalReached");
             }
         }
 

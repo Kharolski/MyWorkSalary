@@ -210,6 +210,9 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="AddOBRule" xml:space="preserve">
     <value>➕ Lägg till OB-regel</value>
   </data>
+  <data name="AddShift" xml:space="preserve">
+    <value>➕ Lägg till pass</value>
+  </data>
   <data name="AppSettings" xml:space="preserve">
     <value>🔧 App-inställningar</value>
   </data>
@@ -221,6 +224,9 @@ när anställningen upphör (senast en månad efteråt).</value>
   </data>
   <data name="Button_SaveChanges" xml:space="preserve">
     <value>💾 Spara ändringar</value>
+  </data>
+  <data name="CalculateSalary" xml:space="preserve">
+    <value>Beräkna lön</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Avbryt</value>
@@ -273,6 +279,12 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="Country_Sweden" xml:space="preserve">
     <value>Sverige</value>
   </data>
+  <data name="CreateFirstJob" xml:space="preserve">
+    <value>Skapa ditt första jobb</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>{0:C}</value>
+  </data>
   <data name="Currency_DKK" xml:space="preserve">
     <value>Danska kronor (DKK)</value>
   </data>
@@ -293,6 +305,9 @@ när anställningen upphör (senast en månad efteråt).</value>
   </data>
   <data name="Currency_USD" xml:space="preserve">
     <value>US Dollar (USD)</value>
+  </data>
+  <data name="CurrentMonthYear" xml:space="preserve">
+    <value>{0:MMMM yyyy}</value>
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Mörkt tema</value>
@@ -347,6 +362,9 @@ när anställningen upphör (senast en månad efteråt).</value>
   </data>
   <data name="Dialog_SuccessTitle" xml:space="preserve">
     <value>Framgång</value>
+  </data>
+  <data name="Earned" xml:space="preserve">
+    <value>Intjänat</value>
   </data>
   <data name="EditJob" xml:space="preserve">
     <value>✏️ Ändra</value>
@@ -411,8 +429,32 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="ExpectedHours_Placeholder" xml:space="preserve">
     <value>t.ex. 165</value>
   </data>
+  <data name="FlexBalanced" xml:space="preserve">
+    <value>Balanserat</value>
+  </data>
+  <data name="FlexNegative" xml:space="preserve">
+    <value>{0} tim skuld</value>
+  </data>
+  <data name="FlexPositive" xml:space="preserve">
+    <value>+{0} tim kompledighet</value>
+  </data>
+  <data name="FlexTime" xml:space="preserve">
+    <value>Flex-tid</value>
+  </data>
+  <data name="FlexTimeTooltip" xml:space="preserve">
+    <value>💡 Timmar kvar/över månadens mål</value>
+  </data>
   <data name="For" xml:space="preserve">
     <value>För</value>
+  </data>
+  <data name="GetStartedPrompt" xml:space="preserve">
+    <value>Kom igång genom att skapa ditt första jobb</value>
+  </data>
+  <data name="HomeTitle" xml:space="preserve">
+    <value>Hem</value>
+  </data>
+  <data name="HourlyRate" xml:space="preserve">
+    <value>{0}/h</value>
   </data>
   <data name="HourlySalary_Label" xml:space="preserve">
     <value>Timlön (kr)</value>
@@ -420,11 +462,32 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="HourlySalary_Placeholder" xml:space="preserve">
     <value>t.ex. 185</value>
   </data>
+  <data name="HourlyWage" xml:space="preserve">
+    <value>Timlön</value>
+  </data>
   <data name="Hours" xml:space="preserve">
     <value>timmar</value>
   </data>
+  <data name="HoursAbbreviation" xml:space="preserve">
+    <value>t</value>
+  </data>
+  <data name="HoursCredit" xml:space="preserve">
+    <value>timmar kompledighet</value>
+  </data>
+  <data name="HoursOwed" xml:space="preserve">
+    <value>timmar skuld</value>
+  </data>
+  <data name="HoursPerMonth" xml:space="preserve">
+    <value>tim/månad</value>
+  </data>
+  <data name="HoursText" xml:space="preserve">
+    <value>Timmar</value>
+  </data>
   <data name="HoursToBank" xml:space="preserve">
     <value>timmar till timbank</value>
+  </data>
+  <data name="HoursWorked" xml:space="preserve">
+    <value>Arbetade timmar</value>
   </data>
   <data name="InitialVacation_Label" xml:space="preserve">
     <value>Sparade semesterdagar just nu</value>
@@ -462,11 +525,29 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="LightThemeActive" xml:space="preserve">
     <value>Ljust utseende aktiverat</value>
   </data>
+  <data name="MonthlyBalanced" xml:space="preserve">
+    <value>Balanserat denna månad</value>
+  </data>
+  <data name="MonthlyGoalReached" xml:space="preserve">
+    <value>Månadens mål uppnått!</value>
+  </data>
+  <data name="MonthlyNegative" xml:space="preserve">
+    <value>{0} timmar denna månad</value>
+  </data>
+  <data name="MonthlyPositive" xml:space="preserve">
+    <value>+{0} timmar denna månad</value>
+  </data>
+  <data name="MonthlySalary" xml:space="preserve">
+    <value>Månadslön</value>
+  </data>
   <data name="MonthlySalary_Label" xml:space="preserve">
     <value>Månadslön (kr)</value>
   </data>
   <data name="MonthlySalary_Placeholder" xml:space="preserve">
     <value>t.ex. 28500</value>
+  </data>
+  <data name="MonthlyStats" xml:space="preserve">
+    <value>Månadsstatistik</value>
   </data>
   <data name="MyJobs" xml:space="preserve">
     <value>💼 Mina Jobb</value>
@@ -474,8 +555,29 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="NoActiveJob" xml:space="preserve">
     <value>Inget aktivt jobb</value>
   </data>
+  <data name="NoActivitiesIcon" xml:space="preserve">
+    <value>📝</value>
+  </data>
+  <data name="NoActivitiesMessage" xml:space="preserve">
+    <value>Registrera ditt första arbetspass!</value>
+  </data>
+  <data name="NoActivitiesTitle" xml:space="preserve">
+    <value>Inga aktiviteter än</value>
+  </data>
+  <data name="NoFlexTime" xml:space="preserve">
+    <value>Ingen flex-tid</value>
+  </data>
+  <data name="NoJobSetup" xml:space="preserve">
+    <value>Inget jobb konfigurerat</value>
+  </data>
   <data name="NoJobsRegistered" xml:space="preserve">
     <value>Inga jobb registrerade</value>
+  </data>
+  <data name="NoLoss" xml:space="preserve">
+    <value>(Ingen förlust)</value>
+  </data>
+  <data name="NoShiftsThisMonth" xml:space="preserve">
+    <value>Inga pass registrerade denna månad</value>
   </data>
   <data name="OBCategory_Evening" xml:space="preserve">
     <value>Kväll</value>
@@ -485,6 +587,9 @@ när anställningen upphör (senast en månad efteråt).</value>
   </data>
   <data name="OBCategory_Weekend" xml:space="preserve">
     <value>Helg</value>
+  </data>
+  <data name="ObHoursText" xml:space="preserve">
+    <value>OB-timmar</value>
   </data>
   <data name="OBRule_Category_Label" xml:space="preserve">
     <value>🏷️ Kategori</value>
@@ -565,14 +670,41 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt.</value>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="OnCall" xml:space="preserve">
+    <value>Jour</value>
+  </data>
+  <data name="OnCallIcon" xml:space="preserve">
+    <value>📞</value>
+  </data>
+  <data name="OnCallLabel" xml:space="preserve">
+    <value>Jour</value>
+  </data>
+  <data name="OneDay" xml:space="preserve">
+    <value>(1 dag)</value>
+  </data>
+  <data name="Overtime" xml:space="preserve">
+    <value>Övertid</value>
+  </data>
   <data name="PerHour" xml:space="preserve">
     <value>kr/tim</value>
   </data>
   <data name="PerMonth" xml:space="preserve">
     <value>kr/mån</value>
   </data>
+  <data name="QuickActions" xml:space="preserve">
+    <value>Snabbåtgärder</value>
+  </data>
+  <data name="QuickActionsTooltip" xml:space="preserve">
+    <value>💡 Registrera arbetstid eller visa dina lönerapporter</value>
+  </data>
+  <data name="RecentActivities" xml:space="preserve">
+    <value>Senaste aktiviteter</value>
+  </data>
   <data name="SalaryNotSpecified" xml:space="preserve">
     <value>Lön ej angiven</value>
+  </data>
+  <data name="SalaryTypeInfo" xml:space="preserve">
+    <value>Lönetyp</value>
   </data>
   <data name="SalaryType_Hourly" xml:space="preserve">
     <value>Timlön</value>
@@ -601,6 +733,30 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt.</value>
   <data name="Save_Success_Title" xml:space="preserve">
     <value>Sparat!</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Inställningar</value>
+  </data>
+  <data name="Shifts" xml:space="preserve">
+    <value>Pass</value>
+  </data>
+  <data name="SickDay" xml:space="preserve">
+    <value>Sjukdag</value>
+  </data>
+  <data name="SickDayFull" xml:space="preserve">
+    <value>Sjukdag (1 dag)</value>
+  </data>
+  <data name="SickDayPartial" xml:space="preserve">
+    <value>Delvis sjuk</value>
+  </data>
+  <data name="SickLeave" xml:space="preserve">
+    <value>Sjukfrånvaro</value>
+  </data>
+  <data name="SickLeaveIcon" xml:space="preserve">
+    <value>🏥</value>
+  </data>
+  <data name="SickOnDayOff" xml:space="preserve">
+    <value>Sjuk på ledig dag</value>
+  </data>
   <data name="Success" xml:space="preserve">
     <value>Framgång</value>
   </data>
@@ -625,8 +781,26 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt.</value>
   <data name="ThemeSaveErrorMessage" xml:space="preserve">
     <value>Kunde inte spara tema inställningen</value>
   </data>
+  <data name="Today" xml:space="preserve">
+    <value>Idag</value>
+  </data>
+  <data name="TodayDate" xml:space="preserve">
+    <value>Idag, {0:dd MMMM yyyy}</value>
+  </data>
+  <data name="VAB" xml:space="preserve">
+    <value>VAB</value>
+  </data>
+  <data name="VABIcon" xml:space="preserve">
+    <value>👶</value>
+  </data>
+  <data name="Vacation" xml:space="preserve">
+    <value>Semester</value>
+  </data>
   <data name="VacationDays_Label" xml:space="preserve">
     <value>Semesterdagar per år</value>
+  </data>
+  <data name="VacationIcon" xml:space="preserve">
+    <value>🏖️</value>
   </data>
   <data name="Vacation_SectionTitle" xml:space="preserve">
     <value>🏖️ Semesterinformation</value>
@@ -661,8 +835,26 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt.</value>
   <data name="Validation_WorkplaceRequired" xml:space="preserve">
     <value>Arbetsplats är obligatoriskt</value>
   </data>
+  <data name="ViewHistory" xml:space="preserve">
+    <value>Visa historik</value>
+  </data>
+  <data name="ViewReports" xml:space="preserve">
+    <value>📊 Visa rapporter</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Välkommen</value>
+  </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Välkommen till din löneapp!</value>
+  </data>
+  <data name="WelcomeToApp" xml:space="preserve">
+    <value>Välkommen till din löneapp!</value>
+  </data>
+  <data name="WorkDays" xml:space="preserve">
+    <value>Arbetsdagar</value>
+  </data>
+  <data name="Workplace" xml:space="preserve">
+    <value>Arbetsplats</value>
   </data>
   <data name="Workplace_Label" xml:space="preserve">
     <value>Arbetsplats *</value>
@@ -670,7 +862,16 @@ Konfigurera OB-regler så att löneberäkningen blir korrekt.</value>
   <data name="Workplace_Placeholder" xml:space="preserve">
     <value>t.ex. Ljungby Kommun</value>
   </data>
+  <data name="WorkShift" xml:space="preserve">
+    <value>Arbetspass</value>
+  </data>
+  <data name="WorkShiftIcon" xml:space="preserve">
+    <value>🕐</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Ja</value>
+  </data>
+  <data name="Yesterday" xml:space="preserve">
+    <value>Igår</value>
   </data>
 </root>

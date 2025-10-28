@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
@@ -192,13 +193,14 @@ namespace MyWorkSalary.Services
                 switch (shift.ShiftType)
                 {
                     case ShiftType.Regular:
-                        activity.Icon = "🕐";
+                        activity.Icon = LocalizationHelper.Translate("WorkShiftIcon");
                         activity.TimeText = GetTimeDisplayText(shift);
-                        activity.Description = "Arbetspass";
-                        activity.Duration = $"({shift.TotalHours:F1}t)";
+                        activity.Description = LocalizationHelper.Translate("WorkShift");
+                        activity.Duration = $"({shift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")})";
                         break;
+
                     case ShiftType.SickLeave:
-                        activity.Icon = "🏥";
+                        activity.Icon = LocalizationHelper.Translate("SickLeaveIcon");
                         activity.TimeText = GetDateDisplayText(shift.ShiftDate);
 
                         // Hämta sjuktyp från SickLeave-objektet
@@ -209,42 +211,45 @@ namespace MyWorkSalary.Services
                             switch (sickLeave.SickType)
                             {
                                 case SickLeaveType.ShouldHaveWorked:
-                                    activity.Description = "Sjukdag (1 dag)";
-                                    activity.Duration = $"({sickLeave.ScheduledHours:F1}t)";
+                                    activity.Description = LocalizationHelper.Translate("SickDayFull");
+                                    activity.Duration = $"({sickLeave.ScheduledHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")})";
                                     break;
                                 case SickLeaveType.WorkedPartially:
-                                    activity.Description = "Delvis sjuk";
-                                    activity.Duration = $"({sickLeave.WorkedHours:F1}t)";
+                                    activity.Description = LocalizationHelper.Translate("SickPartially");
+                                    activity.Duration = $"({sickLeave.WorkedHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")})";
                                     break;
                                 case SickLeaveType.WouldBeFree:
-                                    activity.Description = "Sjuk på ledighet";
-                                    activity.Duration = "(Ingen förlust)";
+                                    activity.Description = LocalizationHelper.Translate("SickOnDayOff");
+                                    activity.Duration = LocalizationHelper.Translate("NoLoss");
                                     break;
                             }
                         }
                         else
                         {
-                            activity.Description = "Sjukdag";
-                            activity.Duration = "(1 dag)";
+                            activity.Description = LocalizationHelper.Translate("SickDay");
+                            activity.Duration = LocalizationHelper.Translate("OneDay");
                         }
                         break;
+
                     case ShiftType.Vacation:
-                        activity.Icon = "🏖️";
+                        activity.Icon = LocalizationHelper.Translate("VacationIcon");
                         activity.TimeText = GetDateDisplayText(shift.ShiftDate);
-                        activity.Description = "Semester";
-                        activity.Duration = "(1 dag)";
+                        activity.Description = LocalizationHelper.Translate("Vacation");
+                        activity.Duration = LocalizationHelper.Translate("OneDay");
                         break;
+
                     case ShiftType.OnCall: // Jour
-                        activity.Icon = "📞";
+                        activity.Icon = LocalizationHelper.Translate("OnCallIcon");
                         activity.TimeText = GetTimeDisplayText(shift);
-                        activity.Description = "Jourpass";
-                        activity.Duration = "Jour";
+                        activity.Description = LocalizationHelper.Translate("OnCall");
+                        activity.Duration = LocalizationHelper.Translate("OnCallLabel");
                         break;
+
                     case ShiftType.VAB: // Vård av barn
-                        activity.Icon = "👶";
+                        activity.Icon = LocalizationHelper.Translate("VABIcon");
                         activity.TimeText = GetDateDisplayText(shift.ShiftDate);
-                        activity.Description = "VAB";
-                        activity.Duration = "(1 dag)";
+                        activity.Description = LocalizationHelper.Translate("VAB");
+                        activity.Duration = LocalizationHelper.Translate("OneDay");
                         break;
                 }
 
@@ -401,18 +406,18 @@ namespace MyWorkSalary.Services
             if (shift.ShiftDate.Date == DateTime.Today)
             {
                 return shift.StartTime.HasValue && shift.EndTime.HasValue
-                    ? $"Idag {shift.StartTime:HH:mm}-{shift.EndTime:HH:mm}"
-                    : "Idag";
+                    ? $"{LocalizationHelper.Translate("Today")} {shift.StartTime:HH:mm}-{shift.EndTime:HH:mm}"
+                    : LocalizationHelper.Translate("Today");
             }
             else if (shift.ShiftDate.Date == DateTime.Today.AddDays(-1))
             {
                 return shift.StartTime.HasValue && shift.EndTime.HasValue
-                    ? $"Igår {shift.StartTime:HH:mm}-{shift.EndTime:HH:mm}"
-                    : "Igår";
+                    ? $"{LocalizationHelper.Translate("Yesterday")} {shift.StartTime:HH:mm}-{shift.EndTime:HH:mm}"
+                    : LocalizationHelper.Translate("Yesterday");
             }
             else
             {
-                var dateText = shift.ShiftDate.ToString("d MMM", new CultureInfo("sv-SE"));
+                var dateText = shift.ShiftDate.ToString("d MMM", CultureInfo.CurrentCulture);
                 return shift.StartTime.HasValue && shift.EndTime.HasValue
                     ? $"{dateText} {shift.StartTime:HH:mm}-{shift.EndTime:HH:mm}"
                     : dateText;
@@ -422,11 +427,11 @@ namespace MyWorkSalary.Services
         private string GetDateDisplayText(DateTime date)
         {
             if (date.Date == DateTime.Today)
-                return "Idag";
+                return LocalizationHelper.Translate("Today");
             else if (date.Date == DateTime.Today.AddDays(-1))
-                return "Igår";
+                return LocalizationHelper.Translate("Yesterday");
             else
-                return date.ToString("d MMM", new CultureInfo("sv-SE"));
+                return date.ToString("d MMM", CultureInfo.CurrentCulture);
         }
 
         private decimal GetWeeklyHours(int jobProfileId)
@@ -462,9 +467,9 @@ namespace MyWorkSalary.Services
         {
             return balance switch
             {
-                > 0 => $"+{balance:F1} tim kompledighet",
-                < 0 => $"{balance:F1} tim skuld",
-                _ => "Balanserat"
+                > 0 => string.Format(LocalizationHelper.Translate("FlexPositive"), balance.ToString("F1")),
+                < 0 => string.Format(LocalizationHelper.Translate("FlexNegative"), balance.ToString("F1")),
+                _ => LocalizationHelper.Translate("FlexBalanced")
             };
         }
 
@@ -472,9 +477,9 @@ namespace MyWorkSalary.Services
         {
             return difference switch
             {
-                > 0 => $"+{difference:F1} timmar denna månad",
-                < 0 => $"{difference:F1} timmar denna månad",
-                _ => "Balanserat denna månad"
+                > 0 => string.Format(LocalizationHelper.Translate("MonthlyPositive"), difference.ToString("F1")),
+                < 0 => string.Format(LocalizationHelper.Translate("MonthlyNegative"), difference.ToString("F1")),
+                _ => LocalizationHelper.Translate("MonthlyBalanced")
             };
         }
 

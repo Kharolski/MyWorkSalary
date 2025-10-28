@@ -48,7 +48,6 @@ namespace MyWorkSalary.Helpers.Localization
                 CultureChanged?.Invoke(this, EventArgs.Empty);
             });
 
-            System.Diagnostics.Debug.WriteLine($"[LANG] TranslationManager: Kultur ändrad till {culture.Name}");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

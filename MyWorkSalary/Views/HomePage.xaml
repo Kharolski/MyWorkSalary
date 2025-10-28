@@ -2,7 +2,8 @@
 <ContentPage x:Class="MyWorkSalary.Views.HomePage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Hem">
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             Title="{resx:Translate HomeTitle}">
       
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
@@ -17,10 +18,10 @@
 
                      <!--Visa när inget jobb finns--> 
                     <StackLayout IsVisible="{Binding ShowSetupButton}">
-                        <Label Text="Kom igång genom att skapa ditt första jobb"
+                        <Label Text="{resx:Translate GetStartedPrompt}"
                                Style="{StaticResource SecondaryLabel}"
                                HorizontalOptions="Center" />
-                        <Button Text="Skapa ditt första jobb"
+                        <Button Text="{resx:Translate CreateFirstJob}"
                                 Command="{Binding SetupJobCommand}" Margin="0,10,0,0"
                                 HorizontalOptions="Center" />
                     </StackLayout>
@@ -43,7 +44,7 @@
              <!--Dashboard innehåll (bara när jobb finns)--> 
             <StackLayout IsVisible="{Binding ShowDashboard}" Spacing="20">
 
-                 <!--Månadens statistik--> 
+                <!--Månadens statistik--> 
                 <Frame Style="{StaticResource CardFrame}">
                     <VerticalStackLayout Spacing="15">
                         <Label Text="{Binding CurrentMonthYear}" Style="{StaticResource SectionTitleLabel}" />
@@ -55,7 +56,7 @@
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        HorizontalOptions="Center" />
-                                <Label Text="Timmar"
+                                <Label Text="{resx:Translate HoursText}"
                                        Style="{StaticResource SecondaryLabel}"
                                        FontSize="12"
                                        HorizontalOptions="Center" />
@@ -68,7 +69,7 @@
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        HorizontalOptions="Center" />
-                                                            <Label Text="OB-timmar"
+                                <Label Text="{resx:Translate ObHoursText}"
                                        Style="{StaticResource SecondaryLabel}"
                                        FontSize="12"
                                        HorizontalOptions="Center" />
@@ -81,7 +82,7 @@
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        HorizontalOptions="Center" />
-                                <Label Text="Arbetsdagar"
+                                <Label Text="{resx:Translate WorkDays}"
                                        Style="{StaticResource SecondaryLabel}"
                                        FontSize="12"
                                        HorizontalOptions="Center" />
@@ -90,10 +91,10 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                 <!--Flex-tid sektion (bara för månadslön)--> 
+                <!--Flex-tid sektion (bara för månadslön)--> 
                 <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding ShowFlexSection}">
                     <VerticalStackLayout Spacing="15">
-                        <Label Text="Flex-tid" Style="{StaticResource SectionTitleLabel}" />
+                        <Label Text="{resx:Translate FlexTime}" Style="{StaticResource SectionTitleLabel}" />
 
                          <!--Aktuellt saldo--> 
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10">
@@ -104,30 +105,31 @@
                         <!--Förklaringstext-->
                         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
 
-                            <Label Text="💡 Timmar kvar/över månadens mål" Style="{StaticResource SecondaryLabel}" FontSize="12" HorizontalOptions="Center" />
+                            <Label Text="{resx:Translate FlexTimeTooltip}" 
+                                   Style="{StaticResource SecondaryLabel}" FontSize="12" HorizontalOptions="Center" />
                         </HorizontalStackLayout>
 
                     </VerticalStackLayout>
                 </Frame>
 
-                 <!--Snabbknappar--> 
+                <!--Snabbknappar--> 
                 <Frame Style="{StaticResource CardFrame}">
                     <VerticalStackLayout Spacing="15">
-                        <Label Text="Snabbåtgärder" Style="{StaticResource SectionTitleLabel}" />
+                        <Label Text="{resx:Translate QuickActions}" Style="{StaticResource SectionTitleLabel}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
                             <Button Grid.Column="0"
-                                    Text="➕ Lägg till pass"
+                                    Text="{resx:Translate AddShift}"
                                     Command="{Binding AddShiftCommand}"
                                     Style="{StaticResource ButtonAdd}" />
 
                             <Button Grid.Column="1"
-                                    Text="📊 Visa rapporter"
+                                    Text="{resx:Translate ViewReports}"
                                     Command="{Binding ViewReportsCommand}"
                                     Style="{StaticResource SecondaryButton}" />
                         </Grid>
 
-                         <!--HJÄLPTEXT--> 
-                        <Label Text="💡 Registrera arbetstid eller visa dina lönerapporter"
+                         <!--HJÄLPTEXT-->
+                        <Label Text="{resx:Translate QuickActionsTooltip}"
                                FontSize="12"
                                TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
                                                            Dark={StaticResource TextSecondaryDark}}"
@@ -135,10 +137,10 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                 <!--Senaste aktiviteter--> 
+                <!--Senaste aktiviteter--> 
                 <Frame Style="{StaticResource CardFrame}">
                     <VerticalStackLayout Spacing="15">
-                        <Label Text="Senaste aktiviteter" Style="{StaticResource SectionTitleLabel}" />
+                        <Label Text="{resx:Translate RecentActivities}" Style="{StaticResource SectionTitleLabel}" />
 
                         <CollectionView ItemsSource="{Binding RecentActivities}" SelectionMode="None" HeightRequest="{Binding RecentActivitiesHeight}">
                             <CollectionView.ItemTemplate>
@@ -175,12 +177,12 @@
 
                             <CollectionView.EmptyView>
                                 <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="40,20" Spacing="10">
-                                    <Label Text="📝" FontSize="32" HorizontalOptions="Center" Opacity="0.6" />
-                                    <Label Text="Inga aktiviteter än"
+                                    <Label Text="{resx:Translate NoActivitiesIcon}" FontSize="32" HorizontalOptions="Center" Opacity="0.6" />
+                                    <Label Text="{resx:Translate NoActivitiesTitle}"
                                            FontSize="16" FontAttributes="Bold"
                                            Style="{StaticResource SecondaryLabel}"
                                            HorizontalOptions="Center" />
-                                    <Label Text="Registrera ditt första arbetspass!"
+                                    <Label Text="{resx:Translate NoActivitiesMessage}"
                                            Style="{StaticResource SecondaryLabel}"
                                            FontSize="14"
                                            HorizontalOptions="Center" />

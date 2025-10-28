@@ -232,6 +232,11 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="AddOBRule" xml:space="preserve">
     <value>➕ Add Unsocial Hours Rule</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="AddShift" xml:space="preserve">
+    <value>➕ Add Shift</value>
+    <comment>Button text</comment>
   </data>
   <data name="AppSettings" xml:space="preserve">
     <value>🔧 App Settings</value>
@@ -244,6 +249,10 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="Button_SaveChanges" xml:space="preserve">
     <value>💾 Save changes</value>
+  </data>
+  <data name="CalculateSalary" xml:space="preserve">
+    <value>Calculate Salary</value>
+    <comment>Button text</comment>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -296,6 +305,14 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Country_Sweden" xml:space="preserve">
     <value>Sweden</value>
   </data>
+  <data name="CreateFirstJob" xml:space="preserve">
+    <value>Create your first job</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>{0:C}</value>
+    <comment>Currency format</comment>
+  </data>
   <data name="Currency_DKK" xml:space="preserve">
     <value>Danish krone (DKK)</value>
   </data>
@@ -316,6 +333,10 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="Currency_USD" xml:space="preserve">
     <value>US Dollar (USD)</value>
+  </data>
+  <data name="CurrentMonthYear" xml:space="preserve">
+    <value>{0:MMMM yyyy}</value>
+    <comment>Month and year format</comment>
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Dark Theme</value>
@@ -370,6 +391,10 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="Dialog_SuccessTitle" xml:space="preserve">
     <value>Success</value>
+  </data>
+  <data name="Earned" xml:space="preserve">
+    <value>Earned</value>
+    <comment>Statistic label</comment>
   </data>
   <data name="EditJob" xml:space="preserve">
     <value>✏️  Edit</value>
@@ -434,8 +459,37 @@ when employment ends (no later than one month afterwards).</value>
   <data name="ExpectedHours_Placeholder" xml:space="preserve">
     <value>e.g. 165</value>
   </data>
+  <data name="FlexBalanced" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="FlexNegative" xml:space="preserve">
+    <value>{0} hours debt</value>
+  </data>
+  <data name="FlexPositive" xml:space="preserve">
+    <value>+{0} hours of availability</value>
+  </data>
+  <data name="FlexTime" xml:space="preserve">
+    <value>Flex Time </value>
+    <comment>Section header</comment>
+  </data>
+  <data name="FlexTimeTooltip" xml:space="preserve">
+    <value>💡 Hours remaining/over monthly goal</value>
+    <comment>Tooltip for flex time</comment>
+  </data>
   <data name="For" xml:space="preserve">
     <value>For</value>
+  </data>
+  <data name="GetStartedPrompt" xml:space="preserve">
+    <value>Get started by creating your first job</value>
+    <comment>Prompt when no job is set up</comment>
+  </data>
+  <data name="HomeTitle" xml:space="preserve">
+    <value>Home</value>
+    <comment>Page title </comment>
+  </data>
+  <data name="HourlyRate" xml:space="preserve">
+    <value>{0}/h</value>
+    <comment>Hourly rate format</comment>
   </data>
   <data name="HourlySalary_Label" xml:space="preserve">
     <value>Hourly rate </value>
@@ -443,11 +497,38 @@ when employment ends (no later than one month afterwards).</value>
   <data name="HourlySalary_Placeholder" xml:space="preserve">
     <value>e.g. 185</value>
   </data>
+  <data name="HourlyWage" xml:space="preserve">
+    <value>Hourly wage</value>
+  </data>
   <data name="Hours" xml:space="preserve">
     <value>hours</value>
+    <comment>Hours unit</comment>
+  </data>
+  <data name="HoursAbbreviation" xml:space="preserve">
+    <value>h</value>
+    <comment>Abbreviation for hours</comment>
+  </data>
+  <data name="HoursCredit" xml:space="preserve">
+    <value>hours credit</value>
+    <comment>Shown in flex balance when there are extra hours</comment>
+  </data>
+  <data name="HoursOwed" xml:space="preserve">
+    <value>hours owed</value>
+    <comment>Shown in flex balance when hours are owed</comment>
+  </data>
+  <data name="HoursPerMonth" xml:space="preserve">
+    <value>hours/month</value>
+  </data>
+  <data name="HoursText" xml:space="preserve">
+    <value>Hours</value>
+    <comment>Label for hours </comment>
   </data>
   <data name="HoursToBank" xml:space="preserve">
     <value>hours to hour bank</value>
+  </data>
+  <data name="HoursWorked" xml:space="preserve">
+    <value>Hours Worked</value>
+    <comment>Statistic label</comment>
   </data>
   <data name="InitialVacation_Label" xml:space="preserve">
     <value>Saved vacation days right now</value>
@@ -485,11 +566,31 @@ when employment ends (no later than one month afterwards).</value>
   <data name="LightThemeActive" xml:space="preserve">
     <value>Bright appearance enabled</value>
   </data>
+  <data name="MonthlyBalanced" xml:space="preserve">
+    <value>Balanced this month</value>
+  </data>
+  <data name="MonthlyGoalReached" xml:space="preserve">
+    <value>Monthly goal reached!</value>
+    <comment>Shown when monthly hours goal is exactly met</comment>
+  </data>
+  <data name="MonthlyNegative" xml:space="preserve">
+    <value>{0} hours this month</value>
+  </data>
+  <data name="MonthlyPositive" xml:space="preserve">
+    <value>+{0} hours this month</value>
+  </data>
+  <data name="MonthlySalary" xml:space="preserve">
+    <value>Monthly salary</value>
+  </data>
   <data name="MonthlySalary_Label" xml:space="preserve">
     <value>Monthly salary </value>
   </data>
   <data name="MonthlySalary_Placeholder" xml:space="preserve">
     <value>e.g. 28500</value>
+  </data>
+  <data name="MonthlyStats" xml:space="preserve">
+    <value>Monthly Statistics</value>
+    <comment>Section header</comment>
   </data>
   <data name="MyJobs" xml:space="preserve">
     <value>💼 My Jobs</value>
@@ -497,8 +598,35 @@ when employment ends (no later than one month afterwards).</value>
   <data name="NoActiveJob" xml:space="preserve">
     <value>No active job</value>
   </data>
+  <data name="NoActivitiesIcon" xml:space="preserve">
+    <value>📝</value>
+    <comment>Icon for empty state</comment>
+  </data>
+  <data name="NoActivitiesMessage" xml:space="preserve">
+    <value>Register your first work shift!</value>
+    <comment>Message when no activities</comment>
+  </data>
+  <data name="NoActivitiesTitle" xml:space="preserve">
+    <value>No activities yet</value>
+    <comment>Title when no activities</comment>
+  </data>
+  <data name="NoFlexTime" xml:space="preserve">
+    <value>No flex time</value>
+  </data>
+  <data name="NoJobSetup" xml:space="preserve">
+    <value>No job configured</value>
+    <comment>Message when no job is set up</comment>
+  </data>
   <data name="NoJobsRegistered" xml:space="preserve">
     <value>No jobs registered</value>
+  </data>
+  <data name="NoLoss" xml:space="preserve">
+    <value>(No loss)</value>
+    <comment>Text when no hours are lost</comment>
+  </data>
+  <data name="NoShiftsThisMonth" xml:space="preserve">
+    <value>No shifts recorded this month</value>
+    <comment>Message when no shifts for current month</comment>
   </data>
   <data name="OBCategory_Evening" xml:space="preserve">
     <value>Evening</value>
@@ -511,6 +639,10 @@ when employment ends (no later than one month afterwards).</value>
   <data name="OBCategory_Weekend" xml:space="preserve">
     <value>Weekend</value>
     <comment>OB category for weekend</comment>
+  </data>
+  <data name="ObHoursText" xml:space="preserve">
+    <value>Unsocial Hours</value>
+    <comment>Label for unsocial hours</comment>
   </data>
   <data name="OBRule_Category_Label" xml:space="preserve">
     <value>🏷️ Category</value>
@@ -590,14 +722,50 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="OnCall" xml:space="preserve">
+    <value>On-call</value>
+    <comment>Label for on-call</comment>
+  </data>
+  <data name="OnCallIcon" xml:space="preserve">
+    <value> 📞</value>
+    <comment>Icon for on-call</comment>
+  </data>
+  <data name="OnCallLabel" xml:space="preserve">
+    <value>On-call</value>
+    <comment>Label for on-call (short)</comment>
+  </data>
+  <data name="OneDay" xml:space="preserve">
+    <value>(1 day)</value>
+    <comment>Text for one day duration</comment>
+  </data>
+  <data name="Overtime" xml:space="preserve">
+    <value>Overtime</value>
+    <comment>Overtime label</comment>
+  </data>
   <data name="PerHour" xml:space="preserve">
     <value>€/hour</value>
   </data>
   <data name="PerMonth" xml:space="preserve">
     <value>€/month</value>
   </data>
+  <data name="QuickActions" xml:space="preserve">
+    <value>Quick Actions</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="QuickActionsTooltip" xml:space="preserve">
+    <value>💡 Register work time or view salary reports</value>
+    <comment>Tooltip for quick actions</comment>
+  </data>
+  <data name="RecentActivities" xml:space="preserve">
+    <value>Recent Activities </value>
+    <comment>Section header </comment>
+  </data>
   <data name="SalaryNotSpecified" xml:space="preserve">
     <value>Salary not specified</value>
+  </data>
+  <data name="SalaryTypeInfo" xml:space="preserve">
+    <value>Salary Type</value>
+    <comment>Salary type information</comment>
   </data>
   <data name="SalaryType_Hourly" xml:space="preserve">
     <value>Hourly rate</value>
@@ -627,6 +795,38 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Save_Success_Title" xml:space="preserve">
     <value>Saved!</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Shifts" xml:space="preserve">
+    <value>Shifts</value>
+    <comment>Statistic label</comment>
+  </data>
+  <data name="SickDay" xml:space="preserve">
+    <value>Sick day</value>
+    <comment>Generic sick day</comment>
+  </data>
+  <data name="SickDayFull" xml:space="preserve">
+    <value>Sick day (1 day) </value>
+    <comment>Full sick day</comment>
+  </data>
+  <data name="SickDayPartial" xml:space="preserve">
+    <value>Partially sick</value>
+    <comment>Partial sick day</comment>
+  </data>
+  <data name="SickLeave" xml:space="preserve">
+    <value>Sick Leave</value>
+    <comment>Sick leave label</comment>
+  </data>
+  <data name="SickLeaveIcon" xml:space="preserve">
+    <value>🏥</value>
+    <comment>Icon for sick leave</comment>
+  </data>
+  <data name="SickOnDayOff" xml:space="preserve">
+    <value>Sick on day off</value>
+    <comment>Sick on a day off</comment>
+  </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>
   </data>
@@ -651,8 +851,31 @@ when employment ends (no later than one month afterwards).</value>
   <data name="ThemeSaveErrorMessage" xml:space="preserve">
     <value>Could not save theme setting</value>
   </data>
+  <data name="Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="TodayDate" xml:space="preserve">
+    <value>Today, {0:MMMM dd, yyyy}</value>
+    <comment>Date format with placeholder</comment>
+  </data>
+  <data name="VAB" xml:space="preserve">
+    <value>Childcare</value>
+    <comment>Label for VAB</comment>
+  </data>
+  <data name="VABIcon" xml:space="preserve">
+    <value> 👶</value>
+    <comment>Icon for VAB</comment>
+  </data>
+  <data name="Vacation" xml:space="preserve">
+    <value>Vacation</value>
+    <comment>Label for vacation</comment>
+  </data>
   <data name="VacationDays_Label" xml:space="preserve">
     <value>Vacation days per year</value>
+  </data>
+  <data name="VacationIcon" xml:space="preserve">
+    <value>🏖️</value>
+    <comment>Icon for vacation</comment>
   </data>
   <data name="Vacation_SectionTitle" xml:space="preserve">
     <value>🏖️ Vacation information</value>
@@ -687,8 +910,31 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Validation_WorkplaceRequired" xml:space="preserve">
     <value>Workplace is required</value>
   </data>
+  <data name="ViewHistory" xml:space="preserve">
+    <value>View History</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ViewReports" xml:space="preserve">
+    <value>📊 View Reports</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome</value>
+    <comment>Welcome message on home screen</comment>
+  </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Welcome to your payroll app!</value>
+  </data>
+  <data name="WelcomeToApp" xml:space="preserve">
+    <value>Welcome to your salary app!</value>
+  </data>
+  <data name="WorkDays" xml:space="preserve">
+    <value>Work Days</value>
+    <comment>Label for work days</comment>
+  </data>
+  <data name="Workplace" xml:space="preserve">
+    <value>Workplace</value>
+    <comment>Workplace label</comment>
   </data>
   <data name="Workplace_Label" xml:space="preserve">
     <value>Workplace *</value>
@@ -696,7 +942,18 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Workplace_Placeholder" xml:space="preserve">
     <value>e.g. Municipality</value>
   </data>
+  <data name="WorkShift" xml:space="preserve">
+    <value>Work shift </value>
+    <comment>Label for work shift</comment>
+  </data>
+  <data name="WorkShiftIcon" xml:space="preserve">
+    <value>🕐</value>
+    <comment>Icon for work shift</comment>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="Yesterday" xml:space="preserve">
+    <value>Yesterday</value>
   </data>
 </root>
