@@ -4,14 +4,16 @@ using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Services.Handlers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using MyWorkSalary.Helpers.Localization;
 
 namespace MyWorkSalary.ViewModels.ShiftTypes
 {
-    public class OnCallViewModel : INotifyPropertyChanged
+    public class OnCallViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly IWorkShiftRepository _workShiftRepository;
         private readonly IShiftValidationService _validationService;
         private readonly OnCallHandler _onCallHandler;
+        private bool _disposed = false;
 
         private DateTime _selectedDate;
         private JobProfile _activeJob;
@@ -35,6 +37,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             _workShiftRepository = workShiftRepository;
             _validationService = validationService;
             _onCallHandler = onCallHandler;
+
+            LocalizationHelper.LanguageChanged += OnLanguageChanged;
         }
 
         #endregion
@@ -48,9 +52,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 _standbyStartTime = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CalculationSummary));
-                OnPropertyChanged(nameof(StandbyHoursText));
+
+                NotifyLocalizedProperties();
                 OnPropertyChanged(nameof(CalculatedPay));
+                OnPropertyChanged(nameof(FormattedCalculatedPay));
                 ValidateInput();
                 ValidationChanged?.Invoke();
             }
@@ -63,9 +68,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 _standbyEndTime = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CalculationSummary));
-                OnPropertyChanged(nameof(StandbyHoursText));
+
+                NotifyLocalizedProperties();
                 OnPropertyChanged(nameof(CalculatedPay));
+                OnPropertyChanged(nameof(FormattedCalculatedPay));
                 ValidateInput();
                 ValidationChanged?.Invoke();
             }
@@ -78,9 +84,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 _activeHours = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CalculationSummary));
+
+                NotifyLocalizedProperties();
                 OnPropertyChanged(nameof(CalculatedPay));
-                OnPropertyChanged(nameof(ShowActiveHoursInfo));
+                OnPropertyChanged(nameof(FormattedCalculatedPay));
                 ValidateInput();
                 ValidationChanged?.Invoke();
             }
@@ -93,8 +100,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 _onCallRate = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CalculationSummary));
+
+                NotifyLocalizedProperties();
                 OnPropertyChanged(nameof(CalculatedPay));
+                OnPropertyChanged(nameof(FormattedCalculatedPay));
                 ValidateInput();
                 ValidationChanged?.Invoke();
             }
@@ -134,11 +143,11 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 if (_activeJob?.EmploymentType == EmploymentType.Temporary)
                 {
-                    return "Som timanställd: Jourersättning + timlön för aktiv arbetstid måste avtalas separat.";
+                    return LocalizationHelper.Translate("OnCall_Explanation_Temporary");
                 }
                 else
                 {
-                    return "Som fast anställd: Jourersättning enligt avtal + vanlig lön för aktiv arbetstid.";
+                    return LocalizationHelper.Translate("OnCall_Explanation_Permanent");
                 }
             }
         }
@@ -148,7 +157,11 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             get
             {
                 var hours = CalculateStandbyHours();
-                return $"{hours:F1} timmar jour";
+                return string.Format(
+                    LocalizationHelper.Translate("OnCall_StandbyHours"),
+                    hours,
+                    LocalizationHelper.Translate("HoursAbbreviation")
+                );
             }
         }
 
@@ -159,17 +172,29 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 var standbyHours = CalculateStandbyHours();
                 var activeHours = GetActiveHoursValue();
                 var onCallRate = GetOnCallRateValue();
+                var hourlyRate = GetHourlyRate();
+                var currencyCode = _activeJob?.CurrencyCode ?? "SEK";
 
+                // Om tiderna är fel
                 if (standbyHours <= 0)
-                    return "Kontrollera jourtider";
+                    return LocalizationHelper.Translate("OnCall_CheckTimes");
 
-                var summary = $"Jour: {standbyHours:F1}h × {onCallRate:N0} kr = {(standbyHours * onCallRate):N0} kr";
+                // Lokala etiketter
+                var standbyLabel = LocalizationHelper.Translate("OnCall_StandbyLabel");              // ex. "Jour"
+                var activeLabel = LocalizationHelper.Translate("OnCall_ActiveLabel");   // ex. "Aktiv tid"
+                var hoursAbbr = LocalizationHelper.Translate("HoursAbbreviation");      // ex. "h"
 
+                // Jourdel
+                var standbyPay = standbyHours * onCallRate;
+                var formattedStandbyPay = CurrencyHelper.FormatCurrency(standbyPay, currencyCode);
+                var summary = $"{standbyLabel}: {standbyHours:F1}{hoursAbbr} × {onCallRate:N0} = {formattedStandbyPay}";
+
+                // Aktiv del (endast om aktiv tid finns)
                 if (activeHours > 0)
                 {
-                    var hourlyRate = GetHourlyRate();
                     var activePay = activeHours * hourlyRate;
-                    summary += $"\nAktiv tid: {activeHours:F1}h × {hourlyRate:N0} kr = {activePay:N0} kr";
+                    var formattedActivePay = CurrencyHelper.FormatCurrency(activePay, currencyCode);
+                    summary += $"\n{activeLabel}: {activeHours:F1}{hoursAbbr} × {hourlyRate:N0} = {formattedActivePay}";
                 }
 
                 return summary;
@@ -192,6 +217,36 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
+        public string FormattedCalculatedPay
+        {
+            get
+            {
+                var currencyCode = _activeJob?.CurrencyCode ?? "SEK";
+                return CurrencyHelper.FormatCurrency(CalculatedPay, currencyCode);
+            }
+        }
+
+        public string TotalEstimateText
+        {
+            get
+            {
+                // Hämta översatt text, t.ex. "Preliminärt totalt: {0}"
+                var label = LocalizationHelper.Translate("OnCall_TotalEstimate");
+
+                var currencyCode = _activeJob?.CurrencyCode ?? "SEK";
+                var formatted = CurrencyHelper.FormatCurrency(CalculatedPay, currencyCode);
+
+                // Sätt in värdet
+                return string.Format(label, formatted);
+            }
+        }
+
+        public string RateTipText =>
+            string.Format(
+                LocalizationHelper.Translate("OnCall_RateTip"),
+                _activeJob != null ? CurrencyHelper.GetSymbol(_activeJob.CurrencyCode) : "kr"
+            );
+
         #endregion
 
         #region Public Methods
@@ -201,11 +256,12 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             _selectedDate = selectedDate;
             _activeJob = activeJob;
 
-            // Uppdatera alla properties
-            OnPropertyChanged(nameof(OnCallExplanationText));
-            OnPropertyChanged(nameof(CalculationSummary));
+            // Uppdatera språk- och valuta-beroende properties
+            NotifyLocalizedProperties();
+
+            // Uppdatera övriga properties
             OnPropertyChanged(nameof(CalculatedPay));
-            OnPropertyChanged(nameof(StandbyHoursText));
+            OnPropertyChanged(nameof(FormattedCalculatedPay));
             ValidateInput();
         }
 
@@ -232,7 +288,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 if (!CanSave())
                 {
-                    ValidationMessage = "Kontrollera att alla obligatoriska fält är ifyllda";
+                    ValidationMessage = LocalizationHelper.Translate("OnCall_Save_ErrorMissing");
                     return false;
                 }
 
@@ -251,7 +307,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
             catch (Exception ex)
             {
-                ValidationMessage = $"Fel vid sparande: {ex.Message}";
+                ValidationMessage = string.Format(
+                    LocalizationHelper.Translate("OnCall_Save_Exception"),
+                    ex.Message
+                );
                 return false;
             }
         }
@@ -259,6 +318,20 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         #endregion
 
         #region Private Methods
+        private void OnLanguageChanged()
+        {
+            // Försöksskydd mot att metoden körs efter dispose
+            if (_disposed)
+                return;
+
+            // Update all localized properties
+            NotifyLocalizedProperties();
+
+            // Update other properties that might depend on language
+            OnPropertyChanged(nameof(CalculatedPay));
+            OnPropertyChanged(nameof(FormattedCalculatedPay));
+            OnPropertyChanged(nameof(ShowActiveHoursInfo));
+        }
 
         private decimal CalculateStandbyHours()
         {
@@ -326,34 +399,58 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             var standbyHours = CalculateStandbyHours();
             if (standbyHours <= 0)
             {
-                ValidationMessage = "Jourtid måste vara längre än 0 timmar";
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_ZeroHours");
                 return;
             }
 
             if (standbyHours > 24)
             {
-                ValidationMessage = "Jourtid kan inte vara längre än 24 timmar";
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_TooLong");
                 return;
             }
 
             var activeHours = GetActiveHoursValue();
             if (activeHours < 0)
             {
-                ValidationMessage = "Ogiltigt värde för aktiv arbetstid";
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_InvalidActive");
                 return;
             }
 
             if (activeHours > standbyHours)
             {
-                ValidationMessage = "Aktiv arbetstid kan inte vara längre än jourtid";
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_ActiveTooLong");
                 return;
             }
 
             var onCallRate = GetOnCallRateValue();
             if (onCallRate <= 0)
             {
-                ValidationMessage = "Jourersättning måste vara större än 0";
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_RateTooLow");
                 return;
+            }
+        }
+
+        /// <summary>
+        /// Triggar OnPropertyChanged för alla properties som beror på språk/valuta.
+        /// Används när t.ex. språk eller valuta ändras.
+        /// </summary>
+        private void NotifyLocalizedProperties()
+        {
+            OnPropertyChanged(nameof(OnCallExplanationText));
+            OnPropertyChanged(nameof(StandbyHoursText));
+            OnPropertyChanged(nameof(CalculationSummary));
+            OnPropertyChanged(nameof(TotalEstimateText));
+            OnPropertyChanged(nameof(RateTipText));
+        }
+        #endregion
+
+        #region IDisposable Implementation
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                LocalizationHelper.LanguageChanged -= OnLanguageChanged;
+                _disposed = true;
             }
         }
 

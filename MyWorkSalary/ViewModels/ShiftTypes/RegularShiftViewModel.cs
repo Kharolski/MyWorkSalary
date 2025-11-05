@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
 using System.ComponentModel;
@@ -131,9 +132,14 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 if (BreakMinutes > 0)
                 {
-                    return $"Arbetstid: {CalculatedHours:F1}t (efter {BreakMinutes} min rast)";
+                    return string.Format(
+                        LocalizationHelper.Translate("RegularShift_Calculation_WithBreak"),
+                        CalculatedHours,
+                        BreakMinutes);
                 }
-                return $"Totalt: {CalculatedHours:F1} timmar";
+                return string.Format(
+                    LocalizationHelper.Translate("RegularShift_Calculation_WithoutBreak"),
+                    CalculatedHours);
             }
         }
 
@@ -217,26 +223,38 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         #region Save Logic
         public async Task<bool> SaveRegularShift()
         {
-            if (ActiveJob == null)
-                return false;
-
-            var workShift = new WorkShift
+            try
             {
-                JobProfileId = ActiveJob.Id,
-                ShiftDate = SelectedDate,
-                ShiftType = ShiftType.Regular,
-                StartTime = SelectedDate.Date.Add(StartTime),
-                EndTime = SelectedDate.Date.Add(EndTime),
-                BreakMinutes = BreakMinutes,
-                TotalHours = CalculatedHours,
-                Notes = Notes,
-                CreatedDate = DateTime.Now,
-                IsExtraShift = IsExtraShift
-            };
+                if (ActiveJob == null)
+                    return false;
 
-            var savedShift = _workShiftRepository.SaveWorkShift(workShift);
+                var workShift = new WorkShift
+                {
+                    JobProfileId = ActiveJob.Id,
+                    ShiftDate = SelectedDate,
+                    ShiftType = ShiftType.Regular,
+                    StartTime = SelectedDate.Date.Add(StartTime),
+                    EndTime = EndTime > StartTime
+                        ? SelectedDate.Date.Add(EndTime)
+                        : SelectedDate.Date.AddDays(1).Add(EndTime), // För nattpass
+                    BreakMinutes = BreakMinutes,
+                    TotalHours = CalculatedHours,
+                    Notes = Notes,
+                    CreatedDate = DateTime.Now,
+                    IsExtraShift = IsExtraShift
+                };
 
-            return savedShift != null && savedShift.Id > 0;
+                var savedShift = _workShiftRepository.SaveWorkShift(workShift);
+
+                return savedShift != null && savedShift.Id > 0;
+            }
+            catch (Exception ex)
+            {
+                // Logga felet
+                System.Diagnostics.Debug.WriteLine($"Fel vid sparande av pass: {ex.Message}");
+                return false;
+            }
+            
         }
         #endregion
 

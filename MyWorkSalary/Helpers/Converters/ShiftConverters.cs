@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
@@ -7,7 +8,7 @@ using System.Globalization;
 
 namespace MyWorkSalary.Helpers.Converters
 {
-    // 1. Konverterar WorkShift till ikon baserat på ShiftType och tid
+    // Konverterar WorkShift till ikon baserat på ShiftType och tid
     public class ShiftTypeToIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -17,35 +18,45 @@ namespace MyWorkSalary.Helpers.Converters
                 // SPECIALHANTERING FÖR SEMESTER/SJUK/VAB
                 return shift.ShiftType switch
                 {
-                    ShiftType.Vacation => "🏖️ Sem",
-                    ShiftType.SickLeave => "🤒 Sjuk",
-                    ShiftType.OnCall => "📞 Jour",
-                    ShiftType.VAB => "👶 VAB",
+                    ShiftType.Vacation => $"🏖️",     //  {LocalizationHelper.Translate("ShiftType_Vacation")}
+                    ShiftType.SickLeave => $"🤒",    //  {LocalizationHelper.Translate("ShiftType_SickLeave")}
+                    ShiftType.OnCall => $"📞",       //  {LocalizationHelper.Translate("ShiftType_OnCall")}
+                    ShiftType.VAB => $"👶",          //  {LocalizationHelper.Translate("ShiftType_VAB")}
                     ShiftType.Regular => GetTimeBasedIcon(shift),
-                    _ => "📋 Pass"
+                    _ => $"📋"   //  {LocalizationHelper.Translate("ShiftType_Regular")}
                 };
             }
-            return "📋 Pass";
+            return $"📋";    //  {LocalizationHelper.Translate("ShiftType_Regular")}
         }
 
+        /// <summary>
+        /// Determines the appropriate icon based on the start time of the given work shift.
+        /// </summary>
+        /// <remarks>The method uses the start time of the shift to categorize it into night, evening, or
+        /// day shifts, each represented by a specific icon. If the start time is not available, it defaults to a
+        /// regular shift icon.</remarks>
+        /// <param name="shift">The work shift for which to determine the icon. The shift must have a valid start time.</param>
+        /// <returns>A string containing an icon and the translated shift type. Returns a night icon for shifts starting between
+        /// 21:00 and 07:00, an evening icon for shifts starting between 16:00 and 21:00, a day icon for shifts starting
+        /// between 06:00 and 16:00, and a regular icon if no specific time-based icon applies.</returns>
         private string GetTimeBasedIcon(WorkShift shift)
         {
             // Om inga tider finns (säkerhetscheck)
             if (!shift.StartTime.HasValue)
-                return "📋 Pass";
+                return $"📋";    //  {LocalizationHelper.Translate("ShiftType_Regular")}
 
             var startHour = shift.StartTime.Value.Hour;
 
             // Nattpass: 21:00-07:00
             if (startHour >= 21 || startHour < 7)
-                return "🌙 Natt";
+                return $"🌙";    //  {LocalizationHelper.Translate("ShiftType_Night")}
             // Kvällspass: 16:00-21:00
             if (startHour >= 13 && startHour < 21)
-                return "🌅 Kväll";
+                return $"🌅";    //  {LocalizationHelper.Translate("ShiftType_Evening")}
             if (startHour >= 6 && startHour < 16)
-                return "☀️ Dag";
-            
-            return "📋 Pass";
+                return $"☀️";    //  {LocalizationHelper.Translate("ShiftType_Day")}
+
+            return $"📋";       //  {LocalizationHelper.Translate("ShiftType_Regular")}
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -54,19 +65,17 @@ namespace MyWorkSalary.Helpers.Converters
         }
     }
 
-    // 2. Konverterar WorkShift till datum-sträng
+    // Konverterar WorkShift till datum-sträng
     public class ShiftToDateStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is WorkShift shift)
             {
-                var swedishCulture = new CultureInfo("sv-SE");
-
                 // ANVÄND ShiftDate FÖR SEMESTER/SJUK
                 if (shift.ShiftType == ShiftType.Vacation || shift.ShiftType == ShiftType.SickLeave)
                 {
-                    return shift.ShiftDate.ToString("dddd d MMMM", swedishCulture);
+                    return shift.ShiftDate.ToString("dddd d MMMM", CultureInfo.CurrentCulture);
                 }
 
                 // Vanliga pass - använd StartTime om det finns
@@ -75,14 +84,14 @@ namespace MyWorkSalary.Helpers.Converters
                     // För nattpass som går över midnatt - visa startdatum
                     if (shift.EndTime.HasValue && shift.StartTime.Value.Date != shift.EndTime.Value.Date)
                     {
-                        return shift.StartTime.Value.ToString("dddd d MMMM", swedishCulture);
+                        return shift.StartTime.Value.ToString("dddd d MMMM", CultureInfo.CurrentCulture);
                     }
                     // Vanligt pass samma dag
-                    return shift.StartTime.Value.ToString("dddd d MMMM", swedishCulture);
+                    return shift.StartTime.Value.ToString("dddd d MMMM", CultureInfo.CurrentCulture);
                 }
 
                 // Fallback till ShiftDate
-                return shift.ShiftDate.ToString("dddd d MMMM", swedishCulture);
+                return shift.ShiftDate.ToString("dddd d MMMM", CultureInfo.CurrentCulture);
             }
             return "";
         }
@@ -93,7 +102,7 @@ namespace MyWorkSalary.Helpers.Converters
         }
     }
 
-    // 3. Konverterar WorkShift till tid-sträng eller period-info
+    // Konverterar WorkShift till tid-sträng eller period-info
     public class ShiftToTimeStringConverter : IValueConverter
     {
         private static IWorkShiftService _workShiftService;
@@ -124,7 +133,9 @@ namespace MyWorkSalary.Helpers.Converters
                     // Kolla om det är obetald semester
                     bool isUnpaidVacation = shift.Notes != null && shift.Notes.Contains("PlannedHours:");
 
-                    return isUnpaidVacation ? "Obetald ledighet" : "Semester";
+                    return isUnpaidVacation 
+                        ? LocalizationHelper.Translate("ShiftType_UnpaidLeave") 
+                        : LocalizationHelper.Translate("ShiftType_Vacation");
                 }
 
                 // SPECIALHANTERING FÖR SJUK - MED ASYNC
@@ -139,11 +150,11 @@ namespace MyWorkSalary.Helpers.Converters
                     if (shift.StartTime.HasValue && shift.EndTime.HasValue)
                     {
                         string activeInfo = shift.TotalHours > 0
-                            ? $"{shift.TotalHours:F1}t aktiv"
-                            : "jour";
+                            ? $"{shift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")} {LocalizationHelper.Translate("ShiftType_Active")}"
+                            : LocalizationHelper.Translate("ShiftType_OnCallShift");
                         return $"{shift.StartTime.Value:HH:mm}→{shift.EndTime.Value:HH:mm} ({activeInfo})";
                     }
-                    return "Jour - Heldag";
+                    return LocalizationHelper.Translate("ShiftType_OnCallFullDay");
                 }
 
                 // VANLIGA PASS MED TIDER
@@ -159,7 +170,7 @@ namespace MyWorkSalary.Helpers.Converters
                 }
 
                 // Fallback för pass utan tider
-                return "Ingen tid registrerad";
+                return LocalizationHelper.Translate("ShiftType_NoTime");
             }
             return "";
         }
@@ -167,19 +178,19 @@ namespace MyWorkSalary.Helpers.Converters
         // Metod för async sjukbeskrivning
         private string GetSickLeaveDescription(WorkShift shift)
         {
-            // 1. Kolla cache först
+            // Kolla cache först
             if (_descriptionCache.TryGetValue(shift.Id, out var cachedResult))
             {
                 return cachedResult;
             }
 
-            // 2. Om ingen service, använd fallback
+            // Om ingen service, använd fallback
             if (_workShiftService == null)
             {
-                return "Sjukskrivning";
+                return LocalizationHelper.Translate("SickLeave_Default");
             }
 
-            // 3. Starta async-laddning i bakgrunden
+            // Starta async-laddning i bakgrunden
             _ = Task.Run(async () =>
             {
                 try
@@ -197,12 +208,12 @@ namespace MyWorkSalary.Helpers.Converters
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Fel vid sjukbeskrivning-laddning för WorkShift {shift.Id}: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"❌ Error loading sick leave for WorkShift {shift.Id}: {ex.Message}");
                 }
             });
 
-            // 4. Returnera loading-state medan vi väntar
-            return "Sjukskrivning...";
+            // Returnera loading-state medan vi väntar
+            return LocalizationHelper.Translate("SickLeave_Loading");
         }
 
         private string GetVABDescription(WorkShift shift)
@@ -227,27 +238,28 @@ namespace MyWorkSalary.Helpers.Converters
 
                         if (isHourly)
                         {
-                            return "Vab - Timanställd";
+                            return LocalizationHelper.Translate("VAB_Employee");
                         }
                         else if (worked == 0)
                         {
-                            return "Vab - Heldag";
+                            return LocalizationHelper.Translate("VAB_FullDay");
                         }
                         else
                         {
                             var lostHours = scheduled - worked;
-                            return $"Vab - Delvis (-{lostHours:F1}t)"; // Visa förlorade timmar i beskrivningen
+                            return string.Format(LocalizationHelper.Translate("VAB_PartialDay"), lostHours);
+                            //return $"Vab - Delvis (-{lostHours:F1}t)"; // Visa förlorade timmar i beskrivningen
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Fel vid VAB-beskrivning: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"❌ VAB description error: {ex.Message}");
                 }
             }
 
             // Fallback
-            return "Vård av barn - Heldag";
+            return LocalizationHelper.Translate("VAB_Default");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -277,33 +289,33 @@ namespace MyWorkSalary.Helpers.Converters
                 return shift.ShiftType switch
                 {
                     ShiftType.OnCall => shift.TotalHours > 0
-                        ? $"{shift.TotalHours:F1}t"
-                        : "Jour",
+                        ? $"{shift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")}"
+                        : LocalizationHelper.Translate("HoursDisplay_OnCall"),
                     ShiftType.SickLeave => GetSickLeaveHours(shift),  // Async-hantering
                     ShiftType.VAB => GetVABHours(shift),
                     ShiftType.Vacation => GetVacationHours(shift),
-                    _ => $"{shift.TotalHours:F1}t"
+                    _ => $"{shift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")}"
                 };
             }
-            return "0t";
+            return LocalizationHelper.Translate("HoursDisplay_ZeroHours");
         }
 
         // Metod för async sjukdata
         private string GetSickLeaveHours(WorkShift shift)
         {
-            // 1. Kolla cache först
+            // Kolla cache först
             if (_cache.TryGetValue(shift.Id, out var cachedResult))
             {
                 return cachedResult;
             }
 
-            // 2. Om ingen service, använd fallback
+            // Om ingen service, använd fallback
             if (_workShiftService == null)
             {
-                return "0t";
+                return LocalizationHelper.Translate("HoursDisplay_ZeroHours");
             }
 
-            // 3. Starta async-laddning i bakgrunden
+            // Starta async-laddning i bakgrunden
             _ = Task.Run(async () =>
             {
                 try
@@ -321,12 +333,12 @@ namespace MyWorkSalary.Helpers.Converters
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Fel vid sjukdata-laddning för WorkShift {shift.Id}: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"❌ {LocalizationHelper.Translate("HoursDisplay_Error")} vid sjukdata-laddning: {ex.Message}");
                 }
             });
 
-            // 4. Returnera loading-state medan vi väntar
-            return "...";
+            // Returnera loading-state medan vi väntar
+            return LocalizationHelper.Translate("HoursDisplay_Loading");
         }
 
         private string GetVacationHours(WorkShift shift)
@@ -334,7 +346,7 @@ namespace MyWorkSalary.Helpers.Converters
             // Betald semester
             if (shift.TotalHours > 0)
             {
-                return $"{shift.TotalHours:F1}t";
+                return $"{shift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")}";
             }
 
             // Obetald semester - parse PlannedHours från Notes
@@ -347,13 +359,15 @@ namespace MyWorkSalary.Helpers.Converters
                     var hoursText = plannedPart.Replace("PlannedHours:", "");
                     if (decimal.TryParse(hoursText, out decimal plannedHours))
                     {
-                        return plannedHours > 0 ? $"-{plannedHours:F1}t" : "0t";
+                        return plannedHours > 0
+                            ? $"-{plannedHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")}"
+                            : LocalizationHelper.Translate("HoursDisplay_ZeroHours");
                     }
                 }
             }
 
             // Fallback
-            return "0t";
+            return LocalizationHelper.Translate("HoursDisplay_ZeroHours");
         }
 
         private string GetVABHours(WorkShift shift)
@@ -378,29 +392,24 @@ namespace MyWorkSalary.Helpers.Converters
 
                         if (isHourly)
                         {
-                            return "VAB"; // Timanställd
+                            return LocalizationHelper.Translate("HoursDisplay_VAB"); // Timanställd
                         }
                         else
                         {
-                            if (worked == 0)
-                            {
-                                return "0t"; // Heldag VAB = 0 arbetade timmar
-                            }
-                            else
-                            {
-                                return $"{worked:F1}t"; // Delvis VAB = bara arbetade timmar
-                            }
+                            return worked == 0
+                                ? LocalizationHelper.Translate("HoursDisplay_ZeroHours")                // Heldag VAB = 0 arbetade timmar
+                                : $"{worked:F1}{LocalizationHelper.Translate("HoursAbbreviation")}";    // Delvis VAB = bara arbetade timmar
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Fel vid VAB-parsing: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"❌ {LocalizationHelper.Translate("HoursDisplay_Error")} vid VAB-parsing: {ex.Message}");
                 }
             }
 
             // Fallback
-            return "VAB";
+            return LocalizationHelper.Translate("HoursDisplay_VAB");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
@@ -119,7 +120,7 @@ namespace MyWorkSalary.Services.Calculations
                     HasDeduction = false,
                     DeductionAmount = 0,
                     ExpectedHours = 0,
-                    Description = "VAB - Vård av barn (Timlön: Inget avdrag)"
+                    Description = LocalizationHelper.Translate("VAB_Description_Hourly")
                 };
             }
 
@@ -134,7 +135,10 @@ namespace MyWorkSalary.Services.Calculations
                     HasDeduction = true,
                     DeductionAmount = dailyRate,
                     ExpectedHours = expectedHours,
-                    Description = $"VAB - Vård av barn ({expectedHours}h avdrag: {dailyRate:C})"
+                    Description = string.Format(
+                        LocalizationHelper.Translate("VAB_Description_WithDeduction"),
+                        expectedHours,
+                        dailyRate)
                 };
             }
 
@@ -149,7 +153,10 @@ namespace MyWorkSalary.Services.Calculations
                     HasDeduction = true,
                     DeductionAmount = dailyRate,
                     ExpectedHours = expectedHours,
-                    Description = $"VAB - Vård av barn ({expectedHours}h avdrag: {dailyRate:C})"
+                    Description = string.Format(
+                        LocalizationHelper.Translate("VAB_Description_WithDeduction"),
+                        expectedHours,
+                        dailyRate)
                 };
             }
 
@@ -159,7 +166,7 @@ namespace MyWorkSalary.Services.Calculations
                 HasDeduction = false,
                 DeductionAmount = 0,
                 ExpectedHours = 0,
-                Description = "VAB - Vård av barn (Ingen löneinfo tillgänglig)"
+                Description = LocalizationHelper.Translate("VAB_Description_NoInfo")
             };
         }
         #endregion
@@ -168,7 +175,7 @@ namespace MyWorkSalary.Services.Calculations
         public decimal CalculateHourlyRateFromMonthlySalary(JobProfile jobProfile)
         {
             if (jobProfile.MonthlySalary == null || jobProfile.MonthlySalary <= 0)
-                throw new ArgumentException("Månadslön måste vara angiven");
+                throw new ArgumentException(LocalizationHelper.Translate("Error_SalaryRequired"));
 
             // Standardberäkning: (Månadslön × 12) ÷ (52 veckor × genomsnittliga timmar/vecka)
             // Antar 40 timmar/vecka för fast anställd
@@ -205,9 +212,11 @@ namespace MyWorkSalary.Services.Calculations
             var suggestedMinutes = SuggestBreakMinutes(workingHours);
 
             if (suggestedMinutes == 0)
-                return "Ingen rast föreslås";
+                return LocalizationHelper.Translate("Break_NoBreakSuggested");
 
-            return $"Förslag: {suggestedMinutes} min (du kan ändra)";
+            return string.Format(
+                LocalizationHelper.Translate("Break_SuggestionTemplate"),
+                suggestedMinutes);
         }
 
         /// <summary>

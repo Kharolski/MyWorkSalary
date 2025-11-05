@@ -1,5 +1,8 @@
 ﻿namespace MyWorkSalary.Helpers.Localization
 {
+    /// <summary>
+    /// Gör att du kan skriva {resx:Translate Key} i XAML.
+    /// </summary>
     [ContentProperty(nameof(Text))]
     public class TranslateExtension : IMarkupExtension<BindingBase>
     {

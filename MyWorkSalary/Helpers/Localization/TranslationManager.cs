@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace MyWorkSalary.Helpers.Localization
 {
+    /// <summary>
+    /// Hanterar språkswitch live, notifierar UI (via PropertyChanged + CultureChanged).
+    /// </summary>
     public class TranslationManager : INotifyPropertyChanged
     {
         private static readonly Lazy<TranslationManager> lazy =

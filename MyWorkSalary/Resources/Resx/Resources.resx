@@ -123,6 +123,9 @@
   <data name="ActiveJob" xml:space="preserve">
     <value>Active Work</value>
   </data>
+  <data name="ActiveJobLabel" xml:space="preserve">
+    <value>📋 Active job - </value>
+  </data>
   <data name="AddFirstJobText" xml:space="preserve">
     <value>Add your first job to start using the app.</value>
   </data>
@@ -238,11 +241,37 @@ when employment ends (no later than one month afterwards).</value>
     <value>➕ Add Shift</value>
     <comment>Button text</comment>
   </data>
+  <data name="AddShiftButton" xml:space="preserve">
+    <value>➕ Add new shift</value>
+  </data>
+  <data name="AddShift_Title" xml:space="preserve">
+    <value>Add Shift</value>
+  </data>
   <data name="AppSettings" xml:space="preserve">
     <value>🔧 App Settings</value>
   </data>
   <data name="BasicInfo_SectionTitle" xml:space="preserve">
     <value>📋 Basic information</value>
+  </data>
+  <data name="Break_Error_MaxExceeded" xml:space="preserve">
+    <value>Maximum break time is 2 hours</value>
+    <comment>Shift calculation service</comment>
+  </data>
+  <data name="Break_Error_Negative" xml:space="preserve">
+    <value>Break time cannot be negative</value>
+    <comment>Shift calculation service</comment>
+  </data>
+  <data name="Break_Error_TooLong" xml:space="preserve">
+    <value>Break time cannot be longer than work time</value>
+    <comment>Shift calculation service</comment>
+  </data>
+  <data name="Break_NoBreakSuggested" xml:space="preserve">
+    <value>No break suggested</value>
+    <comment>Shift calculation service</comment>
+  </data>
+  <data name="Break_SuggestionTemplate" xml:space="preserve">
+    <value>Suggestion: {0} min (you can change)</value>
+    <comment>Shift calculation service</comment>
   </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -250,11 +279,32 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Button_SaveChanges" xml:space="preserve">
     <value>💾 Save changes</value>
   </data>
+  <data name="Button_SaveShift" xml:space="preserve">
+    <value>💾 Save Shift</value>
+  </data>
   <data name="CalculateSalary" xml:space="preserve">
     <value>Calculate Salary</value>
     <comment>Button text</comment>
   </data>
   <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CancelDialog_Confirm" xml:space="preserve">
+    <value>Yes, cancel</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="CancelDialog_Decline" xml:space="preserve">
+    <value>Continue editing</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="CancelDialog_Message" xml:space="preserve">
+    <value>Do you want to cancel without saving?</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="CancelDialog_Title" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="Category_Evening" xml:space="preserve">
@@ -283,6 +333,9 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="ConfirmDelete" xml:space="preserve">
     <value>Yes, delete</value>
+  </data>
+  <data name="Conflict" xml:space="preserve">
+    <value>Conflict</value>
   </data>
   <data name="Country_Denmark" xml:space="preserve">
     <value>Denmark</value>
@@ -344,11 +397,38 @@ when employment ends (no later than one month afterwards).</value>
   <data name="DarkThemeActive" xml:space="preserve">
     <value>Dark theme enabled</value>
   </data>
+  <data name="Date_Label" xml:space="preserve">
+    <value>📅 Date</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>🗑️ Delete</value>
   </data>
   <data name="DeleteActiveJobMessage" xml:space="preserve">
     <value>You are deleting the active job. Select another job as active first, or delete all jobs.</value>
+  </data>
+  <data name="DeletedOnCall" xml:space="preserve">
+    <value>On-call shift has been deleted</value>
+  </data>
+  <data name="DeletedShift" xml:space="preserve">
+    <value>Shift has been deleted</value>
+  </data>
+  <data name="DeletedSickLeave" xml:space="preserve">
+    <value>Sick leave has been deleted</value>
+  </data>
+  <data name="DeletedTitle" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="DeletedVAB" xml:space="preserve">
+    <value>Childcare has been deleted</value>
+  </data>
+  <data name="DeletedVacation" xml:space="preserve">
+    <value>Vacation has been deleted</value>
+  </data>
+  <data name="DeleteError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="DeleteErrorMessage" xml:space="preserve">
+    <value>Could not delete the shift: {0}</value>
   </data>
   <data name="DeleteJobFailedMessageFormat" xml:space="preserve">
     <value>Couldn't delete the job: {0}</value>
@@ -373,6 +453,31 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="DeleteOBRateTitle" xml:space="preserve">
     <value>Delete rule</value>
+  </data>
+  <data name="DeleteOnCallConfirm" xml:space="preserve">
+    <value>Are you sure you want to delete this on-call shift on {0}?</value>
+  </data>
+  <data name="DeleteShiftButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteShiftConfirm" xml:space="preserve">
+    <value>Are you sure you want to delete this shift on {0}?</value>
+  </data>
+  <data name="DeleteShiftTitle" xml:space="preserve">
+    <value>Delete Shift</value>
+  </data>
+  <data name="DeleteShiftWithTimeConfirm" xml:space="preserve">
+    <value>Delete shift on {0}? 
+({1} - {2})</value>
+  </data>
+  <data name="DeleteSickLeaveConfirm" xml:space="preserve">
+    <value>Are you sure you want to delete this sick leave on {0}?</value>
+  </data>
+  <data name="DeleteVABConfirm" xml:space="preserve">
+    <value>Are you sure you want to delete this Childcare day on {0}?</value>
+  </data>
+  <data name="DeleteVacationConfirm" xml:space="preserve">
+    <value>Are you sure you want to delete this vacation day on {0}?</value>
   </data>
   <data name="Dialog_ErrorTitle" xml:space="preserve">
     <value>Error</value>
@@ -447,8 +552,23 @@ when employment ends (no later than one month afterwards).</value>
   <data name="EmploymentType_Temporary" xml:space="preserve">
     <value>Temporary / On-call</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>❌ Error</value>
+  </data>
   <data name="ErrorTitle" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="Error_CheckConflicts" xml:space="preserve">
+    <value>Could not check for conflicts: {0}</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="Error_DeleteShift" xml:space="preserve">
+    <value>Could not delete existing shift: {0}</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="Error_SalaryRequired" xml:space="preserve">
+    <value>Monthly salary must be specified</value>
+    <comment>Shift calculation service</comment>
   </data>
   <data name="ExactSchedule" xml:space="preserve">
     <value>Exactly on schedule</value>
@@ -469,7 +589,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>+{0} hours of availability</value>
   </data>
   <data name="FlexTime" xml:space="preserve">
-    <value>Flex Time </value>
+    <value>Flex time </value>
     <comment>Section header</comment>
   </data>
   <data name="FlexTimeTooltip" xml:space="preserve">
@@ -478,6 +598,9 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="For" xml:space="preserve">
     <value>For</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>From</value>
   </data>
   <data name="GetStartedPrompt" xml:space="preserve">
     <value>Get started by creating your first job</value>
@@ -511,6 +634,21 @@ when employment ends (no later than one month afterwards).</value>
   <data name="HoursCredit" xml:space="preserve">
     <value>hours credit</value>
     <comment>Shown in flex balance when there are extra hours</comment>
+  </data>
+  <data name="HoursDisplay_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="HoursDisplay_Loading" xml:space="preserve">
+    <value>... </value>
+  </data>
+  <data name="HoursDisplay_OnCall" xml:space="preserve">
+    <value>On-Call</value>
+  </data>
+  <data name="HoursDisplay_VAB" xml:space="preserve">
+    <value>Childcare</value>
+  </data>
+  <data name="HoursDisplay_ZeroHours" xml:space="preserve">
+    <value>0h</value>
   </data>
   <data name="HoursOwed" xml:space="preserve">
     <value>hours owed</value>
@@ -550,6 +688,9 @@ when employment ends (no later than one month afterwards).</value>
   </data>
   <data name="JobTitle_Placeholder" xml:space="preserve">
     <value>e.g. Nursing assistant</value>
+  </data>
+  <data name="Job_Label" xml:space="preserve">
+    <value>📋 Job</value>
   </data>
   <data name="Label_Country" xml:space="preserve">
     <value>Country:</value>
@@ -595,8 +736,14 @@ when employment ends (no later than one month afterwards).</value>
   <data name="MyJobs" xml:space="preserve">
     <value>💼 My Jobs</value>
   </data>
+  <data name="MyShiftsHeader" xml:space="preserve">
+    <value>📅 My work shifts</value>
+  </data>
   <data name="NoActiveJob" xml:space="preserve">
     <value>No active job</value>
+  </data>
+  <data name="NoActiveJobFound" xml:space="preserve">
+    <value>No active job found.</value>
   </data>
   <data name="NoActivitiesIcon" xml:space="preserve">
     <value>📝</value>
@@ -613,6 +760,12 @@ when employment ends (no later than one month afterwards).</value>
   <data name="NoFlexTime" xml:space="preserve">
     <value>No flex time</value>
   </data>
+  <data name="NoJobAlertMessage" xml:space="preserve">
+    <value>You need to create a job first in Settings.</value>
+  </data>
+  <data name="NoJobAlertTitle" xml:space="preserve">
+    <value>No Job</value>
+  </data>
   <data name="NoJobSetup" xml:space="preserve">
     <value>No job configured</value>
     <comment>Message when no job is set up</comment>
@@ -624,9 +777,18 @@ when employment ends (no later than one month afterwards).</value>
     <value>(No loss)</value>
     <comment>Text when no hours are lost</comment>
   </data>
+  <data name="NoShiftsIcon" xml:space="preserve">
+    <value> 📝</value>
+  </data>
+  <data name="NoShiftsMessage" xml:space="preserve">
+    <value>Click the button above to add your first shift</value>
+  </data>
   <data name="NoShiftsThisMonth" xml:space="preserve">
     <value>No shifts recorded this month</value>
     <comment>Message when no shifts for current month</comment>
+  </data>
+  <data name="NoShiftsTitle" xml:space="preserve">
+    <value>No work shifts registered yet</value>
   </data>
   <data name="OBCategory_Evening" xml:space="preserve">
     <value>Evening</value>
@@ -734,6 +896,122 @@ when employment ends (no later than one month afterwards).</value>
     <value>On-call</value>
     <comment>Label for on-call (short)</comment>
   </data>
+  <data name="OnCall_ActiveHours" xml:space="preserve">
+    <value>⚡ Active Working Hours</value>
+    <comment>On-call form</comment>
+  </data>
+  <data name="OnCall_ActiveHoursInfo" xml:space="preserve">
+    <value>You will receive regular hourly wage + any overtime compensation for this time</value>
+    <comment>On call form</comment>
+  </data>
+  <data name="OnCall_ActiveHoursRegistered" xml:space="preserve">
+    <value>⚡ Active working time registered</value>
+    <comment>On call form</comment>
+  </data>
+  <data name="OnCall_ActiveHoursTip" xml:space="preserve">
+    <value>💡 Number of hours you were called in and worked actively</value>
+    <comment>On call form</comment>
+  </data>
+  <data name="OnCall_ActiveLabel" xml:space="preserve">
+    <value>Active time</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_CalculationTitle" xml:space="preserve">
+    <value>📊 Preliminary Calculation</value>
+    <comment>On-call form</comment>
+  </data>
+  <data name="OnCall_Calculation_Active" xml:space="preserve">
+    <value>Active time: {0:F1}{3} × {1} = {2}</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_Calculation_Standby" xml:space="preserve">
+    <value>On-call: {0:F1}{3} × {1} = {2}</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_CheckTimes" xml:space="preserve">
+    <value>Check times</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_Explanation_Permanent" xml:space="preserve">
+    <value>As permanent employee: On-call compensation according to agreement + regular wage for active working time.</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_Explanation_Temporary" xml:space="preserve">
+    <value>As hourly employee: On-call compensation + hourly wage for active working time must be agreed separately.</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_InfoTitle" xml:space="preserve">
+    <value>📞 On-Call Information</value>
+    <comment>On-call form</comment>
+  </data>
+  <data name="OnCall_Notes" xml:space="preserve">
+    <value>📝 Notes (optional)</value>
+    <comment>On call form</comment>
+  </data>
+  <data name="OnCall_NotesPlaceholder" xml:space="preserve">
+    <value>E.g., number of call-outs, type of on-call, contact info...</value>
+    <comment>On call form</comment>
+  </data>
+  <data name="OnCall_OBNotice" xml:space="preserve">
+    <value>⚠️ Overtime supplements are calculated in the monthly report</value>
+    <comment>On-call form</comment>
+  </data>
+  <data name="OnCall_Rate" xml:space="preserve">
+    <value>💰 On-Call Compensation (per hour)</value>
+    <comment>On-call form</comment>
+  </data>
+  <data name="OnCall_RateTip" xml:space="preserve">
+    <value>💡 Typical: 30-50 {0}/hour according to collective agreement</value>
+    <comment>On call form</comment>
+  </data>
+  <data name="OnCall_Save_ErrorMissing" xml:space="preserve">
+    <value>Please check that all required fields are filled</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_Save_Exception" xml:space="preserve">
+    <value>Error while saving: {0}</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_StandbyHours" xml:space="preserve">
+    <value>{0:F1} {1} on-call</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_StandbyLabel" xml:space="preserve">
+    <value>On-call</value>
+    <comment>On call viewwmodel</comment>
+  </data>
+  <data name="OnCall_StandbyTime" xml:space="preserve">
+    <value>🕐 Standby Time</value>
+    <comment>On-call form</comment>
+  </data>
+  <data name="OnCall_StandbyTip" xml:space="preserve">
+    <value>💡 Tip: Overnight on-call works (e.g., 18:00-08:00)</value>
+    <comment>On call form</comment>
+  </data>
+  <data name="OnCall_TotalEstimate" xml:space="preserve">
+    <value>Preliminary total: {0}</value>
+    <comment>On call form</comment>
+  </data>
+  <data name="OnCall_Validation_ActiveTooLong" xml:space="preserve">
+    <value>Active work time cannot exceed on-call time</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_Validation_InvalidActive" xml:space="preserve">
+    <value>Invalid value for active work time</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_Validation_RateTooLow" xml:space="preserve">
+    <value>On-call rate must be greater than 0</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_Validation_TooLong" xml:space="preserve">
+    <value>On-call time cannot exceed 24 hours</value>
+    <comment>On call viewmodel</comment>
+  </data>
+  <data name="OnCall_Validation_ZeroHours" xml:space="preserve">
+    <value>On-call time must be longer than 0 hours</value>
+    <comment>On call viewmodel</comment>
+  </data>
   <data name="OneDay" xml:space="preserve">
     <value>(1 day)</value>
     <comment>Text for one day duration</comment>
@@ -760,6 +1038,82 @@ when employment ends (no later than one month afterwards).</value>
     <value>Recent Activities </value>
     <comment>Section header </comment>
   </data>
+  <data name="RegularShift_Break" xml:space="preserve">
+    <value>☕ Break (minutes)</value>
+    <comment>Regular shift form</comment>
+  </data>
+  <data name="RegularShift_BreakSuggestion" xml:space="preserve">
+    <value>Recommended break: {0} min</value>
+    <comment>Regular shift viewmodel</comment>
+  </data>
+  <data name="RegularShift_Calculation" xml:space="preserve">
+    <value>📊 Calculation</value>
+    <comment>Regular shift form</comment>
+  </data>
+  <data name="RegularShift_CalculationNote" xml:space="preserve">
+    <value>Salary will be shown in the monthly report. Here you only see the working time for this shift.</value>
+    <comment>Regular shift form</comment>
+  </data>
+  <data name="RegularShift_Calculation_WithBreak" xml:space="preserve">
+    <value>Work time: {0:F1}h (after {1} min break)</value>
+    <comment>Regular shift viewmodel</comment>
+  </data>
+  <data name="RegularShift_Calculation_WithoutBreak" xml:space="preserve">
+    <value>Total: {0:F1} hours</value>
+    <comment>Regular shift viewmodel</comment>
+  </data>
+  <data name="RegularShift_Error_Saving" xml:space="preserve">
+    <value>Error saving shift: {0}</value>
+    <comment>Regular shift viewmodel</comment>
+  </data>
+  <data name="RegularShift_ExtraShift" xml:space="preserve">
+    <value>On-call shift (extra hours)</value>
+    <comment>Regular shift form</comment>
+  </data>
+  <data name="RegularShift_From" xml:space="preserve">
+    <value>From</value>
+    <comment>Regular shift form</comment>
+  </data>
+  <data name="RegularShift_Notes" xml:space="preserve">
+    <value>📝 Notes (optional)</value>
+    <comment>Regular shift form</comment>
+  </data>
+  <data name="RegularShift_NotesPlaceholder" xml:space="preserve">
+    <value>E.g., overtime, special circumstances...</value>
+    <comment>Regular shift form</comment>
+  </data>
+  <data name="RegularShift_ShiftSaved" xml:space="preserve">
+    <value>Shift saved successfully</value>
+    <comment>Regular shift viewmodel</comment>
+  </data>
+  <data name="RegularShift_To" xml:space="preserve">
+    <value>To</value>
+    <comment>Regular shift form</comment>
+  </data>
+  <data name="RegularShift_Validation_NoJobSelected" xml:space="preserve">
+    <value>No job selected</value>
+    <comment>Regular shift viewmodel</comment>
+  </data>
+  <data name="RegularShift_Validation_ShiftTooLong" xml:space="preserve">
+    <value>Shift cannot be longer than 24 hours</value>
+    <comment>Regular shift viewmodel</comment>
+  </data>
+  <data name="RegularShift_Validation_StartBeforeEnd" xml:space="preserve">
+    <value>Start time must be before end time</value>
+    <comment>Regular shift viewmodel</comment>
+  </data>
+  <data name="RegularShift_WorkTime" xml:space="preserve">
+    <value>🕐 Work Time</value>
+    <comment>Regular shift form </comment>
+  </data>
+  <data name="ReplaceShift_Confirm" xml:space="preserve">
+    <value>Yes, replace</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="ReplaceShift_Title" xml:space="preserve">
+    <value>Replace Shift?</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
   <data name="SalaryNotSpecified" xml:space="preserve">
     <value>Salary not specified</value>
   </data>
@@ -783,6 +1137,49 @@ when employment ends (no later than one month afterwards).</value>
     <value>Save</value>
     <comment>Button</comment>
   </data>
+  <data name="SaveError_Generic" xml:space="preserve">
+    <value>Could not save: {0}</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveError_OnCall" xml:space="preserve">
+    <value>Could not save on-call shift: {0}</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveError_RegularShift" xml:space="preserve">
+    <value>Could not save shift</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveError_SickLeave" xml:space="preserve">
+    <value>Could not save sick day</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveError_VAB" xml:space="preserve">
+    <value>Could not save VAB day: {0}</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveError_Vacation" xml:space="preserve">
+    <value>Could not save vacation: {0}</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>✅ Saved!</value>
+  </data>
+  <data name="SaveSuccess_OnCall" xml:space="preserve">
+    <value>On-call shift registered</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveSuccess_RegularShift" xml:space="preserve">
+    <value>Regular shift registered</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveSuccess_SickLeave" xml:space="preserve">
+    <value>Sick day registered</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="SaveSuccess_VAB" xml:space="preserve">
+    <value>Childcare day registered</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
   <data name="Save_Error_Message" xml:space="preserve">
     <value>Could not save unsocial hours rule: {0}</value>
   </data>
@@ -795,13 +1192,72 @@ when employment ends (no later than one month afterwards).</value>
   <data name="Save_Success_Title" xml:space="preserve">
     <value>Saved!</value>
   </data>
+  <data name="SelectShiftType_Placeholder" xml:space="preserve">
+    <value>Select Shift Type</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
     <comment>Button text</comment>
   </data>
+  <data name="ShiftPageTitle" xml:space="preserve">
+    <value>Work Shifts</value>
+  </data>
   <data name="Shifts" xml:space="preserve">
     <value>Shifts</value>
     <comment>Statistic label</comment>
+  </data>
+  <data name="ShiftType_Active" xml:space="preserve">
+    <value>active</value>
+  </data>
+  <data name="ShiftType_Add_Regular" xml:space="preserve">
+    <value>Regular Work</value>
+    <comment>Add shift viewmodel</comment>
+  </data>
+  <data name="ShiftType_Add_VAB" xml:space="preserve">
+    <value>Parental Leave </value>
+    <comment>Add shift viewwmodel</comment>
+  </data>
+  <data name="ShiftType_AllDay" xml:space="preserve">
+    <value>All day</value>
+  </data>
+  <data name="ShiftType_Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="ShiftType_Evening" xml:space="preserve">
+    <value>Evening</value>
+  </data>
+  <data name="ShiftType_Label" xml:space="preserve">
+    <value>📋 Shift Type</value>
+  </data>
+  <data name="ShiftType_Night" xml:space="preserve">
+    <value>Night</value>
+  </data>
+  <data name="ShiftType_NoDescription" xml:space="preserve">
+    <value>No description</value>
+  </data>
+  <data name="ShiftType_NoTime" xml:space="preserve">
+    <value>No time registered</value>
+  </data>
+  <data name="ShiftType_OnCall" xml:space="preserve">
+    <value>On-Call</value>
+  </data>
+  <data name="ShiftType_OnCallShift" xml:space="preserve">
+    <value>On-call</value>
+  </data>
+  <data name="ShiftType_Regular" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="ShiftType_SickLeave" xml:space="preserve">
+    <value>Sick Leave </value>
+  </data>
+  <data name="ShiftType_UnpaidLeave" xml:space="preserve">
+    <value>Unpaid leave</value>
+  </data>
+  <data name="ShiftType_VAB" xml:space="preserve">
+    <value>Childcare</value>
+  </data>
+  <data name="ShiftType_Vacation" xml:space="preserve">
+    <value>Vacation</value>
   </data>
   <data name="SickDay" xml:space="preserve">
     <value>Sick day</value>
@@ -822,6 +1278,12 @@ when employment ends (no later than one month afterwards).</value>
   <data name="SickLeaveIcon" xml:space="preserve">
     <value>🏥</value>
     <comment>Icon for sick leave</comment>
+  </data>
+  <data name="SickLeave_Default" xml:space="preserve">
+    <value>"Sick Leave"</value>
+  </data>
+  <data name="SickLeave_Loading" xml:space="preserve">
+    <value>"Sick Leave..."</value>
   </data>
   <data name="SickOnDayOff" xml:space="preserve">
     <value>Sick on day off</value>
@@ -851,6 +1313,9 @@ when employment ends (no later than one month afterwards).</value>
   <data name="ThemeSaveErrorMessage" xml:space="preserve">
     <value>Could not save theme setting</value>
   </data>
+  <data name="To" xml:space="preserve">
+    <value>To</value>
+  </data>
   <data name="Today" xml:space="preserve">
     <value>Today</value>
   </data>
@@ -865,6 +1330,30 @@ when employment ends (no later than one month afterwards).</value>
   <data name="VABIcon" xml:space="preserve">
     <value> 👶</value>
     <comment>Icon for VAB</comment>
+  </data>
+  <data name="VAB_Default" xml:space="preserve">
+    <value>"Child Care - Full Day"</value>
+  </data>
+  <data name="VAB_Description_Hourly" xml:space="preserve">
+    <value>Childcare Leave (Hourly: No deduction)</value>
+    <comment>Shift calculation service</comment>
+  </data>
+  <data name="VAB_Description_NoInfo" xml:space="preserve">
+    <value>Childcare Leave (No salary info available)</value>
+    <comment>Shift calculation service</comment>
+  </data>
+  <data name="VAB_Description_WithDeduction" xml:space="preserve">
+    <value>Childcare Leave ({0}h deduction: {1:C})</value>
+    <comment>Shift calculation service</comment>
+  </data>
+  <data name="VAB_Employee" xml:space="preserve">
+    <value>"Childcare - Employee"</value>
+  </data>
+  <data name="VAB_FullDay" xml:space="preserve">
+    <value>"Childcare - Full Day"</value>
+  </data>
+  <data name="VAB_PartialDay" xml:space="preserve">
+    <value>"Childcare - Partial (-{0:F1}h)"</value>
   </data>
   <data name="Vacation" xml:space="preserve">
     <value>Vacation</value>
@@ -913,6 +1402,10 @@ when employment ends (no later than one month afterwards).</value>
   <data name="ViewHistory" xml:space="preserve">
     <value>View History</value>
     <comment>Button text</comment>
+  </data>
+  <data name="ViewModelNotInitialized" xml:space="preserve">
+    <value>{0} ViewModel not initialized</value>
+    <comment>Add shift viewmodel</comment>
   </data>
   <data name="ViewReports" xml:space="preserve">
     <value>📊 View Reports</value>

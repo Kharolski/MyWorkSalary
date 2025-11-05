@@ -2,14 +2,15 @@
 <ContentPage x:Class="MyWorkSalary.Views.Pages.AddShiftPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
              xmlns:shifttypes="clr-namespace:MyWorkSalary.Views.Pages.ShiftTypeView"
-             Title="Lägg till pass">
+             Title="{resx:Translate AddShift_Title}">
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
             <!-- Aktivt jobb info -->
             <Frame Style="{StaticResource ActiveJobFrame}">
                 <VerticalStackLayout Spacing="5">
-                    <Label Text="📋 Jobb"
+                    <Label Text="{resx:Translate Job_Label}"
                            Style="{StaticResource ActiveJobTitleLabel}"
                            FontSize="14" />
                     <Label Text="{Binding ActiveJobTitle}"
@@ -21,7 +22,7 @@
 
             <!-- Datum -->
             <VerticalStackLayout Spacing="5">
-                <Label Text="📅 Datum"
+                <Label Text="{resx:Translate Date_Label}"
                        Style="{StaticResource FieldLabel}" />
                 <DatePicker Date="{Binding SelectedDate}"
                             Style="{StaticResource ThemedDatePicker}"
@@ -30,12 +31,12 @@
 
             <!-- Passtyp -->
             <VerticalStackLayout Spacing="5">
-                <Label Text="📋 Typ av pass"
+                <Label Text="{resx:Translate ShiftType_Label}"
                        Style="{StaticResource FieldLabel}" />
                 <Picker ItemsSource="{Binding ShiftTypeDisplayNames}"
                         SelectedItem="{Binding SelectedShiftTypeDisplay}"
                         Style="{StaticResource ThemedPicker}"
-                        Title="Välj passtyp" />
+                        Title="{resx:Translate SelectShiftType_Placeholder}" />
             </VerticalStackLayout>
 
             <!-- 🤒 SJUKSKRIVNING FORM -->
@@ -69,13 +70,13 @@
                          HorizontalOptions="FillAndExpand"
                          Margin="0,20,0,0">
                 <!-- Avbryt -->
-                <Button Text="Avbryt"
+                <Button Text="{resx:Translate Button_Cancel}"
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource SecondaryButton}"
                         Padding="0,15"
                         HorizontalOptions="FillAndExpand" />
                 <!-- Spara -->
-                <Button Text="💾 Spara pass"
+                <Button Text="{resx:Translate Button_SaveShift}"
                         Command="{Binding SaveCommand}"
                         BackgroundColor="{StaticResource ButtonPrimary}"
                         TextColor="{StaticResource White}"

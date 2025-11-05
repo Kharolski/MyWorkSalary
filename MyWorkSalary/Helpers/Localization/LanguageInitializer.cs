@@ -3,6 +3,9 @@ using MyWorkSalary.Models.Core;      // För AppSettings
 
 namespace MyWorkSalary.Helpers.Localization
 {
+    /// <summary>
+    /// Väljer språk vid appstart (utifrån inställning eller systemets språk).
+    /// </summary>
     public static class LanguageInitializer
     {
         /// <summary>
@@ -10,37 +13,35 @@ namespace MyWorkSalary.Helpers.Localization
         /// </summary>
         public static void InitializeLanguage(AppSettings appSettings)
         {
-            string cultureCode;
+            string languageCode;
 
             // Använd sparat språk om det finns
             if (!string.IsNullOrWhiteSpace(appSettings.LanguageCode))
             {
-                cultureCode = appSettings.LanguageCode;
+                languageCode = appSettings.LanguageCode;
             }
             else
             {
                 // Kolla systemets språk första gången
                 var deviceCulture = CultureInfo.CurrentUICulture;
+                var supportedLanguages = LanguageProvider.GetSupportedLanguageCodes();
 
-                var supportedLanguages = new[] { "en", "sv" }; // kan byggas ut senare
-
-                cultureCode = supportedLanguages.Contains(deviceCulture.TwoLetterISOLanguageName)
+                languageCode = supportedLanguages.Contains(deviceCulture.TwoLetterISOLanguageName)
                     ? deviceCulture.TwoLetterISOLanguageName
                     : "en"; // fallback
 
-                appSettings.LanguageCode = cultureCode;
+                appSettings.LanguageCode = languageCode;
             }
 
-            // Skapa en neutral kultur (utan landsvaluta)
-            // "en" istället för "en-IE", "sv" istället för "sv-SE"
-            var cultureInfo = new CultureInfo(cultureCode);
+            // Hämta fullständig kultur via helper
+            var culture = CultureHelper.GetCulture(languageCode);
 
-            // Sätt språk (utan att påverka valutainställning)
-            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            // Sätt global kultur för språk, valuta och datum
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-            // Uppdatera resx och översättningar
-            TranslationManager.Instance.ChangeCulture(cultureInfo);
+            // Uppdatera översättningarna i resx-filerna
+            TranslationManager.Instance.ChangeCulture(culture);
 
         }
     }

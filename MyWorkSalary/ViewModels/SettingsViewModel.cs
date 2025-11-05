@@ -114,14 +114,7 @@ namespace MyWorkSalary.ViewModels
         // Tillgängliga språk i appen
 
         public ObservableCollection<LanguageOption> AvailableLanguages { get; } =
-            new ObservableCollection<LanguageOption>
-            {
-                new LanguageOption { DisplayName = Resources.Resx.Resources.LanguageEnglish, Code = "en" },
-                new LanguageOption { DisplayName = Resources.Resx.Resources.LanguageSwedish, Code = "sv" }
-
-                // TODO: Lägg till fransk i framtiden och lägg till tillgängliga språk i LanguageInitializer i supportedLanguages
-                // new LanguageOption { DisplayName = "Français", Code = "fr" } 
-            };
+            LanguageProvider.GetAvailableLanguages();
 
         // Det språk som är valt i pickern
         public LanguageOption SelectedLanguage
@@ -430,21 +423,16 @@ namespace MyWorkSalary.ViewModels
             _selectedLanguage = lang;
             OnPropertyChanged(nameof(SelectedLanguage));
 
-            // Mappar "en"/"sv" till fullständig kultur med region (så valutasymbolen också blir rätt)
-            var cultureMap = new Dictionary<string, string>
-            {
-                { "sv", "sv-SE" }, // svenska -> Sverige (SEK)
-                { "en", "en-IE" }  // engelska -> Irland (EUR). Byt till en-GB eller en-US om du vill ha pund/dollar
-            };
+            // Hämta korrekt kultur (med region) via helper
+            var culture = CultureHelper.GetCulture(lang.Code);
 
-            string fullCultureCode = cultureMap.ContainsKey(lang.Code) ? cultureMap[lang.Code] : lang.Code;
-
-            var culture = new CultureInfo(fullCultureCode);
-
-            // Uppdatera TranslationManager + trådculture (säkerställ att formatering uppdateras)
+            // Uppdatera TranslationManager + trådculture
             TranslationManager.Instance.ChangeCulture(culture);
 
-            // Spara inställningen (spara fortfarande enkel code "en"/"sv" om du vill)
+            // Trigga språkändringshändelsen globalt (så vyer kan reagera)
+            LocalizationHelper.NotifyLanguageChanged();
+
+            // Spara inställningen 
             _appSettings.LanguageCode = lang.Code;
             _databaseService.AppSettings.SaveAppSettings(_appSettings);
 

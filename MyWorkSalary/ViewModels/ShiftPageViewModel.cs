@@ -1,11 +1,14 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Input;
+﻿using MyWorkSalary.Helpers;
 using MyWorkSalary.Helpers.Converters;
+using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Views.Pages;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
@@ -53,12 +56,12 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Properties
-        public string ActiveJobTitle => _activeJob?.JobTitle ?? "Inget aktivt jobb";
+        public string ActiveJobTitle => _activeJob?.JobTitle ?? LocalizationHelper.Translate("NoActiveJob");
 
         public string Workplace => _activeJob?.Workplace ?? "";
         public string SalaryDisplayText => _activeJob?.ExpectedHoursPerMonth > 0
-            ? $"{_activeJob.SalaryDisplayText:NO} • Flex-tid"
-            : "Timlön";
+            ? $"{_activeJob.SalaryDisplayText:NO} • {LocalizationHelper.Translate("FlexTime")}"
+            : LocalizationHelper.Translate("HourlyWage");
 
         private ObservableCollection<GroupedWorkShift> _groupedWorkShifts;
         public ObservableCollection<GroupedWorkShift> GroupedWorkShifts
@@ -134,7 +137,10 @@ namespace MyWorkSalary.ViewModels
         {
             if (_activeJob == null)
             {
-                await Shell.Current.DisplayAlert("Inget jobb", "Du måste skapa ett jobb först i Inställningar.", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("NoJobAlertTitle"),
+                    LocalizationHelper.Translate("NoJobAlertMessage"),
+                    "OK");
                 return;
             }
 
@@ -150,10 +156,10 @@ namespace MyWorkSalary.ViewModels
             // Anpassat bekräftelsemeddelande baserat på passtyp
             string confirmMessage = GetDeleteConfirmationMessage(shift);
             bool confirm = await Shell.Current.DisplayAlert(
-                "Radera pass",
+                LocalizationHelper.Translate("DeleteShiftTitle"),
                 confirmMessage,
-                "Radera",
-                "Avbryt");
+                LocalizationHelper.Translate("DeleteShiftButton"),
+                LocalizationHelper.Translate("CancelButton"));
 
             if (confirm)
             {
@@ -170,11 +176,17 @@ namespace MyWorkSalary.ViewModels
 
                     // Bekräftelsemeddelande
                     string deletedMessage = GetDeletedMessage(shift);
-                    await Shell.Current.DisplayAlert("Raderat", deletedMessage, "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("DeletedTitle"),
+                        deletedMessage,
+                        "OK");
                 }
                 catch (Exception ex)
                 {
-                    await Shell.Current.DisplayAlert("Fel", $"Kunde inte radera passet: {ex.Message}", "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("DeleteError"),
+                        string.Format(LocalizationHelper.Translate("DeleteErrorMessage"), ex.Message),
+                        "OK");
                 }
             }
         }
@@ -228,27 +240,34 @@ namespace MyWorkSalary.ViewModels
         // Få rätt månad/år för gruppering
         private string GetMonthYearKey(WorkShift shift)
         {
-            var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
             // Använd ShiftDate för alla passtyper
-            return shift.ShiftDate.ToString("MMMM yyyy", swedishCulture);
+            return shift.ShiftDate.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
         }
 
         // Skapa bekräftelsemeddelande
         private string GetDeleteConfirmationMessage(WorkShift shift)
         {
-            var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
-            var dateStr = shift.ShiftDate.ToString("dddd d MMMM", swedishCulture);
+            var dateStr = shift.ShiftDate.ToString("dddd d MMMM", CultureInfo.CurrentCulture);
 
-            return shift.ShiftType switch
+            if (shift.ShiftType == ShiftType.Regular && shift.StartTime.HasValue && shift.EndTime.HasValue)
             {
-                ShiftType.Vacation => $"Vill du radera semestern från {dateStr}?",
-                ShiftType.SickLeave => $"Vill du radera sjukskrivningen från {dateStr}?",
-                ShiftType.VAB => $"Vill du radera VAB från {dateStr}?",
-                ShiftType.OnCall => $"Vill du radera jourpasset från {dateStr}?",
-                _ => shift.StartTime.HasValue && shift.EndTime.HasValue
-                    ? $"Vill du radera passet från {dateStr}?\n({shift.StartTime:HH:mm} - {shift.EndTime:HH:mm})"
-                    : $"Vill du radera passet från {dateStr}?"
+                return string.Format(
+                    LocalizationHelper.Translate("DeleteShiftWithTimeConfirm"),
+                    dateStr,
+                    shift.StartTime?.ToString("t", CultureInfo.CurrentCulture),  // t = kort tidformat (HH:mm)
+                    shift.EndTime?.ToString("t", CultureInfo.CurrentCulture));
+            }
+
+            var messageKey = shift.ShiftType switch
+            {
+                ShiftType.Vacation => "DeleteVacationConfirm",
+                ShiftType.SickLeave => "DeleteSickLeaveConfirm",
+                ShiftType.VAB => "DeleteVABConfirm",
+                ShiftType.OnCall => "DeleteOnCallConfirm",
+                _ => "DeleteShiftConfirm"
             };
+
+            return string.Format(LocalizationHelper.Translate(messageKey), dateStr);
         }
 
         // Skapa raderingsbekräftelse
@@ -256,11 +275,11 @@ namespace MyWorkSalary.ViewModels
         {
             return shift.ShiftType switch
             {
-                ShiftType.Vacation => "Semestern har raderats",
-                ShiftType.SickLeave => "Sjukskrivningen har raderats",
-                ShiftType.VAB => "VAB har raderats",
-                ShiftType.OnCall => "Jourpasset har raderats",
-                _ => "Passet har raderats"
+                ShiftType.Vacation => LocalizationHelper.Translate("DeletedVacation"),
+                ShiftType.SickLeave => LocalizationHelper.Translate("DeletedSickLeave"),
+                ShiftType.VAB => LocalizationHelper.Translate("DeletedVAB"),
+                ShiftType.OnCall => LocalizationHelper.Translate("DeletedOnCall"),
+                _ => LocalizationHelper.Translate("DeletedShift")
             };
         }
 
@@ -298,7 +317,7 @@ namespace MyWorkSalary.ViewModels
         public decimal TotalHours { get; private set; }
 
         // Visa bara timmar
-        public string HoursSummary => $"{TotalHours:F1}t";
+        public string HoursSummary => FormatHelper.FormatHours(TotalHours);
 
         #region Expand/Collapse
         private bool _isExpanded = true; // Default: öppen

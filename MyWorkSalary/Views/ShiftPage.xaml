@@ -2,8 +2,10 @@
 <ContentPage x:Name="ShiftPageRef"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
              x:Class="MyWorkSalary.Views.ShiftPage"
-             Title="Arbetspass">
+             Title="{resx:Translate ShiftPageTitle}">
+    
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
 
@@ -12,7 +14,7 @@
                 <VerticalStackLayout Spacing="5">
                     <Grid ColumnDefinitions="Auto,*">
                         <Label Grid.Column="0" 
-                               Text="📋 Aktivt jobb - "
+                               Text="{resx:Translate ActiveJobLabel}"
                                Style="{StaticResource ActiveJobTitleLabel}"
                                TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
                                             Dark={StaticResource ActiveJobDark}}"/>
@@ -35,14 +37,14 @@
             </Frame>
 
             <!-- Lägg till pass knapp -->
-            <Button Text="➕ Lägg till nytt pass"
+            <Button Text="{resx:Translate AddShiftButton}"
                     Command="{Binding AddShiftCommand}"
                     Style="{StaticResource ButtonAdd}"
                     Padding="0,15"
                     FontSize="16" />
 
             <!-- Lista med pass -->
-            <Label Text="📅 Mina arbetspass"
+            <Label Text="{resx:Translate MyShiftsHeader}"
                    Style="{StaticResource SectionHeaderLabel}"
                    Margin="0,10,0,0" />
 
@@ -50,15 +52,15 @@
             <Frame Style="{StaticResource EmptyStateFrame}"
                    IsVisible="{Binding NoShiftsVisible}">
                 <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
-                    <Label Text="📝"
+                    <Label Text="{resx:Translate NoShiftsIcon}"
                            FontSize="40"
                            HorizontalOptions="Center" />
-                    <Label Text="Inga arbetspass registrerade än"
+                    <Label Text="{resx:Translate NoShiftsTitle}"
                            FontSize="16"
                            HorizontalOptions="Center"
                            TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
                                                       Dark={StaticResource TextPrimaryDark}}" />
-                    <Label Text="Tryck på knappen ovan för att lägga till ditt första pass"
+                    <Label Text="{resx:Translate NoShiftsMessage}"
                            Style="{StaticResource SecondaryLabel}"
                            HorizontalOptions="Center" />
                 </VerticalStackLayout>
@@ -82,7 +84,7 @@
                                            FontAttributes="Bold"
                                            TextColor="{StaticResource White}" />
                                     <Label Grid.Column="1"
-                                           Text="{Binding TotalHours, StringFormat='({0:F1}t)'}"
+                                           Text="{Binding HoursSummary}"
                                            FontSize="16"
                                            FontAttributes="Bold"
                                            TextColor="{StaticResource White}"
@@ -105,7 +107,7 @@
                                             <!-- SWIPE ACTIONS (Vänster swipe) -->
                                             <SwipeView.RightItems>
                                                 <SwipeItems>
-                                                    <SwipeItem Text="🗑️ Radera"
+                                                    <SwipeItem Text="{resx:Translate Delete}"
                                                                BackgroundColor="{StaticResource ButtonDanger}"
                                                                Command="{Binding Source={x:Reference ShiftPageRef}, Path=BindingContext.DeleteShiftCommand}"
                                                                CommandParameter="{Binding .}" />

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
              x:Class="MyWorkSalary.Views.Pages.ShiftTypeView.RegularShiftFormView">
     <VerticalStackLayout Spacing="20">
 
         <!-- Arbetstid -->
         <VerticalStackLayout Spacing="5">
-            <Label Text="🕐 Arbetstid" Style="{StaticResource FieldLabel}" />
+            <Label Text="{resx:Translate RegularShift_WorkTime}" Style="{StaticResource FieldLabel}" />
             <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
                 <!-- Starttid -->
                 <VerticalStackLayout Grid.Column="0" Spacing="3">
-                    <Label Text="Från" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                    <Label Text="{resx:Translate RegularShift_From}" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
                     <TimePicker Time="{Binding StartTime}" Style="{StaticResource ThemedTimePicker}" Format="HH:mm" />
                 </VerticalStackLayout>
                 <!-- Separator -->
                 <Label Grid.Column="1" Text="→" FontSize="20" VerticalOptions="Center" TextColor="Gray" />
                 <!-- Sluttid -->
                 <VerticalStackLayout Grid.Column="2" Spacing="3">
-                    <Label Text="Till" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                    <Label Text="{resx:Translate RegularShift_To}" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
                     <TimePicker Time="{Binding EndTime}" Style="{StaticResource ThemedTimePicker}" Format="HH:mm" />
                 </VerticalStackLayout>
             </Grid>
@@ -25,7 +26,7 @@
 
         <!-- Rast -->
         <VerticalStackLayout Spacing="5">
-            <Label Text="☕ Rast (minuter)" Style="{StaticResource FieldLabel}" />
+            <Label Text="{resx:Translate RegularShift_Break}" Style="{StaticResource FieldLabel}" />
             <Entry Text="{Binding BreakMinutes}" Placeholder="0" Keyboard="Numeric" Style="{StaticResource ThemedEntry}" />
             <Label Text="{Binding BreakSuggestionText}" FontSize="12"
                    TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" />
@@ -34,20 +35,20 @@
         <!-- Inbeordring -->
         <HorizontalStackLayout Spacing="10">
             <CheckBox IsChecked="{Binding IsExtraShift}" />
-            <Label Text="Inbeordring (extra pass)" VerticalOptions="Center" />
+            <Label Text="{resx:Translate RegularShift_ExtraShift}" VerticalOptions="Center" />
         </HorizontalStackLayout>
 
         <!-- Anteckningar -->
         <VerticalStackLayout Spacing="5">
-            <Label Text="📝 Anteckningar (valfritt)" Style="{StaticResource FieldLabel}" />
-            <Editor Text="{Binding Notes}" Placeholder="T.ex. övertid, speciella omständigheter..." Style="{StaticResource ThemedEditor}" HeightRequest="80" />
+            <Label Text="{resx:Translate RegularShift_Notes}" Style="{StaticResource FieldLabel}" />
+            <Editor Text="{Binding Notes}" Placeholder="{resx:Translate RegularShift_NotesPlaceholder}" Style="{StaticResource ThemedEditor}" HeightRequest="80" />
         </VerticalStackLayout>
 
         <!-- Beräknad information -->
         <Frame Style="{StaticResource CalculationFrame}"
                 IsVisible="{Binding ShowCalculation}">
             <VerticalStackLayout Spacing="5">
-                <Label Text="📊 Beräkning"
+                <Label Text="{resx:Translate RegularShift_Calculation}"
                        FontSize="16"
                        FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
@@ -56,7 +57,7 @@
                        FontSize="14"
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
                                                    Dark={StaticResource White}}" />
-                <Label Text="Lön visas i månadsrapporten. Här ser du bara arbetstiden för detta pass."
+                <Label Text="{resx:Translate RegularShift_CalculationNote}"
                        FontSize="12"
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                 Dark={StaticResource TextSecondaryDark}}" /> 

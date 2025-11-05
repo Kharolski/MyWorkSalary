@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Handlers;
@@ -108,7 +109,7 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
-        public string ActiveJobTitle => ActiveJob?.JobTitle ?? "Inget aktivt jobb";
+        public string ActiveJobTitle => ActiveJob?.JobTitle ?? LocalizationHelper.Translate("RegularShift_Validation_NoJobSelected");
 
         public DateTime SelectedDate
         {
@@ -140,14 +141,14 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
-        private string _selectedShiftTypeDisplay = "Vanligt pass";
+        private string _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Regular");
         public List<string> ShiftTypeDisplayNames { get; } = new List<string>
         {
-            "Vanligt pass",      // Regular
-            "Jour",              // OnCall
-            "Sjukskrivning",     // SickLeave
-            "Semester",          // Vacation
-            "Vård av barn"       // VAB
+            LocalizationHelper.Translate("ShiftType_Add_Regular"),  // Regular
+            LocalizationHelper.Translate("ShiftType_SickLeave"),    // SickLeave
+            LocalizationHelper.Translate("ShiftType_Add_VAB"),      // VAB
+            LocalizationHelper.Translate("ShiftType_Vacation"),     // Vacation
+            LocalizationHelper.Translate("ShiftType_OnCall")        // OnCall
         };
 
         public string SelectedShiftTypeDisplay
@@ -179,12 +180,15 @@ namespace MyWorkSalary.ViewModels
                 ActiveJob = _jobProfileRepository.GetActiveJob();
                 if (ActiveJob == null)
                 {
-                    Shell.Current.DisplayAlert("Fel", "Inget aktivt jobb hittades.", "OK");
+                    Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("Error"),
+                        LocalizationHelper.Translate("NoActiveJobFound"),
+                        LocalizationHelper.Translate("OK"));
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Fel i LoadActiveJob: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error in LoadActiveJob: {ex.Message}");
             }
         }
         #endregion
@@ -231,7 +235,10 @@ namespace MyWorkSalary.ViewModels
         {
             if (ActiveJob == null)
             {
-                await Shell.Current.DisplayAlert("Fel", "Inget aktivt jobb.", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    LocalizationHelper.Translate("NoActiveJob"),
+                    LocalizationHelper.Translate("OK"));
                 return;
             }
 
@@ -254,7 +261,10 @@ namespace MyWorkSalary.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Fel", $"Kunde inte spara: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("SaveError_Generic"), ex.Message),
+                    LocalizationHelper.Translate("OK"));
             }
         }
 
@@ -266,9 +276,15 @@ namespace MyWorkSalary.ViewModels
 
             var success = await RegularShiftVM.SaveRegularShift();
             if (success)
-                await Shell.Current.DisplayAlert("✅ Sparat!", "Vanligt pass registrerat", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("SaveSuccess"),
+                    LocalizationHelper.Translate("SaveSuccess_RegularShift"),
+                    LocalizationHelper.Translate("OK"));
             else
-                await Shell.Current.DisplayAlert("❌ Fel", "Kunde inte spara passet", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    LocalizationHelper.Translate("SaveError_RegularShift"),
+                    LocalizationHelper.Translate("OK"));
             return success;
         }
 
@@ -283,11 +299,17 @@ namespace MyWorkSalary.ViewModels
             var success = await SickLeaveVM.SaveSickLeave();
             if (success)
             {
-                await Shell.Current.DisplayAlert("✅ Sparat!", "Sjukdag registrerad", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("SaveSuccess"),
+                    LocalizationHelper.Translate("SaveSuccess_SickLeave"),
+                    LocalizationHelper.Translate("OK"));
             }
             else
             {
-                await Shell.Current.DisplayAlert("❌ Fel", "Kunde inte spara sjukdag", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    LocalizationHelper.Translate("SaveError_SickLeave"),
+                    LocalizationHelper.Translate("OK"));
             }
             return success;
         }
@@ -302,7 +324,10 @@ namespace MyWorkSalary.ViewModels
 
             if (VABVM == null)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", "VAB ViewModel inte initialiserad", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("ViewModelNotInitialized"), "VAB"),
+                    LocalizationHelper.Translate("OK"));
                 return false;
             }
 
@@ -311,13 +336,19 @@ namespace MyWorkSalary.ViewModels
                 var success = await VABVM.SaveVAB();
                 if (success)
                 {
-                    await Shell.Current.DisplayAlert("✅ Sparat!", "VAB-dag registrerad", "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("SaveSuccess"),
+                        LocalizationHelper.Translate("SaveSuccess_VAB"),
+                        LocalizationHelper.Translate("OK"));
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(VABVM.ValidationMessage))
                     {
-                        await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara VAB-dag: {VABVM.ValidationMessage}", "OK");
+                        await Shell.Current.DisplayAlert(
+                            LocalizationHelper.Translate("Error"),
+                            string.Format(LocalizationHelper.Translate("SaveError_VAB"), VABVM.ValidationMessage),
+                            LocalizationHelper.Translate("OK"));
                     }
                     // Om ValidationMessage är tom = användaren avbröt, visa inget meddelande
                 }
@@ -325,7 +356,10 @@ namespace MyWorkSalary.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara VAB-dag: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("SaveError_VAB"), ex.Message),
+                    LocalizationHelper.Translate("OK"));
                 return false;
             }
         }
@@ -340,7 +374,10 @@ namespace MyWorkSalary.ViewModels
 
             if (OnCallVM == null)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", "OnCall ViewModel inte initialiserad", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("ViewModelNotInitialized"), "OnCall"),
+                    LocalizationHelper.Translate("OK"));
                 return false;
             }
 
@@ -349,17 +386,27 @@ namespace MyWorkSalary.ViewModels
                 var success = await OnCallVM.SaveOnCall();
                 if (success)
                 {
-                    await Shell.Current.DisplayAlert("✅ Sparat!", "Jourpass registrerat", "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("SaveSuccess"),
+                        LocalizationHelper.Translate("SaveSuccess_OnCall"),
+                        LocalizationHelper.Translate("OK"));
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara jourpass: {OnCallVM.ValidationMessage}", "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("Error"),
+                        string.Format(LocalizationHelper.Translate("SaveError_OnCall"),
+                            OnCallVM.ValidationMessage ?? string.Empty),
+                        LocalizationHelper.Translate("OK"));
                 }
                 return success;
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara jourpass: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("SaveError_OnCall"), ex.Message),
+                    LocalizationHelper.Translate("OK"));
                 return false;
             }
         }
@@ -374,7 +421,10 @@ namespace MyWorkSalary.ViewModels
 
             if (VacationVM == null)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", "Vacation ViewModel inte initialiserad", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("ViewModelNotInitialized"), "Vacation"),
+                    LocalizationHelper.Translate("OK"));
                 return false;
             }
 
@@ -385,18 +435,27 @@ namespace MyWorkSalary.ViewModels
 
                 if (success)
                 {
-                    await Shell.Current.DisplayAlert("✅ Sparat!", message, "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("SaveSuccess"),
+                        message, // The message is already localized from VacationVM
+                        LocalizationHelper.Translate("OK"));
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("❌ Fel", message, "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("Error"),
+                        message, // The message is already localized from VacationVM
+                        LocalizationHelper.Translate("OK"));
                 }
 
                 return success;
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara semester: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("SaveError_Vacation"), ex.Message),
+                    LocalizationHelper.Translate("OK"));
                 return false;
             }
         }
@@ -404,10 +463,10 @@ namespace MyWorkSalary.ViewModels
         private async void OnCancel()
         {
             bool confirm = await Shell.Current.DisplayAlert(
-                "Avbryt",
-                "Vill du avbryta utan att spara?",
-                "Ja, avbryt",
-                "Fortsätt redigera");
+                LocalizationHelper.Translate("CancelDialog_Title"),
+                LocalizationHelper.Translate("CancelDialog_Message"),
+                LocalizationHelper.Translate("CancelDialog_Confirm"),
+                LocalizationHelper.Translate("CancelDialog_Decline"));
 
             if (confirm)
             {
@@ -421,11 +480,11 @@ namespace MyWorkSalary.ViewModels
         {
             return displayName switch
             {
-                "Vanligt pass" => ShiftType.Regular,
-                "Jour" => ShiftType.OnCall,
-                "Sjukskrivning" => ShiftType.SickLeave,
-                "Semester" => ShiftType.Vacation,
-                "Vård av barn" => ShiftType.VAB,
+                _ when displayName == LocalizationHelper.Translate("ShiftType_Add_Regular") => ShiftType.Regular,
+                _ when displayName == LocalizationHelper.Translate("ShiftType_OnCall") => ShiftType.OnCall,
+                _ when displayName == LocalizationHelper.Translate("ShiftType_SickLeave") => ShiftType.SickLeave,
+                _ when displayName == LocalizationHelper.Translate("ShiftType_Vacation") => ShiftType.Vacation,
+                _ when displayName == LocalizationHelper.Translate("ShiftType_Add_VAB") => ShiftType.VAB,
                 _ => ShiftType.Regular
             };
         }
@@ -476,18 +535,21 @@ namespace MyWorkSalary.ViewModels
                 if (!conflictResult.CanProceed)
                 {
                     // Visa felmeddelande
-                    await Shell.Current.DisplayAlert("❌ Konflikt", conflictResult.ErrorMessage, "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("Error"),
+                        conflictResult.ErrorMessage,
+                        LocalizationHelper.Translate("OK"));
                     return false;
                 }
 
-                // ✨ NY: Hantera bekräftelse för ersättning
+                // Hantera bekräftelse för ersättning
                 if (conflictResult.RequiresConfirmation)
                 {
                     bool userConfirmed = await Shell.Current.DisplayAlert(
-                        "Ersätt pass?",
+                        LocalizationHelper.Translate("ReplaceShift_Title"),
                         conflictResult.ConfirmationMessage,
-                        "Ja, ersätt",
-                        "Avbryt");
+                        LocalizationHelper.Translate("ReplaceShift_Confirm"),
+                        LocalizationHelper.Translate("Cancel"));
 
                     if (!userConfirmed)
                     {
@@ -502,7 +564,10 @@ namespace MyWorkSalary.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte kontrollera konflikter: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("Error_CheckConflicts"), ex.Message),
+                    LocalizationHelper.Translate("OK"));
                 return false;
             }
         }
@@ -523,7 +588,10 @@ namespace MyWorkSalary.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte ta bort befintligt pass: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("Error_DeleteShift"), ex.Message),
+                    LocalizationHelper.Translate("OK"));
                 throw; // Re-throw så att sparandet avbryts
             }
         }
