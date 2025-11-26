@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView x:Class="MyWorkSalary.Views.Pages.ShiftTypeView.SickLeaveFormView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization">
 
     <VerticalStackLayout Spacing="20">
 
         <!-- 🤒 Sjuktyp -->
         <VerticalStackLayout Spacing="5">
-            <Label Text="🤒 Typ av sjukskrivning"
+            <Label Text="{resx:Translate Sick_Label_Type}"
                    Style="{StaticResource FieldLabel}" />
             <Picker ItemsSource="{Binding SickTypeDisplayNames}"
                     SelectedItem="{Binding SickTypeDisplayName}"
                     Style="{StaticResource ThemedPicker}"
-                    Title="Välj sjuktyp" />
+                    Title="{resx:Translate Sick_Picker_Title}" />
         </VerticalStackLayout>
 
         <!-- 📝 Förklaring av vald sjuktyp -->
         <Frame Style="{StaticResource ActiveJobFrame}">
             <VerticalStackLayout Spacing="5">
-                <Label Text="ℹ️ Information"
+                <Label Text="{resx:Translate Sick_Header}"
                        Style="{StaticResource ActiveJobTitleLabel}"
                        FontSize="14" />
                 <Label Text="{Binding SickLeaveExplanation}"
@@ -33,13 +34,13 @@
 
             <!-- Jobbat tid (bara för delvis sjuk) -->
             <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowWorkedTimeFields}">
-                <Label Text="🕐 Tid som jobbades"
+                <Label Text="{resx:Translate Sick_Label_WorkedTime}"
                        Style="{StaticResource FieldLabel}" />
                 <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
                     
                     <!-- Starttid jobbat -->
                     <VerticalStackLayout Grid.Column="0" Spacing="3">
-                        <Label Text="Från" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                        <Label Text="{resx:Translate From}" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
                         <TimePicker Time="{Binding WorkedStartTime}"
                                     Style="{StaticResource ThemedTimePicker}"
                                     Format="HH:mm" />
@@ -54,7 +55,7 @@
                     
                     <!-- Sluttid jobbat -->
                     <VerticalStackLayout Grid.Column="2" Spacing="3">
-                        <Label Text="Till" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                        <Label Text="{resx:Translate To}" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
                         <TimePicker Time="{Binding WorkedEndTime}"
                                     Style="{StaticResource ThemedTimePicker}"
                                     Format="HH:mm" />
@@ -64,13 +65,13 @@
 
             <!-- Planerad tid (för både delvis sjuk OCH skulle jobbat) -->
             <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowScheduledTimeFields}">
-                <Label Text="📋 Tid som skulle jobbats"
+                <Label Text="{resx:Translate Sick_Label_ScheduledTime}"
                        Style="{StaticResource FieldLabel}" />
                 <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
                     
                     <!-- Starttid planerad -->
                     <VerticalStackLayout Grid.Column="0" Spacing="3">
-                        <Label Text="Från" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                        <Label Text="{resx:Translate From}" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
                         <TimePicker Time="{Binding ScheduledStartTime}"
                                     Style="{StaticResource ThemedTimePicker}"
                                     Format="HH:mm" />
@@ -85,13 +86,13 @@
                     
                     <!-- Sluttid planerad -->
                     <VerticalStackLayout Grid.Column="2" Spacing="3">
-                        <Label Text="Till" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                        <Label Text="{resx:Translate To}" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
                         <TimePicker Time="{Binding ScheduledEndTime}"
                                     Style="{StaticResource ThemedTimePicker}"
                                     Format="HH:mm" />
                     </VerticalStackLayout>
                 </Grid>
-                <Label Text="💡 Ange den tid som skulle jobbats enligt schema"
+                <Label Text="{resx:Translate Sick_Hint_ScheduledZero}"
                        FontSize="12"
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                    Dark={StaticResource TextSecondaryDark}}"
@@ -110,10 +111,10 @@
         
         <!-- 📝 Anteckningar -->
         <VerticalStackLayout Spacing="5">
-            <Label Text="📝 Anteckningar (valfritt)"
+            <Label Text="{resx:Translate Sick_Label_Notes}"
                    Style="{StaticResource FieldLabel}" />
             <Editor Text="{Binding Notes}"
-                    Placeholder="T.ex. läkarintyg, symptom, återkomstdatum..."
+                    Placeholder="{resx:Translate Sick_Placeholder_Notes}"
                     Style="{StaticResource ThemedEditor}"
                     HeightRequest="80" />
         </VerticalStackLayout>

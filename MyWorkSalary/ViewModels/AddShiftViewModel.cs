@@ -5,6 +5,7 @@ using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.ViewModels.ShiftTypes;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -64,6 +65,10 @@ namespace MyWorkSalary.ViewModels
             CancelCommand = new Command(OnCancel);
 
             LoadActiveJob();
+
+            // Språkändring event
+            LocalizationHelper.LanguageChanged += () => OnLanguageChanged();
+            OnLanguageChanged();
         }
         #endregion
 
@@ -142,14 +147,7 @@ namespace MyWorkSalary.ViewModels
         }
 
         private string _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Regular");
-        public List<string> ShiftTypeDisplayNames { get; } = new List<string>
-        {
-            LocalizationHelper.Translate("ShiftType_Add_Regular"),  // Regular
-            LocalizationHelper.Translate("ShiftType_SickLeave"),    // SickLeave
-            LocalizationHelper.Translate("ShiftType_Add_VAB"),      // VAB
-            LocalizationHelper.Translate("ShiftType_Vacation"),     // Vacation
-            LocalizationHelper.Translate("ShiftType_OnCall")        // OnCall
-        };
+        public ObservableCollection<string> ShiftTypeDisplayNames { get; } = new ObservableCollection<string>();
 
         public string SelectedShiftTypeDisplay
         {
@@ -159,6 +157,15 @@ namespace MyWorkSalary.ViewModels
                 _selectedShiftTypeDisplay = value;
                 _selectedShiftType = GetShiftTypeFromDisplay(value);
                 OnPropertyChanged();
+
+                // RESET alla child viewmodels när man byter tab
+                SickLeaveVM.Reset();
+                VABVM.Reset();
+                OnCallVM.Reset();
+                VacationVM.Reset();
+                RegularShiftVM.Reset();
+
+                // Uppdatera UI och context
                 OnSelectedShiftTypeChanged();
             }
         }
@@ -476,6 +483,46 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Helper Methods
+        private async void OnLanguageChanged()
+        {
+            try
+            {
+                ShiftTypeDisplayNames.Clear();
+                ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Add_Regular"));
+                ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_SickLeave"));
+                ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Add_VAB"));
+                ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Vacation"));
+                ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_OnCall"));
+
+                _selectedShiftTypeDisplay = _selectedShiftType switch
+                {
+                    ShiftType.Regular => LocalizationHelper.Translate("ShiftType_Add_Regular"),
+                    ShiftType.SickLeave => LocalizationHelper.Translate("ShiftType_SickLeave"),
+                    ShiftType.VAB => LocalizationHelper.Translate("ShiftType_Add_VAB"),
+                    ShiftType.Vacation => LocalizationHelper.Translate("ShiftType_Vacation"),
+                    ShiftType.OnCall => LocalizationHelper.Translate("ShiftType_OnCall"),
+                    _ => LocalizationHelper.Translate("ShiftType_Add_Regular")
+                };
+
+                OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
+                await Task.Delay(50);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[OnLanguageChanged] Error: {ex.Message}");
+            }
+        }
+
+        //private void RefreshShiftTypeDisplayNames()
+        //{
+        //    ShiftTypeDisplayNames.Clear();
+        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Add_Regular"));
+        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_SickLeave"));
+        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Add_VAB"));
+        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Vacation"));
+        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_OnCall"));
+        //}
+
         private ShiftType GetShiftTypeFromDisplay(string displayName)
         {
             return displayName switch
@@ -595,6 +642,7 @@ namespace MyWorkSalary.ViewModels
                 throw; // Re-throw så att sparandet avbryts
             }
         }
+
         #endregion
 
         #region INotifyPropertyChanged

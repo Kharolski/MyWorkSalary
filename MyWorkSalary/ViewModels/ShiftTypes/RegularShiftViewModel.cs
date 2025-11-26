@@ -258,6 +258,20 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         }
         #endregion
 
+        #region Public Methods
+        public void Reset()
+        {
+            SelectedDate = DateTime.Today;
+            StartTime = new TimeSpan(8, 0, 0);
+            EndTime = new TimeSpan(16, 0, 0);
+            BreakMinutes = 0;
+            Notes = string.Empty;
+            IsExtraShift = false;
+
+            CalculateHours();
+        }
+        #endregion
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName = null)

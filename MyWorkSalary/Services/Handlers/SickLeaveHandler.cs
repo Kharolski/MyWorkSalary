@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services.Interfaces;
@@ -91,7 +92,7 @@ namespace MyWorkSalary.Services.Handlers
                     RegularPay = 0,
                     KarensDeduction = 0,
                     HasKarensDeduction = false,
-                    ErrorMessage = "Ingen jobbprofil"
+                    ErrorMessage = LocalizationHelper.Translate("Sick_NoJobProfile")
                 };
             }
 
@@ -107,7 +108,7 @@ namespace MyWorkSalary.Services.Handlers
                         RegularPay = 0,
                         KarensDeduction = 0,
                         HasKarensDeduction = false,
-                        ErrorMessage = "Ingen rätt till sjuklön för denna dag"
+                        ErrorMessage = LocalizationHelper.Translate("Sick_NoRightToPay")
                     };
                 }
 
@@ -177,7 +178,7 @@ namespace MyWorkSalary.Services.Handlers
                     RegularPay = 0,
                     KarensDeduction = 0,
                     HasKarensDeduction = false,
-                    ErrorMessage = $"Fel vid beräkning: {ex.Message}"
+                    ErrorMessage = string.Format(LocalizationHelper.Translate("Sick_ErrorCalculation"), ex.Message)
                 };
             }
         }
@@ -287,7 +288,7 @@ namespace MyWorkSalary.Services.Handlers
                 RegularPay = regularPay,
                 TotalHours = scheduledHours,
                 TotalPay = totalPay,
-                Notes = $"Delvis sjuk - Jobbat {workedHours:F1}t, sjuk {sickHours:F1}t"
+                Notes = string.Format(LocalizationHelper.Translate("Sick_PartialNotes"), workedHours, sickHours)
             };
 
             // Spara WorkShift först för att få ID
@@ -336,6 +337,7 @@ namespace MyWorkSalary.Services.Handlers
             var scheduledHours = (decimal)(scheduledEndTime - scheduledStartTime).TotalHours;
             var sickPay = frozenValues.HourlyRateUsed * 0.8m * scheduledHours;
             var totalPay = sickPay - frozenValues.KarensDeduction;
+            var karensText = isFirstSickDay ? LocalizationHelper.Translate("Sick_KarensDeduction") : "";
 
             // Skapa WorkShift
             var workShift = new WorkShift
@@ -349,7 +351,8 @@ namespace MyWorkSalary.Services.Handlers
                 RegularPay = 0,
                 TotalHours = scheduledHours,
                 TotalPay = totalPay,
-                Notes = $"Sjukdag - {scheduledHours:F1}t" + (isFirstSickDay ? " (med karensavdrag)" : "")
+                
+                Notes = string.Format(LocalizationHelper.Translate("Sick_FullDayNotes"), scheduledHours, karensText)
             };
 
             // Spara WorkShift först
@@ -404,7 +407,7 @@ namespace MyWorkSalary.Services.Handlers
                 RegularPay = 0,
                 TotalHours = 0,
                 TotalPay = 0,
-                Notes = "Sjukdag - skulle varit ledig (ingen ersättning)"
+                Notes = LocalizationHelper.Translate("Sick_NoPayNotes")
             };
 
             // Spara WorkShift först
@@ -519,7 +522,7 @@ namespace MyWorkSalary.Services.Handlers
         /// <summary>
         /// Kontrollerar om det finns konflikter för valt datum
         /// </summary>
-        public ConflictCheckResult CheckForConflicts(DateTime date, int jobProfileId, ShiftType newShiftType)  // ✨ ÄNDRA från SickLeaveType till ShiftType
+        public ConflictCheckResult CheckForConflicts(DateTime date, int jobProfileId, ShiftType newShiftType)  // ÄNDRA från SickLeaveType till ShiftType
         {
             // Kolla om det redan finns registreringar för detta datum
             var existingShifts = _workShiftRepository.GetWorkShiftsForDate(jobProfileId, date);
@@ -533,19 +536,19 @@ namespace MyWorkSalary.Services.Handlers
                     ShiftType.VAB => new ConflictCheckResult
                     {
                         CanProceed = false,
-                        ErrorMessage = "Du kan inte vara sjuk när du VAB:ar"
+                        ErrorMessage = LocalizationHelper.Translate("Conflict_SickWithVAB")
                     },
 
                     ShiftType.Vacation => new ConflictCheckResult
                     {
                         CanProceed = false,
-                        ErrorMessage = "Du har redan beviljad semester denna dag"
+                        ErrorMessage = LocalizationHelper.Translate("Conflict_SickWithVacation")
                     },
 
                     ShiftType.SickLeave => new ConflictCheckResult
                     {
                         CanProceed = false,
-                        ErrorMessage = "Det finns redan en sjukskrivning denna dag"
+                        ErrorMessage = LocalizationHelper.Translate("Conflict_AlreadySick")
                     },
 
                     // Bara Regular arbetstid kan ersättas
@@ -553,7 +556,18 @@ namespace MyWorkSalary.Services.Handlers
                     {
                         CanProceed = true,
                         RequiresConfirmation = true,
-                        ConfirmationMessage = $"Vill du ersätta arbetstiden ({shift.StartTime:HH:mm}-{shift.EndTime:HH:mm}) med {GetShiftTypeDisplayName(newShiftType)}?"
+
+                        // OBS: Eftersom StartTime och EndTime är nullable DateTime (DateTime?),
+                        // kan man inte direkt skriva shift.StartTime.ToString("HH:mm").
+                        // Man måste använda shift.StartTime?.ToString("HH:mm") ?? "--:--" 
+                        // eller shift.StartTime.Value.ToString("HH:mm") om man är säker på att värdet inte är null.
+                        // Detta undviker felet: "No overload for method 'ToString' takes 1 arguments".
+                        ConfirmationMessage = string.Format(
+                            LocalizationHelper.Translate("Conflict_ReplaceRegular"),
+                            shift.StartTime?.ToString("HH:mm") ?? "--:--",
+                            shift.EndTime?.ToString("HH:mm") ?? "--:--",
+                            GetShiftTypeDisplayName(newShiftType)
+                        )
                     },
 
                     // OnCall kan ersättas
@@ -561,7 +575,10 @@ namespace MyWorkSalary.Services.Handlers
                     {
                         CanProceed = true,
                         RequiresConfirmation = true,
-                        ConfirmationMessage = $"Vill du ersätta jourpasset med {GetShiftTypeDisplayName(newShiftType)}?"
+                        ConfirmationMessage = string.Format(
+                            LocalizationHelper.Translate("Conflict_ReplaceOnCall"),
+                            GetShiftTypeDisplayName(newShiftType)
+                        )
                     },
 
                     _ => new ConflictCheckResult { CanProceed = true }
@@ -575,10 +592,10 @@ namespace MyWorkSalary.Services.Handlers
         {
             return shiftType switch
             {
-                ShiftType.SickLeave => "sjukskrivning",
-                ShiftType.Vacation => "semester",
-                ShiftType.OnCall => "jour",
-                _ => "nytt pass"
+                ShiftType.SickLeave => LocalizationHelper.Translate("Shift_SickLeave"),
+                ShiftType.Vacation => LocalizationHelper.Translate("Shift_Vacation"),
+                ShiftType.OnCall => LocalizationHelper.Translate("Shift_OnCall"),
+                _ => LocalizationHelper.Translate("Shift_Regular")
             };
         }
 

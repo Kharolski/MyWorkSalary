@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView x:Class="MyWorkSalary.Views.Pages.ShiftTypeView.VABFormView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization">
+    
     <VerticalStackLayout Spacing="20">
 
         <!-- 🍼 VAB Förklaring -->
         <Frame Style="{StaticResource ActiveJobFrame}">
             <VerticalStackLayout Spacing="8">
-                <Label Text="🍼 VAB - Vård av barn"
+                <Label Text="{resx:Translate VAB_Header}"
                        Style="{StaticResource ActiveJobTitleLabel}"
                        FontSize="16" />
                 <Label Text="{Binding VABExplanationText}"
@@ -19,13 +21,13 @@
 
         <!-- 🕐 Timmar som skulle jobbats -->
         <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowVABWorkingHours}">
-            <Label Text="🕐 Timmar som skulle jobbats"
+            <Label Text="{resx:Translate VAB_Label_ScheduledHours}"
                    Style="{StaticResource FieldLabel}" />
             <Entry Text="{Binding ScheduledHours}"
-                   Placeholder="Ange timmar (t.ex. 8, 7.5, 0)"
+                   Placeholder="{resx:Translate VAB_Placeholder_ScheduledHours}"
                    Keyboard="Numeric"
                    Style="{StaticResource ThemedEntry}" />
-            <Label Text="💡 Skriv 0 om du skulle vara ledig denna dag"
+            <Label Text="{resx:Translate VAB_Hint_ScheduledZero}"
                    FontSize="12"
                    TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                Dark={StaticResource TextSecondaryDark}}" />
@@ -33,12 +35,12 @@
 
         <!-- 💼 Timmar som faktiskt jobbades (NYTT FÄLT) -->
         <VerticalStackLayout Spacing="5" IsVisible="{Binding ShowVABWorkingHours}">
-            <Label Text="💼 Timmar som faktiskt jobbades" Style="{StaticResource FieldLabel}" />
+            <Label Text="{resx:Translate VAB_Label_WorkedHours}" Style="{StaticResource FieldLabel}" />
             <Entry Text="{Binding WorkedHours}"
-                   Placeholder="Ange timmar (t.ex. 4, 0)"
+                   Placeholder="{resx:Translate VAB_Placeholder_WorkedHours}"
                    Keyboard="Numeric"
                    Style="{StaticResource ThemedEntry}" />
-            <Label Text="💡 Skriv 0 om du inte jobbade alls denna dag" 
+            <Label Text="{resx:Translate VAB_Hint_WorkedZero}" 
                    FontSize="12"
                    TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                Dark={StaticResource TextSecondaryDark}}" />
@@ -48,7 +50,7 @@
         <Frame Style="{StaticResource CalculationFrame}"
                IsVisible="{Binding ShowCalculation}">
             <VerticalStackLayout Spacing="8">
-                <Label Text="💰 VAB-information"
+                <Label Text="{resx:Translate VAB_Info_Header}"
                        FontSize="16"
                        FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
@@ -69,7 +71,7 @@
                        IsVisible="{Binding ShowPayDeduction}" />
 
                 <!-- VAB-ersättning info -->
-                <Label Text="✅ Försäkringskassan betalar VAB-ersättning"
+                <Label Text="{resx:Translate VAB_Info_Compensation}"
                        FontSize="13"
                        TextColor="{AppThemeBinding Light={StaticResource Success},
                                                    Dark={StaticResource Success}}" />

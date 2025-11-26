@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
@@ -68,13 +69,13 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
-        public string ActiveJobTitle => ActiveJob?.JobTitle ?? "Inget aktivt jobb";
+        public string ActiveJobTitle => ActiveJob?.JobTitle ?? LocalizationHelper.Translate("NoActiveJob");
 
         public string EmploymentTypeInfo => ActiveJob?.EmploymentType switch
         {
-            EmploymentType.Permanent => "Fast anställd - Har rätt till betald semester",
-            EmploymentType.Temporary => "Timanställd - Får semesterersättning vid lön (12%)",
-            _ => ""
+            EmploymentType.Permanent => LocalizationHelper.Translate("Vacation_PermanentInfo"),
+            EmploymentType.Temporary => LocalizationHelper.Translate("Vacation_TemporaryInfo"),
+            _ => string.Empty
         };
 
         // Semestertyp
@@ -98,8 +99,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
         public List<string> VacationTypeDisplayNames { get; } = new List<string>
         {
-            "Betald semester",
-            "Obetald ledighet"
+            LocalizationHelper.Translate("Vacation_Type_Paid"),
+            LocalizationHelper.Translate("Vacation_Type_Unpaid")
         };
 
         public string VacationTypeDisplayName
@@ -125,17 +126,17 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             get
             {
                 if (ActiveJob == null)
-                    return "";
+                    return string.Empty;
 
                 return (_selectedVacationType, ActiveJob.EmploymentType) switch
                 {
                     (VacationType.PaidVacation, EmploymentType.Permanent) =>
-                        "💰 Betald semester - Lön beräknas i rapporten baserat på aktuell månadslön",
+                        LocalizationHelper.Translate("Vacation_Explanation_PaidPermanent"),
                     (VacationType.PaidVacation, EmploymentType.Temporary) =>
-                        "⚠️ Timanställd kan inte ha betald semester - Välj 'Obetald ledighet'",
+                        LocalizationHelper.Translate("Vacation_Explanation_PaidTemporary"),
                     (VacationType.UnpaidVacation, _) =>
-                        "🏖️ Obetald ledighet - Registreras utan lön",
-                    _ => ""
+                        LocalizationHelper.Translate("Vacation_Explanation_Unpaid"),
+                    _ => string.Empty
                 };
             }
         }
@@ -205,6 +206,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 await LoadRemainingVacationDays();
             }
+
         }
 
         public bool CanSave()
@@ -232,8 +234,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     System.Globalization.CultureInfo.InvariantCulture,
                     out decimal kvot) || kvot <= 0)
                 {
-                    LogDebug($"❌ Kunde inte konvertera kvot: '{SemesterKvot}' → '{normalizedKvot}'");
-                    return (false, "Semesterkvot måste vara ett positivt tal");
+                    //LogDebug($"❌ Kunde inte konvertera kvot: '{SemesterKvot}' → '{normalizedKvot}'");
+                    return (false, LocalizationHelper.Translate("Vacation_Validation_RatioPositive"));
                 }
 
                 // Hantera planerade arbetstimmar för obetald
@@ -246,8 +248,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                         System.Globalization.CultureInfo.InvariantCulture,
                         out plannedHours) || plannedHours < 0)
                     {
-                        LogDebug($"❌ Kunde inte konvertera planerade timmar: '{PlannedWorkHours}' → '{normalizedHours}'");
-                        return (false, "Planerade arbetstimmar måste vara ett positivt tal");
+                        //LogDebug($"❌ Kunde inte konvertera planerade timmar: '{PlannedWorkHours}' → '{normalizedHours}'");
+                        return (false, LocalizationHelper.Translate("Vacation_Validation_HoursPositive"));
                     }
                 }
 
@@ -261,9 +263,40 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
             catch (Exception ex)
             {
-                LogDebug($"❌ Fel i SaveVacation: {ex.Message}");
-                return (false, $"Fel vid sparande: {ex.Message}");
+                //LogDebug($"❌ Fel i SaveVacation: {ex.Message}");
+                return (false, string.Format(
+                    LocalizationHelper.Translate("Vacation_Save_ErrorPrefix"),
+                    ex.Message
+                ));
             }
+        }
+
+        public void Reset()
+        {
+            _selectedDate = DateTime.Today;
+            _activeJob = null;
+
+            _selectedVacationType = VacationType.PaidVacation;
+            _semesterKvot = "1.0";
+            _plannedWorkHours = "8.0";
+            _validationMessage = "";
+            _remainingVacationText = "";
+
+            OnPropertyChanged(nameof(SelectedDate));
+            OnPropertyChanged(nameof(ActiveJob));
+            OnPropertyChanged(nameof(SelectedVacationType));
+            OnPropertyChanged(nameof(VacationTypeDisplayName));
+            OnPropertyChanged(nameof(ShowUnpaidVacationFields));
+            OnPropertyChanged(nameof(ShowPaidVacationFields));
+            OnPropertyChanged(nameof(IsPaidVacation));
+            OnPropertyChanged(nameof(IsUnpaidVacation));
+            OnPropertyChanged(nameof(VacationExplanation));
+            OnPropertyChanged(nameof(SemesterKvot));
+            OnPropertyChanged(nameof(PlannedWorkHours));
+            OnPropertyChanged(nameof(RemainingVacationText));
+            OnPropertyChanged(nameof(ValidationMessage));
+
+            ValidationChanged?.Invoke();
         }
         #endregion
 
@@ -295,24 +328,24 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         private string GetValidationError()
         {
             if (ActiveJob == null)
-                return "Inget aktivt jobb";
+                return LocalizationHelper.Translate("NoActiveJob");
 
             if (_selectedVacationType == VacationType.PaidVacation &&
                 ActiveJob.EmploymentType == EmploymentType.Temporary)
-                return "Timanställd kan inte ha betald semester - välj 'Obetald ledighet'";
+                return LocalizationHelper.Translate("Vacation_Validation_PaidNotAllowedForHourly");
 
             // Validera semesterkvot (bara för betald)
             if (_selectedVacationType == VacationType.PaidVacation)
             {
                 if (!decimal.TryParse(SemesterKvot, out decimal kvot) || kvot <= 0)
-                    return "Semesterkvot måste vara ett positivt tal (t.ex. 1.0)";
+                    return LocalizationHelper.Translate("Vacation_Error_InvalidKvot");
             }
 
             // Validera planerade arbetstimmar (bara för obetald)
             if (_selectedVacationType == VacationType.UnpaidVacation)
             {
                 if (!decimal.TryParse(PlannedWorkHours, out decimal hours) || hours < 0)
-                    return "Planerade arbetstimmar måste vara ett positivt tal (t.ex. 8.0)";
+                    return LocalizationHelper.Translate("Vacation_Error_InvalidHours");
             }
 
             // Validera datum mot befintliga pass
@@ -336,7 +369,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
                 if (!string.IsNullOrEmpty(validationError))
                 {
-                    await Shell.Current.DisplayAlert("❌ Kan inte spara", validationError, "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("Vacation_Save_ErrorTitle"),
+                        validationError,
+                        LocalizationHelper.Translate("Ok"));
                     return;
                 }
 
@@ -345,19 +381,28 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
                 if (success)
                 {
-                    await Shell.Current.DisplayAlert("✅ Sparat", message, "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("Vacation_Save_SuccessTitle"),
+                        message,
+                        LocalizationHelper.Translate("Ok"));
                     await Shell.Current.GoToAsync("..");
                 }
                 else
                 {
                     // Visa det riktiga felmeddelandet från VacationHandler
-                    await Shell.Current.DisplayAlert("❌ Kan inte spara", message, "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("Vacation_Save_ErrorTitle"),
+                        message,
+                        LocalizationHelper.Translate("Ok"));
                 }
             }
             catch (Exception ex)
             {
                 LogDebug($"❌ Exception i OnSaveVacation: {ex.Message}");
-                await Shell.Current.DisplayAlert("❌ Fel", "Oväntat fel inträffade", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Vacation_Save_UnexpectedError"),
+                    LocalizationHelper.Translate("Vacation_Save_UnexpectedErrorMessage"),
+                    LocalizationHelper.Translate("Ok"));
             }
         }
 
@@ -365,20 +410,23 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             return vacationType switch
             {
-                VacationType.PaidVacation => "Betald semester",
-                VacationType.UnpaidVacation => "Obetald ledighet",
-                _ => "Betald semester"
+                VacationType.PaidVacation => LocalizationHelper.Translate("Vacation_Type_Paid"),
+                VacationType.UnpaidVacation => LocalizationHelper.Translate("Vacation_Type_Unpaid"),
+                _ => LocalizationHelper.Translate("Vacation_Type_Paid")
             };
         }
 
         private VacationType GetVacationTypeFromDisplay(string displayName)
         {
-            return displayName switch
-            {
-                "Betald semester" => VacationType.PaidVacation,
-                "Obetald ledighet" => VacationType.UnpaidVacation,
-                _ => VacationType.PaidVacation
-            };
+            var paid = LocalizationHelper.Translate("Vacation_Type_Paid");
+            var unpaid = LocalizationHelper.Translate("Vacation_Type_Unpaid");
+
+            if (displayName == paid)
+                return VacationType.PaidVacation;
+            if (displayName == unpaid)
+                return VacationType.UnpaidVacation;
+
+            return VacationType.PaidVacation;
         }
 
         private async Task LoadRemainingVacationDays()
@@ -394,12 +442,15 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 var remaining = await _vacationHandler.GetRemainingVacationDays(ActiveJob.Id);
                 var total = ActiveJob.VacationDaysPerYear + (ActiveJob.InitialVacationBalance ?? 0);
 
-                RemainingVacationText = $"📊 Semesterdagar: {remaining:F1} av {total:F1} dagar";
+                RemainingVacationText = string.Format(
+                    LocalizationHelper.Translate("Vacation_RemainingDays"),
+                    remaining,
+                    total);
             }
             catch (Exception ex)
             {
                 LogDebug($"❌ Fel vid laddning av återstående dagar: {ex.Message}");
-                RemainingVacationText = "📊 Kunde inte ladda semesterinfo";
+                RemainingVacationText = LocalizationHelper.Translate("Vacation_RemainingDaysError");
             }
         }
         #endregion

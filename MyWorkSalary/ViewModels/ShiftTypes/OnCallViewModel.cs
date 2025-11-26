@@ -315,6 +315,37 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
+        public void Reset()
+        {
+            // Återställ core-data
+            _standbyStartTime = new TimeSpan(18, 0, 0);  // 18:00 standard
+            _standbyEndTime = new TimeSpan(8, 0, 0);     // 08:00 standard
+            _activeHours = "0";
+            _onCallRate = "40";
+            _notes = "";
+            _validationMessage = "";
+
+            // Trigger UI updates
+            OnPropertyChanged(nameof(StandbyStartTime));
+            OnPropertyChanged(nameof(StandbyEndTime));
+            OnPropertyChanged(nameof(ActiveHours));
+            OnPropertyChanged(nameof(OnCallRate));
+            OnPropertyChanged(nameof(Notes));
+            OnPropertyChanged(nameof(ValidationMessage));
+            OnPropertyChanged(nameof(HasValidationMessage));
+
+            // Lokala språkberoende properties
+            NotifyLocalizedProperties();
+
+            // Om beroenden finns
+            OnPropertyChanged(nameof(CalculatedPay));
+            OnPropertyChanged(nameof(FormattedCalculatedPay));
+            OnPropertyChanged(nameof(ShowActiveHoursInfo));
+
+            // Kör validering
+            ValidateInput();
+            ValidationChanged?.Invoke();
+        }
         #endregion
 
         #region Private Methods

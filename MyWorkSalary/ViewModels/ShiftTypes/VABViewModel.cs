@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Services.Handlers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -23,7 +24,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         #region Constructor
         public VABViewModel(VABHandler vabHandler)                               
         {
-            _vabHandler = vabHandler;                            
+            _vabHandler = vabHandler;
+
+            LocalizationHelper.LanguageChanged += OnLanguageChanged;
         }
         #endregion
 
@@ -83,11 +86,11 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 if (_activeJob?.IsHourlyEmployee == true)
                 {
-                    return "Som timanställd: Ingen arbetstid = ingen lön från företaget. Försäkringskassan betalar VAB-ersättning.";
+                    return LocalizationHelper.Translate("VAB_Explanation_Hourly");
                 }
                 else
                 {
-                    return "Som fast anställd: Företaget drar arbetstid från lön. Försäkringskassan ersätter med VAB-pengar.";
+                    return LocalizationHelper.Translate("VAB_Explanation_Salaried");
                 }
             }
         }
@@ -96,27 +99,35 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             get
             {
+                // Timanställd: enkel text från resx
                 if (_activeJob?.IsHourlyEmployee == true)
                 {
-                    return "VAB-dag registrerad - Ingen lön från företaget";
+                    return LocalizationHelper.Translate("VAB_Summary_HourlyEmployee");
                 }
                 else
                 {
+                    // Månadsanställd / övrigt
                     var scheduledHours = GetScheduledHoursValue();
                     var workedHours = GetWorkedHoursValue();
+
+                    // Hämta hours-abbr från resx (t.ex. "h" eller "t")
+                    var hoursAbbr = LocalizationHelper.Translate("HoursAbbreviation");
 
                     if (scheduledHours > 0 && workedHours >= 0)
                     {
                         var nettoHours = workedHours - scheduledHours;
-                        return $"VAB: Jobbade {workedHours:F1}t, skulle {scheduledHours:F1}t = {nettoHours:F1}t netto";
+
+                        // resx-strängen har placeholders: {0} = workedHours, {1} = scheduledHours, {2} = nettoHours, {3} = hoursAbbr
+                        var template = LocalizationHelper.Translate("VAB_Summary_WorkedVsPlanned");
+                        return string.Format(template, workedHours, scheduledHours, nettoHours, hoursAbbr);
                     }
                     else if (scheduledHours == 0)
                     {
-                        return "VAB-dag: Skulle varit ledig (0 timmar)";
+                        return LocalizationHelper.Translate("VAB_Summary_ZeroHours");
                     }
                     else
                     {
-                        return "VAB-dag: Ange timmar som skulle jobbats";
+                        return LocalizationHelper.Translate("VAB_Summary_MissingHours");
                     }
                 }
             }
@@ -135,6 +146,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 if (scheduledHours <= 0 || workedHours < 0)
                     return "";
 
+                // Hämta symbol för företagets valuta
+                var currencySymbol = CurrencyHelper.GetSymbol(_activeJob?.CurrencyCode ?? "SEK");
+
                 if (_activeJob?.IsHourlyEmployee != true && _activeJob?.MonthlySalary > 0)
                 {
                     // Månadslönad - visa både lön och avdrag
@@ -145,7 +159,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     var scheduledDeduction = (scheduledHours / 8) * dailyDeduction;
                     var nettoEffect = workedPay - scheduledDeduction;
 
-                    return $"Lön: +{workedPay:N0} kr, Avdrag: -{scheduledDeduction:N0} kr = {nettoEffect:N0} kr netto";
+                    // VAB_Pay_Monthly
+                    var template = LocalizationHelper.Translate("VAB_Pay_Monthly");
+
+                    return string.Format(template, workedPay, scheduledDeduction, nettoEffect, currencySymbol);
                 }
                 else
                 {
@@ -154,7 +171,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     var workedPay = workedHours * hourlyRate;
                     var lostPay = (scheduledHours - workedHours) * hourlyRate;
 
-                    return $"Lön: {workedPay:N0} kr, Förlorat: -{lostPay:N0} kr";
+                    // VAB_Pay_Hourly
+                    var template = LocalizationHelper.Translate("VAB_Pay_Hourly");
+
+                    return string.Format(template, workedPay, lostPay, currencySymbol);
                 }
             }
         }
@@ -207,7 +227,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 if (!CanSave())
                 {
-                    ValidationMessage = "Kontrollera att alla obligatoriska fält är ifyllda";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_MissingFields");
                     return false;
                 }
 
@@ -236,10 +256,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     {
                         // Visa bekräftelsedialog
                         bool userConfirmed = await Shell.Current.DisplayAlert(
-                            "Ersätt befintligt pass?",
+                            LocalizationHelper.Translate("VAB_Confirm_Replace_Title"),
                             result.ConfirmationMessage,
-                            "Ja, ersätt",
-                            "Avbryt"
+                            LocalizationHelper.Translate("Dialog_YesReplace"),
+                            LocalizationHelper.Translate("Cancel")
                         );
 
                         if (userConfirmed)
@@ -261,7 +281,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     }
                     else
                     {
-                        ValidationMessage = $"Konstig meddelande efter avbryt:  result.Message";
+                        ValidationMessage = string.Format(
+                            LocalizationHelper.Translate("VAB_Unexpected_Message"),
+                            result.Message
+                        );
                         return false;
                     }
                 }
@@ -270,9 +293,31 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
             catch (Exception ex)
             {
-                ValidationMessage = $"Fel vid sparande: {ex.Message}";
+                ValidationMessage = string.Format(
+                    LocalizationHelper.Translate("VAB_Save_Error"),
+                    ex.Message
+                );
                 return false;
             }
+        }
+
+        public void Reset()
+        {
+            _selectedDate = DateTime.Today;
+            _activeJob = null;
+
+            ScheduledHours = "";
+            WorkedHours = "";
+            ValidationMessage = "";
+
+            // Uppdatera UI
+            OnPropertyChanged(nameof(VABExplanationText));
+            OnPropertyChanged(nameof(ShowVABWorkingHours));
+            OnPropertyChanged(nameof(ShowPayDeduction));
+            OnPropertyChanged(nameof(CalculationSummary));
+            OnPropertyChanged(nameof(PayDeductionText));
+
+            ValidationChanged?.Invoke();
         }
         #endregion
 
@@ -328,55 +373,67 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 // Validera ScheduledHours (obligatoriskt)
                 if (string.IsNullOrWhiteSpace(ScheduledHours))
                 {
-                    ValidationMessage = "* Ange antal timmar som skulle jobbats";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_MissingScheduledHours");
                     return;
                 }
 
                 var scheduledHours = GetScheduledHoursValue();
                 if (scheduledHours < 0)
                 {
-                    ValidationMessage = "Ogiltigt värde för 'skulle jobbat'. Använd siffror (t.ex. 8 eller 7.5)";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_InvalidScheduledHours");
                     return;
                 }
 
                 if (scheduledHours > 24)
                 {
-                    ValidationMessage = "Arbetstid kan inte vara längre än 24 timmar";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_ScheduledTooHigh");
                     return;
                 }
 
                 // Validera WorkedHours (obligatoriskt)
                 if (string.IsNullOrWhiteSpace(WorkedHours))
                 {
-                    ValidationMessage = "* Ange antal timmar som faktiskt jobbades";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_MissingWorkedHours");
                     return;
                 }
 
                 var workedHours = GetWorkedHoursValue();
                 if (workedHours < 0)
                 {
-                    ValidationMessage = "Ogiltigt värde för 'jobbade timmar'. Använd siffror (t.ex. 4 eller 0)";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_InvalidWorkedHours");
                     return;
                 }
 
                 if (workedHours > 24)
                 {
-                    ValidationMessage = "Jobbade timmar kan inte vara längre än 24 timmar";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_WorkedTooHigh");
                     return;
                 }
 
                 if (workedHours > scheduledHours)
                 {
-                    ValidationMessage = "Jobbade timmar kan inte vara fler än planerade timmar";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_WorkedMoreThanPlanned");
                     return;
                 }
 
                 if (workedHours == scheduledHours && scheduledHours > 0)
                 {
-                    ValidationMessage = "💡 Ingen VAB behövs - du jobbade alla planerade timmar. Registrera som vanligt arbetspass istället.";
+                    ValidationMessage = LocalizationHelper.Translate("VAB_Validation_NoVABNeeded");
                     return;
                 }
             }
+        }
+
+        private void OnLanguageChanged()
+        {
+            OnPropertyChanged(nameof(VABExplanationText));
+            OnPropertyChanged(nameof(CalculationSummary));
+            OnPropertyChanged(nameof(PayDeductionText));
+
+            if (!string.IsNullOrEmpty(_validationMessage))
+                ValidateInput(); // kör om valideringen för att översätta igen om formen är uppe
+
+            OnPropertyChanged(nameof(ValidationMessage));
         }
         #endregion
 

@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
@@ -14,8 +15,6 @@ namespace MyWorkSalary.Services.Handlers
         private readonly ISickLeaveRepository _sickLeaveRepository;
         private readonly VABHandler _vabHandler;
         private readonly SickLeaveHandler _sickLeaveHandler;
-        //private readonly VacationHandler _vacationHandler;
-        //private readonly OnCallHandler _onCallHandler;
 
         #endregion
 
@@ -26,15 +25,11 @@ namespace MyWorkSalary.Services.Handlers
             ISickLeaveRepository sickLeaveRepository,
             VABHandler vabHandler,
             SickLeaveHandler sickLeaveHandler)
-            //VacationHandler vacationHandler,
-            //OnCallHandler onCallHandler)
         {
             _workShiftRepository = workShiftRepository;
             _sickLeaveRepository = sickLeaveRepository;
             _vabHandler = vabHandler;
             _sickLeaveHandler = sickLeaveHandler;
-            //_vacationHandler = vacationHandler;
-            //_onCallHandler = onCallHandler;
         }
 
         #endregion
@@ -62,8 +57,6 @@ namespace MyWorkSalary.Services.Handlers
             {
                 ShiftType.VAB => await _vabHandler.HandleVAB(date, jobProfile, startTime, endTime),
                 ShiftType.SickLeave => HandleSickLeaveRequest(date, jobProfile),
-                //ShiftType.Vacation => await _vacationHandler.HandleVacation(date, jobProfile),
-                //ShiftType.OnCall => await _onCallHandler.HandleOnCall(date, startTime, endTime, jobProfile),
                 ShiftType.Regular => HandleRegular(date, startTime, endTime, jobProfile),
                 _ => new ShiftHandlerResult { Success = false, Message = "Okänd passtyp" }
             };
@@ -98,9 +91,9 @@ namespace MyWorkSalary.Services.Handlers
                 {
                     Success = true,
                     CreatedShift = existingShift,
-                    Message = $"Pass av typ {newShiftType} finns redan för {date:yyyy-MM-dd}",
+                    Message = string.Format(LocalizationHelper.Translate("Shift_ExistingSameType"), newShiftType, date.ToString("yyyy-MM-dd")),
                     ShowConfirmationDialog = true,
-                    ConfirmationMessage = "Vill du redigera det befintliga passet?"
+                    ConfirmationMessage = LocalizationHelper.Translate("Shift_EditExistingConfirmation")
                 };
             }
 
@@ -108,9 +101,9 @@ namespace MyWorkSalary.Services.Handlers
             return new ShiftHandlerResult
             {
                 Success = false,
-                Message = $"Det finns redan ett {existingShift.ShiftType}-pass för {date:yyyy-MM-dd}",
+                Message = string.Format(LocalizationHelper.Translate("Shift_ExistingDifferentType"), existingShift.ShiftType, date.ToString("yyyy-MM-dd")),
                 ShowConfirmationDialog = true,
-                ConfirmationMessage = $"Vill du ersätta {existingShift.ShiftType} med {newShiftType}?",
+                ConfirmationMessage = string.Format(LocalizationHelper.Translate("Shift_ReplaceExistingConfirmation"), existingShift.ShiftType, newShiftType),
                 RequiresUserChoice = true
             };
         }
@@ -129,7 +122,7 @@ namespace MyWorkSalary.Services.Handlers
             {
                 Success = true,
                 RequiresTimeInput = true,
-                Message = "Ange start- och sluttid för arbetspasset"
+                Message = LocalizationHelper.Translate("Shift_EnterTime")
             };
         }
 
@@ -158,8 +151,8 @@ namespace MyWorkSalary.Services.Handlers
             {
                 Success = true,
                 RequiresUserChoice = true,
-                Message = "Välj typ av sjukdag",
-                ConfirmationMessage = "Vilken typ av sjukdag vill du registrera?"
+                Message = LocalizationHelper.Translate("Shift_SelectSickType"),
+                ConfirmationMessage = LocalizationHelper.Translate("Shift_ChooseSickType")
             };
         }
 
@@ -191,7 +184,7 @@ namespace MyWorkSalary.Services.Handlers
                 {
                     Success = true,
                     CreatedShift = workShift,
-                    Message = "Sjukdag registrerad"
+                    Message = LocalizationHelper.Translate("Shift_SickDayRegistered")
                 };
             }
             catch (Exception ex)
@@ -199,7 +192,7 @@ namespace MyWorkSalary.Services.Handlers
                 return new ShiftHandlerResult
                 {
                     Success = false,
-                    Message = $"Fel vid registrering av sjukdag: {ex.Message}"
+                    Message = string.Format(LocalizationHelper.Translate("Shift_SickDayError"), ex.Message)
                 };
             }
         }

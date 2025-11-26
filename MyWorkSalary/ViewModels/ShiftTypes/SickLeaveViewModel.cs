@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Handlers;
@@ -45,6 +46,13 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
             // Initial calculation
             CalculateSickPay();
+
+            LocalizationHelper.LanguageChanged += () =>
+            {
+                OnPropertyChanged(nameof(SickTypeDisplayNames));
+                OnPropertyChanged(nameof(SickTypeDisplayName));
+                RefreshUIProperties();
+            };
         }
         #endregion
 
@@ -74,7 +82,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
-        public string ActiveJobTitle => ActiveJob?.JobTitle ?? "Inget aktivt jobb";
+        public string ActiveJobTitle => ActiveJob?.JobTitle ?? LocalizationHelper.Translate("NoActiveJob");
 
         // Sjuktyp
         private void RefreshUIProperties()
@@ -98,12 +106,13 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
-        public List<string> SickTypeDisplayNames { get; } = new List<string>
-        {
-            "Skulle ha jobbat (sjuk)",              // ShouldHaveWorked
-            "Jobbat delvis (delvis sjuk)",          // WorkedPartially  
-            "Skulle varit ledig (sjuk på ledighet)" // WouldBeFree
-        };
+        public List<string> SickTypeDisplayNames =>
+            new()
+            {
+                LocalizationHelper.Translate("SickLeave_ShouldHaveWorked"),   // ShouldHaveWorked
+                LocalizationHelper.Translate("SickLeave_WorkedPartially"),    // WorkedPartially
+                LocalizationHelper.Translate("SickLeave_WouldBeFree")         // WouldBeFree
+            };
 
         public string SickTypeDisplayName
         {
@@ -187,9 +196,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 return _selectedSickType switch
                 {
-                    SickLeaveType.ShouldHaveWorked => "🤒 Skulle jobbat men var sjuk - Karensavdrag första dagen, sedan 80% sjuklön",
-                    SickLeaveType.WorkedPartially => "⚡ Jobbat delvis - Vanlig lön för arbetade timmar + sjuklön för resten",
-                    SickLeaveType.WouldBeFree => "🏠 Var sjuk på ledighet - Ingen sjuklön (skulle ändå varit ledig)",
+                    SickLeaveType.ShouldHaveWorked => LocalizationHelper.Translate("SickLeave_Explanation_ShouldHaveWorked"),
+                    SickLeaveType.WorkedPartially => LocalizationHelper.Translate("SickLeave_Explanation_WorkedPartially"),
+                    SickLeaveType.WouldBeFree => LocalizationHelper.Translate("SickLeave_Explanation_WouldBeFree"),
                     _ => ""
                 };
             }
@@ -321,6 +330,32 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 return false;
             }
         }
+
+        public void Reset()
+        {
+            // Återställ enum
+            _selectedSickType = SickLeaveType.ShouldHaveWorked;
+            OnPropertyChanged(nameof(SelectedSickType));
+            OnPropertyChanged(nameof(SickTypeDisplayName));
+
+            // Återställ arbetstider
+            WorkedStartTime = new TimeSpan(8, 0, 0);
+            WorkedEndTime = new TimeSpan(12, 0, 0);
+            ScheduledStartTime = new TimeSpan(8, 0, 0);
+            ScheduledEndTime = new TimeSpan(16, 0, 0);
+
+            // Övriga fält
+            Notes = string.Empty;
+            CalculatedPay = 0;
+            KarensInfo = "";
+            ValidationMessage = "";
+
+            // UI refresh (visar rätt fält för korrekt sjuktyp)
+            RefreshUIProperties();
+
+            // Räkna om
+            CalculateSickPay();
+        }
         #endregion
 
         #region Private Methods
@@ -375,8 +410,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 {
                     CalculatedPay = sickResult.TotalPay;
                     KarensInfo = sickResult.HasKarensDeduction
-                        ? $"⚠️ Karensavdrag: {sickResult.KarensDeduction:C}"
-                        : "✅ Ingen karensavdrag";
+                        ? string.Format(LocalizationHelper.Translate("SickLeave_KarensDeduction"), sickResult.KarensDeduction)
+                        : LocalizationHelper.Translate("SickLeave_NoKarens");
                 }
                 else
                 {
@@ -391,7 +426,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             {
                 System.Diagnostics.Debug.WriteLine($"Fel i CalculateSickPay: {ex.Message}");
                 CalculatedPay = 0;
-                KarensInfo = "Fel vid beräkning";
+                KarensInfo = LocalizationHelper.Translate("SickLeave_CalcError");
             }
         }
 
@@ -408,7 +443,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         private string GetValidationError()
         {
             if (ActiveJob == null)
-                return "Inget aktivt jobb";
+                return LocalizationHelper.Translate("NoActiveJob");
 
             if (_selectedSickType == SickLeaveType.WorkedPartially)
             {
@@ -416,9 +451,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 var scheduled = ScheduledEndTime - ScheduledStartTime;
 
                 if (worked <= TimeSpan.Zero)
-                    return "Arbetade timmar måste vara större än 0";
+                    return LocalizationHelper.Translate("SickLeave_Validation_WorkedTooSmall");
                 if (worked >= scheduled)
-                    return "Arbetade timmar måste vara mindre än planerade";
+                    return LocalizationHelper.Translate("SickLeave_Validation_WorkedTooLarge");
             }
 
             return "";
@@ -433,17 +468,29 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
                 if (success)
                 {
-                    await Shell.Current.DisplayAlert("✅ Sparat!", "Sjukdag registrerad", "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("SaveSuccess"),
+                        LocalizationHelper.Translate("SickLeave_Save_Message"),
+                        LocalizationHelper.Translate("OK")
+                    );
                     await Shell.Current.GoToAsync("..");
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("❌ Fel", "Kunde inte spara sjukdag", "OK");
+                    await Shell.Current.DisplayAlert(
+                        LocalizationHelper.Translate("Error"),
+                        LocalizationHelper.Translate("SickLeave_Save_ErrorMessage"),
+                        LocalizationHelper.Translate("OK")
+                    );
                 }
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("❌ Fel", $"Kunde inte spara: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("Error"),
+                    string.Format(LocalizationHelper.Translate("SickLeave_Save_Exception"), ex.Message),
+                    LocalizationHelper.Translate("OK")
+                );
             }
         }
 
@@ -451,22 +498,25 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             return sickType switch
             {
-                SickLeaveType.ShouldHaveWorked => "Skulle ha jobbat (sjuk)",           
-                SickLeaveType.WorkedPartially => "Jobbat delvis (delvis sjuk)",       
-                SickLeaveType.WouldBeFree => "Skulle varit ledig (sjuk på ledighet)", 
-                _ => "Skulle ha jobbat (sjuk)"
+                SickLeaveType.ShouldHaveWorked => LocalizationHelper.Translate("SickLeave_ShouldHaveWorked"),
+                SickLeaveType.WorkedPartially => LocalizationHelper.Translate("SickLeave_WorkedPartially"),
+                SickLeaveType.WouldBeFree => LocalizationHelper.Translate("SickLeave_WouldBeFree"),
+                _ => LocalizationHelper.Translate("SickLeave_ShouldHaveWorked")
             };
         }
 
         private SickLeaveType GetSickTypeFromDisplay(string displayName)
         {
-            return displayName switch
-            {
-                "Skulle ha jobbat (sjuk)" => SickLeaveType.ShouldHaveWorked,           
-                "Jobbat delvis (delvis sjuk)" => SickLeaveType.WorkedPartially,        
-                "Skulle varit ledig (sjuk på ledighet)" => SickLeaveType.WouldBeFree,  
-                _ => SickLeaveType.ShouldHaveWorked
-            };
+            if (displayName == LocalizationHelper.Translate("SickLeave_ShouldHaveWorked"))
+                return SickLeaveType.ShouldHaveWorked;
+
+            if (displayName == LocalizationHelper.Translate("SickLeave_WorkedPartially"))
+                return SickLeaveType.WorkedPartially;
+
+            if (displayName == LocalizationHelper.Translate("SickLeave_WouldBeFree"))
+                return SickLeaveType.WouldBeFree;
+
+            return SickLeaveType.ShouldHaveWorked;
         }
         #endregion
 

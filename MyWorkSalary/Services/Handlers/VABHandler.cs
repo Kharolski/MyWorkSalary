@@ -1,8 +1,10 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services.Interfaces;
+using System.Globalization;
 
 namespace MyWorkSalary.Services.Handlers
 {
@@ -32,7 +34,7 @@ namespace MyWorkSalary.Services.Handlers
         {
             try
             {
-                // 1. Kolla befintligt pass
+                // Kolla befintligt pass
                 var existingShift = await CheckForExistingShift(date, jobProfile.Id);
                 if (existingShift != null)
                 {
@@ -40,15 +42,19 @@ namespace MyWorkSalary.Services.Handlers
                     {
                         Success = false,
                         ShowConfirmationDialog = true,
-                        ConfirmationMessage = $"Du har redan ett {GetShiftTypeText(existingShift.ShiftType)} registrerat för {date:d MMM}.\n\nVill du ersätta det med VAB?",
+                        ConfirmationMessage = string.Format(
+                            LocalizationHelper.Translate("VAB_Confirm_ReplaceExistingShift"),
+                            GetShiftTypeText(existingShift.ShiftType),
+                            date.ToString("d MMM", CultureInfo.CurrentCulture)
+                        ),
                         RequiresTimeInput = false
                     };
                 }
 
-                // 2. Skapa WorkShift + VABLeave
+                // Skapa WorkShift + VABLeave
                 var (vabShift, vabLeave) = await CreateVABWithDetails(date, jobProfile, startTime, endTime, scheduledHours, workedHours);
 
-                // 3. Spara båda
+                // Spara båda
                 var savedShift = await SaveVABShift(vabShift);
                 vabLeave.WorkShiftId = savedShift.Id;
                 await _vabLeaveRepository.InsertAsync(vabLeave);
@@ -56,7 +62,7 @@ namespace MyWorkSalary.Services.Handlers
                 return new ShiftHandlerResult
                 {
                     Success = true,
-                    Message = "VAB registrerat",
+                    Message = LocalizationHelper.Translate("VAB_Save_Success"),
                     CreatedShift = savedShift,
                     RequiresTimeInput = false
                 };
@@ -66,7 +72,10 @@ namespace MyWorkSalary.Services.Handlers
                 return new ShiftHandlerResult
                 {
                     Success = false,
-                    Message = $"Fel vid VAB-registrering: {ex.Message}"
+                    Message = string.Format(
+                        LocalizationHelper.Translate("VAB_Save_Error"),
+                        ex.Message
+                    )
                 };
             }
         }
@@ -88,7 +97,7 @@ namespace MyWorkSalary.Services.Handlers
                 return new ShiftHandlerResult
                 {
                     Success = true,
-                    Message = "Befintligt pass ersatt med VAB",
+                    Message = LocalizationHelper.Translate("VAB_Confirm_ReplaceSuccess"),
                     CreatedShift = savedShift,
                     RequiresTimeInput = false
                 };
@@ -98,7 +107,10 @@ namespace MyWorkSalary.Services.Handlers
                 return new ShiftHandlerResult
                 {
                     Success = false,
-                    Message = $"Fel vid ersättning med VAB: {ex.Message}"
+                    Message = string.Format(
+                        LocalizationHelper.Translate("VAB_Confirm_ReplaceError"),
+                        ex.Message
+                    )
                 };
             }
         }
@@ -243,12 +255,12 @@ namespace MyWorkSalary.Services.Handlers
         {
             return shiftType switch
             {
-                ShiftType.Regular => "arbetspass",
-                ShiftType.SickLeave => "sjukdag",
-                ShiftType.Vacation => "semesterdag",
-                ShiftType.OnCall => "jourpass",
-                ShiftType.VAB => "Vård av barn",
-                _ => "pass"
+                ShiftType.Regular => LocalizationHelper.Translate("ShiftType_RegularShift"),
+                ShiftType.SickLeave => LocalizationHelper.Translate("ShiftType_SickLeaveShift"),
+                ShiftType.Vacation => LocalizationHelper.Translate("ShiftType_VacationShift"),
+                ShiftType.OnCall => LocalizationHelper.Translate("ShiftType_OnCallShift"),
+                ShiftType.VAB => LocalizationHelper.Translate("ShiftType_VABShift"),
+                _ => LocalizationHelper.Translate("ShiftType_Default")
             };
         }
         #endregion

@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView x:Class="MyWorkSalary.Views.Pages.ShiftTypeView.VacationFormView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <VerticalStackLayout Spacing="20">
 
         <!-- 🏖️ Semestertyp -->
         <VerticalStackLayout Spacing="5">
-            <Label Text="🏖️ Typ av semester" Style="{StaticResource FieldLabel}" />
+            <Label Text="{resx:Translate Vacation_Label_Type}" Style="{StaticResource FieldLabel}" />
             <Picker ItemsSource="{Binding VacationTypeDisplayNames}"
                     SelectedItem="{Binding VacationTypeDisplayName}"
                     Style="{StaticResource ThemedPicker}"
-                    Title="Välj semestertyp" />
+                    Title="{resx:Translate Vacation_Picker_Title}" />
             
         </VerticalStackLayout>
 
         <!-- 🧮 Semesterkvot - BARA för betald -->
         <VerticalStackLayout Spacing="5" IsVisible="{Binding IsPaidVacation}">
-            <Label Text="🧮 Semesterkvot" Style="{StaticResource FieldLabel}" />
+            <Label Text="{resx:Translate Vacation_Label_Ratio}" Style="{StaticResource FieldLabel}" />
             <Entry Text="{Binding SemesterKvot}"
                    Placeholder="1.0"
                    Keyboard="Numeric"
                    Style="{StaticResource ThemedEntry}" />
-            <Label Text="💡 Skriv 1.0 som standard. Högre kvot för oplanerad semester (t.ex. 1.5)" 
+            <Label Text="{resx:Translate Vacation_Ratio_Hint}" 
                    FontSize="12"
                     TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                     Dark={StaticResource TextSecondaryDark}}" />
@@ -30,12 +31,12 @@
         
         <!-- ⏰ Planerade arbetstimmar - BARA för obetald -->
         <VerticalStackLayout Spacing="5" IsVisible="{Binding IsUnpaidVacation}">
-            <Label Text="⏰ Timmar du skulle arbetat" Style="{StaticResource FieldLabel}" />
+            <Label Text="{resx:Translate Vacation_Label_PlannedHours}" Style="{StaticResource FieldLabel}" />
             <Entry Text="{Binding PlannedWorkHours}"
                    Placeholder="8.0"
                    Keyboard="Numeric"
                    Style="{StaticResource ThemedEntry}" />
-            <Label Text="💡 Ange hur många timmar du skulle arbetat denna dag"
+            <Label Text="{resx:Translate Vacation_Hours_Hint}"
                    FontSize="12"
                    TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                    Dark={StaticResource TextSecondaryDark}}" />
@@ -44,7 +45,7 @@
         <!-- 📝 Information -->
         <Frame Style="{StaticResource ActiveJobFrame}">
             <VerticalStackLayout Spacing="8">
-                <Label Text="ℹ️ Information" 
+                <Label Text="{resx:Translate Vacation_Info_Title}" 
                        Style="{StaticResource ActiveJobTitleLabel}" 
                        FontSize="14" />
 
@@ -62,12 +63,12 @@
                        IsVisible="{Binding ShowRemainingDays}" />
 
                 <!-- info -->
-                <Label Text="📅 Registrerar 1 dag semester för valt datum" 
+                <Label Text="{resx:Translate Vacation_Info_OneDayRegistered}" 
                        FontSize="12" 
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
                             Dark={StaticResource White}}" />
 
-                <Label Text="💰 Lön beräknas i månadsrapporten med aktuell lön" 
+                <Label Text="{resx:Translate Vacation_Info_SalaryCalculated}" 
                        FontSize="12" 
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
                             Dark={StaticResource White}}" />
@@ -78,10 +79,10 @@
         <Frame Style="{StaticResource InfoFrame}" 
                IsVisible="{Binding ShowUnpaidVacationFields}">
             <VerticalStackLayout Spacing="5">
-                <Label Text="🏠 Obetald ledighet" 
+                <Label Text="{resx:Translate Vacation_Unpaid_Title}" 
                        FontSize="14" 
                        FontAttributes="Bold" />
-                <Label Text="Ingen lön utbetalas. Registreras för dokumentation och statistik."
+                <Label Text="{resx:Translate Vacation_Unpaid_Info}"
                        FontSize="13" />
             </VerticalStackLayout>
         </Frame>
