@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
@@ -30,7 +31,9 @@ namespace MyWorkSalary.Services.Conflicts
 
             var newStart = newShift.ShiftDate.Date;
             var newEnd = newStart.AddDays((newShift.NumberOfDays ?? 1) - 1);
-            var leaveType = newShift.ShiftType == ShiftType.SickLeave ? "sjukskrivning" : "semester";
+            var leaveType = newShift.ShiftType == ShiftType.SickLeave
+                ? LocalizationHelper.Translate("Shift_SickLeave")
+                : LocalizationHelper.Translate("Shift_Vacation");
 
             foreach (var existing in existingShifts)
             {
@@ -41,6 +44,7 @@ namespace MyWorkSalary.Services.Conflicts
                 if (existing.StartTime.HasValue && existing.EndTime.HasValue)
                 {
                     var workDate = existing.StartTime.Value.Date;
+
                     // Kontrollera om arbetspasset överlappar med ledighetsperioden
                     if (workDate >= newStart && workDate <= newEnd)
                     {
@@ -49,12 +53,22 @@ namespace MyWorkSalary.Services.Conflicts
                         var dayName = workDate.ToString("dddd d MMMM", swedishCulture);
 
                         return (true,
-                            $"WORK_CONFLICT|Du har ett arbetspass under {leaveType}en:\n\n" +
+                            $"WORK_CONFLICT|" +
+                            $"{LocalizationHelper.Translate("Conflict_WorkDuringLeave_Title", leaveType)}\n\n" +
                             $"📅 {dayName}\n" +
                             $"🕐 {startTime} - {endTime}\n\n" +
-                            $"Du kan inte ha {leaveType} samma dag som du arbetar.\n" +
-                            $"Vill du ta bort arbetspasset?|{existing.Id}|{workDate:yyyy-MM-dd}",
+                            $"{LocalizationHelper.Translate("Conflict_WorkDuringLeave_Body", leaveType)}\n" +
+                            $"{LocalizationHelper.Translate("Conflict_WorkDuringLeave_ConfirmRemove")}" +
+                            $"|{existing.Id}|{workDate:yyyy-MM-dd}",
                             new List<WorkShift> { existing });
+
+                        //return (true,
+                        //    $"WORK_CONFLICT|Du har ett arbetspass under {leaveType}en:\n\n" +
+                        //    $"📅 {dayName}\n" +
+                        //    $"🕐 {startTime} - {endTime}\n\n" +
+                        //    $"Du kan inte ha {leaveType} samma dag som du arbetar.\n" +
+                        //    $"Vill du ta bort arbetspasset?|{existing.Id}|{workDate:yyyy-MM-dd}",
+                        //    new List<WorkShift> { existing });
                     }
                 }
 
@@ -79,10 +93,18 @@ namespace MyWorkSalary.Services.Conflicts
 
                     if (newStart <= existingEnd && newEnd >= existingStart)
                     {
-                        string existingType = existing.ShiftType == ShiftType.Vacation ? "Semester" : "Sjukskrivning";
-                        return (true, $"Överlappar med befintlig {existingType.ToLower()}:\n" +
-                                     $"📅 {existingStart.ToString("d MMM", swedishCulture)} - {existingEnd.ToString("d MMM", swedishCulture)}\n" +
-                                     $"({existing.NumberOfDays} dagar)", new List<WorkShift>());
+                        var existingType = existing.ShiftType == ShiftType.Vacation
+                            ? LocalizationHelper.Translate("Shift_Vacation")
+                            : LocalizationHelper.Translate("Shift_SickLeave");
+                        return (true,
+                            $"{LocalizationHelper.Translate("Conflict_OverlappingLeave", existingType)}\n" +
+                            $"📅 {existingStart.ToString("d MMM", swedishCulture)} - {existingEnd.ToString("d MMM", swedishCulture)}\n" +
+                            $"{LocalizationHelper.Translate("Conflict_Days", existing.NumberOfDays)}",
+                            new List<WorkShift>());
+
+                        //return (true, $"Överlappar med befintlig {existingType.ToLower()}:\n" +
+                        //             $"📅 {existingStart.ToString("d MMM", swedishCulture)} - {existingEnd.ToString("d MMM", swedishCulture)}\n" +
+                        //             $"({existing.NumberOfDays} dagar)", new List<WorkShift>());
                     }
                 }
             }
@@ -90,7 +112,9 @@ namespace MyWorkSalary.Services.Conflicts
             // Om vi har sammanhängande perioder - föreslå sammanslagning
             if (conflictingShifts.Any())
             {
-                var typeText = newShift.ShiftType == ShiftType.SickLeave ? "sjukskrivning" : "semester";
+                var typeText = newShift.ShiftType == ShiftType.SickLeave
+                    ? LocalizationHelper.Translate("Shift_SickLeave")
+                    : LocalizationHelper.Translate("Shift_Vacation");
                 var totalDays = conflictingShifts.Sum(s => s.NumberOfDays ?? 1) + (newShift.NumberOfDays ?? 1);
                 var allDates = conflictingShifts.Select(s => s.ShiftDate.Date)
                     .Concat(new[] { newStart })
@@ -111,17 +135,19 @@ namespace MyWorkSalary.Services.Conflicts
                 if (newEndDate > latestDate)
                     latestDate = newEndDate;
 
-                var message = $"Du har redan {typeText} som överlappar eller är sammanhängande:\n\n";
+                var message = LocalizationHelper.Translate("Conflict_Merge_Header", typeText) + "\n\n";
                 foreach (var conflict in conflictingShifts.OrderBy(s => s.ShiftDate))
                 {
                     var start = conflict.ShiftDate;
                     var end = start.AddDays((conflict.NumberOfDays ?? 1) - 1);
-                    message += $"• {start.ToString("d MMM", swedishCulture)} - {end.ToString("d MMM", swedishCulture)} ({conflict.NumberOfDays} dagar)\n";
+                    // message += $"• {start.ToString("d MMM", swedishCulture)} - {end.ToString("d MMM", swedishCulture)} ({conflict.NumberOfDays} dagar)\n";
+                    message += $"• {start: d MMM} - {end: d MMM} " + LocalizationHelper.Translate("Conflict_Days", conflict.NumberOfDays) + "\n";
                 }
 
                 var totalRealDays = (int)(latestDate - earliestDate).TotalDays + 1;
-                message += $"\nVill du slå samman till en sammanhängande period?\n";
-                message += $"📅 {earliestDate.ToString("d MMM", swedishCulture)} - {latestDate.ToString("d MMM", swedishCulture)} ({totalRealDays} dagar)";
+                message += "\n" + LocalizationHelper.Translate("Conflict_Merge_Question") + "\n";
+                // message += $"📅 {earliestDate.ToString("d MMM", swedishCulture)} - {latestDate.ToString("d MMM", swedishCulture)} ({totalRealDays} dagar)";
+                message += $"📅 {earliestDate:d MMM} - {latestDate:d MMM} " + LocalizationHelper.Translate("Conflict_Days", totalRealDays);
 
                 return (true, $"MERGE_PERIODS|{message}|{string.Join(",", conflictingShifts.Select(s => s.Id))}|{earliestDate:yyyy-MM-dd}|{totalRealDays}", conflictingShifts);
             }
@@ -149,10 +175,15 @@ namespace MyWorkSalary.Services.Conflicts
                 if (workDate >= sickStart && workDate <= sickEnd)
                 {
                     var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
-                    var message = $"Du är sjukskriven denna dag:\n\n" +
-                                 $"📅 Sjukperiod: {sickStart.ToString("d MMM", swedishCulture)} - {sickEnd.ToString("d MMM", swedishCulture)}\n" +
-                                 $"({existing.NumberOfDays} dagar)\n\n" +
-                                 $"Vill du förkorta sjukskrivningen för att kunna jobba?";
+                    //var message = $"Du är sjukskriven denna dag:\n\n" +
+                    //             $"📅 Sjukperiod: {sickStart.ToString("d MMM", swedishCulture)} - {sickEnd.ToString("d MMM", swedishCulture)}\n" +
+                    //             $"({existing.NumberOfDays} dagar)\n\n" +
+                    //             $"Vill du förkorta sjukskrivningen för att kunna jobba?";
+                    var message =
+                            LocalizationHelper.Translate("Conflict_SickDay") + "\n\n" +
+                            $"📅 {LocalizationHelper.Translate("Conflict_SickPeriod", sickStart.ToString("d MMM", swedishCulture), sickEnd.ToString("d MMM", swedishCulture))}\n" +
+                            LocalizationHelper.Translate("Conflict_Days", existing.NumberOfDays) + "\n\n" +
+                            LocalizationHelper.Translate("Conflict_ShortenSickLeave_Question");
 
                     return (true, message, existing);
                 }
@@ -175,9 +206,13 @@ namespace MyWorkSalary.Services.Conflicts
                     var conflictList = string.Join("\n", conflictingShifts.Select(s =>
                         $"• {s.StartTime?.ToString("dddd d MMM", swedishCulture)} ({s.StartTime:HH:mm}-{s.EndTime:HH:mm})"));
 
-                    var message = $"Du har {conflictingShifts.Count} arbetspass under sjukperioden:\n\n" +
-                                 $"{conflictList}\n\n" +
-                                 $"Vill du att systemet automatiskt tar bort dessa pass?";
+                    //var message = $"Du har {conflictingShifts.Count} arbetspass under sjukperioden:\n\n" +
+                    //             $"{conflictList}\n\n" +
+                    //             $"Vill du att systemet automatiskt tar bort dessa pass?";
+                    var message =
+                            LocalizationHelper.Translate("Conflict_AutoRemove_Header", conflictingShifts.Count) + "\n\n" +
+                            $"{conflictList}\n\n" +
+                            LocalizationHelper.Translate("Conflict_AutoRemove_Question");
 
                     // Returnera för att låta UI hantera bekräftelsen
                     return (false, $"CONFLICT_RESOLUTION_NEEDED|{message}|{sickShift.Id}");
@@ -192,7 +227,8 @@ namespace MyWorkSalary.Services.Conflicts
 
                 // Spara sjukskrivningen
                 _databaseService.WorkShifts.SaveWorkShift(sickShift);
-                return (true, $"Sjukskrivning på {sickShift.NumberOfDays} dagar har sparats!");
+                // return (true, $"Sjukskrivning på {sickShift.NumberOfDays} dagar har sparats!");
+                return (true, LocalizationHelper.Translate("Shift_SickSaved", sickShift.NumberOfDays));
             }
             catch (Exception ex)
             {
@@ -218,9 +254,12 @@ namespace MyWorkSalary.Services.Conflicts
                 // Spara sjukskrivningen
                 _databaseService.WorkShifts.SaveWorkShift(sickShift);
 
+                //var message = conflictingShifts.Any()
+                //    ? $"Sjukskrivning sparad! {conflictingShifts.Count} arbetspass har tagits bort."
+                //    : $"Sjukskrivning på {sickShift.NumberOfDays} dagar har sparats!";
                 var message = conflictingShifts.Any()
-                    ? $"Sjukskrivning sparad! {conflictingShifts.Count} arbetspass har tagits bort."
-                    : $"Sjukskrivning på {sickShift.NumberOfDays} dagar har sparats!";
+                    ? LocalizationHelper.Translate("Shift_SickSavedWithRemoved", conflictingShifts.Count)
+                    : LocalizationHelper.Translate("Shift_SickSaved", sickShift.NumberOfDays);
 
                 return (true, message);
             }
@@ -242,7 +281,7 @@ namespace MyWorkSalary.Services.Conflicts
                 {
                     // Ta bort hela sjukskrivningen
                     _databaseService.WorkShifts.DeleteWorkShift(sickLeave.Id);
-                    return (true, "Sjukskrivningen har tagits bort helt.");
+                    return (true, LocalizationHelper.Translate("Shift_SickRemoved"));
                 }
                 else
                 {
@@ -250,7 +289,13 @@ namespace MyWorkSalary.Services.Conflicts
                     sickLeave.NumberOfDays = newDays;
                     _databaseService.WorkShifts.SaveWorkShift(sickLeave);
                     var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
-                    return (true, $"Sjukskrivningen förkortad till {newDays} dagar (till {newEndDate.ToString("d MMM", swedishCulture)}).");
+
+                    // return (true, $"Sjukskrivningen förkortad till {newDays} dagar (till {newEndDate.ToString("d MMM", swedishCulture)}).");
+                    return (true,
+                        LocalizationHelper.Translate(
+                            "Shift_SickShortened",
+                            newDays,
+                            newEndDate.ToString("d MMM", swedishCulture)));
                 }
             }
             catch (Exception ex)
@@ -294,8 +339,12 @@ namespace MyWorkSalary.Services.Conflicts
 
                 _databaseService.WorkShifts.SaveWorkShift(mergedShift);
 
-                var typeText = newShift.ShiftType == ShiftType.SickLeave ? "Sjukskrivning" : "Semester";
-                return (true, $"{typeText} sammanslagen till {mergedDays} dagar!");
+                var typeText = newShift.ShiftType == ShiftType.SickLeave
+                        ? LocalizationHelper.Translate("Shift_SickLeave")
+                        : LocalizationHelper.Translate("Shift_Vacation");
+
+                // return (true, $"{typeText} sammanslagen till {mergedDays} dagar!");
+                return (true, LocalizationHelper.Translate("Shift_Merged", typeText, mergedDays));
             }
             catch (Exception ex)
             {
@@ -337,8 +386,11 @@ namespace MyWorkSalary.Services.Conflicts
                 // Spara ledigheten
                 _databaseService.WorkShifts.SaveWorkShift(leaveShift);
 
-                var typeText = leaveShift.ShiftType == ShiftType.SickLeave ? "sjukskrivning" : "semester";
-                return (true, $"Arbetspasset har tagits bort och {typeText} har sparats!");
+                var typeText = leaveShift.ShiftType == ShiftType.SickLeave
+                        ? LocalizationHelper.Translate("Shift_SickLeave")
+                        : LocalizationHelper.Translate("Shift_Vacation");
+
+                return (true, LocalizationHelper.Translate("Shift_WorkRemovedAndLeaveSaved", typeText));
             }
             catch (Exception ex)
             {

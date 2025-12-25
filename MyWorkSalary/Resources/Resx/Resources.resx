@@ -1951,4 +1951,257 @@ Do you want to replace it with Sick Child Care?</value>
     <value>Error registering sick day: {0}</value>
     <comment>ShiftTypeHandler</comment>
   </data>
+  <data name="Conflict_WorkDuringLeave_Title" xml:space="preserve">
+    <value>You have a work shift during your {0}:</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_WorkDuringLeave_Body" xml:space="preserve">
+    <value>You cannot have {0} on the same day you work.</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_WorkDuringLeave_ConfirmRemove" xml:space="preserve">
+    <value>Do you want to remove the work shift?</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_OverlappingLeave" xml:space="preserve">
+    <value>Overlaps with existing {0}:</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_Days" xml:space="preserve">
+    <value>({0} days)</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_Merge_Header" xml:space="preserve">
+    <value>You already have {0} that overlaps or is adjacent:</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_Merge_Question" xml:space="preserve">
+    <value>Do you want to merge into one continuous period?</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_Merge_Period" xml:space="preserve">
+    <value>{0} – {1} ({2} days)</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_SickDay" xml:space="preserve">
+    <value>You are on sick leave this day:</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_SickPeriod" xml:space="preserve">
+    <value>Sick period: {0} – {1}</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_ShortenSickLeave_Question" xml:space="preserve">
+    <value>Do you want to shorten the sick leave so you can work?</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_AutoRemove_Header" xml:space="preserve">
+    <value>You have {0} work shifts during the sick period:</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Conflict_AutoRemove_Question" xml:space="preserve">
+    <value>Do you want the system to automatically remove these shifts?</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Shift_SickSaved" xml:space="preserve">
+    <value>Sick leave for {0} days has been saved!</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Shift_SickSavedWithRemoved" xml:space="preserve">
+    <value>Sick leave saved! {0} work shifts were removed.</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Shift_SickRemoved" xml:space="preserve">
+    <value>Sick leave has been completely removed.</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Shift_SickShortened" xml:space="preserve">
+    <value>Sick leave shortened to {0} days (until {1})</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Shift_Merged" xml:space="preserve">
+    <value>{0} merged into {1} days!</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Shift_WorkRemovedAndLeaveSaved" xml:space="preserve">
+    <value>The work shift was removed and {0} was saved!</value>
+    <comment>ConflictResolutionService</comment>
+  </data>
+  <data name="Error_NoJobProfile" xml:space="preserve">
+    <value>No job selected</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Error_SaveFailed" xml:space="preserve">
+    <value>Error while saving: {0}</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Error_ValidationFailed" xml:space="preserve">
+    <value>Validation error: {0}</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Error_DateValidationFailed" xml:space="preserve">
+    <value>Error validating date</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_NotAllowed_Temporary" xml:space="preserve">
+    <value>Temporary employees cannot have paid vacation</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_NotAllowed_Temporary_Detail" xml:space="preserve">
+    <value>Temporary employees cannot have paid vacation – choose unpaid leave</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_InsufficientDays" xml:space="preserve">
+    <value>Not enough vacation days remaining ({0:F1} days)</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Saved" xml:space="preserve">
+    <value>Vacation has been saved!</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_WorkShiftNotFound" xml:space="preserve">
+    <value>Could not find saved work shift</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_AlreadyRegistered" xml:space="preserve">
+    <value>You already have vacation registered on this date</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Conflict_Regular" xml:space="preserve">
+    <value>You already have a work shift this day:
+⏰ {0} → {1}
+
+Remove the work shift before registering vacation.</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Conflict_SickLeave" xml:space="preserve">
+    <value>You are already on sick leave this day:
+🤒 Sick leave ({0} days)
+
+Remove the sick leave before registering vacation.</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Conflict_OnCall" xml:space="preserve">
+    <value>You already have an on-call shift this day:
+📞 On-call shift
+
+Remove the on-call shift before registering vacation.</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Conflict_VAB" xml:space="preserve">
+    <value>You already have VAB registered this day:
+👶 Care of sick child
+
+Remove VAB before registering vacation.</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Conflict_Generic" xml:space="preserve">
+    <value>You already have a shift registered this day.
+Remove it before registering vacation.</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Note_Paid" xml:space="preserve">
+    <value>Paid vacation – 1 day{0}</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Note_Unpaid" xml:space="preserve">
+    <value>Unpaid leave – 1 day{0}</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Note_Generic" xml:space="preserve">
+    <value>Vacation – 1 day{0}</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Note_Quota" xml:space="preserve">
+    <value>(quota: {0})</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="Vacation_Note_PlannedHours" xml:space="preserve">
+    <value>(planned work: {0}h)</value>
+    <comment>VacationHandler</comment>
+  </data>
+  <data name="ShiftValidation_Vacation_AlreadyExists" xml:space="preserve">
+    <value>Vacation is already registered on this day.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_Vacation_RemoveExisting" xml:space="preserve">
+    <value>Remove the existing vacation first.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_SickLeave_Exists" xml:space="preserve">
+    <value>You are on sick leave this day.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_SickLeave_Remove" xml:space="preserve">
+    <value>Remove the sick leave first.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_SickLeave_Info" xml:space="preserve">
+    <value>Sick leave ({0} days).</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_WorkShift_Exists" xml:space="preserve">
+    <value>A work shift is already registered on this day.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_WorkShift_Remove" xml:space="preserve">
+    <value>Remove the work shift first.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_WorkShift_Time" xml:space="preserve">
+    <value>{0} - {1}</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_WorkShift_Generic" xml:space="preserve">
+    <value>Work shift</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_VAB_Exists" xml:space="preserve">
+    <value>You have Child care registered on this day.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_VAB_Remove" xml:space="preserve">
+    <value>Remove the Child care first.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_VAB_Info" xml:space="preserve">
+    <value>Care of child.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_Date" xml:space="preserve">
+    <value>📅 Date: {0}</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_Period" xml:space="preserve">
+    <value>📅 Period: {0} - {1}</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_Days" xml:space="preserve">
+    <value>({0} days)</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_FullDay_Sick_Title" xml:space="preserve">
+    <value>You are on sick leave this day (FULL DAY).</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_FullDay_Sick_CannotWork" xml:space="preserve">
+    <value>You cannot work while on sick leave.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_FullDay_Sick_Shorten" xml:space="preserve">
+    <value>Do you want to shorten the sick leave?</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_FullDay_Vacation_Title" xml:space="preserve">
+    <value>You are on vacation this day (FULL DAY).</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_FullDay_Vacation_CannotWork" xml:space="preserve">
+    <value>You cannot work while on vacation.</value>
+    <comment>ShiftValidationService</comment>
+  </data>
+  <data name="ShiftValidation_FullDay_Vacation_Shorten" xml:space="preserve">
+    <value>Do you want to shorten the vacation?</value>
+    <comment>ShiftValidationService</comment>
+  </data>
 </root>

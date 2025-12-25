@@ -1669,4 +1669,197 @@ Vill du ersätta det med VAB?</value>
   <data name="Shift_SickDayError" xml:space="preserve">
     <value>Fel vid registrering av sjukdag: {0}</value>
   </data>
+  <data name="Conflict_WorkDuringLeave_Title" xml:space="preserve">
+    <value>Du har ett arbetspass under din {0}:</value>
+  </data>
+  <data name="Conflict_WorkDuringLeave_Body" xml:space="preserve">
+    <value>Du kan inte ha {0} samma dag som du arbetar.</value>
+  </data>
+  <data name="Conflict_WorkDuringLeave_ConfirmRemove" xml:space="preserve">
+    <value>Vill du ta bort arbetspasset?</value>
+  </data>
+  <data name="Conflict_OverlappingLeave" xml:space="preserve">
+    <value>Överlappar med befintlig {0}:</value>
+  </data>
+  <data name="Conflict_Days" xml:space="preserve">
+    <value>({0} dagar)</value>
+  </data>
+  <data name="Conflict_Merge_Header" xml:space="preserve">
+    <value>Du har redan {0} som överlappar eller är sammanhängande:</value>
+  </data>
+  <data name="Conflict_Merge_Question" xml:space="preserve">
+    <value>Vill du slå samman till en sammanhängande period?</value>
+  </data>
+  <data name="Conflict_Merge_Period" xml:space="preserve">
+    <value>{0} – {1} ({2} dagar)</value>
+  </data>
+  <data name="Conflict_SickDay" xml:space="preserve">
+    <value>Du är sjukskriven denna dag:</value>
+  </data>
+  <data name="Conflict_SickPeriod" xml:space="preserve">
+    <value>Sjukperiod: {0} – {1}</value>
+  </data>
+  <data name="Conflict_ShortenSickLeave_Question" xml:space="preserve">
+    <value>Vill du förkorta sjukskrivningen för att kunna jobba?</value>
+  </data>
+  <data name="Conflict_AutoRemove_Header" xml:space="preserve">
+    <value>Du har {0} arbetspass under sjukperioden:</value>
+  </data>
+  <data name="Conflict_AutoRemove_Question" xml:space="preserve">
+    <value>Vill du att systemet automatiskt tar bort dessa pass?</value>
+  </data>
+  <data name="Shift_SickSaved" xml:space="preserve">
+    <value>Sjukskrivning på {0} dagar har sparats!</value>
+  </data>
+  <data name="Shift_SickSavedWithRemoved" xml:space="preserve">
+    <value>Sjukskrivning sparad! {0} arbetspass har tagits bort.</value>
+  </data>
+  <data name="Shift_SickRemoved" xml:space="preserve">
+    <value>Sjukskrivningen har tagits bort helt.</value>
+  </data>
+  <data name="Shift_SickShortened" xml:space="preserve">
+    <value>Sjukskrivningen förkortad till {0} dagar (till {1})</value>
+  </data>
+  <data name="Shift_Merged" xml:space="preserve">
+    <value>{0} sammanslagen till {1} dagar!</value>
+  </data>
+  <data name="Shift_WorkRemovedAndLeaveSaved" xml:space="preserve">
+    <value>Arbetspasset har tagits bort och {0} har sparats!</value>
+  </data>
+  <data name="Error_NoJobProfile" xml:space="preserve">
+    <value>Inget jobb angivet</value>
+  </data>
+  <data name="Error_SaveFailed" xml:space="preserve">
+    <value>Fel vid sparande: {0}</value>
+  </data>
+  <data name="Error_ValidationFailed" xml:space="preserve">
+    <value>Fel vid validering: {0}</value>
+  </data>
+  <data name="Error_DateValidationFailed" xml:space="preserve">
+    <value>Fel vid validering av datum</value>
+  </data>
+  <data name="Vacation_NotAllowed_Temporary" xml:space="preserve">
+    <value>Timanställd kan inte ha betald semester</value>
+  </data>
+  <data name="Vacation_NotAllowed_Temporary_Detail" xml:space="preserve">
+    <value>Timanställd kan inte ha betald semester – välj ”Obetald ledighet”</value>
+  </data>
+  <data name="Vacation_InsufficientDays" xml:space="preserve">
+    <value>Inte tillräckligt med semesterdagar kvar ({0:F1} dagar)</value>
+  </data>
+  <data name="Vacation_Saved" xml:space="preserve">
+    <value>Semester har sparats!</value>
+  </data>
+  <data name="Vacation_WorkShiftNotFound" xml:space="preserve">
+    <value>Kunde inte hitta det sparade WorkShift</value>
+  </data>
+  <data name="Vacation_AlreadyRegistered" xml:space="preserve">
+    <value>Du har redan registrerat semester på detta datum</value>
+  </data>
+  <data name="Vacation_Conflict_Regular" xml:space="preserve">
+    <value>Du har redan ett arbetspass registrerat denna dag:
+⏰ {0} → {1}
+
+Ta bort arbetspasset först innan du registrerar semester.</value>
+  </data>
+  <data name="Vacation_Conflict_SickLeave" xml:space="preserve">
+    <value>Du är redan sjukskriven denna dag:
+🤒 Sjukskrivning ({0} dagar)
+
+Ta bort sjukskrivningen först innan du registrerar semester.</value>
+  </data>
+  <data name="Vacation_Conflict_OnCall" xml:space="preserve">
+    <value>Du har redan jour registrerat denna dag:
+📞 Jourpass
+
+Ta bort jourpasset först innan du registrerar semester.</value>
+  </data>
+  <data name="Vacation_Conflict_VAB" xml:space="preserve">
+    <value>Du har redan VAB registrerat denna dag:
+👶 Vård av barn
+
+Ta bort VAB först innan du registrerar semester.</value>
+  </data>
+  <data name="Vacation_Conflict_Generic" xml:space="preserve">
+    <value>Du har redan ett pass registrerat denna dag.
+Ta bort det först innan du registrerar semester.</value>
+  </data>
+  <data name="Vacation_Note_Paid" xml:space="preserve">
+    <value>Betald semester – 1 dag{0}</value>
+  </data>
+  <data name="Vacation_Note_Unpaid" xml:space="preserve">
+    <value>Obetald ledighet – 1 dag{0}</value>
+  </data>
+  <data name="Vacation_Note_Generic" xml:space="preserve">
+    <value>Sem – 1 dag{0}</value>
+  </data>
+  <data name="Vacation_Note_Quota" xml:space="preserve">
+    <value>(kvot: {0})</value>
+  </data>
+  <data name="Vacation_Note_PlannedHours" xml:space="preserve">
+    <value>(skulle arbetat: {0}t)</value>
+  </data>
+  <data name="ShiftValidation_Vacation_AlreadyExists" xml:space="preserve">
+    <value>Det finns redan semester registrerad denna dag.</value>
+  </data>
+  <data name="ShiftValidation_Vacation_RemoveExisting" xml:space="preserve">
+    <value>Ta bort den befintliga semestern först.</value>
+  </data>
+  <data name="ShiftValidation_SickLeave_Exists" xml:space="preserve">
+    <value>Du är sjukskriven denna dag.</value>
+  </data>
+  <data name="ShiftValidation_SickLeave_Remove" xml:space="preserve">
+    <value>Ta bort sjukskrivningen först.</value>
+  </data>
+  <data name="ShiftValidation_SickLeave_Info" xml:space="preserve">
+    <value>Sjukskrivning ({0} dagar).</value>
+  </data>
+  <data name="ShiftValidation_WorkShift_Exists" xml:space="preserve">
+    <value>Det finns redan ett arbetspass registrerat denna dag.</value>
+  </data>
+  <data name="ShiftValidation_WorkShift_Remove" xml:space="preserve">
+    <value>Ta bort arbetspasset först.</value>
+  </data>
+  <data name="ShiftValidation_WorkShift_Time" xml:space="preserve">
+    <value>{0} - {1}</value>
+  </data>
+  <data name="ShiftValidation_WorkShift_Generic" xml:space="preserve">
+    <value>Arbetspass</value>
+  </data>
+  <data name="ShiftValidation_VAB_Exists" xml:space="preserve">
+    <value>Du har VAB registrerat denna dag.</value>
+  </data>
+  <data name="ShiftValidation_VAB_Remove" xml:space="preserve">
+    <value>Ta bort VAB:en först.</value>
+  </data>
+  <data name="ShiftValidation_VAB_Info" xml:space="preserve">
+    <value>Vård av barn.</value>
+  </data>
+  <data name="ShiftValidation_Date" xml:space="preserve">
+    <value>📅 Datum {0}</value>
+  </data>
+  <data name="ShiftValidation_Period" xml:space="preserve">
+    <value>📅 Period: {0} - {1}</value>
+  </data>
+  <data name="ShiftValidation_Days" xml:space="preserve">
+    <value>({0} dagar)</value>
+  </data>
+  <data name="ShiftValidation_FullDay_Sick_Title" xml:space="preserve">
+    <value>Du är sjukskriven denna dag (HELA DAGEN).</value>
+  </data>
+  <data name="ShiftValidation_FullDay_Sick_CannotWork" xml:space="preserve">
+    <value>Du kan inte jobba när du är sjukskriven.</value>
+  </data>
+  <data name="ShiftValidation_FullDay_Sick_Shorten" xml:space="preserve">
+    <value>Vill du förkorta sjukskrivningen?</value>
+  </data>
+  <data name="ShiftValidation_FullDay_Vacation_Title" xml:space="preserve">
+    <value>Du har semester denna dag (HELA DAGEN).</value>
+  </data>
+  <data name="ShiftValidation_FullDay_Vacation_CannotWork" xml:space="preserve">
+    <value>Du kan inte jobba när du har semester.</value>
+  </data>
+  <data name="ShiftValidation_FullDay_Vacation_Shorten" xml:space="preserve">
+    <value>Vill du förkorta semestern?</value>
+  </data>
 </root>

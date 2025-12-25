@@ -3,151 +3,267 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Månads lönerapport">
-    <VerticalStackLayout Spacing="20" Padding="20,10" VerticalOptions="Start">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20,10">
 
-        <!-- visas bara när det INTE finns ett aktivt jobb -->
-        <StackLayout IsVisible="{Binding HasActiveJob, Converter={StaticResource InvertedBoolConverter}}"
-             Spacing="5">
-            <Frame Style="{StaticResource CardFrame}">
-                <Label Text="Ingen lönerapport än – skapa ett jobb först."
-               Style="{StaticResource SecondaryLabel}"
-               HorizontalOptions="Center" />
+            <!-- ===================== -->
+            <!-- 🚫 INGET AKTIVT JOBB -->
+            <!-- ===================== -->
+            <Frame
+                Style="{StaticResource CardFrame}"
+                IsVisible="{Binding HasActiveJob, Converter={StaticResource InvertedBoolConverter}}">
+                <Label
+                    Text="Ingen lönerapport än – skapa ett jobb först."
+                    Style="{StaticResource SecondaryLabel}"
+                    HorizontalOptions="Center" />
             </Frame>
-        </StackLayout>
 
-        <!-- visas när det FINNS ett aktivt jobb -->
-        <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Lön denna månad" FontSize="20" FontAttributes="Bold" Style="{StaticResource SectionTitleLabel}" />
-                <Label Text="{Binding MonthlySalaryText}" FontSize="20" FontAttributes="Bold"
-                       TextColor="{StaticResource ActiveJobBlue}" />
-                <Label Text="{Binding HoursSummaryText}" FontSize="14" />
-            </VerticalStackLayout>
-        </Frame>
+            <!-- ===================== -->
+            <!-- 🟦 KORT 1: RESULTAT -->
+            <!-- ===================== -->
+            <Frame
+                Style="{StaticResource CardFrame}"
+                IsVisible="{Binding HasActiveJob}">
+                <VerticalStackLayout Spacing="8">
 
-        <!-- Statistics Section -->
-        <Frame Style="{StaticResource CardFrame}">
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Beräkning Statistik" FontSize="20" FontAttributes="Bold" Style="{StaticResource SectionTitleLabel}" />
-                
-                <!-- Grundlön -->
-                <Label Text="{Binding BaseSalaryText}" FontSize="14" />
-                <Label Text="{Binding TotalHoursText}" FontSize="14" />
+                    <Label
+                        Text="💰"
+                        FontSize="28"
+                        HorizontalOptions="Center" />
 
-                <!-- OB Card -->
-                <Frame HasShadow="True" CornerRadius="12" Padding="10" Margin="0,5"
-                        BackgroundColor="White" BorderColor="#E0E0E0">
+                    <Label
+                        Text="{Binding MonthlySalaryText}"
+                        FontSize="28"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{StaticResource ActiveJobBlue}" />
 
-                    <VerticalStackLayout>
-                        <!-- Header row -->
-                        <Grid ColumnDefinitions="40,*,Auto" Padding="5">
-                            <!-- Ikon -->
-                            <Label Text="🌙" FontSize="20" VerticalOptions="Center" />
+                    <Label
+                        Text="Denna månad"
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        TextColor="Gray" />
 
-                            <!-- Titel + värde -->
-                            <HorizontalStackLayout Grid.Column="1" Spacing="5">
-                                <Label Text="OB-timmar:" FontAttributes="Bold" VerticalOptions="Center" Padding="0,0,10,0" />
-                                <Label Text="{Binding TotalObHoursText}"
-                                       FontAttributes="Bold"
-                                       TextColor="{Binding ObHoursColor}"
-                                       VerticalOptions="Center" />
-                            </HorizontalStackLayout>
+                    <Label
+                        Text="{Binding HoursSummaryText}"
+                        FontSize="14"
+                        HorizontalOptions="Center" />
 
-                            <!-- Chevron -->
-                            <Label Text="{Binding ObCardChevronIcon}"
-                                   FontSize="18"
-                                   Grid.Column="2"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="End" />
+                </VerticalStackLayout>
+            </Frame>
 
-                            <!-- 👈 Viktigt: gör headern klickbar -->
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ToggleObCardCommand}" />
-                            </Grid.GestureRecognizers>
+            <!-- ===================== -->
+            <!-- 🟩 KORT 2: SAMMANFATTNING -->
+            <!-- ===================== -->
+            <Frame
+                Style="{StaticResource CardFrame}"
+                IsVisible="{Binding HasActiveJob}">
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="📊 Sammanfattning"
+                        Style="{StaticResource SectionTitleLabel}" />
+
+                    <Grid ColumnDefinitions="*,Auto"
+                          RowDefinitions="Auto,Auto,Auto"
+                          RowSpacing="6">
+
+                                            <Label Text="Grundlön" />
+                                            <Label Text="{Binding BaseSalaryText}"
+                               Grid.Column="1"
+                               FontAttributes="Bold" />
+
+                                            <Label Text="Arbetade timmar" Grid.Row="1" />
+                                            <Label Text="{Binding TotalHoursText}"
+                               Grid.Row="1"
+                               Grid.Column="1" />
+
+                                            <Label Text="OB-ersättning" Grid.Row="2" />
+                                            <Label Text="{Binding ObPayText}"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               FontAttributes="Bold"
+                               TextColor="Green" />
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Totalt" FontAttributes="Bold" />
+                        <Label
+                            Text="{Binding MonthlySalaryText}"
+                            Grid.Column="1"
+                            FontAttributes="Bold" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ===================== -->
+            <!-- 🌙 KORT 3: OB-DETALJER (EXPANDERBAR) -->
+            <!-- ===================== -->
+            <Frame
+                Style="{StaticResource CardFrame}"
+                IsVisible="{Binding HasActiveJob}">
+
+                <VerticalStackLayout Spacing="10">
+
+                    <!-- Header (klickbar) -->
+                    <Grid ColumnDefinitions="40,*,Auto,Auto" Padding="5">
+                        <Label Text="🌙" FontSize="20" VerticalOptions="Center" />
+
+                        <Label
+                            Text="{Binding TotalObHoursText}"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            Text="{Binding ObPayText}"
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            TextColor="Green"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            Text="{Binding ObCardChevronIcon}"
+                            Grid.Column="3"
+                            FontSize="18"
+                            VerticalOptions="Center" />
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleObCardCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <!-- Expand -->
+                    <StackLayout
+                        IsVisible="{Binding IsObExpanded}"
+                        Spacing="6">
+
+                        <CollectionView ItemsSource="{Binding ObDetails}">
+                            <CollectionView.EmptyView>
+                                <Label
+                                    Text="Inga OB-timmar registrerade denna månad."
+                                    TextColor="Gray"
+                                    FontAttributes="Italic"
+                                    HorizontalOptions="Center" />
+                            </CollectionView.EmptyView>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,*,Auto,Auto">
+                                        <Label Text="{Binding Date, StringFormat='{0:MM-dd}'}" />
+                                        <Label Text="{Binding CategoryName}" Grid.Column="1" />
+                                        <Label Text="{Binding Hours, StringFormat='{0:0.##} h'}" Grid.Column="2" />
+                                        <Label Text="{Binding Pay, StringFormat='{0:C}'}" Grid.Column="3" TextColor="Green" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <Label FontAttributes="Bold">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Total OB-ersättning: " />
+                                    <Span Text="{Binding ObPayText}" TextColor="Green" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                    </StackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ===================== -->
+            <!-- 👤 KORT 4: FRÅNVARO & BALANS (EXPANDERBAR) -->
+            <!-- ===================== -->
+            <Frame
+                Style="{StaticResource CardFrame}"
+                IsVisible="{Binding HasActiveJob}"> 
+
+                <VerticalStackLayout Spacing="10">
+
+                    <!-- 🔹 HEADER (klickbar) -->
+                    <Grid ColumnDefinitions="40,*,Auto" Padding="5">
+                        <!-- Ikon -->
+                        <Label
+                            Text="👤"
+                            FontSize="20"
+                            VerticalOptions="Center" />
+
+                        <!-- Titel + snabb info -->
+                        <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                            <Label
+                                Text="Frånvaro och balans"
+                                FontAttributes="Bold"
+                                VerticalOptions="Center" />
+
+                            <!-- Visa viktigaste direkt -->
+                            <Label
+                                Text="{Binding FlexBalanceText}"
+                                TextColor="Gray"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+
+                        <!-- Chevron -->
+                        <Label
+                            Text="{Binding BalanceChevronIcon}"
+                            Grid.Column="2"
+                            FontSize="18"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End" />
+
+                        <!-- Klick -->
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleBalanceCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <!-- 🔹 EXPANDERAT INNEHÅLL -->
+                    <StackLayout
+                        IsVisible="{Binding IsBalanceExpanded}"
+                        Spacing="8"
+                        Padding="5,5,5,0">
+
+                        <Grid ColumnDefinitions="*,Auto"
+                              RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                              RowSpacing="6">
+
+                            <Label Text="⏱ Flexsaldo" />
+                            <Label
+                                Text="{Binding FlexBalanceText}"
+                                Grid.Column="1" />
+
+                            <Label Text="🤒 Sjukdagar" Grid.Row="1" />
+                            <Label
+                                Text="{Binding SickDaysText}"
+                                Grid.Row="1"
+                                Grid.Column="1" />
+
+                            <Label Text="🌴 Semester" Grid.Row="2" />
+                            <Label
+                                Text="{Binding VacationDaysText}"
+                                Grid.Row="2"
+                                Grid.Column="1" />
+
+                            <Label Text="👶 VAB" Grid.Row="3" />
+                            <Label
+                                Text="{Binding VabDaysText}"
+                                Grid.Row="3"
+                                Grid.Column="1" />
+
+                            <Label Text="🧭 Jour" Grid.Row="4" />
+                            <Label
+                                Text="{Binding JourText}"
+                                Grid.Row="4"
+                                Grid.Column="1" />
                         </Grid>
+                    </StackLayout>
 
-                        <!-- Expandable content -->
-                        <StackLayout x:Name="ObDetailsPanel" IsVisible="False" Opacity="0" Padding="5,10,5,0" Spacing="5">
-                            <CollectionView ItemsSource="{Binding ObDetails}">
-                                <CollectionView.EmptyView>
-                                    <StackLayout Padding="10" HorizontalOptions="Center" VerticalOptions="Center">
-                                        <Label Text="Inga OB-timmar registrerade denna månad."
-                                               TextColor="Gray"
-                                               FontAttributes="Italic"
-                                               HorizontalOptions="Center" />
-                                    </StackLayout>
-                                </CollectionView.EmptyView>
+                </VerticalStackLayout>
+            </Frame>
 
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid ColumnDefinitions="*,*,*,*">
-                                            <Label Text="{Binding Date, StringFormat='{0:MM-dd}'}" />
-                                            <Label Text="{Binding CategoryName}" Grid.Column="1"/>
-                                            <Label Text="{Binding Hours, StringFormat='{0:0.##} h'}" Grid.Column="2" />
-                                            <Label Text="{Binding Pay, StringFormat='{0:C}'}" Grid.Column="3" TextColor="Green" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
-
-                            <!-- Total OB-lön -->
-                            <Label Padding="0,10,0,0">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="Total ersättning:    " FontAttributes="Bold"/>
-                                        <Span Text="{Binding ObPayText, StringFormat='{}{0:C}'}" TextColor="{Binding ObHoursColor}"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>
-                    </VerticalStackLayout>
-                </Frame>
-
-                <Label Text="{Binding ObPayText}" FontSize="14" />           <!-- Just nu försöker fixa detta -->
-                
-                <!--Ska går genom att dem ska visa rätt data-->
-                <Label Text="{Binding FlexBalanceText}" FontSize="14" />
-                <Label Text="{Binding SickDaysText}" FontSize="14" />
-                <Label Text="{Binding VacationDaysText}" FontSize="14" />
-                <Label Text="{Binding VabDaysText}" FontSize="14" />
-                <Label Text="{Binding JourText}" FontSize="14" />
-            </VerticalStackLayout>
-        </Frame>
-
-        
-
-        <!-- Monthly Reports -->
-        <!--<Frame Style="{StaticResource CardFrame}">
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Månadsrapporter"
-                       FontSize="18" Style="{StaticResource SectionTitleLabel}"
-                       FontAttributes="Bold" />
-                <CollectionView ItemsSource="{Binding MonthlyReports}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <VerticalStackLayout Spacing="5">
-                                <Label Text="{Binding MonthYear}"
-                                       FontSize="16"
-                                       FontAttributes="Bold" />
-                                <Label Text="{Binding ReportDetails}"
-                                       FontSize="14" />
-                                <Button Text="Visa detaljer"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewReportCommand}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="{StaticResource ButtonPrimary}"
-                                        TextColor="{StaticResource White}" />
-                                <Button Text="Ladda ner som PDF"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DownloadReportCommand}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="{StaticResource ButtonPrimary}"
-                                        TextColor="{StaticResource White}" />
-                            </VerticalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </Frame>-->
-        
-        
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -622,6 +622,69 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have {0} work shifts during the sick period:.
+        /// </summary>
+        internal static string Conflict_AutoRemove_Header {
+            get {
+                return ResourceManager.GetString("Conflict_AutoRemove_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want the system to automatically remove these shifts?.
+        /// </summary>
+        internal static string Conflict_AutoRemove_Question {
+            get {
+                return ResourceManager.GetString("Conflict_AutoRemove_Question", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ({0} days).
+        /// </summary>
+        internal static string Conflict_Days {
+            get {
+                return ResourceManager.GetString("Conflict_Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already have {0} that overlaps or is adjacent:.
+        /// </summary>
+        internal static string Conflict_Merge_Header {
+            get {
+                return ResourceManager.GetString("Conflict_Merge_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} – {1} ({2} days).
+        /// </summary>
+        internal static string Conflict_Merge_Period {
+            get {
+                return ResourceManager.GetString("Conflict_Merge_Period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to merge into one continuous period?.
+        /// </summary>
+        internal static string Conflict_Merge_Question {
+            get {
+                return ResourceManager.GetString("Conflict_Merge_Question", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlaps with existing {0}:.
+        /// </summary>
+        internal static string Conflict_OverlappingLeave {
+            get {
+                return ResourceManager.GetString("Conflict_OverlappingLeave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to replace on-call shift with {0}?.
         /// </summary>
         internal static string Conflict_ReplaceOnCall {
@@ -640,6 +703,33 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to shorten the sick leave so you can work?.
+        /// </summary>
+        internal static string Conflict_ShortenSickLeave_Question {
+            get {
+                return ResourceManager.GetString("Conflict_ShortenSickLeave_Question", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are on sick leave this day:.
+        /// </summary>
+        internal static string Conflict_SickDay {
+            get {
+                return ResourceManager.GetString("Conflict_SickDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sick period: {0} – {1}.
+        /// </summary>
+        internal static string Conflict_SickPeriod {
+            get {
+                return ResourceManager.GetString("Conflict_SickPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot be sick while on child care.
         /// </summary>
         internal static string Conflict_SickWithVAB {
@@ -654,6 +744,33 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Conflict_SickWithVacation {
             get {
                 return ResourceManager.GetString("Conflict_SickWithVacation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot have {0} on the same day you work..
+        /// </summary>
+        internal static string Conflict_WorkDuringLeave_Body {
+            get {
+                return ResourceManager.GetString("Conflict_WorkDuringLeave_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to remove the work shift?.
+        /// </summary>
+        internal static string Conflict_WorkDuringLeave_ConfirmRemove {
+            get {
+                return ResourceManager.GetString("Conflict_WorkDuringLeave_ConfirmRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have a work shift during your {0}:.
+        /// </summary>
+        internal static string Conflict_WorkDuringLeave_Title {
+            get {
+                return ResourceManager.GetString("Conflict_WorkDuringLeave_Title", resourceCulture);
             }
         }
         
@@ -1316,6 +1433,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error validating date.
+        /// </summary>
+        internal static string Error_DateValidationFailed {
+            get {
+                return ResourceManager.GetString("Error_DateValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not delete existing shift: {0}.
         /// </summary>
         internal static string Error_DeleteShift {
@@ -1325,11 +1451,38 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No job selected.
+        /// </summary>
+        internal static string Error_NoJobProfile {
+            get {
+                return ResourceManager.GetString("Error_NoJobProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monthly salary must be specified.
         /// </summary>
         internal static string Error_SalaryRequired {
             get {
                 return ResourceManager.GetString("Error_SalaryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: {0}.
+        /// </summary>
+        internal static string Error_SaveFailed {
+            get {
+                return ResourceManager.GetString("Error_SaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation error: {0}.
+        /// </summary>
+        internal static string Error_ValidationFailed {
+            get {
+                return ResourceManager.GetString("Error_ValidationFailed", resourceCulture);
             }
         }
         
@@ -2999,6 +3152,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} merged into {1} days!.
+        /// </summary>
+        internal static string Shift_Merged {
+            get {
+                return ResourceManager.GetString("Shift_Merged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to on-call.
         /// </summary>
         internal static string Shift_OnCall {
@@ -3062,11 +3224,56 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sick leave has been completely removed..
+        /// </summary>
+        internal static string Shift_SickRemoved {
+            get {
+                return ResourceManager.GetString("Shift_SickRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sick leave for {0} days has been saved!.
+        /// </summary>
+        internal static string Shift_SickSaved {
+            get {
+                return ResourceManager.GetString("Shift_SickSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sick leave saved! {0} work shifts were removed..
+        /// </summary>
+        internal static string Shift_SickSavedWithRemoved {
+            get {
+                return ResourceManager.GetString("Shift_SickSavedWithRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sick leave shortened to {0} days (until {1}).
+        /// </summary>
+        internal static string Shift_SickShortened {
+            get {
+                return ResourceManager.GetString("Shift_SickShortened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to vacation.
         /// </summary>
         internal static string Shift_Vacation {
             get {
                 return ResourceManager.GetString("Shift_Vacation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The work shift was removed and {0} was saved!.
+        /// </summary>
+        internal static string Shift_WorkRemovedAndLeaveSaved {
+            get {
+                return ResourceManager.GetString("Shift_WorkRemovedAndLeaveSaved", resourceCulture);
             }
         }
         
@@ -3283,6 +3490,195 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ShiftType_VacationShift {
             get {
                 return ResourceManager.GetString("ShiftType_VacationShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📅 Date: {0}.
+        /// </summary>
+        internal static string ShiftValidation_Date {
+            get {
+                return ResourceManager.GetString("ShiftValidation_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ({0} days).
+        /// </summary>
+        internal static string ShiftValidation_Days {
+            get {
+                return ResourceManager.GetString("ShiftValidation_Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot work while on sick leave..
+        /// </summary>
+        internal static string ShiftValidation_FullDay_Sick_CannotWork {
+            get {
+                return ResourceManager.GetString("ShiftValidation_FullDay_Sick_CannotWork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to shorten the sick leave?.
+        /// </summary>
+        internal static string ShiftValidation_FullDay_Sick_Shorten {
+            get {
+                return ResourceManager.GetString("ShiftValidation_FullDay_Sick_Shorten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are on sick leave this day (FULL DAY)..
+        /// </summary>
+        internal static string ShiftValidation_FullDay_Sick_Title {
+            get {
+                return ResourceManager.GetString("ShiftValidation_FullDay_Sick_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot work while on vacation..
+        /// </summary>
+        internal static string ShiftValidation_FullDay_Vacation_CannotWork {
+            get {
+                return ResourceManager.GetString("ShiftValidation_FullDay_Vacation_CannotWork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to shorten the vacation?.
+        /// </summary>
+        internal static string ShiftValidation_FullDay_Vacation_Shorten {
+            get {
+                return ResourceManager.GetString("ShiftValidation_FullDay_Vacation_Shorten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are on vacation this day (FULL DAY)..
+        /// </summary>
+        internal static string ShiftValidation_FullDay_Vacation_Title {
+            get {
+                return ResourceManager.GetString("ShiftValidation_FullDay_Vacation_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📅 Period: {0} - {1}.
+        /// </summary>
+        internal static string ShiftValidation_Period {
+            get {
+                return ResourceManager.GetString("ShiftValidation_Period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are on sick leave this day..
+        /// </summary>
+        internal static string ShiftValidation_SickLeave_Exists {
+            get {
+                return ResourceManager.GetString("ShiftValidation_SickLeave_Exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sick leave ({0} days)..
+        /// </summary>
+        internal static string ShiftValidation_SickLeave_Info {
+            get {
+                return ResourceManager.GetString("ShiftValidation_SickLeave_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove the sick leave first..
+        /// </summary>
+        internal static string ShiftValidation_SickLeave_Remove {
+            get {
+                return ResourceManager.GetString("ShiftValidation_SickLeave_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have Child care registered on this day..
+        /// </summary>
+        internal static string ShiftValidation_VAB_Exists {
+            get {
+                return ResourceManager.GetString("ShiftValidation_VAB_Exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Care of child..
+        /// </summary>
+        internal static string ShiftValidation_VAB_Info {
+            get {
+                return ResourceManager.GetString("ShiftValidation_VAB_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove the Child care first..
+        /// </summary>
+        internal static string ShiftValidation_VAB_Remove {
+            get {
+                return ResourceManager.GetString("ShiftValidation_VAB_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vacation is already registered on this day..
+        /// </summary>
+        internal static string ShiftValidation_Vacation_AlreadyExists {
+            get {
+                return ResourceManager.GetString("ShiftValidation_Vacation_AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove the existing vacation first..
+        /// </summary>
+        internal static string ShiftValidation_Vacation_RemoveExisting {
+            get {
+                return ResourceManager.GetString("ShiftValidation_Vacation_RemoveExisting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A work shift is already registered on this day..
+        /// </summary>
+        internal static string ShiftValidation_WorkShift_Exists {
+            get {
+                return ResourceManager.GetString("ShiftValidation_WorkShift_Exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work shift.
+        /// </summary>
+        internal static string ShiftValidation_WorkShift_Generic {
+            get {
+                return ResourceManager.GetString("ShiftValidation_WorkShift_Generic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove the work shift first..
+        /// </summary>
+        internal static string ShiftValidation_WorkShift_Remove {
+            get {
+                return ResourceManager.GetString("ShiftValidation_WorkShift_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}.
+        /// </summary>
+        internal static string ShiftValidation_WorkShift_Time {
+            get {
+                return ResourceManager.GetString("ShiftValidation_WorkShift_Time", resourceCulture);
             }
         }
         
@@ -4189,6 +4585,73 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You already have vacation registered on this date.
+        /// </summary>
+        internal static string Vacation_AlreadyRegistered {
+            get {
+                return ResourceManager.GetString("Vacation_AlreadyRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already have a shift registered this day.
+        ///Remove it before registering vacation..
+        /// </summary>
+        internal static string Vacation_Conflict_Generic {
+            get {
+                return ResourceManager.GetString("Vacation_Conflict_Generic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already have an on-call shift this day:
+        ///📞 On-call shift
+        ///
+        ///Remove the on-call shift before registering vacation..
+        /// </summary>
+        internal static string Vacation_Conflict_OnCall {
+            get {
+                return ResourceManager.GetString("Vacation_Conflict_OnCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already have a work shift this day:
+        ///⏰ {0} → {1}
+        ///
+        ///Remove the work shift before registering vacation..
+        /// </summary>
+        internal static string Vacation_Conflict_Regular {
+            get {
+                return ResourceManager.GetString("Vacation_Conflict_Regular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are already on sick leave this day:
+        ///🤒 Sick leave ({0} days)
+        ///
+        ///Remove the sick leave before registering vacation..
+        /// </summary>
+        internal static string Vacation_Conflict_SickLeave {
+            get {
+                return ResourceManager.GetString("Vacation_Conflict_SickLeave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already have VAB registered this day:
+        ///👶 Care of sick child
+        ///
+        ///Remove VAB before registering vacation..
+        /// </summary>
+        internal static string Vacation_Conflict_VAB {
+            get {
+                return ResourceManager.GetString("Vacation_Conflict_VAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Planned work hours must be a positive number.
         /// </summary>
         internal static string Vacation_Error_InvalidHours {
@@ -4270,6 +4733,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not enough vacation days remaining ({0:F1} days).
+        /// </summary>
+        internal static string Vacation_InsufficientDays {
+            get {
+                return ResourceManager.GetString("Vacation_InsufficientDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ⏰ Hours you would have worked.
         /// </summary>
         internal static string Vacation_Label_PlannedHours {
@@ -4293,6 +4765,69 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Vacation_Label_Type {
             get {
                 return ResourceManager.GetString("Vacation_Label_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temporary employees cannot have paid vacation.
+        /// </summary>
+        internal static string Vacation_NotAllowed_Temporary {
+            get {
+                return ResourceManager.GetString("Vacation_NotAllowed_Temporary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temporary employees cannot have paid vacation – choose unpaid leave.
+        /// </summary>
+        internal static string Vacation_NotAllowed_Temporary_Detail {
+            get {
+                return ResourceManager.GetString("Vacation_NotAllowed_Temporary_Detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vacation – 1 day{0}.
+        /// </summary>
+        internal static string Vacation_Note_Generic {
+            get {
+                return ResourceManager.GetString("Vacation_Note_Generic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paid vacation – 1 day{0}.
+        /// </summary>
+        internal static string Vacation_Note_Paid {
+            get {
+                return ResourceManager.GetString("Vacation_Note_Paid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (planned work: {0}h).
+        /// </summary>
+        internal static string Vacation_Note_PlannedHours {
+            get {
+                return ResourceManager.GetString("Vacation_Note_PlannedHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (quota: {0}).
+        /// </summary>
+        internal static string Vacation_Note_Quota {
+            get {
+                return ResourceManager.GetString("Vacation_Note_Quota", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpaid leave – 1 day{0}.
+        /// </summary>
+        internal static string Vacation_Note_Unpaid {
+            get {
+                return ResourceManager.GetString("Vacation_Note_Unpaid", resourceCulture);
             }
         }
         
@@ -4387,6 +4922,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vacation has been saved!.
+        /// </summary>
+        internal static string Vacation_Saved {
+            get {
+                return ResourceManager.GetString("Vacation_Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🏖️ Vacation information.
         /// </summary>
         internal static string Vacation_SectionTitle {
@@ -4473,6 +5017,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Vacation_Validation_RatioPositive {
             get {
                 return ResourceManager.GetString("Vacation_Validation_RatioPositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find saved work shift.
+        /// </summary>
+        internal static string Vacation_WorkShiftNotFound {
+            get {
+                return ResourceManager.GetString("Vacation_WorkShiftNotFound", resourceCulture);
             }
         }
         

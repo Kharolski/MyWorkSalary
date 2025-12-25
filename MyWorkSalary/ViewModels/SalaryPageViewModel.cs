@@ -21,6 +21,7 @@ namespace MyWorkSalary.ViewModels
         private SalaryStats _currentStats;
 
         private bool _isObExpanded;
+        private bool _isBalanceExpanded;
         #endregion
 
         #region Public Properties
@@ -128,9 +129,22 @@ namespace MyWorkSalary.ViewModels
                     CategoryName = LocalizationHelper.Translate($"OBCategory_{x.Category}") // Översättning
                 }).ToList() ?? new List<ObDetails>();
 
-        public decimal ObPayText => CurrentStats?.ObPay ?? 0;
+        // public decimal ObPayText => CurrentStats?.ObPay ?? 0;
+        public string ObPayText => CurrentStats == null
+            ? "0 kr"
+            : $"{CurrentStats.ObPay:N0} kr";
 
-        public string FlexBalanceText => CurrentStats == null ? "" : $"Flex-tid: {CurrentStats.FlexBalance:F1}";
+        // public string FlexBalanceText => CurrentStats == null ? "" : $"Flex-tid: {CurrentStats.FlexBalance:F1}";
+        public string FlexBalanceText
+        {
+            get
+            {
+                if (CurrentStats == null)
+                    return "";
+                var sign = CurrentStats.FlexBalance > 0 ? "+" : "";
+                return $"Flexsaldo: {sign}{CurrentStats.FlexBalance:F1} h";
+            }
+        }
 
         public string SickDaysText => CurrentStats == null ? "" : $"Sjukdagar: {CurrentStats.SickDays}";
 
@@ -156,6 +170,23 @@ namespace MyWorkSalary.ViewModels
             }
         }
         public string ObCardChevronIcon => IsObExpanded ? "▼" : "▶";
+
+        // expand/collapse – Frånvaro & balans
+        public bool IsBalanceExpanded
+        {
+            get => _isBalanceExpanded;
+            set
+            {
+                if (_isBalanceExpanded != value)
+                {
+                    _isBalanceExpanded = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(BalanceChevronIcon));
+                }
+            }
+        }
+
+        public string BalanceChevronIcon => IsBalanceExpanded ? "▼" : "▶";
         #endregion
 
         #region Commands
@@ -163,6 +194,11 @@ namespace MyWorkSalary.ViewModels
         public ICommand ToggleObCardCommand => new Command(() =>
         {
             IsObExpanded = !IsObExpanded;
+        });
+
+        public ICommand ToggleBalanceCommand => new Command(() =>
+        {
+            IsBalanceExpanded = !IsBalanceExpanded;
         });
         #endregion
 

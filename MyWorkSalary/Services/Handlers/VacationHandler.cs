@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services.Interfaces;
@@ -44,14 +45,13 @@ namespace MyWorkSalary.Services.Handlers
                 // Validering
                 if (jobProfile == null)
                 {
-                    return (false, "Inget jobb angivet");  
+                    return (false, LocalizationHelper.Translate("Error_NoJobProfile"));
                 }
 
                 // Timanställd kan inte ha betald semester
-                if (vacationType == VacationType.PaidVacation &&
-                    jobProfile.EmploymentType == EmploymentType.Temporary)
+                if (vacationType == VacationType.PaidVacation && jobProfile.EmploymentType == EmploymentType.Temporary)
                 {
-                    return (false, "Timanställd kan inte ha betald semester");
+                    return (false, LocalizationHelper.Translate("Vacation_NotAllowed_Temporary"));
                 }
 
                 // Bestäm TotalHours baserat på semestertyp
@@ -91,7 +91,7 @@ namespace MyWorkSalary.Services.Handlers
 
                 if (savedWorkShift == null)
                 {
-                    return (false, "Kunde inte hitta det sparade WorkShift");  
+                    return (false, LocalizationHelper.Translate("Vacation_WorkShiftNotFound"));
                 }
 
                 // Skapa VacationLeave
@@ -110,12 +110,12 @@ namespace MyWorkSalary.Services.Handlers
                 // Spara VacationLeave
                 await _vacationLeaveRepository.InsertAsync(vacationLeave);
 
-                return (true, "Semester har sparats!");  
+                return (true, LocalizationHelper.Translate("Vacation_Saved"));
             }
             catch (Exception ex)
             {
                 LogDebug($"❌ StackTrace: {ex.StackTrace}");
-                return (false, $"Fel vid sparande: {ex.Message}");
+                return (false, LocalizationHelper.Translate("Error_SaveFailed", ex.Message));
             }
         }
 
@@ -164,26 +164,26 @@ namespace MyWorkSalary.Services.Handlers
             try
             {
                 if (jobProfile == null)
-                    return (false, "Inget jobb angivet");
+                    return (false, LocalizationHelper.Translate("Error_NoJobProfile"));
 
                 // Timanställd kan inte ha betald semester
                 if (vacationType == VacationType.PaidVacation &&
                     jobProfile.EmploymentType == EmploymentType.Temporary)
-                    return (false, "Timanställd kan inte ha betald semester - välj 'Obetald ledighet'");
+                    return (false, LocalizationHelper.Translate("Vacation_NotAllowed_Temporary_Detail"));
 
                 // Kontrollera återstående dagar för betald semester
                 if (vacationType == VacationType.PaidVacation)
                 {
                     var remainingDays = await GetRemainingVacationDays(jobProfile.Id);
                     if (remainingDays < 1.0m)
-                        return (false, $"Inte tillräckligt med semesterdagar kvar ({remainingDays:F1} dagar)");
+                        return (false, LocalizationHelper.Translate("Vacation_InsufficientDays", remainingDays));
                 }
 
                 return (true, "");
             }
             catch (Exception ex)
             {
-                return (false, $"Fel vid validering: {ex.Message}");
+                return (false, LocalizationHelper.Translate("Error_ValidationFailed", ex.Message));
             }
         }
 
@@ -197,7 +197,7 @@ namespace MyWorkSalary.Services.Handlers
             try
             {
                 if (jobProfile == null)
-                    return (false, "Inget jobb angivet", null);
+                    return (false, LocalizationHelper.Translate("Error_NoJobProfile"), null);
 
                 var existingShifts = await GetShiftsOnDate(jobProfile.Id, vacationDate);
 
@@ -205,7 +205,7 @@ namespace MyWorkSalary.Services.Handlers
                 var existingVacation = existingShifts.FirstOrDefault(s => s.ShiftType == ShiftType.Vacation);
                 if (existingVacation != null)
                 {
-                    return (false, "Du har redan registrerat semester på detta datum", existingVacation);
+                    return (false, LocalizationHelper.Translate("Vacation_AlreadyRegistered"), existingVacation);
                 }
 
                 // 2. Kontrollera om det finns andra pass (arbete, sjuk, jour) på detta datum
@@ -213,24 +213,20 @@ namespace MyWorkSalary.Services.Handlers
                 {
                     var conflictMessage = shift.ShiftType switch
                     {
-                        ShiftType.Regular => $"Du har redan ett arbetspass registrerat denna dag:\n" +
-                                           $"⏰ {shift.StartTime:HH:mm} → {shift.EndTime:HH:mm}\n\n" +
-                                           $"Ta bort arbetspasset först innan du registrerar semester.",
+                        ShiftType.Regular => LocalizationHelper.Translate(
+                                    "Vacation_Conflict_Regular",
+                                    shift.StartTime?.ToString("HH:mm"),
+                                    shift.EndTime?.ToString("HH:mm")),
 
-                        ShiftType.SickLeave => $"Du är redan sjukskriven denna dag:\n" +
-                                             $"🤒 Sjukskrivning ({shift.NumberOfDays ?? 1} dagar)\n\n" +
-                                             $"Ta bort sjukskrivningen först innan du registrerar semester.",
+                        ShiftType.SickLeave => LocalizationHelper.Translate(
+                                    "Vacation_Conflict_SickLeave",
+                                    shift.NumberOfDays ?? 1),
 
-                        ShiftType.OnCall => $"Du har redan jour registrerat denna dag:\n" +
-                                          $"📞 Jourpass\n\n" +
-                                          $"Ta bort jourpasset först innan du registrerar semester.",
+                        ShiftType.OnCall => LocalizationHelper.Translate("Vacation_Conflict_OnCall"),
 
-                        ShiftType.VAB => $"Du har redan VAB registrerat denna dag:\n" +
-                                       $"👶 Vård av barn\n\n" +
-                                       $"Ta bort VAB först innan du registrerar semester.",
+                        ShiftType.VAB => LocalizationHelper.Translate("Vacation_Conflict_VAB"),
 
-                        _ => $"Du har redan ett pass registrerat denna dag.\n" +
-                             $"Ta bort det först innan du registrerar semester."
+                        _ => LocalizationHelper.Translate("Vacation_Conflict_Generic")
                     };
 
                     return (false, conflictMessage, shift);
@@ -241,7 +237,7 @@ namespace MyWorkSalary.Services.Handlers
             catch (Exception ex)
             {
                 LogDebug($"❌ Fel vid validering av semesterdatum: {ex.Message}");
-                return (false, "Fel vid validering av datum", null);
+                return (false, LocalizationHelper.Translate("Error_DateValidationFailed"), null);
             }
         }
         #endregion
@@ -253,14 +249,23 @@ namespace MyWorkSalary.Services.Handlers
         /// </summary>
         private string GetVacationNote(VacationType vacationType, decimal kvot = 1.0m, decimal plannedWorkHours = 0m)
         {
-            var kvotText = kvot != 1.0m ? $" (kvot: {kvot})" : "";
-            var plannedText = plannedWorkHours > 0 ? $" (skulle arbetat: {plannedWorkHours}t)" : "";
+            var kvotText = kvot != 1.0m
+                ? LocalizationHelper.Translate("Vacation_Note_Quota", kvot)
+                : "";
+
+            var plannedText = plannedWorkHours > 0
+                ? LocalizationHelper.Translate("Vacation_Note_PlannedHours", plannedWorkHours)
+                : "";
 
             return vacationType switch
             {
-                VacationType.PaidVacation => $"Betald semester - 1 dag{kvotText}",
-                VacationType.UnpaidVacation => $"Obetald ledighet - 1 dag{kvotText}|PlannedHours:{plannedWorkHours}",
-                _ => $"Sem - 1 dag{kvotText}"
+                VacationType.PaidVacation => LocalizationHelper.Translate("Vacation_Note_Paid", kvotText),
+                VacationType.UnpaidVacation => LocalizationHelper.Translate(
+                            "Vacation_Note_Unpaid",
+                            kvotText,
+                            plannedText),
+
+                _ => LocalizationHelper.Translate("Vacation_Note_Generic", kvotText)
             };
         }
 
