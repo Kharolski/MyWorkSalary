@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Models;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
@@ -33,22 +34,25 @@ namespace MyWorkSalary.Services.Handlers
             {
                 var conflictMessage = parts[1];
                 bool removeShifts = await Shell.Current.DisplayAlert(
-                    "🤒 Konflikt med arbetspass",
+                    LocalizationHelper.Translate("Conflict_Title_SickLeave_WorkShift"),
                     conflictMessage,
-                    "Ja, ta bort passen",
-                    "Nej, avbryt");
+                    LocalizationHelper.Translate("Action_RemoveShifts"),
+                    LocalizationHelper.Translate("Action_Cancel"));
 
                 if (removeShifts)
                 {
                     var result = await _conflictResolutionService.SaveSickLeaveAndRemoveConflicts(sickShift);
                     if (result.Success)
                     {
-                        await Shell.Current.DisplayAlert("✅ Sparat!", result.Message, "OK");
+                        await Shell.Current.DisplayAlert(LocalizationHelper.Translate("Status_Saved"), result.Message, LocalizationHelper.Translate("Action_OK"));
                         await Shell.Current.GoToAsync("..");
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert("⚠️ Fel", result.Message, "OK");
+                        await Shell.Current.DisplayAlert(
+                            LocalizationHelper.Translate("Status_Error"),
+                            result.Message,
+                            LocalizationHelper.Translate("Action_OK"));
                     }
                 }
             }
@@ -64,10 +68,10 @@ namespace MyWorkSalary.Services.Handlers
                 var workDate = DateTime.Parse(parts[3]);
 
                 bool shortenSick = await Shell.Current.DisplayAlert(
-                    "🤒 Konflikt med sjukskrivning",
+                    LocalizationHelper.Translate("Conflict_Title_SickLeave"),
                     conflictMessage,
-                    "Ja, förkorta sjukskrivningen",
-                    "Nej, avbryt");
+                    LocalizationHelper.Translate("Action_ShortenSickLeave"),
+                    LocalizationHelper.Translate("Action_Cancel"));
 
                 if (shortenSick)
                 {
@@ -86,18 +90,28 @@ namespace MyWorkSalary.Services.Handlers
                             var saveResult = await _workShiftService.SaveWorkShiftWithValidation(workShift);
                             if (saveResult.Success)
                             {
-                                await Shell.Current.DisplayAlert("✅ Sparat!",
-                                    $"{shortenResult.Message}\nArbetspasset har sparats!", "OK");
+                                await Shell.Current.DisplayAlert(
+                                    LocalizationHelper.Translate("Status_Saved"),
+                                    LocalizationHelper.Translate(
+                                        "Conflict_SickLeave_Shortened_And_WorkShiftSaved",
+                                        shortenResult.Message),
+                                    LocalizationHelper.Translate("Action_OK"));
                                 await Shell.Current.GoToAsync("..");
                             }
                             else
                             {
-                                await Shell.Current.DisplayAlert("⚠️ Fel", saveResult.Message, "OK");
+                                await Shell.Current.DisplayAlert(
+                                    LocalizationHelper.Translate("Status_Error"),
+                                    saveResult.Message,
+                                    LocalizationHelper.Translate("Action_OK"));
                             }
                         }
                         else
                         {
-                            await Shell.Current.DisplayAlert("⚠️ Fel", shortenResult.Message, "OK");
+                            await Shell.Current.DisplayAlert(
+                                LocalizationHelper.Translate("Status_Error"),
+                                shortenResult.Message,
+                                LocalizationHelper.Translate("Action_OK"));
                         }
                     }
                 }
@@ -114,26 +128,32 @@ namespace MyWorkSalary.Services.Handlers
                 var workDate = DateTime.Parse(parts[3]);
 
                 var leaveType = leaveShift.ShiftType == ShiftType.SickLeave
-                    ? "🤒 Konflikt med sjukskrivning"
-                    : "🏖️ Konflikt med semester";
+                    ? LocalizationHelper.Translate("Conflict_Title_SickLeave")
+                    : LocalizationHelper.Translate("Conflict_Title_Vacation");
 
                 bool removeWorkShift = await Shell.Current.DisplayAlert(
                     leaveType,
                     conflictMessage,
-                    "Ja, ta bort arbetspasset",
-                    "Nej, avbryt");
+                    LocalizationHelper.Translate("Action_RemoveWorkShift"),
+                    LocalizationHelper.Translate("Action_Cancel"));
 
                 if (removeWorkShift)
                 {
                     var result = await _conflictResolutionService.RemoveWorkShiftAndSaveLeave(workShiftId, leaveShift);
                     if (result.Success)
                     {
-                        await Shell.Current.DisplayAlert("✅ Sparat!", result.Message, "OK");
+                        await Shell.Current.DisplayAlert(
+                            LocalizationHelper.Translate("Status_Saved"),
+                            result.Message,
+                            LocalizationHelper.Translate("Action_OK"));
                         await Shell.Current.GoToAsync("..");
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert("⚠️ Fel", result.Message, "OK");
+                        await Shell.Current.DisplayAlert(
+                            LocalizationHelper.Translate("Status_Error"),
+                            result.Message,
+                            LocalizationHelper.Translate("Action_OK"));
                     }
                 }
             }
@@ -150,26 +170,29 @@ namespace MyWorkSalary.Services.Handlers
                 var mergedDays = int.Parse(parts[4]);
 
                 var typeText = newShift.ShiftType == ShiftType.SickLeave
-                    ? "🤒 Sammanslagning av sjukskrivning"
-                    : "🏖️ Sammanslagning av semester";
+                    ? LocalizationHelper.Translate("Merge_Title_SickLeave")
+                    : LocalizationHelper.Translate("Merge_Title_Vacation");
 
                 bool mergeShifts = await Shell.Current.DisplayAlert(
                     typeText,
                     mergeMessage,
-                    "Ja, slå samman",
-                    "Nej, avbryt");
+                    LocalizationHelper.Translate("Action_Merge"),
+                    LocalizationHelper.Translate("Action_Cancel"));
 
                 if (mergeShifts)
                 {
                     var result = await _conflictResolutionService.MergeLeavePeriods(newShift, existingIds, mergedStartDate, mergedDays);
                     if (result.Success)
                     {
-                        await Shell.Current.DisplayAlert("✅ Sammanslagen!", result.Message, "OK");
+                        await Shell.Current.DisplayAlert(
+                            LocalizationHelper.Translate("Status_Merged"),
+                            result.Message,
+                            LocalizationHelper.Translate("Action_OK"));
                         await Shell.Current.GoToAsync("..");
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert("⚠️ Fel", result.Message, "OK");
+                        await Shell.Current.DisplayAlert(LocalizationHelper.Translate("Status_Error"), result.Message, LocalizationHelper.Translate("Action_OK"));
                     }
                 }
             }

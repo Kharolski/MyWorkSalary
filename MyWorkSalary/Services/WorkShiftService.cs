@@ -1,4 +1,6 @@
-﻿using MyWorkSalary.Models;
+﻿using Microsoft.Maui.Platform;
+using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
@@ -71,10 +73,17 @@ namespace MyWorkSalary.Services
                 if (overlappingShift != null)
                 {
                     var swedishCulture = new System.Globalization.CultureInfo("sv-SE");
-                    var message = $"Passet överlappar med befintligt pass:\n\n" +
-                                 $"📅 {overlappingShift.StartTime?.ToString("dddd d MMMM", swedishCulture) ?? overlappingShift.ShiftDate.ToString("dddd d MMMM", swedishCulture)}\n" +
-                                 $"🕐 {overlappingShift.StartTime?.ToString("HH:mm")} → {overlappingShift.EndTime?.ToString("HH:mm")}\n\n" +
-                                 $"Ändra tiden för att undvika överlapp.";
+                    var message =
+                        LocalizationHelper.Translate("WorkShift_Overlap_Title") + "\n\n" +
+                        LocalizationHelper.Translate(
+                            "WorkShift_Overlap_Date",
+                            (overlappingShift.StartTime ?? overlappingShift.ShiftDate)
+                                .ToString("dddd d MMMM", swedishCulture)) + "\n" +
+                        LocalizationHelper.Translate(
+                            "WorkShift_Overlap_Time",
+                            overlappingShift.StartTime?.ToString("HH:mm"),
+                            overlappingShift.EndTime?.ToString("HH:mm")) + "\n\n" +
+                        LocalizationHelper.Translate("WorkShift_Overlap_Action");
                     return (false, message);
                 }
 
@@ -82,8 +91,11 @@ namespace MyWorkSalary.Services
                 _databaseService.WorkShifts.SaveWorkShift(workShift);
                 string successMessage = workShift.ShiftType switch
                 {
-                    ShiftType.Vacation => $"Semester på {workShift.NumberOfDays} dagar har sparats!",
-                    _ => "Passet har sparats!"
+                    ShiftType.Vacation => LocalizationHelper.Translate(
+                        "WorkShift_Save_Vacation",
+                        workShift.NumberOfDays ?? 1),
+
+                    _ => LocalizationHelper.Translate("WorkShift_Save_Generic")
                 };
                 return (true, successMessage);
             }
@@ -102,16 +114,25 @@ namespace MyWorkSalary.Services
                 var sickLeave = _databaseService.SickLeaves.GetSickLeaveByWorkShiftId(workShiftId);
                 if (sickLeave == null)
                 {
-                    return "0t";
+                    return LocalizationHelper.Translate("SickLeave_Hours_Zero");
                 }
 
                 return sickLeave.SickType switch
                 {
-                    SickLeaveType.ShouldHaveWorked => "0t",  // Hel dag sjuk
-                    SickLeaveType.WorkedPartially => $"{sickLeave.WorkedHours:F1}t",  // Delvis sjuk
-                    SickLeaveType.WouldBeFree => "0t",  // Skulle varit ledig ändå
-                    _ => "0t"
+                    SickLeaveType.WorkedPartially =>
+                        string.Format(
+                            LocalizationHelper.Translate("SickLeave_Hours_Worked"),
+                            sickLeave.WorkedHours),
+
+                    SickLeaveType.ShouldHaveWorked =>
+                        LocalizationHelper.Translate("SickLeave_Hours_Zero"),
+
+                    SickLeaveType.WouldBeFree =>
+                        LocalizationHelper.Translate("SickLeave_Hours_Zero"),
+
+                    _ => LocalizationHelper.Translate("SickLeave_Hours_Zero")
                 };
+
             }
             catch (Exception ex)
             {
@@ -127,21 +148,29 @@ namespace MyWorkSalary.Services
                 var sickLeave = _databaseService.SickLeaves.GetSickLeaveByWorkShiftId(workShiftId);
                 if (sickLeave == null)
                 {
-                    return "Sjukskrivning";
+                    return LocalizationHelper.Translate("SickLeave_Default");
                 }
 
                 return sickLeave.SickType switch
                 {
-                    SickLeaveType.WorkedPartially => $"Sjukskrivning - delvis ({sickLeave.WorkedHours:F1}t)",
-                    SickLeaveType.ShouldHaveWorked => "Sjukskrivning - hel dag",
-                    SickLeaveType.WouldBeFree => "Sjukskrivning - ledigt",
-                    _ => "Sjukskrivning"
+                    SickLeaveType.WorkedPartially =>
+                        string.Format(
+                            LocalizationHelper.Translate("SickLeave_Description_Partial"),
+                            sickLeave.WorkedHours),
+
+                    SickLeaveType.ShouldHaveWorked =>
+                        LocalizationHelper.Translate("SickLeave_Description_FullDay"),
+
+                    SickLeaveType.WouldBeFree =>
+                        LocalizationHelper.Translate("SickLeave_Description_FreeDay"),
+
+                    _ => LocalizationHelper.Translate("SickLeave_Default")
                 };
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"❌ Fel i GetSickLeaveDescriptionAsync: {ex.Message}");
-                return "Sjukskrivning";
+                return LocalizationHelper.Translate("SickLeave_Default");
             }
         }
     }

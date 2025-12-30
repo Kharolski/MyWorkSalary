@@ -1862,4 +1862,95 @@ Ta bort det först innan du registrerar semester.</value>
   <data name="ShiftValidation_FullDay_Vacation_Shorten" xml:space="preserve">
     <value>Vill du förkorta semestern?</value>
   </data>
+  <data name="Conflict_Title_SickWork" xml:space="preserve">
+    <value>🤒 Konflikt med arbetspass</value>
+  </data>
+  <data name="Conflict_Title_SickLeave" xml:space="preserve">
+    <value>🤒 Konflikt med sjukskrivning</value>
+  </data>
+  <data name="Conflict_Title_Vacation" xml:space="preserve">
+    <value>🏖️ Konflikt med semester</value>
+  </data>
+  <data name="Conflict_Title_Merge_Sick" xml:space="preserve">
+    <value>🤒 Sammanslagning av sjukskrivning</value>
+  </data>
+  <data name="Conflict_Title_Merge_Vacation" xml:space="preserve">
+    <value>🏖️ Sammanslagning av semester</value>
+  </data>
+  <data name="Action_RemoveShifts" xml:space="preserve">
+    <value>Ja, ta bort passet</value>
+  </data>
+  <data name="Action_RemoveWorkShift" xml:space="preserve">
+    <value>Ja, ta bort arbetspasset</value>
+  </data>
+  <data name="Action_ShortenSick" xml:space="preserve">
+    <value>Ja, förkorta sjukskrivningen</value>
+  </data>
+  <data name="Action_Merge" xml:space="preserve">
+    <value>Ja, slå samman</value>
+  </data>
+  <data name="Action_Cancel" xml:space="preserve">
+    <value>Nej, avbryt</value>
+  </data>
+  <data name="Action_OK" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Result_Saved" xml:space="preserve">
+    <value>✅ Sparat!</value>
+  </data>
+  <data name="Result_Merged" xml:space="preserve">
+    <value>✅ Sammanslagen!</value>
+  </data>
+  <data name="Result_Error" xml:space="preserve">
+    <value>⚠️ Fel</value>
+  </data>
+  <data name="Conflict_WorkShiftSavedAfterShorten" xml:space="preserve">
+    <value>{0}
+Arbetspasset har sparats!</value>
+  </data>
+  <data name="LeaveType_Sick" xml:space="preserve">
+    <value>🤒 Sjukskrivning</value>
+  </data>
+  <data name="LeaveType_Vacation" xml:space="preserve">
+    <value>🏖️ Semester</value>
+  </data>
+  <data name="WorkShift_FullDay_Sick_ConflictType" xml:space="preserve">
+    <value>SICK</value>
+  </data>
+  <data name="WorkShift_FullDay_Vacation_ConflictType" xml:space="preserve">
+    <value>VACATION</value>
+  </data>
+  <data name="WorkShift_Overlap_Title" xml:space="preserve">
+    <value>Passet överlappar med befintligt pass:</value>
+  </data>
+  <data name="WorkShift_Overlap_ChangeTime" xml:space="preserve">
+    <value>Ändra tiden för att undvika överlapp.</value>
+  </data>
+  <data name="WorkShift_SaveSuccess_Default" xml:space="preserve">
+    <value>Passet har sparats!</value>
+  </data>
+  <data name="WorkShift_SaveSuccess_Vacation" xml:space="preserve">
+    <value>Semester på {0} dagar har sparats!</value>
+  </data>
+  <data name="WorkShift_SaveFailed" xml:space="preserve">
+    <value>Fel vid sparande: {0}</value>
+  </data>
+  <data name="SickLeave_Hours_Zero" xml:space="preserve">
+    <value>0t</value>
+  </data>
+  <data name="SickLeave_Description_Default" xml:space="preserve">
+    <value>Sjukskrivning</value>
+  </data>
+  <data name="SickLeave_Description_Partial" xml:space="preserve">
+    <value>Sjukskrivning – delvis ({0}t)</value>
+  </data>
+  <data name="SickLeave_Description_FullDay" xml:space="preserve">
+    <value>Sjukskrivning – hel dag</value>
+  </data>
+  <data name="SickLeave_Description_FreeDay" xml:space="preserve">
+    <value>Sjukskrivning – ledigt</value>
+  </data>
+  <data name="SickLeave_Hours_Worked" xml:space="preserve">
+    <value>{0:F1}t</value>
+  </data>
 </root>

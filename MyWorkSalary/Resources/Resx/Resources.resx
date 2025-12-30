@@ -2204,4 +2204,124 @@ Remove it before registering vacation.</value>
     <value>Do you want to shorten the vacation?</value>
     <comment>ShiftValidationService</comment>
   </data>
+  <data name="Conflict_Title_SickWork" xml:space="preserve">
+    <value>🤒 Conflict with work shift</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Conflict_Title_SickLeave" xml:space="preserve">
+    <value>🤒 Conflict with sick leave</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Conflict_Title_Vacation" xml:space="preserve">
+    <value>🏖️ Conflict with vacation</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Conflict_Title_Merge_Sick" xml:space="preserve">
+    <value>🤒 Merge sick leave periods</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Conflict_Title_Merge_Vacation" xml:space="preserve">
+    <value>🏖️ Merge vacation periods</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Action_RemoveShifts" xml:space="preserve">
+    <value>Yes, remove shifts</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Action_RemoveWorkShift" xml:space="preserve">
+    <value>Yes, remove work shift</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Action_ShortenSick" xml:space="preserve">
+    <value>Yes, shorten sick leave</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Action_Merge" xml:space="preserve">
+    <value>Yes, merge</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Action_Cancel" xml:space="preserve">
+    <value>No, cancel</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Action_OK" xml:space="preserve">
+    <value>OK</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Result_Saved" xml:space="preserve">
+    <value>✅ Saved!</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Result_Merged" xml:space="preserve">
+    <value>✅ Merged!</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Result_Error" xml:space="preserve">
+    <value>⚠️ Error</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="Conflict_WorkShiftSavedAfterShorten" xml:space="preserve">
+    <value>{0}
+The work shift has been saved!</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="LeaveType_Sick" xml:space="preserve">
+    <value>🤒 Sick leave</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="LeaveType_Vacation" xml:space="preserve">
+    <value>🏖️ Vacation</value>
+    <comment>ConflictHandlerService</comment>
+  </data>
+  <data name="WorkShift_FullDay_Sick_ConflictType" xml:space="preserve">
+    <value>SICK</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="WorkShift_FullDay_Vacation_ConflictType" xml:space="preserve">
+    <value>VACATION</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="WorkShift_Overlap_Title" xml:space="preserve">
+    <value>Shift overlaps with existing shift:</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="WorkShift_Overlap_ChangeTime" xml:space="preserve">
+    <value>Change the time to avoid overlap.</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="WorkShift_SaveSuccess_Default" xml:space="preserve">
+    <value>Shift has been saved!</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="WorkShift_SaveSuccess_Vacation" xml:space="preserve">
+    <value>Vacation for {0} days has been saved!</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="WorkShift_SaveFailed" xml:space="preserve">
+    <value>Error while saving: {0}</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="SickLeave_Hours_Zero" xml:space="preserve">
+    <value>0h</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="SickLeave_Description_Default" xml:space="preserve">
+    <value>Sick leave</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="SickLeave_Description_Partial" xml:space="preserve">
+    <value>Sick leave – partial ({0}h)</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="SickLeave_Description_FullDay" xml:space="preserve">
+    <value>Sick leave – full day</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="SickLeave_Description_FreeDay" xml:space="preserve">
+    <value>Sick leave – already free</value>
+    <comment>WorkShiftService</comment>
+  </data>
+  <data name="SickLeave_Hours_Worked" xml:space="preserve">
+    <value>{0:F1}h</value>
+  </data>
 </root>
