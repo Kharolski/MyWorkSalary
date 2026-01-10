@@ -106,6 +106,9 @@ namespace MyWorkSalary.Models.Core
 
         [Ignore]
         public bool IsSalariedEmployee => MonthlySalary.HasValue;
+
+        [Ignore]
+        public ShiftTimeSettings ShiftTimeSettings { get; set; }
         #endregion
 
         #region Metadata Properties

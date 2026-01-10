@@ -1596,11 +1596,47 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error creating OB events.
+        /// </summary>
+        internal static string ErrorCreatingOBEvents {
+            get {
+                return ResourceManager.GetString("ErrorCreatingOBEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string ErrorTitle {
             get {
                 return ResourceManager.GetString("ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening.
+        /// </summary>
+        internal static string EveningOB {
+            get {
+                return ResourceManager.GetString("EveningOB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening OB for {0}.
+        /// </summary>
+        internal static string EveningOBForDate {
+            get {
+                return ResourceManager.GetString("EveningOBForDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🌇 Evening start.
+        /// </summary>
+        internal static string EveningStart {
+            get {
+                return ResourceManager.GetString("EveningStart", resourceCulture);
             }
         }
         
@@ -2087,6 +2123,33 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string MyShiftsHeader {
             get {
                 return ResourceManager.GetString("MyShiftsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Night.
+        /// </summary>
+        internal static string NightOB {
+            get {
+                return ResourceManager.GetString("NightOB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Night OB for {0}.
+        /// </summary>
+        internal static string NightOBForDate {
+            get {
+                return ResourceManager.GetString("NightOBForDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🌙 Night start.
+        /// </summary>
+        internal static string NightStart {
+            get {
+                return ResourceManager.GetString("NightStart", resourceCulture);
             }
         }
         
@@ -3446,6 +3509,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Shifts {
             get {
                 return ResourceManager.GetString("Shifts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift Times.
+        /// </summary>
+        internal static string ShiftTimes {
+            get {
+                return ResourceManager.GetString("ShiftTimes", resourceCulture);
             }
         }
         

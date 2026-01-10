@@ -2,6 +2,7 @@
 using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
+using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services.Interfaces;
 
 namespace MyWorkSalary.Services.Calculations
@@ -89,6 +90,125 @@ namespace MyWorkSalary.Services.Calculations
 
             // Returnera 0 timmar och VAB-ersättning från företaget 0
             return (Hours: 0, Pay: 0);
+        }
+
+        public ShiftCalculationResult CalculateOBHours(DateTime workDate, TimeSpan startTime, TimeSpan endTime, ShiftTimeSettings settings)
+        {
+            var result = new ShiftCalculationResult
+            {
+                EveningStart = settings.EveningStart,
+                NightStart = settings.NightStart,
+                EveningActive = settings.EveningActive,
+                NightActive = settings.NightActive
+            };
+            // Calculate total shift duration
+            var totalMinutes = (endTime - startTime).TotalMinutes;
+            if (totalMinutes <= 0)
+                return result;
+            // Check if it's weekend
+            bool isWeekend = workDate.DayOfWeek == DayOfWeek.Saturday ||
+                            workDate.DayOfWeek == DayOfWeek.Sunday;
+            // Use weekend settings if it's weekend
+            if (isWeekend && settings.WeekendEveningActive)
+            {
+                result.EveningStart = settings.WeekendEveningStart;
+                result.EveningActive = true;
+            }
+            if (isWeekend && settings.WeekendNightActive)
+            {
+                result.NightStart = settings.WeekendNightStart;
+                result.NightActive = true;
+            }
+            // Calculate OB hours
+            if (result.EveningActive && startTime < result.EveningStart && endTime > result.EveningStart)
+            {
+                var eveningEnd = result.NightActive ? result.NightStart : endTime;
+                result.EveningHours = (decimal)(eveningEnd - result.EveningStart).TotalHours;
+            }
+            if (result.NightActive && startTime < result.NightStart && endTime > result.NightStart)
+            {
+                result.NightHours = (decimal)(endTime - result.NightStart).TotalHours;
+            }
+            return result;
+        }
+        #endregion
+
+        #region CalculateRegularShift
+        public ShiftCalculationResult CalculateRegularShiftDetailed(
+                DateTime selectedDate,
+                TimeSpan startTime,
+                TimeSpan endTime,
+                JobProfile jobProfile,
+                ShiftTimeSettings shiftSettings,
+                decimal eveningOBRate,
+                decimal nightOBRate,
+                int breakMinutes)
+        {
+            var result = new ShiftCalculationResult();
+
+            // Start / slut (hantera midnatt)
+            var startDateTime = selectedDate.Date.Add(startTime);
+            var endDateTime = selectedDate.Date.Add(endTime);
+
+            if (endTime < startTime)
+                endDateTime = endDateTime.AddDays(1);
+
+            var totalMinutes = (decimal)(endDateTime - startDateTime).TotalMinutes;
+
+            // Break minutes are deducted from total time, not from specific OB periods
+            var workingMinutes = Math.Max(0, totalMinutes - breakMinutes);
+            result.TotalHours = workingMinutes / 60;
+
+            // Snapshot (historik & icons)
+            result.EveningStart = shiftSettings.EveningStart;
+            result.NightStart = shiftSettings.NightStart;
+            result.EveningActive = shiftSettings.EveningActive;
+            result.NightActive = shiftSettings.NightActive;
+
+            // Bygg gränser
+            var eveningStart = selectedDate.Date.Add(shiftSettings.EveningStart);
+            var nightStart = selectedDate.Date.Add(shiftSettings.NightStart);
+
+            if (shiftSettings.NightStart < shiftSettings.EveningStart)
+                nightStart = nightStart.AddDays(1);
+
+            // Kväll
+            if (shiftSettings.EveningActive && endDateTime > eveningStart)
+            {
+                var eveningFrom = startDateTime > eveningStart ? startDateTime : eveningStart;
+                var eveningTo = endDateTime < nightStart ? endDateTime : nightStart;
+
+                if (eveningTo > eveningFrom)
+                    result.EveningHours = (decimal)(eveningTo - eveningFrom).TotalHours;
+            }
+
+            // Natt
+            if (shiftSettings.NightActive && endDateTime > nightStart)
+            {
+                var nightFrom = startDateTime > nightStart ? startDateTime : nightStart;
+
+                if (endDateTime > nightFrom)
+                    result.NightHours = (decimal)(endDateTime - nightFrom).TotalHours;
+            }
+
+            // Vanliga timmar
+            result.RegularHours = Math.Max(
+                0,
+                result.TotalHours - result.EveningHours - result.NightHours
+            );
+
+            // Löner
+            var hourlyRate = jobProfile.HourlyRate ?? 0;
+
+            result.RegularPay = result.RegularHours * hourlyRate;
+
+            result.EveningOBRate = eveningOBRate;
+            result.NightOBRate = nightOBRate;
+
+            result.EveningOBPay = result.EveningHours * eveningOBRate;
+            result.NightOBPay = result.NightHours * nightOBRate;
+
+            return result;
         }
         #endregion
 

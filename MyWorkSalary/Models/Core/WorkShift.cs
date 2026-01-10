@@ -33,17 +33,27 @@ namespace MyWorkSalary.Models.Core
         public decimal RegularHours { get; set; }           // Vanliga arbetstimmar
         public int BreakMinutes { get; set; } = 0;          // Rast i minuter (Regular shifts)
         public decimal OBHours { get; set; }                // OB-timmar totalt
+        public decimal EveningHours { get; set; }
+        public decimal NightHours { get; set; }
         public bool IsExtraShift { get; set; } = false;     // Markerar inbeordrat pass
         public bool IsHoliday { get; set; } = false;        // Markerar om passet är på röd dag / helgdag.
 
+        // Debug / refactor-hjälp
+        public decimal CalculatedOBHours => EveningHours + NightHours;
         #endregion
 
         #region Financial Calculations
+        public decimal EveningOBRate { get; set; }
+        public decimal NightOBRate { get; set; }
+        public decimal EveningOBPay { get; set; }
+        public decimal NightOBPay { get; set; }
 
         public decimal RegularPay { get; set; }             // Grundlön för timmarna
         public decimal OBPay { get; set; }                  // Totalt OB-tillägg
         public decimal TotalPay { get; set; }               // Summa
 
+        // Debug / refactor-hjälp
+        public decimal CalculatedOBPay => EveningOBPay + NightOBPay;
         #endregion
 
         #region Metadata
@@ -52,6 +62,16 @@ namespace MyWorkSalary.Models.Core
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public bool IsConfirmed { get; set; } = false;     // Användaren har verifierat
+
+        #endregion
+
+        #region Shift Rule Snapshot (att ShiftConverters fungerar rätt med icons)
+
+        public TimeSpan EveningStartAtThatTime { get; set; } = new(18, 0, 0);
+        public TimeSpan NightStartAtThatTime { get; set; } = new(22, 0, 0);
+
+        public bool EveningActiveAtThatTime { get; set; } = true;
+        public bool NightActiveAtThatTime { get; set; } = true;
 
         #endregion
 

@@ -1,4 +1,4 @@
-using MyWorkSalary.ViewModels;
+﻿using MyWorkSalary.ViewModels;
 
 namespace MyWorkSalary.Views;
 

@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
-  <!-- Enkel design för splash -->
-  <rect width="456" height="456" fill="#2E7D32"/>
+<svg width="456" height="456" viewBox="0 0 456 456"
+     xmlns="http://www.w3.org/2000/svg">
 
-  <!-- App namn -->
-  <text x="228" y="180" font-family="Arial" font-size="36" fill="#ffffff" text-anchor="middle" font-weight="bold">My Work Salary</text>
+  <defs>
+    <!-- Professionell blå gradient -->
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E3C72"/>
+      <stop offset="100%" stop-color="#2A5298"/>
+    </linearGradient>
+  </defs>
 
-  <!-- Ikon -->
-  <text x="228" y="280" font-family="Arial" font-size="80" fill="#FFD700" text-anchor="middle">💰</text>
+  <!-- Bakgrund -->
+  <rect width="456" height="456" fill="url(#bgGradient)"/>
+
+  <!-- Appnamn -->
+  <text x="228" y="170"
+        font-family="Segoe UI, Arial, sans-serif"
+        font-size="46"
+        fill="#FFFFFF"
+        text-anchor="middle"
+        font-weight="600">
+    My Work Salary
+  </text>
 
   <!-- Undertext -->
-  <text x="228" y="320" font-family="Arial" font-size="18" fill="#ffffff" text-anchor="middle">Kontrollera ditt OB-tillägg</text>
+  <text x="228" y="225"
+        font-family="Segoe UI, Arial, sans-serif"
+        font-size="22"
+        fill="#E3F2FD"
+        text-anchor="middle">
+    Lön • OB • Arbetstid
+  </text>
+
+  <!-- Loading text -->
+  <text x="228" y="300"
+        font-family="Segoe UI, Arial, sans-serif"
+        font-size="18"
+        fill="#BBDEFB"
+        text-anchor="middle">
+    Initierar data
+  </text>
+
+  <!-- Rotating ring loader -->
+  <circle cx="228" cy="345"
+          r="14"
+          stroke="#BBDEFB"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+          stroke-dasharray="30 60">
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      from="0 228 345"
+      to="360 228 345"
+      dur="1.1s"
+      repeatCount="indefinite"/>
+  </circle>
+
 </svg>

@@ -2324,4 +2324,36 @@ The work shift has been saved!</value>
   <data name="SickLeave_Hours_Worked" xml:space="preserve">
     <value>{0:F1}h</value>
   </data>
+  <data name="ShiftTimes" xml:space="preserve">
+    <value>Shift Times</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="EveningStart" xml:space="preserve">
+    <value>🌇 Evening start</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="NightStart" xml:space="preserve">
+    <value>🌙 Night start</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="EveningOB" xml:space="preserve">
+    <value>Evening</value>
+    <comment>RegularShiftViewModel</comment>
+  </data>
+  <data name="NightOB" xml:space="preserve">
+    <value>Night</value>
+    <comment>RegularShiftViewModel</comment>
+  </data>
+  <data name="EveningOBForDate" xml:space="preserve">
+    <value>Evening OB for {0}</value>
+    <comment>RegularShiftViewModel</comment>
+  </data>
+  <data name="NightOBForDate" xml:space="preserve">
+    <value>Night OB for {0}</value>
+    <comment>RegularShiftViewModel</comment>
+  </data>
+  <data name="ErrorCreatingOBEvents" xml:space="preserve">
+    <value>Error creating OB events</value>
+    <comment>RegularShiftViewModel</comment>
+  </data>
 </root>

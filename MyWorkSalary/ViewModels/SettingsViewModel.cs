@@ -2,10 +2,10 @@
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
+using MyWorkSalary.Services.Repositories;
 using MyWorkSalary.Views.Pages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
@@ -28,6 +28,9 @@ namespace MyWorkSalary.ViewModels
         {
             _databaseService = databaseService;
 
+            // Init ShiftTimeSettings repository
+            _shiftRepo = new ShiftTimeSettingsRepository(databaseService);
+
             TranslationManager.Instance.CultureChanged += OnCultureChanged;
 
             // Commands
@@ -42,6 +45,9 @@ namespace MyWorkSalary.ViewModels
             LoadJobs();
             LoadOBRates();
             LoadAppSettings();
+
+            // Ladda shift settings för aktivt jobb
+            LoadShiftSettings();
         }
         #endregion
 
@@ -219,6 +225,9 @@ namespace MyWorkSalary.ViewModels
 
                 // Uppdatera ActiveJob property
                 ActiveJob = selectedJob;
+
+                // Ladda ShiftTimeSettings för det nya jobbet
+                LoadShiftSettings();
 
                 // Uppdatera OB property för aktiv job
                 LoadOBRates();
@@ -450,6 +459,120 @@ namespace MyWorkSalary.ViewModels
             // Tvinga UI att uppdatera valutor & datum när språk byts
             var currentRates = OBRates.ToList();
             OBRates = new ObservableCollection<OBRate>(currentRates);
+        }
+        #endregion
+
+        #region ShiftTimeSettings
+        private ShiftTimeSettings _shiftTimeSettings;
+
+        public ShiftTimeSettings ShiftTimeSettings
+        {
+            get => _shiftTimeSettings;
+            set
+            {
+                if (_shiftTimeSettings != value)
+                {
+                    _shiftTimeSettings = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(EveningStart));
+                    OnPropertyChanged(nameof(NightStart));
+                    OnPropertyChanged(nameof(EveningActive));
+                    OnPropertyChanged(nameof(NightActive));
+                }
+            }
+        }
+
+        // Convenience properties för XAML-bindning
+        public TimeSpan EveningStart
+        {
+            get => ShiftTimeSettings?.EveningStart ?? TimeSpan.FromHours(18);
+            set
+            {
+                if (ShiftTimeSettings != null && ShiftTimeSettings.EveningStart != value)
+                {
+                    ShiftTimeSettings.EveningStart = value;
+                    OnPropertyChanged();
+                    SaveShiftSettings();
+                }
+            }
+        }
+
+        public TimeSpan NightStart
+        {
+            get => ShiftTimeSettings?.NightStart ?? TimeSpan.FromHours(22);
+            set
+            {
+                if (ShiftTimeSettings != null && ShiftTimeSettings.NightStart != value)
+                {
+                    ShiftTimeSettings.NightStart = value;
+                    OnPropertyChanged();
+                    SaveShiftSettings();
+                }
+            }
+        }
+
+        // Nya checkbox properties
+        public bool EveningActive
+        {
+            get => ShiftTimeSettings?.EveningActive ?? true;
+            set
+            {
+                if (ShiftTimeSettings != null && ShiftTimeSettings.EveningActive != value)
+                {
+                    ShiftTimeSettings.EveningActive = value;
+                    OnPropertyChanged();
+                    SaveShiftSettings();
+                }
+            }
+        }
+
+        public bool NightActive
+        {
+            get => ShiftTimeSettings?.NightActive ?? true;
+            set
+            {
+                if (ShiftTimeSettings != null && ShiftTimeSettings.NightActive != value)
+                {
+                    ShiftTimeSettings.NightActive = value;
+                    OnPropertyChanged();
+                    SaveShiftSettings();
+                }
+            }
+        }
+
+        // Repository
+        private readonly ShiftTimeSettingsRepository _shiftRepo;
+
+        // Ladda / spara
+        private void LoadShiftSettings()
+        {
+            if (ActiveJob == null)
+                return;
+
+            _shiftTimeSettings = _shiftRepo.GetForJob(ActiveJob.Id)
+                ?? new ShiftTimeSettings
+                {
+                    JobProfileId = ActiveJob.Id,
+                    EveningStart = TimeSpan.FromHours(18),
+                    NightStart = TimeSpan.FromHours(22),
+                    EveningActive = true,
+                    NightActive = true
+                };
+
+            OnPropertyChanged(nameof(ShiftTimeSettings));
+            OnPropertyChanged(nameof(EveningStart));
+            OnPropertyChanged(nameof(NightStart));
+            OnPropertyChanged(nameof(EveningActive));
+            OnPropertyChanged(nameof(NightActive));
+        }
+
+        private void SaveShiftSettings()
+        {
+            if (ShiftTimeSettings != null)
+            {
+                ShiftTimeSettings.ModifiedDate = DateTime.Now;
+                _shiftRepo.Save(ShiftTimeSettings);
+            }
         }
         #endregion
 

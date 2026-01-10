@@ -47,14 +47,12 @@ namespace MyWorkSalary.Services.Repositories
             {
                 workShift.ModifiedDate = DateTime.Now;
                 var result = _database.Update(workShift);
-                System.Diagnostics.Debug.WriteLine($"🔄 WorkShift uppdaterad: ID={workShift.Id}, Rows affected={result}");
                 return workShift;
             }
             else
             {
                 workShift.CreatedDate = DateTime.Now;
                 var result = _database.Insert(workShift);
-                System.Diagnostics.Debug.WriteLine($"✅ WorkShift sparad: ID={workShift.Id}, Rows affected={result}");
                 return workShift;
             }
         }

@@ -30,33 +30,28 @@ namespace MyWorkSalary.Helpers.Converters
         }
 
         /// <summary>
-        /// Determines the appropriate icon based on the start time of the given work shift.
+        /// Bestämmer ikon för pass baserat på ShiftTimeSettings (kväll/natt)
         /// </summary>
-        /// <remarks>The method uses the start time of the shift to categorize it into night, evening, or
-        /// day shifts, each represented by a specific icon. If the start time is not available, it defaults to a
-        /// regular shift icon.</remarks>
-        /// <param name="shift">The work shift for which to determine the icon. The shift must have a valid start time.</param>
-        /// <returns>A string containing an icon and the translated shift type. Returns a night icon for shifts starting between
-        /// 21:00 and 07:00, an evening icon for shifts starting between 16:00 and 21:00, a day icon for shifts starting
-        /// between 06:00 and 16:00, and a regular icon if no specific time-based icon applies.</returns>
+        /// <param name="shift">WorkShift med starttid och ShiftTimeSettings.</param>
+        /// <returns>En emoji som representerar passet: natt 🌙, kväll 🌅, dag ☀️, eller standard 📋.</returns>
         private string GetTimeBasedIcon(WorkShift shift)
         {
-            // Om inga tider finns (säkerhetscheck)
-            if (!shift.StartTime.HasValue)
-                return $"📋";    //  {LocalizationHelper.Translate("ShiftType_Regular")}
+            // Säkerhetskontroll
+            if (shift == null || !shift.StartTime.HasValue || shift.EveningActiveAtThatTime == false && shift.NightActiveAtThatTime == false)
+                return $"📋"; // Standardikon
 
-            var startHour = shift.StartTime.Value.Hour;
+            var startTime = shift.StartTime.Value.TimeOfDay;
 
-            // Nattpass: 21:00-07:00
-            if (startHour >= 21 || startHour < 7)
-                return $"🌙";    //  {LocalizationHelper.Translate("ShiftType_Night")}
-            // Kvällspass: 16:00-21:00
-            if (startHour >= 13 && startHour < 21)
-                return $"🌅";    //  {LocalizationHelper.Translate("ShiftType_Evening")}
-            if (startHour >= 6 && startHour < 16)
-                return $"☀️";    //  {LocalizationHelper.Translate("ShiftType_Day")}
+            // Om natt är aktiv och passet startar efter nattstart
+            if (shift.NightActiveAtThatTime && startTime >= shift.NightStartAtThatTime)
+                return $"🌙"; // Nattpass
 
-            return $"📋";       //  {LocalizationHelper.Translate("ShiftType_Regular")}
+            // Om kväll är aktiv och passet startar efter kvällstart
+            if (shift.EveningActiveAtThatTime && startTime >= shift.EveningStartAtThatTime)
+                return $"🌅"; // Kvällspass
+
+            // Standard dagpass
+            return $"☀️";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

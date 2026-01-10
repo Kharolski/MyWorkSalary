@@ -1953,4 +1953,28 @@ Arbetspasset har sparats!</value>
   <data name="SickLeave_Hours_Worked" xml:space="preserve">
     <value>{0:F1}t</value>
   </data>
+  <data name="ShiftTimes" xml:space="preserve">
+    <value>Skifttider</value>
+  </data>
+  <data name="EveningStart" xml:space="preserve">
+    <value>🌇 Kväll start</value>
+  </data>
+  <data name="NightStart" xml:space="preserve">
+    <value>🌙 Natt start</value>
+  </data>
+  <data name="EveningOB" xml:space="preserve">
+    <value>Kväll</value>
+  </data>
+  <data name="NightOB" xml:space="preserve">
+    <value>Natt</value>
+  </data>
+  <data name="EveningOBForDate" xml:space="preserve">
+    <value>KvällsOB för {0}</value>
+  </data>
+  <data name="NightOBForDate" xml:space="preserve">
+    <value>NattOB för {0}</value>
+  </data>
+  <data name="ErrorCreatingOBEvents" xml:space="preserve">
+    <value>Fel vid skapande av OB-händelser</value>
+  </data>
 </root>

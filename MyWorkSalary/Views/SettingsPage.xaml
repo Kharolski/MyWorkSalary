@@ -139,6 +139,37 @@
                 </VerticalStackLayout>
             </Frame>
 
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="{resx:Translate ShiftTimes}" Style="{StaticResource SectionTitleLabel}"/>
+
+                    <!-- Kväll -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,4">
+                        <!-- Aktiv checkbox -->
+                        <CheckBox IsChecked="{Binding EveningActive}" VerticalOptions="Center"/>
+                        <!-- Label -->
+                        <Label Text="{resx:Translate EveningStart}" VerticalOptions="Center"/>
+                        <!-- TimePicker -->
+                        <TimePicker Time="{Binding EveningStart}" HorizontalOptions="End" WidthRequest="100"
+                                IsEnabled="{Binding EveningActive}" Format="HH:mm" Style="{StaticResource ThemedTimePicker}"/>
+                    </Grid>
+
+                    <!-- Natt -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,4">
+                        <!-- Aktiv checkbox -->
+                        <CheckBox IsChecked="{Binding NightActive}" VerticalOptions="Center"/>
+
+                        <!-- Label -->
+                        <Label Text="{resx:Translate NightStart}" VerticalOptions="Center"/>
+
+                        <!-- TimePicker -->
+                        <TimePicker Time="{Binding NightStart}" HorizontalOptions="End" WidthRequest="100"
+                                IsEnabled="{Binding NightActive}" Format="HH:mm" Style="{StaticResource ThemedTimePicker}"/>
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
             <!-- OB-Inställningar -->
             <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
                 <VerticalStackLayout Spacing="15">

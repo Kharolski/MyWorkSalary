@@ -37,6 +37,8 @@ namespace MyWorkSalary.ViewModels
             IJobProfileRepository jobProfileRepository,
             IWorkShiftRepository workShiftRepository,
             IShiftCalculationService calculationService,
+            IShiftTimeSettingsRepository shiftTimeSettingsRepository,
+            IOBEventRepository obEventRepository,
             ShiftTypeHandler shiftTypeHandler,
             SickLeaveHandler sickLeaveHandler,
             SickLeaveViewModel sickLeaveViewModel,
@@ -52,7 +54,14 @@ namespace MyWorkSalary.ViewModels
             OnCallVM = onCallViewModel;
             VacationVM = vacationViewModel;
 
-            RegularShiftVM = new RegularShiftViewModel(workShiftRepository, calculationService);
+            RegularShiftVM = new RegularShiftViewModel(workShiftRepository, calculationService, shiftTimeSettingsRepository, obEventRepository);
+
+            // Lyssna på CanSave från RegularShiftVM
+            RegularShiftVM.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(RegularShiftVM.CanSave))
+                    ValidateAndUpdateCanSave();
+            };
 
             // Prenumerera på ValidationChanged events
             SickLeaveVM.ValidationChanged += () => ValidateAndUpdateCanSave();
@@ -512,16 +521,6 @@ namespace MyWorkSalary.ViewModels
                 System.Diagnostics.Debug.WriteLine($"[OnLanguageChanged] Error: {ex.Message}");
             }
         }
-
-        //private void RefreshShiftTypeDisplayNames()
-        //{
-        //    ShiftTypeDisplayNames.Clear();
-        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Add_Regular"));
-        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_SickLeave"));
-        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Add_VAB"));
-        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Vacation"));
-        //    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_OnCall"));
-        //}
 
         private ShiftType GetShiftTypeFromDisplay(string displayName)
         {

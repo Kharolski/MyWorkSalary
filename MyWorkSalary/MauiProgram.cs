@@ -49,12 +49,14 @@ namespace MyWorkSalary
             builder.Services.AddTransient<ISickLeaveRepository, SickLeaveRepository>();
             builder.Services.AddSingleton<IVABLeaveRepository, VABLeaveRepository>();
             builder.Services.AddSingleton<IVacationLeaveRepository, VacationLeaveRepository>();
+            builder.Services.AddSingleton<IShiftTimeSettingsRepository, ShiftTimeSettingsRepository>();
             builder.Services.AddSingleton<IOnCallRepository, OnCallShiftRepository>();
             builder.Services.AddTransient<IAppSettingsRepository, AppSettingsRepository>();
             builder.Services.AddTransient<IOBRateRepository, OBRateRepository>();
             builder.Services.AddTransient<IFlexTimeRepository, FlexTimeRepository>();
             builder.Services.AddTransient<ISalaryRepository, SalaryRepository>();
             builder.Services.AddTransient<HolidayRepository>();
+            builder.Services.AddSingleton<IOBEventRepository, OBEventRepository>();
 
             // Registrera nya Api
             builder.Services.AddTransient<HolidayApiClient>();

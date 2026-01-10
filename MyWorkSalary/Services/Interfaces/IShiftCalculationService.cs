@@ -1,5 +1,6 @@
 ﻿using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
+using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services.Calculations;
 
 namespace MyWorkSalary.Services.Interfaces
@@ -15,6 +16,16 @@ namespace MyWorkSalary.Services.Interfaces
             JobProfile jobProfile,
             int breakMinutes = 0);
 
+        ShiftCalculationResult CalculateRegularShiftDetailed(
+            DateTime selectedDate,
+            TimeSpan startTime,
+            TimeSpan endTime,
+            JobProfile jobProfile,
+            ShiftTimeSettings shiftSettings,
+            decimal eveningOBRate,
+            decimal nightOBRate,
+            int breakMinutes);
+
         // Semester
         decimal CalculateVacationPay(int days, JobProfile jobProfile);
 
@@ -29,5 +40,8 @@ namespace MyWorkSalary.Services.Interfaces
         int SuggestBreakMinutes(decimal workingHours);
         bool ValidateBreakMinutes(int breakMinutes, decimal totalHours);
         string GetBreakSuggestionText(decimal workingHours);
+
+        // OB
+        public ShiftCalculationResult CalculateOBHours(DateTime workDate, TimeSpan startTime, TimeSpan endTime, ShiftTimeSettings settings);
     }
 }

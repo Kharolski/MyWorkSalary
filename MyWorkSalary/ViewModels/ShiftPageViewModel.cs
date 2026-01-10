@@ -7,6 +7,7 @@ using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Views.Pages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Input;
 
@@ -21,6 +22,7 @@ namespace MyWorkSalary.ViewModels
         private readonly IVacationLeaveRepository _vacationLeaveRepository;
         private readonly ISickLeaveRepository _sickLeaveRepository;
         private readonly IOnCallRepository _onCallRepository;
+        private readonly IOBEventRepository _obEventRepository;
 
         private JobProfile _activeJob;
         private ObservableCollection<WorkShift> _workShifts;
@@ -33,7 +35,8 @@ namespace MyWorkSalary.ViewModels
             IVABLeaveRepository vabLeaveRepository,
             IVacationLeaveRepository vacationLeaveRepository,
             ISickLeaveRepository sickLeaveRepository,
-            IOnCallRepository onCallRepository)
+            IOnCallRepository onCallRepository,
+            IOBEventRepository obEventRepository)
         {
             _jobProfileRepository = jobProfileRepository;
             _workShiftRepository = workShiftRepository;
@@ -41,6 +44,7 @@ namespace MyWorkSalary.ViewModels
             _vacationLeaveRepository = vacationLeaveRepository;
             _sickLeaveRepository = sickLeaveRepository;
             _onCallRepository = onCallRepository;
+            _obEventRepository = obEventRepository;
 
             // Commands
             AddShiftCommand = new Command(OnAddShift);
@@ -194,6 +198,17 @@ namespace MyWorkSalary.ViewModels
         // Radera specialiserad data
         private async Task DeleteSpecializedData(WorkShift shift)
         {
+            // Ta bort OB-händelser för detta pass
+            try
+            {
+                _obEventRepository.DeleteForWorkShift(shift.Id);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Fel vid borttagning av OBEvent för WorkShift {shift.Id}: {ex.Message}");
+                throw;
+            }
+
             switch (shift.ShiftType)
             {
                 case ShiftType.SickLeave:
@@ -232,7 +247,7 @@ namespace MyWorkSalary.ViewModels
                     break;
 
                 case ShiftType.Regular:
-                    // Regular shifts har ingen specialiserad data
+                    
                     break;
             }
         }
