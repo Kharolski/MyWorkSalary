@@ -37,7 +37,7 @@
                     <Label Text="{x:Static resx:Resources.EmploymentType_Label}"
                            Style="{StaticResource SecondaryLabel}" />
                     <Picker ItemsSource="{Binding EmploymentTypes}"
-                            SelectedItem="{Binding SelectedEmploymentType}"
+                            SelectedItem="{Binding SelectedEmploymentType, Mode=TwoWay}"
                             Style="{StaticResource ThemedPicker}" />
 
                     <!-- Land -->
@@ -128,8 +128,24 @@
                 </VerticalStackLayout>
             </Frame>
 
+            <!-- Timbank (endast för fast anställda) -->
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding IsPermanentEmployment}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Timbank" 
+                        Style="{StaticResource SectionTitleLabel}" />
+                    <Label Text="Nuvarande timbankssaldo" 
+                        Style="{StaticResource SecondaryLabel}" />
+                    <Entry Text="{Binding TimeBank, Mode=TwoWay}"
+                           Keyboard="Numeric"
+                           Placeholder="0,0"
+                           Style="{StaticResource ThemedEntry}" />
+                    <Label Text="Positivt värde = sparad övertid, negativt värde = skuld"
+                        Style="{StaticResource TipsLabel}" />
+                </VerticalStackLayout>
+            </Frame>
+
             <!-- Semester -->
-            <Frame Style="{StaticResource CardFrame}">
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding IsPermanentEmployment}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="{x:Static resx:Resources.Vacation_SectionTitle}"
                            Style="{StaticResource SectionTitleLabel}" />

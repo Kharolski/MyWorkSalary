@@ -66,6 +66,19 @@
     <Color x:Key="AllDaysButtonColor">#FFEBEE</Color>
     <Color x:Key="AllDaysButtonColorDark">#D32F2F</Color>
 
+    <!-- ===== NYA FÄRGER FÖR LÖNESTATISTIK ===== -->
+    <!-- Färger för lönestatistik - Ljust tema -->
+    <Color x:Key="SalaryPositiveLight">#2E7D32</Color>      <!-- Mörkgrönt -->
+    <Color x:Key="SalaryNegativeLight">#C62828</Color>      <!-- Mörkrött -->
+    <Color x:Key="SalaryNeutralLight">#424242</Color>       <!-- Mörkgrå -->
+    <Color x:Key="SalaryTextLight">#FFFFFF</Color>          <!-- Vit text -->
+    
+    <!-- Färger för lönestatistik - Mörkt tema -->
+    <Color x:Key="SalaryPositiveDark">#81C784</Color>       <!-- Ljusare grönt -->
+    <Color x:Key="SalaryNegativeDark">#EF9A9A</Color>       <!-- Ljusare rött -->
+    <Color x:Key="SalaryNeutralDark">#E0E0E0</Color>        <!-- Ljusgrå -->
+    <Color x:Key="SalaryTextDark">#212121</Color>           <!-- Mörkgrå text -->
+
     <!-- ============================== LJUST TEMA ============================= -->
     <Color x:Key="AppBackground">#FAFAFA</Color>
     <Color x:Key="BackgroundPrimary">#EAEAEA</Color>

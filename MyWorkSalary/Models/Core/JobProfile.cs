@@ -45,6 +45,7 @@ namespace MyWorkSalary.Models.Core
         public decimal? MonthlySalary { get; set; }
         public decimal? HourlyRate { get; set; }
         public decimal ExpectedHoursPerMonth { get; set; }
+        public decimal TimeBankHours { get; set; }    
 
         public string SalaryDisplayText
         {

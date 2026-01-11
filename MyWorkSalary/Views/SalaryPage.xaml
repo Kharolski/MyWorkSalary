@@ -21,34 +21,34 @@
             <!-- ===================== -->
             <!-- 🟦 KORT 1: RESULTAT -->
             <!-- ===================== -->
-            <Frame
-                Style="{StaticResource CardFrame}"
-                IsVisible="{Binding HasActiveJob}">
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
                 <VerticalStackLayout Spacing="8">
 
-                    <Label
-                        Text="💰"
-                        FontSize="28"
-                        HorizontalOptions="Center" />
-
+                    <!-- Månadens lön med färg -->
+                    <Label Text="💰" FontSize="28" HorizontalOptions="Center" />
                     <Label
                         Text="{Binding MonthlySalaryText}"
-                        FontSize="28"
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
+                        FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"
                         TextColor="{StaticResource ActiveJobBlue}" />
 
+                    <!-- Månad och år -->
                     <Label
-                        Text="Denna månad"
+                        Text="{Binding CurrentMonthYearText}"
                         FontSize="14"
+                        FontAttributes="Italic"
                         HorizontalOptions="Center"
-                        TextColor="Gray" />
-
+                        Opacity="0.7"
+                        TextColor="{AppThemeBinding Light={StaticResource SalaryNeutralLight}, 
+                                                   Dark={StaticResource SalaryNeutralDark}}" />
+                    <!-- Timmar med färg -->
                     <Label
                         Text="{Binding HoursSummaryText}"
-                        FontSize="14"
-                        HorizontalOptions="Center" />
-
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Margin="0,4,0,0"
+                        TextColor="{Binding HoursSummaryColor, Converter={StaticResource AmountToColorConverter}}" />
+                    
                 </VerticalStackLayout>
             </Frame>
 

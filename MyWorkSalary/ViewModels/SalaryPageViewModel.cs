@@ -5,6 +5,7 @@ using MyWorkSalary.Models.Reports;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
@@ -44,7 +45,6 @@ namespace MyWorkSalary.ViewModels
                 {
                     CurrentStats = null;
                 }
-                OnPropertyChanged(nameof(HoursSummaryText));
             }
         }
 
@@ -68,9 +68,8 @@ namespace MyWorkSalary.ViewModels
 
         // ==== Formaterade properties för XAML ====
         #region UI Text Properties
-
         public string MonthlySalaryText => CurrentStats == null ? "Timlön" : $"{CurrentStats.TotalSalary:N0} kr";
-
+        public string CurrentMonthYearText => DateTime.Now.ToString("MMMM yyyy", new CultureInfo("sv-SE"));
         public string HoursSummaryText
         {
             get
@@ -90,7 +89,25 @@ namespace MyWorkSalary.ViewModels
                 }
                 else // Timanställd
                 {
-                    return $"För {CurrentStats.TotalHours:F1} timmar";
+                    return $"Totalt {CurrentStats.TotalHours:F1} timmar";
+                }
+            }
+        }
+        public decimal HoursSummaryColor
+        {
+            get
+            {
+                if (ActiveJob == null || CurrentStats == null)
+                    return 0;
+                if (ActiveJob.EmploymentType == EmploymentType.Permanent)
+                {
+                    // Returnera skillnaden för färgberäkning
+                    return CurrentStats.TotalHours - CurrentStats.ExpectedHours;
+                }
+                else
+                {
+                    // För timanställda, använd bara totala timmar
+                    return CurrentStats.TotalHours;
                 }
             }
         }
@@ -230,6 +247,7 @@ namespace MyWorkSalary.ViewModels
         {
             OnPropertyChanged(nameof(MonthlySalaryText));
             OnPropertyChanged(nameof(HoursSummaryText));
+            OnPropertyChanged(nameof(HoursSummaryColor));
             OnPropertyChanged(nameof(BaseSalaryText));
             OnPropertyChanged(nameof(TotalHoursText));
 

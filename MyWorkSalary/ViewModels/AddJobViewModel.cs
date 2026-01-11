@@ -18,6 +18,7 @@ namespace MyWorkSalary.ViewModels
         private string _monthlySalary = string.Empty;
         private string _hourlyRate = string.Empty;
         private string _expectedHoursPerMonth = "160";
+        private string _timeBank = "0";
         private string _taxRate = "33";
         private bool _isSaving = false;
         private CountryOption _selectedCountry;
@@ -117,6 +118,16 @@ namespace MyWorkSalary.ViewModels
             set
             {
                 _expectedHoursPerMonth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TimeBank
+        {
+            get => _timeBank;
+            set
+            {
+                _timeBank = value;
                 OnPropertyChanged();
             }
         }
@@ -263,6 +274,7 @@ namespace MyWorkSalary.ViewModels
                     EmploymentType = SelectedEmploymentType.Value,
                     PayPeriodType = PayPeriodType.CalendarMonth,
                     PayPeriodStartDay = 25,
+                    TimeBankHours = decimal.TryParse(TimeBank, out var timeBank) ? timeBank : 0m,
                     TaxMethod = TaxCalculationMethod.Manual,
                     IsActive = !hasExistingJobs, // BARA första jobbet blir aktivt
                     Country = SelectedCountry.Country,
@@ -351,6 +363,7 @@ namespace MyWorkSalary.ViewModels
             MonthlySalary = string.Empty;
             HourlyRate = string.Empty;
             ExpectedHoursPerMonth = "160";
+            TimeBank = "0";
             TaxRate = "33";
             SelectedEmploymentType = EmploymentTypes.FirstOrDefault(e => e.Value == EmploymentType.Permanent);
             SelectedSalaryType = SalaryTypes.FirstOrDefault(s => s.Value == "Monthly");

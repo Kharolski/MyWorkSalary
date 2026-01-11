@@ -34,6 +34,9 @@
             <converters:OBTimeRangeConverter x:Key="OBTimeRangeConverter" />
             <converters:ThemeToIconConverter x:Key="ThemeToIconConverter" />
 
+            <!-- Lönestatistik Converters -->
+            <converters:AmountToColorConverter x:Key="AmountToColorConverter" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

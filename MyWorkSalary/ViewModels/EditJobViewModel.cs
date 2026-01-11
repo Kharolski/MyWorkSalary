@@ -21,6 +21,7 @@ namespace MyWorkSalary.ViewModels
         private string _monthlySalary;
         private string _hourlyRate;
         private string _expectedHoursPerMonth;
+        private string _timeBank;
         private string _taxRate;
         private DateTime _employmentStartDate = DateTime.Today;
         private string _vacationDaysPerYear = "25";
@@ -54,6 +55,9 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Properties
+        public bool IsPermanentEmployment => _workingCopy?.EmploymentType == EmploymentType.Permanent;
+        public bool IsTemporaryEmployment => !IsPermanentEmployment;
+
         private SupportedCountry _country;
         public SupportedCountry Country
         {
@@ -131,8 +135,24 @@ namespace MyWorkSalary.ViewModels
             get => _selectedEmploymentType;
             set
             {
-                _selectedEmploymentType = value;
-                OnPropertyChanged();
+                if (_selectedEmploymentType != value)
+                {
+                    _selectedEmploymentType = value;
+
+                    // Update the working copy's employment type
+                    if (_workingCopy != null)
+                    {
+                        _workingCopy.EmploymentType = value == Resources.Resx.Resources.EmploymentType_Permanent
+                            ? EmploymentType.Permanent
+                            : EmploymentType.Temporary;
+
+                        // Notify that IsPermanentEmployment and IsTemporaryEmployment have changed
+                        OnPropertyChanged(nameof(IsPermanentEmployment));
+                        OnPropertyChanged(nameof(IsTemporaryEmployment));
+                    }
+
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -174,6 +194,16 @@ namespace MyWorkSalary.ViewModels
             set
             {
                 _expectedHoursPerMonth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TimeBank
+        {
+            get => _timeBank;
+            set
+            {
+                _timeBank = value;
                 OnPropertyChanged();
             }
         }
@@ -266,6 +296,7 @@ namespace MyWorkSalary.ViewModels
                 InitialVacationBalance = original.InitialVacationBalance,
                 PayPeriodType = original.PayPeriodType,
                 PayPeriodStartDay = original.PayPeriodStartDay,
+                TimeBankHours = original.TimeBankHours,
                 TaxMethod = original.TaxMethod,
                 IsActive = original.IsActive,
                 CreatedDate = original.CreatedDate,
@@ -280,9 +311,15 @@ namespace MyWorkSalary.ViewModels
         {
             JobTitle = _workingCopy.JobTitle;
             Workplace = _workingCopy.Workplace;
-            SelectedEmploymentType = GetEmploymentTypeString(_workingCopy.EmploymentType);
+            
+            // Set the employment type first
+            _selectedEmploymentType = _workingCopy.EmploymentType == EmploymentType.Permanent
+                ? Resources.Resx.Resources.EmploymentType_Permanent
+                : Resources.Resx.Resources.EmploymentType_Temporary;
+
             EmploymentStartDate = _workingCopy.EmploymentStartDate;
             ExpectedHoursPerMonth = _workingCopy.ExpectedHoursPerMonth.ToString();
+            TimeBank = _workingCopy.TimeBankHours.ToString("0.0");
             TaxRate = (_workingCopy.ManualTaxRate * 100).ToString();
             VacationDaysPerYear = _workingCopy.VacationDaysPerYear.ToString();
             InitialVacationBalance = _workingCopy.InitialVacationBalance?.ToString() ?? string.Empty;
@@ -313,6 +350,11 @@ namespace MyWorkSalary.ViewModels
                 HourlyRate = _workingCopy.HourlyRate.ToString();
                 MonthlySalary = string.Empty; // Rensa månadslön i formuläret
             }
+
+            // Raise property changed for the UI to update
+            OnPropertyChanged(nameof(SelectedEmploymentType));
+            OnPropertyChanged(nameof(IsPermanentEmployment));
+            OnPropertyChanged(nameof(IsTemporaryEmployment));
         }
 
         public void RefreshCurrencyTexts()
@@ -364,10 +406,13 @@ namespace MyWorkSalary.ViewModels
                 // Uppdatera ORIGINAL med formulärdata (inte arbetskopian)
                 _originalJob.JobTitle = JobTitle.Trim();
                 _originalJob.Workplace = Workplace.Trim();
-                _originalJob.EmploymentType = ParseEmploymentType(SelectedEmploymentType);
+                _originalJob.EmploymentType = _workingCopy.EmploymentType;
                 _originalJob.EmploymentStartDate = EmploymentStartDate;
                 _originalJob.VacationDaysPerYear = decimal.TryParse(VacationDaysPerYear, out var vacDays) ? vacDays : 25m;
                 _originalJob.InitialVacationBalance = decimal.TryParse(InitialVacationBalance, out var vacBalance) ? vacBalance : null;
+
+                // Uppdatera timbank
+                _originalJob.TimeBankHours = decimal.TryParse(TimeBank, out var timeBank) ? timeBank : 0m;
 
                 _originalJob.CurrencyCode = CurrencyCode;
                 _originalJob.Country = Country;

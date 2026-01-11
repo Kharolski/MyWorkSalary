@@ -4,6 +4,39 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <!-- Lönestatistik stil -->
+    <Style x:Key="SalaryStatCard" TargetType="Frame">
+        <Setter Property="BackgroundColor" 
+            Value="{AppThemeBinding Light={StaticResource BackgroundPrimary}, 
+                                   Dark={StaticResource BackgroundDark}}" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HasShadow" Value="True" />
+    </Style>
+    <Style x:Key="SalaryAmountLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                   Dark={StaticResource White}}" />
+    </Style>
+    <Style x:Key="SalaryPositiveText" TargetType="Label">
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Light={StaticResource SalaryPositiveLight}, 
+                                   Dark={StaticResource SalaryPositiveDark}}" />
+    </Style>
+    <Style x:Key="SalaryNegativeText" TargetType="Label">
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Light={StaticResource SalaryNegativeLight}, 
+                                   Dark={StaticResource SalaryNegativeDark}}" />
+    </Style>
+    <Style x:Key="SalaryNeutralText" TargetType="Label">
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Light={StaticResource SalaryNeutralLight}, 
+                                   Dark={StaticResource SalaryNeutralDark}}" />
+    </Style>
+    
     <!-- Page Styles -->
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor" 
