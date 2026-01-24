@@ -879,7 +879,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>⏰ Unsocial hours settings</value>
   </data>
   <data name="OBTips" xml:space="preserve">
-    <value>💡 Tip: Check your latest salary spec to see which Inconvenient Working Hours allowances apply to you. Configure unsocial hours rules so that salary calculations are accurate.</value>
+    <value>💡 Tip: If no rule exists for a specific time, no unsocial hours pay is applied, even if evening or night is active.</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -2325,15 +2325,15 @@ The work shift has been saved!</value>
     <value>{0:F1}h</value>
   </data>
   <data name="ShiftTimes" xml:space="preserve">
-    <value>Shift Times</value>
+    <value>⏰ Shift Times</value>
     <comment>SettingsPage</comment>
   </data>
   <data name="EveningStart" xml:space="preserve">
-    <value>🌇 Evening start</value>
+    <value>🌇 Evening shift starts</value>
     <comment>SettingsPage</comment>
   </data>
   <data name="NightStart" xml:space="preserve">
-    <value>🌙 Night start</value>
+    <value>🌙 Night shift starts</value>
     <comment>SettingsPage</comment>
   </data>
   <data name="EveningOB" xml:space="preserve">
@@ -2355,5 +2355,11 @@ The work shift has been saved!</value>
   <data name="ErrorCreatingOBEvents" xml:space="preserve">
     <value>Error creating OB events</value>
     <comment>RegularShiftViewModel</comment>
+  </data>
+  <data name="DayStart" xml:space="preserve">
+    <value>☀️ Day shift starts</value>
+  </data>
+  <data name="ShiftTimesHint" xml:space="preserve">
+    <value>💡 Tip: These times should normally match your unsocial hours rules.</value>
   </data>
 </root>

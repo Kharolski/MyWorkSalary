@@ -103,8 +103,11 @@
 	  <Compile Remove="Models\FlexTimeBalance.cs" />
 	  <Compile Remove="Models\JobProfile.cs" />
 	  <Compile Remove="Models\OBRate.cs" />
+	  <Compile Remove="Models\Specialized\ShiftTimeSettings.cs" />
 	  <Compile Remove="Models\WorkShift.cs" />
 	  <Compile Remove="Resources\TranslateExtension.cs" />
+	  <Compile Remove="Services\Interfaces\IShiftTimeSettingsRepository.cs" />
+	  <Compile Remove="Services\Repositories\ShiftTimeSettingsRepository.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

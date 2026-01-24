@@ -57,7 +57,6 @@ namespace MyWorkSalary.Services
             _database.DeleteAll<JobProfile>();
             _database.DeleteAll<FlexTimeBalance>();
             _database.DeleteAll<WorkShift>();
-            _database.DeleteAll<ShiftTimeSettings>();
             _database.DeleteAll<OBEvent>();
             _database.DeleteAll<SickLeave>();
             _database.DeleteAll<VABLeave>();
@@ -74,7 +73,6 @@ namespace MyWorkSalary.Services
             _database.CreateTable<JobProfile>();
             _database.CreateTable<FlexTimeBalance>();
             _database.CreateTable<WorkShift>();
-            _database.CreateTable<ShiftTimeSettings>();
             _database.CreateTable<OBEvent>();
             _database.CreateTable<SickLeave>();
             _database.CreateTable<VABLeave>();

@@ -36,6 +36,16 @@ namespace MyWorkSalary.Services.Repositories
                           .OrderBy(e => e.StartTime)
                           .ToList();
         }
+        public List<OBEvent> GetForPayPeriod(int jobProfileId, int payYear, int payMonth)
+        {
+            return _database.Table<OBEvent>()
+                .Where(e => e.JobProfileId == jobProfileId &&
+                            e.PayYear == payYear &&
+                            e.PayMonth == payMonth)
+                .OrderBy(e => e.WorkDate)
+                .ThenBy(e => e.StartTime)
+                .ToList();
+        }
         public int Save(OBEvent obEvent)
         {
             if (obEvent.Id != 0)

@@ -26,7 +26,7 @@ namespace MyWorkSalary.Services.Repositories
                 return _database.Table<WorkShift>()
                                 .Where(x => x.JobProfileId == jobId &&
                                             x.ShiftDate >= start &&
-                                            x.ShiftDate <= end)
+                                            x.ShiftDate < end)
                                 .ToList();
             }
             catch (Exception ex)

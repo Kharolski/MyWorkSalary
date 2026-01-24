@@ -37,6 +37,9 @@
             <!-- Lönestatistik Converters -->
             <converters:AmountToColorConverter x:Key="AmountToColorConverter" />
 
+            <!-- Settings Converters -->
+            <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

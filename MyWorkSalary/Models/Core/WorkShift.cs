@@ -67,8 +67,9 @@ namespace MyWorkSalary.Models.Core
 
         #region Shift Rule Snapshot (att ShiftConverters fungerar rätt med icons)
 
-        public TimeSpan EveningStartAtThatTime { get; set; } = new(18, 0, 0);
-        public TimeSpan NightStartAtThatTime { get; set; } = new(22, 0, 0);
+        //public TimeSpan DayStartAtThatTime { get; set; } = new(6, 0, 0);
+        //public TimeSpan EveningStartAtThatTime { get; set; } = new(18, 0, 0);
+        //public TimeSpan NightStartAtThatTime { get; set; } = new(22, 0, 0);
 
         public bool EveningActiveAtThatTime { get; set; } = true;
         public bool NightActiveAtThatTime { get; set; } = true;

@@ -17,14 +17,16 @@ namespace MyWorkSalary.Services.Handlers
         #region Fields
 
         private readonly ISalaryRepository _salaryRepository;
+        private readonly IOBEventRepository _obEventRepository;
 
         #endregion
 
         #region Constructor
 
-        public SalaryStatsHandler(ISalaryRepository salaryRepository)
+        public SalaryStatsHandler(ISalaryRepository salaryRepository, IOBEventRepository obEventRepository)
         {
             _salaryRepository = salaryRepository ?? throw new ArgumentNullException(nameof(salaryRepository));
+            _obEventRepository = obEventRepository ?? throw new ArgumentNullException(nameof(obEventRepository));
         }
 
         #endregion
@@ -33,25 +35,18 @@ namespace MyWorkSalary.Services.Handlers
         /// <summary>
         /// Hämtar månadslön för en specifik månad och jobb.
         /// </summary>
-        public decimal GetMonthlySalary(int jobId, DateTime month)
+        public decimal GetMonthlySalary(int jobId, DateTime periodStart, DateTime periodEnd)
         {
             var profile = _salaryRepository.GetJobProfile(jobId);
-
             if (profile == null)
                 return 0;
 
             if (profile.EmploymentType == EmploymentType.Permanent)
                 return profile.MonthlySalary ?? 0;
 
-            var (start, end) = GetCalendarMonth(month);
-
-            var shifts = _salaryRepository.GetShiftsForPeriod(jobId, start, end);
-
-            var totalHours = shifts
-                .Where(s => s.StartTime.HasValue && s.EndTime.HasValue)
-                .Sum(s => (s.EndTime.Value - s.StartTime.Value).TotalHours);
-
-            return (decimal)totalHours * (profile.HourlyRate ?? 0);
+            var shifts = _salaryRepository.GetShiftsForPeriod(jobId, periodStart, periodEnd) ?? Enumerable.Empty<WorkShift>();
+            var totalHours = shifts.Sum(ShiftHoursSafe);
+            return totalHours * (profile.HourlyRate ?? 0);
         }
         #endregion
 
@@ -67,10 +62,18 @@ namespace MyWorkSalary.Services.Handlers
             if (profile == null)
                 return stats;
 
-            var (start, end) = GetCalendarMonth(month);
+            // month = utbetalningsmånad
+            var payMonth = new DateTime(month.Year, month.Month, 1);
+            var workMonth = payMonth.AddMonths(-1);
 
-            var shifts = _salaryRepository.GetShiftsForPeriod(jobId, start, end) ?? Enumerable.Empty<WorkShift>();
-            var obRates = _salaryRepository.GetObShiftsForPeriod(jobId, start, end);
+            var (payStart, payEnd) = GetCalendarMonth(payMonth);
+            var (workStart, workEnd) = GetCalendarMonth(workMonth);
+
+            // Hämta pass beroende på anställningstyp
+            IEnumerable<WorkShift> shifts =
+                profile.EmploymentType == EmploymentType.Permanent
+                    ? (_salaryRepository.GetShiftsForPeriod(jobId, payStart, payEnd) ?? Enumerable.Empty<WorkShift>())
+                    : (_salaryRepository.GetShiftsForPeriod(jobId, workStart, workEnd) ?? Enumerable.Empty<WorkShift>());
 
             // Nollställ innan beräkning
             stats.TotalHours = 0;
@@ -86,27 +89,22 @@ namespace MyWorkSalary.Services.Handlers
             stats.OvertimePay = 0;
             stats.ExtraPay = 0;
 
-            // Beräkna arbetade timmar
+            // Arbetade timmar (den period vi valt ovan)
             stats.TotalHours = shifts.Sum(ShiftHoursSafe);
 
-            // Grundlön
-            stats.BaseSalary = GetMonthlySalary(jobId, month);
+            // Grundlön:
+            // - Fast: payMonth
+            // - Tim: workMonth (det som betalas i payMonth)
+            stats.BaseSalary =
+                profile.EmploymentType == EmploymentType.Permanent
+                    ? (profile.MonthlySalary ?? 0)
+                    : GetMonthlySalary(jobId, workStart, workEnd);
 
-            // OB-timmar och OB-lön
-            CalculateOB(jobId, shifts, stats, start, end);
+            // OB: alltid via OBEvent för utbetalningsmånad (PayYear/PayMonth == payMonth)
+            CalculateOBFromEvents(jobId, payMonth, shifts, stats);
 
-            // Sätt OBHours per shift direkt från obByCategory istället för att summera från stats.ObDetails
-            foreach (var shift in shifts)
-            {
-                if (!shift.StartTime.HasValue || !shift.EndTime.HasValue)
-                {
-                    shift.OBHours = 0;
-                    continue;
-                }
-
-                var obByCategory = CalculateObHoursByCategory(shift, obRates);
-                shift.OBHours = obByCategory.Sum(x => x.Hours);
-            }
+            // Skatt 
+            CalculateTax(profile, stats);
 
             return stats;
         }
@@ -114,7 +112,7 @@ namespace MyWorkSalary.Services.Handlers
         private (DateTime start, DateTime end) GetCalendarMonth(DateTime month)
         {
             var start = new DateTime(month.Year, month.Month, 1);
-            var end = start.AddMonths(1).AddDays(-1);
+            var end = start.AddMonths(1);
             return (start, end);
         }
 
@@ -136,12 +134,56 @@ namespace MyWorkSalary.Services.Handlers
         #endregion
 
         #region OB
-        /// <summary>
-        /// Beräknar OB-timmar och OB-lön för en lista skift och uppdaterar SalaryStats.
-        /// </summary>
-        private void CalculateOB(int jobId, IEnumerable<WorkShift> shifts, SalaryStats stats, DateTime start, DateTime end)
+        private void CalculateOBFromEvents(int jobId, DateTime payMonth, IEnumerable<WorkShift> shifts, SalaryStats stats)
         {
-            var obRates = _salaryRepository.GetObShiftsForPeriod(jobId, start, end);
+            var payYear = payMonth.Year;
+            var payMonthNumber = payMonth.Month;
+
+            var events = _obEventRepository.GetForPayPeriod(jobId, payYear, payMonthNumber) ?? new List<OBEvent>();
+
+            stats.TotalObHours = 0;
+            stats.ObPay = 0;
+            stats.ObDetails.Clear();
+
+            if (events.Any())
+            {
+                stats.UsedObFallback = false;
+                stats.ObInfoNote = null;
+
+                foreach (var ev in events)
+                {
+                    stats.TotalObHours += ev.Hours;
+                    stats.ObPay += ev.TotalAmount;
+
+                    stats.ObDetails.Add(new ObDetails
+                    {
+                        Date = ev.WorkDate,
+                        Hours = ev.Hours,
+                        RatePerHour = ev.RatePerHour,
+                        Category = ev.OBType,
+                        Pay = ev.TotalAmount
+                    });
+                }
+
+                // sätt OBHours per shift
+                var obByShift = events
+                    .GroupBy(e => e.WorkShiftId)
+                    .ToDictionary(g => g.Key, g => g.Sum(x => x.Hours));
+
+                foreach (var shift in shifts)
+                    shift.OBHours = obByShift.TryGetValue(shift.Id, out var h) ? h : 0;
+
+                return;
+            }
+
+            // ===== FALLBACK: räkna "live" från pass + OBRates =====
+            stats.UsedObFallback = true;
+            stats.ObInfoNote = "OB beräknas från nuvarande regler (OB-händelser saknas för perioden).";
+
+            // För fallback behöver vi OB-rates för jobbet
+            // Om du inte har en repository här, kan du använda _salaryRepository.GetObShiftsForPeriod(jobId, ...) om den finns kvar.
+            // (Din SalaryRepository returnerar alla OBRates ändå.)
+            var obRates = _salaryRepository.GetObShiftsForPeriod(jobId, DateTime.MinValue, DateTime.MaxValue) ?? Enumerable.Empty<OBRate>();
 
             foreach (var shift in shifts)
             {
@@ -150,19 +192,27 @@ namespace MyWorkSalary.Services.Handlers
 
                 var obByCategory = CalculateObHoursByCategory(shift, obRates);
 
+                // Respektera ShiftTimeSettings-snapshots
+                obByCategory = obByCategory
+                    .Where(x =>
+                        (x.Category != OBCategory.Evening || shift.EveningActiveAtThatTime) &&
+                        (x.Category != OBCategory.Night || shift.NightActiveAtThatTime))
+                    .ToList();
+
                 foreach (var (category, hours) in obByCategory)
                 {
                     if (hours <= 0)
                         continue;
 
-                    // Hitta rätt OB-rate för kategorin
-                    var rate = obRates.FirstOrDefault(r => r.Category == category);
+                    var rate = obRates.FirstOrDefault(r => r.IsActive && r.Category == category);
                     if (rate == null)
                         continue;
 
                     var pay = hours * rate.RatePerHour;
+
                     stats.TotalObHours += hours;
                     stats.ObPay += pay;
+
                     stats.ObDetails.Add(new ObDetails
                     {
                         Date = shift.ShiftDate,
@@ -173,7 +223,6 @@ namespace MyWorkSalary.Services.Handlers
                     });
                 }
 
-                // Spara OB per shift
                 shift.OBHours = obByCategory.Sum(x => x.Hours);
             }
         }
@@ -183,10 +232,10 @@ namespace MyWorkSalary.Services.Handlers
             var result = new Dictionary<OBCategory, decimal>();
 
             foreach (OBCategory cat in Enum.GetValues(typeof(OBCategory)))
-                result[cat] = 0;
+                result[cat] = 0m;
 
-            var start = shift.StartTime.Value;
-            var end = shift.EndTime.Value;
+            var start = shift.StartTime!.Value;
+            var end = shift.EndTime!.Value;
 
             if (end < start)
                 end = end.AddDays(1);
@@ -195,22 +244,18 @@ namespace MyWorkSalary.Services.Handlers
 
             while (current < end)
             {
-                var next = current.AddMinutes(1);
                 var timeOfDay = current.TimeOfDay;
                 var dayOfWeek = current.DayOfWeek;
 
-                // Hitta OB-rate som matchar denna tid och dag
-                var matchingRate = obRates.FirstOrDefault(rate => 
-                    rate.IsActive && 
+                var matchingRate = obRates.FirstOrDefault(rate =>
+                    rate.IsActive &&
                     IsDayMatch(rate, dayOfWeek, shift.IsHoliday) &&
                     IsTimeInRange(rate.StartTime, rate.EndTime, timeOfDay));
 
                 if (matchingRate != null)
-                {
                     result[matchingRate.Category] += 1m / 60m;
-                }
 
-                current = next;
+                current = current.AddMinutes(1);
             }
 
             return result.Select(kv => (kv.Key, Math.Round(kv.Value, 2))).ToList();
@@ -237,16 +282,33 @@ namespace MyWorkSalary.Services.Handlers
         private bool IsTimeInRange(TimeSpan start, TimeSpan end, TimeSpan time)
         {
             if (start <= end)
-            {
-                // Normal tid (t.ex. 18:00 - 22:00)
                 return time >= start && time < end;
-            }
-            else
-            {
-                // Övergripande tid (t.ex. 22:00 - 06:00)
-                return time >= start || time < end;
-            }
+
+            // över midnatt (t.ex 22:00–06:00)
+            return time >= start || time < end;
         }
+        #endregion
+
+        #region Tax / Net Salary
+
+        private void CalculateTax(JobProfile profile, SalaryStats stats)
+        {
+            if (profile == null)
+                return;
+
+            // Hämta effektiv skattesats (0.33 t.ex.)
+            var taxRate = profile.EffectiveTaxRate;
+
+            // Säkerhetskontroll (om användaren råkat skriva 33 istället för 0.33)
+            if (taxRate > 1m)
+                taxRate /= 100m;
+
+            taxRate = Math.Clamp(taxRate, 0m, 1m);
+
+            stats.TaxRate = taxRate;
+            stats.TaxAmount = Math.Round(stats.GrossSalary * taxRate, 2);
+        }
+
         #endregion
 
         #region Leave

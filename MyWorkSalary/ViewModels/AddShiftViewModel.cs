@@ -37,8 +37,9 @@ namespace MyWorkSalary.ViewModels
             IJobProfileRepository jobProfileRepository,
             IWorkShiftRepository workShiftRepository,
             IShiftCalculationService calculationService,
-            IShiftTimeSettingsRepository shiftTimeSettingsRepository,
             IOBEventRepository obEventRepository,
+            IOBRateRepository obRateRepository,
+            IOBEventService obEventService,
             ShiftTypeHandler shiftTypeHandler,
             SickLeaveHandler sickLeaveHandler,
             SickLeaveViewModel sickLeaveViewModel,
@@ -54,7 +55,7 @@ namespace MyWorkSalary.ViewModels
             OnCallVM = onCallViewModel;
             VacationVM = vacationViewModel;
 
-            RegularShiftVM = new RegularShiftViewModel(workShiftRepository, calculationService, shiftTimeSettingsRepository, obEventRepository);
+            RegularShiftVM = new RegularShiftViewModel(workShiftRepository, calculationService, obEventRepository, obRateRepository, obEventService);
 
             // Lyssna på CanSave från RegularShiftVM
             RegularShiftVM.PropertyChanged += (s, e) =>

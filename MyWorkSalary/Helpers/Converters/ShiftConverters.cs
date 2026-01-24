@@ -15,43 +15,17 @@ namespace MyWorkSalary.Helpers.Converters
         {
             if (value is WorkShift shift)
             {
-                // SPECIALHANTERING FÖR SEMESTER/SJUK/VAB
                 return shift.ShiftType switch
                 {
                     ShiftType.Vacation => $"🏖️",     //  {LocalizationHelper.Translate("ShiftType_Vacation")}
                     ShiftType.SickLeave => $"🤒",    //  {LocalizationHelper.Translate("ShiftType_SickLeave")}
                     ShiftType.OnCall => $"📞",       //  {LocalizationHelper.Translate("ShiftType_OnCall")}
                     ShiftType.VAB => $"👶",          //  {LocalizationHelper.Translate("ShiftType_VAB")}
-                    ShiftType.Regular => GetTimeBasedIcon(shift),
+                    ShiftType.Regular => "🕒",
                     _ => $"📋"   //  {LocalizationHelper.Translate("ShiftType_Regular")}
                 };
             }
             return $"📋";    //  {LocalizationHelper.Translate("ShiftType_Regular")}
-        }
-
-        /// <summary>
-        /// Bestämmer ikon för pass baserat på ShiftTimeSettings (kväll/natt)
-        /// </summary>
-        /// <param name="shift">WorkShift med starttid och ShiftTimeSettings.</param>
-        /// <returns>En emoji som representerar passet: natt 🌙, kväll 🌅, dag ☀️, eller standard 📋.</returns>
-        private string GetTimeBasedIcon(WorkShift shift)
-        {
-            // Säkerhetskontroll
-            if (shift == null || !shift.StartTime.HasValue || shift.EveningActiveAtThatTime == false && shift.NightActiveAtThatTime == false)
-                return $"📋"; // Standardikon
-
-            var startTime = shift.StartTime.Value.TimeOfDay;
-
-            // Om natt är aktiv och passet startar efter nattstart
-            if (shift.NightActiveAtThatTime && startTime >= shift.NightStartAtThatTime)
-                return $"🌙"; // Nattpass
-
-            // Om kväll är aktiv och passet startar efter kvällstart
-            if (shift.EveningActiveAtThatTime && startTime >= shift.EveningStartAtThatTime)
-                return $"🌅"; // Kvällspass
-
-            // Standard dagpass
-            return $"☀️";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

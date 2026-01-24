@@ -9,78 +9,54 @@ namespace MyWorkSalary.Models.Reports
     public class SalaryStats
     {
         #region Timmar
-        /// <summary>
-        /// Totalt antal arbetade timmar under perioden.
-        /// </summary>
         public decimal TotalHours { get; set; }
-
-        /// <summary>
-        /// Förväntade timmar baserat på anställningsgrad/schema.
-        /// </summary>
         public decimal ExpectedHours { get; set; }
-
-        /// <summary>
-        /// Totalt antal OB-timmar.
-        /// </summary>
         public decimal TotalObHours { get; set; }
-
-        /// <summary>
-        /// Flexbalans (plus eller minus timmar).
-        /// </summary>
         public decimal FlexBalance { get; set; }
-        #endregion
-
-        #region Dagar
-        /// <summary>
-        /// Antal sjukdagar under perioden.
-        /// </summary>
-        public int SickDays { get; set; }
-
-        /// <summary>
-        /// Antal semesterdagar under perioden.
-        /// </summary>
-        public int VacationDays { get; set; }
-
-        /// <summary>
-        /// Antal VAB-dagar under perioden.
-        /// </summary>
-        public int VabDays { get; set; }
-
         public decimal JourHours { get; set; }
         #endregion
 
-        #region Lön
-        /// <summary>
-        /// Grundlön (fast månadslön eller timlön * arbetade timmar).
-        /// </summary>
+        #region Frånvaro
+        public int SickDays { get; set; }
+        public int VacationDays { get; set; }
+        public int VabDays { get; set; }
+        #endregion
+
+        #region Lön – BRUTTO (före skatt)
         public decimal BaseSalary { get; set; }
-
-        /// <summary>
-        /// OB-tillägg.
-        /// </summary>
         public decimal ObPay { get; set; }
-
-        /// <summary>
-        /// Övertidsersättning.
-        /// </summary>
         public decimal OvertimePay { get; set; }
-
-        /// <summary>
-        /// Andra tillägg (t.ex. bonus, helgersättning).
-        /// </summary>
         public decimal ExtraPay { get; set; }
-        #endregion
 
-        #region Beräknat
         /// <summary>
-        /// Summerad total lön inkl. alla tillägg.
+        /// Total bruttolön (före skatt)
         /// </summary>
-        public decimal TotalSalary => BaseSalary + ObPay + OvertimePay + ExtraPay;
+        public decimal GrossSalary => BaseSalary + ObPay + OvertimePay + ExtraPay;
         #endregion
 
-        #region Details
-        public List<ObDetails> ObDetails { get; set; } = new();
+        #region Skatt
+        /// <summary>
+        /// Skatteavdrag
+        /// </summary>
+        public decimal TaxAmount { get; set; }
 
+        /// <summary>
+        /// Skattesats (t.ex. 0.33)
+        /// </summary>
+        public decimal TaxRate { get; set; }
+        #endregion
+
+        #region Lön – NETTO (utbetalt)
+        /// <summary>
+        /// Nettolön efter skatt
+        /// </summary>
+        public decimal NetSalary => GrossSalary - TaxAmount;
+        #endregion
+
+        #region OB-detaljer
+        public List<ObDetails> ObDetails { get; set; } = new();
+        public bool UsedObFallback { get; set; } // true när vi räknar "live" istället för OBEvents
+        public string? ObInfoNote { get; set; } // valfri text till UI
         #endregion
     }
 

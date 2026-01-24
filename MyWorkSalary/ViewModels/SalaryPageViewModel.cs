@@ -21,6 +21,8 @@ namespace MyWorkSalary.ViewModels
         private JobProfile _activeJob;
         private SalaryStats _currentStats;
 
+        private DateTime _selectedMonth;
+
         private bool _isObExpanded;
         private bool _isBalanceExpanded;
         #endregion
@@ -39,7 +41,7 @@ namespace MyWorkSalary.ViewModels
 
                 if (_activeJob != null)
                 {
-                    CurrentStats = _salaryHandler.CalculateMonthlyStats(_activeJob.Id, DateTime.Now);
+                    RefreshStats();
                 }
                 else
                 {
@@ -50,8 +52,7 @@ namespace MyWorkSalary.ViewModels
 
         public bool HasActiveJob => ActiveJob != null;
 
-        public string WelcomeText =>
-            HasActiveJob ? $"Aktivt jobb - {ActiveJob.JobTitle}" : "Välkommen till din löneapp!";
+        public string WelcomeText => HasActiveJob ? $"Aktivt jobb - {ActiveJob.JobTitle}" : "Välkommen till din löneapp!";
 
         public SalaryStats CurrentStats
         {
@@ -64,12 +65,52 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        public DateTime SelectedMonth
+        {
+            get => _selectedMonth;
+            set
+            {
+                // normalisera till första dagen i månaden
+                var normalized = new DateTime(value.Year, value.Month, 1);
+
+                if (_selectedMonth == normalized)
+                    return;
+
+                _selectedMonth = normalized;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CurrentMonthYearText));
+                OnPropertyChanged(nameof(CanGoNextMonth));
+                OnPropertyChanged(nameof(CanGoPrevMonth));
+
+                RefreshStats();
+            }
+        }
+
+        public bool CanGoNextMonth
+        {
+            get
+            {
+                // Visas bara upp till 5 framtida månader 
+                var maxMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(5);
+                return SelectedMonth < maxMonth;
+            }
+        }
+        public bool CanGoPrevMonth
+        {
+            get
+            {
+                // valfritt: begränsa bakåt t.ex. 24 månader
+                var minMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-24);
+                return SelectedMonth > minMonth;
+            }
+        }
         #endregion
 
         // ==== Formaterade properties för XAML ====
         #region UI Text Properties
-        public string MonthlySalaryText => CurrentStats == null ? "Timlön" : $"{CurrentStats.TotalSalary:N0} kr";
-        public string CurrentMonthYearText => DateTime.Now.ToString("MMMM yyyy", new CultureInfo("sv-SE"));
+        public string MonthlySalaryText => CurrentStats == null ? "–" : $"{CurrentStats.NetSalary:N0} kr";
+        public string GrossSalaryText => CurrentStats == null ? "–" : $"{CurrentStats.GrossSalary:N0} kr";
+        public string CurrentMonthYearText => SelectedMonth.ToString("MMMM yyyy", new CultureInfo("sv-SE"));
         public string HoursSummaryText
         {
             get
@@ -80,16 +121,19 @@ namespace MyWorkSalary.ViewModels
                 if (ActiveJob.EmploymentType == EmploymentType.Permanent)
                 {
                     var diff = CurrentStats.TotalHours - CurrentStats.ExpectedHours;
-                    if (diff == 0)
-                        return "Exakt enligt schema";
 
-                    var sign = diff > 0 ? "+" : "-";
+                    if (diff == 0)
+                        return "I balans mot schema";
+
                     var absDiff = Math.Abs(diff);
-                    return $"{sign}{absDiff:F1} timmar {(diff > 0 ? "till timbank" : "från timbank")}";
+
+                    return diff > 0
+                        ? $"Överskott: +{absDiff:F1} t"
+                        : $"Underskott: −{absDiff:F1} t";
                 }
                 else // Timanställd
                 {
-                    return $"Totalt {CurrentStats.TotalHours:F1} timmar";
+                    return $"Totalt {CurrentStats.TotalHours:F1} t";
                 }
             }
         }
@@ -117,19 +161,53 @@ namespace MyWorkSalary.ViewModels
             get
             {
                 if (ActiveJob == null)
-                    return "Ingen aktiv anställning";
+                    return "Lön: Ej angiven";
+                if (ActiveJob.EmploymentType == EmploymentType.Permanent)
+                {
+                    return ActiveJob.MonthlySalary.HasValue
+                        ? $"{ActiveJob.MonthlySalary.Value:N0} kr"
+                        : "Ej angiven";
+                }
 
-                if (ActiveJob.EmploymentType == EmploymentType.Permanent && ActiveJob.MonthlySalary.HasValue)
-                    return $"Grund lön: {ActiveJob.MonthlySalary.Value:N0} kr/mån";
-
-                if (ActiveJob.HourlyRate.HasValue)
-                    return $"Timlön: {ActiveJob.HourlyRate.Value:N0} kr/timme";
-
-                return "Lön ej angiven";
+                // Timanställd
+                return ActiveJob.HourlyRate.HasValue
+                    ? $"{ActiveJob.HourlyRate.Value:N0} kr/tim"
+                    : "Ej angiven";
             }
         }
 
-        public string TotalHoursText => CurrentStats == null ? "" : $"{CurrentStats.TotalHours:F1} timmar denna månad";
+        public string TotalHoursText
+        {
+            get
+            {
+                if (CurrentStats == null)
+                    return "–";
+
+                if (ActiveJob?.EmploymentType == EmploymentType.Permanent)
+                {
+                    var diff = CurrentStats.TotalHours - CurrentStats.ExpectedHours;
+                    return $"{diff:+0.0;-0.0;0.0} t";
+                }
+
+                // Timanställd
+                return $"{CurrentStats.TotalHours:0.0} t";
+            }
+        }
+
+        public string TaxText
+        {
+            get
+            {
+                if (ActiveJob == null || CurrentStats == null)
+                    return "–";
+
+                // Om user inte vill räkna skatt (t.ex. 0)
+                if (CurrentStats.TaxRate <= 0)
+                    return "–";
+
+                return $"-{CurrentStats.TaxAmount:N0} kr";
+            }
+        }
 
         public string TotalObHoursText => CurrentStats == null ? "" : $"{CurrentStats.TotalObHours:F1}";
         public Color ObHoursColor => (CurrentStats?.TotalObHours ?? 0) > 0 ? Colors.Green : Colors.Gray;
@@ -146,7 +224,6 @@ namespace MyWorkSalary.ViewModels
                     CategoryName = LocalizationHelper.Translate($"OBCategory_{x.Category}") // Översättning
                 }).ToList() ?? new List<ObDetails>();
 
-        // public decimal ObPayText => CurrentStats?.ObPay ?? 0;
         public string ObPayText => CurrentStats == null
             ? "0 kr"
             : $"{CurrentStats.ObPay:N0} kr";
@@ -217,6 +294,24 @@ namespace MyWorkSalary.ViewModels
         {
             IsBalanceExpanded = !IsBalanceExpanded;
         });
+
+        public ICommand PrevMonthCommand => new Command(() =>
+        {
+            if (!CanGoPrevMonth)
+                return;
+
+            SelectedMonth = SelectedMonth.AddMonths(-1);
+        });
+
+        public ICommand NextMonthCommand => new Command(() =>
+        {
+            if (!CanGoNextMonth)
+                return;
+
+            SelectedMonth = SelectedMonth.AddMonths(1);
+        });
+
+        
         #endregion
 
         #region Constructor
@@ -227,6 +322,8 @@ namespace MyWorkSalary.ViewModels
             _dashboardService = dashboardService;
             _jobProfileRepository = jobProfileRepository;
             _salaryHandler = salaryStatsHandler;
+
+            _selectedMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
             LoadData();
         }
@@ -239,7 +336,7 @@ namespace MyWorkSalary.ViewModels
             if (!HasActiveJob)
                 return;
 
-            CurrentStats = _salaryHandler.CalculateMonthlyStats(ActiveJob.Id, DateTime.Now);
+            RefreshStats();
 
         }
 
@@ -250,6 +347,8 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(HoursSummaryColor));
             OnPropertyChanged(nameof(BaseSalaryText));
             OnPropertyChanged(nameof(TotalHoursText));
+
+            OnPropertyChanged(nameof(TaxText));
 
             OnPropertyChanged(nameof(TotalObHoursText));
             OnPropertyChanged(nameof(ObDetails));
@@ -262,10 +361,21 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(VabDaysText));
             OnPropertyChanged(nameof(JourText));
         }
+
+        private void RefreshStats()
+        {
+            if (ActiveJob == null)
+            {
+                CurrentStats = null;
+                return;
+            }
+
+            CurrentStats = _salaryHandler.CalculateMonthlyStats(ActiveJob.Id, SelectedMonth);
+        }
         #endregion
 
         #region Help Methods
-        
+
         #endregion
 
         #region INotifyPropertyChanged

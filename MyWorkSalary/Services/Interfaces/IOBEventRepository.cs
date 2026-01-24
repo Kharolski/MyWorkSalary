@@ -15,6 +15,9 @@ namespace MyWorkSalary.Services.Interfaces
         // Hämta OB-händelser för ett specifikt pass
         List<OBEvent> GetForWorkShift(int workShiftId);
 
+        // Hämta OB-händelser för en betalningsmånad (OB betalas månaden efter WorkDate)
+        List<OBEvent> GetForPayPeriod(int jobProfileId, int payYear, int payMonth);
+
         // Spara en ny OB-händelse
         int Save(OBEvent obEvent);
 

@@ -49,7 +49,6 @@ namespace MyWorkSalary
             builder.Services.AddTransient<ISickLeaveRepository, SickLeaveRepository>();
             builder.Services.AddSingleton<IVABLeaveRepository, VABLeaveRepository>();
             builder.Services.AddSingleton<IVacationLeaveRepository, VacationLeaveRepository>();
-            builder.Services.AddSingleton<IShiftTimeSettingsRepository, ShiftTimeSettingsRepository>();
             builder.Services.AddSingleton<IOnCallRepository, OnCallShiftRepository>();
             builder.Services.AddTransient<IAppSettingsRepository, AppSettingsRepository>();
             builder.Services.AddTransient<IOBRateRepository, OBRateRepository>();
@@ -71,6 +70,7 @@ namespace MyWorkSalary
             builder.Services.AddTransient<IDashboardService, DashboardService>();
 
             builder.Services.AddTransient<HolidayService>();
+            builder.Services.AddTransient<IOBEventService, OBEventService>();
 
             // === HANDLERS ===
             builder.Services.AddTransient<ShiftTypeHandler>();

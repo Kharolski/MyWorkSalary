@@ -1064,6 +1064,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ☀️ Day shift starts.
+        /// </summary>
+        internal static string DayStart {
+            get {
+                return ResourceManager.GetString("DayStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🗑️ Delete.
         /// </summary>
         internal static string Delete {
@@ -1632,7 +1641,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🌇 Evening start.
+        ///   Looks up a localized string similar to 🌇 Evening shift starts.
         /// </summary>
         internal static string EveningStart {
             get {
@@ -2145,7 +2154,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🌙 Night start.
+        ///   Looks up a localized string similar to 🌙 Night shift starts.
         /// </summary>
         internal static string NightStart {
             get {
@@ -2541,7 +2550,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 💡 Tip: Check your latest salary spec to see which Inconvenient Working Hours allowances apply to you. Configure unsocial hours rules so that salary calculations are accurate..
+        ///   Looks up a localized string similar to 💡 Tip: If no rule exists for a specific time, no unsocial hours pay is applied, even if evening or night is active..
         /// </summary>
         internal static string OBTips {
             get {
@@ -3513,11 +3522,20 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shift Times.
+        ///   Looks up a localized string similar to ⏰ Shift Times.
         /// </summary>
         internal static string ShiftTimes {
             get {
                 return ResourceManager.GetString("ShiftTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💡 Tip: These times should normally match your unsocial hours rules..
+        /// </summary>
+        internal static string ShiftTimesHint {
+            get {
+                return ResourceManager.GetString("ShiftTimesHint", resourceCulture);
             }
         }
         

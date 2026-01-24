@@ -21,9 +21,6 @@ namespace MyWorkSalary.Services.Interfaces
             TimeSpan startTime,
             TimeSpan endTime,
             JobProfile jobProfile,
-            ShiftTimeSettings shiftSettings,
-            decimal eveningOBRate,
-            decimal nightOBRate,
             int breakMinutes);
 
         // Semester
@@ -42,6 +39,5 @@ namespace MyWorkSalary.Services.Interfaces
         string GetBreakSuggestionText(decimal workingHours);
 
         // OB
-        public ShiftCalculationResult CalculateOBHours(DateTime workDate, TimeSpan startTime, TimeSpan endTime, ShiftTimeSettings settings);
     }
 }

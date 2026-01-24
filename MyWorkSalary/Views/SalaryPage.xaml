@@ -22,34 +22,76 @@
             <!-- 🟦 KORT 1: RESULTAT -->
             <!-- ===================== -->
             <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
-                <VerticalStackLayout Spacing="8">
 
-                    <!-- Månadens lön med färg -->
-                    <Label Text="💰" FontSize="28" HorizontalOptions="Center" />
-                    <Label
-                        Text="{Binding MonthlySalaryText}"
-                        FontSize="28" FontAttributes="Bold" HorizontalOptions="Center"
-                        TextColor="{StaticResource ActiveJobBlue}" />
+                <!-- Swipe på hela kortet -->
+                <Frame.GestureRecognizers>
+                    <SwipeGestureRecognizer Direction="Right" Command="{Binding PrevMonthCommand}" />
+                    <SwipeGestureRecognizer Direction="Left"  Command="{Binding NextMonthCommand}" />
+                </Frame.GestureRecognizers>
 
-                    <!-- Månad och år -->
-                    <Label
-                        Text="{Binding CurrentMonthYearText}"
-                        FontSize="14"
-                        FontAttributes="Italic"
-                        HorizontalOptions="Center"
-                        Opacity="0.7"
-                        TextColor="{AppThemeBinding Light={StaticResource SalaryNeutralLight}, 
-                                                   Dark={StaticResource SalaryNeutralDark}}" />
-                    <!-- Timmar med färg -->
-                    <Label
-                        Text="{Binding HoursSummaryText}"
-                        FontSize="15"
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
-                        Margin="0,4,0,0"
-                        TextColor="{Binding HoursSummaryColor, Converter={StaticResource AmountToColorConverter}}" />
-                    
-                </VerticalStackLayout>
+                <Grid ColumnDefinitions="60,*,60" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+
+                    <!-- Vänster TOUCH-ZON -->
+                    <Grid Grid.Column="0" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Transparent">
+
+                        <Label Text="◀"
+                               FontSize="22"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Start"
+                               IsEnabled="{Binding CanGoPrevMonth}"
+                               Opacity="{Binding CanGoPrevMonth, Converter={StaticResource BoolToOpacityConverter}}" />
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PrevMonthCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <!-- Innehåll i mitten -->
+                    <VerticalStackLayout Grid.Column="1"
+                             Spacing="8"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center">
+
+                        <Label Text="💰" FontSize="28" HorizontalOptions="Center" />
+
+                        <Label Text="{Binding MonthlySalaryText}"
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               TextColor="{StaticResource ActiveJobBlue}" />
+
+                        <Label Text="{Binding CurrentMonthYearText}"
+                               FontSize="14"
+                               FontAttributes="Italic"
+                               HorizontalOptions="Center"
+                               Opacity="0.7"
+                               TextColor="{AppThemeBinding Light={StaticResource SalaryNeutralLight},
+                                                          Dark={StaticResource SalaryNeutralDark}}" />
+
+                        <Label Text="{Binding HoursSummaryText}"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               Margin="0,4,0,0"
+                               TextColor="{Binding HoursSummaryColor, Converter={StaticResource AmountToColorConverter}}" />
+                    </VerticalStackLayout>
+
+                    <!-- Höger TOUCH-ZON -->
+                    <Grid Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Transparent">
+
+                        <Label Text="▶"
+                               FontSize="22"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"
+                               IsEnabled="{Binding CanGoNextMonth}"
+                               Opacity="{Binding CanGoNextMonth, Converter={StaticResource BoolToOpacityConverter}}" />
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NextMonthCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                </Grid>
             </Frame>
 
             <!-- ===================== -->
@@ -64,36 +106,34 @@
                         Text="📊 Sammanfattning"
                         Style="{StaticResource SectionTitleLabel}" />
 
-                    <Grid ColumnDefinitions="*,Auto"
-                          RowDefinitions="Auto,Auto,Auto"
-                          RowSpacing="6">
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto, Auto" RowSpacing="8">
 
-                                            <Label Text="Grundlön" />
-                                            <Label Text="{Binding BaseSalaryText}"
-                               Grid.Column="1"
-                               FontAttributes="Bold" />
+                        <!-- Rad 1: Lön -->
+                        <Label Text="Grundlön" />
+                        <Label Text="{Binding BaseSalaryText}" Grid.Column="1" FontAttributes="Bold" TextColor="Green" />
 
-                                            <Label Text="Arbetade timmar" Grid.Row="1" />
-                                            <Label Text="{Binding TotalHoursText}"
-                               Grid.Row="1"
-                               Grid.Column="1" />
+                        <!-- Rad 2: Arbetade timmar -->
+                        <Label Text="Arbetade timmar" Grid.Row="1" />
+                        <Label Text="{Binding TotalHoursText}" Grid.Row="1" Grid.Column="1" 
+                               TextColor="{Binding HoursSummaryColor, Converter={StaticResource AmountToColorConverter}}"/>
 
-                                            <Label Text="OB-ersättning" Grid.Row="2" />
-                                            <Label Text="{Binding ObPayText}"
-                               Grid.Row="2"
-                               Grid.Column="1"
-                               FontAttributes="Bold"
-                               TextColor="Green" />
+                        <!-- Rad 3: OB-ersättning -->
+                        <Label Text="OB-ersättning" Grid.Row="2" />
+                        <Label Text="{Binding ObPayText}"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                TextColor="Green" />
+
+                        <!-- Rad 4: Skatt -->
+                        <Label Text="Skatt" Grid.Row="3" />
+                        <Label Text="{Binding TaxText}" Grid.Row="3" Grid.Column="1" TextColor="Gray" />
                     </Grid>
 
                     <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
-
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="Totalt" FontAttributes="Bold" />
-                        <Label
-                            Text="{Binding MonthlySalaryText}"
-                            Grid.Column="1"
-                            FontAttributes="Bold" />
+                        <Label Text="Totalt utbetalt" FontAttributes="Bold" />
+                        <Label Text="{Binding MonthlySalaryText}" Grid.Column="1" FontAttributes="Bold" />
                     </Grid>
 
                 </VerticalStackLayout>
@@ -113,7 +153,7 @@
                         <Label Text="🌙" FontSize="20" VerticalOptions="Center" />
 
                         <Label
-                            Text="{Binding TotalObHoursText}"
+                            Text="{Binding TotalObHoursText, StringFormat='OB: {0} h'}"
                             Grid.Column="1"
                             FontAttributes="Bold"
                             VerticalOptions="Center" />
@@ -141,6 +181,13 @@
                         IsVisible="{Binding IsObExpanded}"
                         Spacing="6">
 
+                        <Label
+                            Text="OB avser arbete föregående månad"
+                            FontSize="12"
+                            TextColor="Gray"
+                            FontAttributes="Italic"
+                            HorizontalOptions="Center" />
+
                         <CollectionView ItemsSource="{Binding ObDetails}">
                             <CollectionView.EmptyView>
                                 <Label
@@ -152,8 +199,8 @@
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid ColumnDefinitions="*,*,Auto,Auto">
-                                        <Label Text="{Binding Date, StringFormat='{0:MM-dd}'}" />
+                                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
+                                        <Label Text="{Binding Date, StringFormat='{0:dd/MM}'}" />
                                         <Label Text="{Binding CategoryName}" Grid.Column="1" />
                                         <Label Text="{Binding Hours, StringFormat='{0:0.##} h'}" Grid.Column="2" />
                                         <Label Text="{Binding Pay, StringFormat='{0:C}'}" Grid.Column="3" TextColor="Green" />

@@ -815,8 +815,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>⏰ OB-Inställningar</value>
   </data>
   <data name="OBTips" xml:space="preserve">
-    <value>💡 Tips: Kolla din senaste lönespec för att se vilka OB-tillägg som gäller för dig. 
-Konfigurera OB-regler så att löneberäkningen blir korrekt.</value>
+    <value>💡 Tips: Om ingen regel finns för en viss tid betalas ingen OB, även om kväll eller natt är aktiv.</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -1954,13 +1953,13 @@ Arbetspasset har sparats!</value>
     <value>{0:F1}t</value>
   </data>
   <data name="ShiftTimes" xml:space="preserve">
-    <value>Skifttider</value>
+    <value>⏰ Skifttider</value>
   </data>
   <data name="EveningStart" xml:space="preserve">
-    <value>🌇 Kväll start</value>
+    <value>🌇 Kväll pass startas</value>
   </data>
   <data name="NightStart" xml:space="preserve">
-    <value>🌙 Natt start</value>
+    <value>🌙 Natt pass startas</value>
   </data>
   <data name="EveningOB" xml:space="preserve">
     <value>Kväll</value>
@@ -1976,5 +1975,11 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="ErrorCreatingOBEvents" xml:space="preserve">
     <value>Fel vid skapande av OB-händelser</value>
+  </data>
+  <data name="DayStart" xml:space="preserve">
+    <value>☀️ Dag pass startas</value>
+  </data>
+  <data name="ShiftTimesHint" xml:space="preserve">
+    <value>💡 Dessa tider bör normalt stämma överens med dina OB-regler.</value>
   </data>
 </root>
