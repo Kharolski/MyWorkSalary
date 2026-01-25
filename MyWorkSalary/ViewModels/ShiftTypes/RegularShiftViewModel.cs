@@ -58,11 +58,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             set
             {
                 _activeJob = value;
-                if (_activeJob != null)
-                {
-                    // Load ShiftTimeSettings when ActiveJob is set
-                    //_activeJob.ShiftTimeSettings = _shiftTimeSettingsRepository.GetForJob(_activeJob.Id);
-                }
+
                 OnPropertyChanged();
                 CalculateHours();
             }

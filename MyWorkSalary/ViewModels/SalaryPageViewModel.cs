@@ -23,6 +23,10 @@ namespace MyWorkSalary.ViewModels
 
         private DateTime _selectedMonth;
 
+        // Att slippa anropa nya Command() varje gång
+        private ICommand _prevMonthCommand;
+        private ICommand _nextMonthCommand;
+
         private bool _isObExpanded;
         private bool _isBalanceExpanded;
         #endregion
@@ -82,6 +86,15 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged(nameof(CanGoNextMonth));
                 OnPropertyChanged(nameof(CanGoPrevMonth));
 
+                // badge för rätt månad
+                OnPropertyChanged(nameof(IsCurrentMonth));
+                OnPropertyChanged(nameof(CurrentMonthBadgeText));
+                OnPropertyChanged(nameof(ShowCurrentMonthBadge));
+
+                // info text om OB betalning 
+                OnPropertyChanged(nameof(ObPeriodHintText));
+                OnPropertyChanged(nameof(ObEmptyText));
+
                 RefreshStats();
             }
         }
@@ -104,10 +117,23 @@ namespace MyWorkSalary.ViewModels
                 return SelectedMonth > minMonth;
             }
         }
+
         #endregion
 
         // ==== Formaterade properties för XAML ====
         #region UI Text Properties
+        public bool IsCurrentMonth
+        {
+            get
+            {
+                var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                return SelectedMonth == now;
+            }
+        }
+
+        public string CurrentMonthBadgeText => IsCurrentMonth ? "NU" : "";
+        public bool ShowCurrentMonthBadge => IsCurrentMonth;
+
         public string MonthlySalaryText => CurrentStats == null ? "–" : $"{CurrentStats.NetSalary:N0} kr";
         public string GrossSalaryText => CurrentStats == null ? "–" : $"{CurrentStats.GrossSalary:N0} kr";
         public string CurrentMonthYearText => SelectedMonth.ToString("MMMM yyyy", new CultureInfo("sv-SE"));
@@ -175,6 +201,8 @@ namespace MyWorkSalary.ViewModels
                     : "Ej angiven";
             }
         }
+        public bool ShowVacationPay => ActiveJob?.EmploymentType != EmploymentType.Permanent;
+        public string VacationPayText => CurrentStats == null ? "–" : $"{CurrentStats.VacationPay:N0} kr";
 
         public string TotalHoursText
         {
@@ -209,6 +237,25 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        public string ObPeriodHintText
+        {
+            get
+            {
+                // du visar alltid en "utbetalningsmånad" i Salary-sidan
+                var workMonth = SelectedMonth.AddMonths(-1);
+
+                // Ex: "OB avser arbete december 2025"
+                return $"OB avser arbete {workMonth.ToString("MMMM yyyy", new CultureInfo("sv-SE"))}";
+            }
+        }
+        public string ObEmptyText
+        {
+            get
+            {
+                var workMonth = SelectedMonth.AddMonths(-1);
+                return $"Inga OB-timmar registrerade för {workMonth.ToString("MMMM yyyy", new CultureInfo("sv-SE"))}.";
+            }
+        }
         public string TotalObHoursText => CurrentStats == null ? "" : $"{CurrentStats.TotalObHours:F1}";
         public Color ObHoursColor => (CurrentStats?.TotalObHours ?? 0) > 0 ? Colors.Green : Colors.Gray;
         public IReadOnlyList<ObDetails> ObDetails =>
@@ -228,7 +275,6 @@ namespace MyWorkSalary.ViewModels
             ? "0 kr"
             : $"{CurrentStats.ObPay:N0} kr";
 
-        // public string FlexBalanceText => CurrentStats == null ? "" : $"Flex-tid: {CurrentStats.FlexBalance:F1}";
         public string FlexBalanceText
         {
             get
@@ -295,7 +341,7 @@ namespace MyWorkSalary.ViewModels
             IsBalanceExpanded = !IsBalanceExpanded;
         });
 
-        public ICommand PrevMonthCommand => new Command(() =>
+        public ICommand PrevMonthCommand => _prevMonthCommand ??= new Command(() =>
         {
             if (!CanGoPrevMonth)
                 return;
@@ -303,7 +349,7 @@ namespace MyWorkSalary.ViewModels
             SelectedMonth = SelectedMonth.AddMonths(-1);
         });
 
-        public ICommand NextMonthCommand => new Command(() =>
+        public ICommand NextMonthCommand => _nextMonthCommand ??= new Command(() =>
         {
             if (!CanGoNextMonth)
                 return;
@@ -311,7 +357,7 @@ namespace MyWorkSalary.ViewModels
             SelectedMonth = SelectedMonth.AddMonths(1);
         });
 
-        
+
         #endregion
 
         #region Constructor
@@ -360,6 +406,10 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(VacationDaysText));
             OnPropertyChanged(nameof(VabDaysText));
             OnPropertyChanged(nameof(JourText));
+
+            OnPropertyChanged(nameof(ShowVacationPay));
+            OnPropertyChanged(nameof(VacationPayText));
+
         }
 
         private void RefreshStats()
@@ -372,10 +422,6 @@ namespace MyWorkSalary.ViewModels
 
             CurrentStats = _salaryHandler.CalculateMonthlyStats(ActiveJob.Id, SelectedMonth);
         }
-        #endregion
-
-        #region Help Methods
-
         #endregion
 
         #region INotifyPropertyChanged

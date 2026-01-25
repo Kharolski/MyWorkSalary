@@ -26,12 +26,13 @@ namespace MyWorkSalary.Models.Reports
         public decimal BaseSalary { get; set; }
         public decimal ObPay { get; set; }
         public decimal OvertimePay { get; set; }
+        public decimal VacationPay { get; set; } // semesterersättning (timanställd)
         public decimal ExtraPay { get; set; }
 
         /// <summary>
         /// Total bruttolön (före skatt)
         /// </summary>
-        public decimal GrossSalary => BaseSalary + ObPay + OvertimePay + ExtraPay;
+        public decimal GrossSalary => BaseSalary + ObPay + VacationPay + OvertimePay + ExtraPay;
         #endregion
 
         #region Skatt

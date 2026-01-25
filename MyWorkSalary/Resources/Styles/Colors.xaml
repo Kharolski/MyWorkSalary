@@ -69,7 +69,7 @@
     <!-- ===== NYA FÄRGER FÖR LÖNESTATISTIK ===== -->
     <!-- Färger för lönestatistik - Ljust tema -->
     <Color x:Key="SalaryPositiveLight">#2E7D32</Color>      <!-- Mörkgrönt -->
-    <Color x:Key="SalaryNegativeLight">#C62828</Color>      <!-- Mörkrött -->
+    <Color x:Key="SalaryNegativeLight">#B23A3A</Color>      <!-- Mörkrött -->
     <Color x:Key="SalaryNeutralLight">#424242</Color>       <!-- Mörkgrå -->
     <Color x:Key="SalaryTextLight">#FFFFFF</Color>          <!-- Vit text -->
     

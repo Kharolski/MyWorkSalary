@@ -103,6 +103,18 @@ namespace MyWorkSalary.Services.Handlers
             // OB: alltid via OBEvent för utbetalningsmånad (PayYear/PayMonth == payMonth)
             CalculateOBFromEvents(jobId, payMonth, shifts, stats);
 
+            // Semesterersättning (timanställd)
+            if (profile.EmploymentType != EmploymentType.Permanent)
+            {
+                // Exempel: 12% semesterersättning (vanligt i Sverige) kan ändras till användarens val senare 
+                const decimal vacationRate = 0.12m;
+                stats.VacationPay = Math.Round(stats.BaseSalary * vacationRate, 2);
+            }
+            else
+            {
+                stats.VacationPay = 0;
+            }
+
             // Skatt 
             CalculateTax(profile, stats);
 
