@@ -45,7 +45,8 @@ namespace MyWorkSalary.Services.Handlers
                 return profile.MonthlySalary ?? 0;
 
             var shifts = _salaryRepository.GetShiftsForPeriod(jobId, periodStart, periodEnd) ?? Enumerable.Empty<WorkShift>();
-            var totalHours = shifts.Sum(ShiftHoursSafe);
+
+            var totalHours = shifts.Sum(s => ShiftHoursSafe(s, periodStart, periodEnd));
             return totalHours * (profile.HourlyRate ?? 0);
         }
         #endregion
@@ -89,8 +90,11 @@ namespace MyWorkSalary.Services.Handlers
             stats.OvertimePay = 0;
             stats.ExtraPay = 0;
 
-            // Arbetade timmar (den period vi valt ovan)
-            stats.TotalHours = shifts.Sum(ShiftHoursSafe);
+            // Arbetade timmar (klippt inom vald period)
+            var hoursStart = profile.EmploymentType == EmploymentType.Permanent ? payStart : workStart;
+            var hoursEnd = profile.EmploymentType == EmploymentType.Permanent ? payEnd : workEnd;
+
+            stats.TotalHours = shifts.Sum(s => ShiftHoursSafe(s, hoursStart, hoursEnd));
 
             // Grundlön:
             // - Fast: payMonth
@@ -128,20 +132,41 @@ namespace MyWorkSalary.Services.Handlers
             return (start, end);
         }
 
-        private decimal ShiftHoursSafe(WorkShift s)
+        private decimal ShiftHoursSafe(WorkShift s, DateTime periodStart, DateTime periodEnd)
         {
-            if (s.TotalHours > 0)
-                return s.TotalHours;
+            if (!s.StartTime.HasValue || !s.EndTime.HasValue)
+                return 0m;
 
-            if (s.StartTime.HasValue && s.EndTime.HasValue)
+            var shiftStart = s.StartTime.Value;
+            var shiftEnd = s.EndTime.Value;
+
+            // säkerhet
+            if (shiftEnd <= shiftStart)
+                return 0m;
+
+            // Klipp segmentet till perioden
+            var from = shiftStart < periodStart ? periodStart : shiftStart;
+            var to = shiftEnd > periodEnd ? periodEnd : shiftEnd;
+
+            if (to <= from)
+                return 0m;
+
+            var overlapMinutes = (decimal)(to - from).TotalMinutes;
+            if (overlapMinutes <= 0)
+                return 0m;
+
+            // Dra rast proportionellt utifrån hur stor del av passet som ligger i perioden
+            var totalShiftMinutes = (decimal)(shiftEnd - shiftStart).TotalMinutes;
+            var breakMinutes = (decimal)Math.Max(0, s.BreakMinutes);
+
+            if (breakMinutes > 0 && totalShiftMinutes > 0)
             {
-                var hours = (decimal)(s.EndTime.Value - s.StartTime.Value).TotalHours;
-                if (s.BreakMinutes > 0)
-                    hours -= s.BreakMinutes / 60m;
-                return Math.Max(0, hours);
+                var fraction = overlapMinutes / totalShiftMinutes;
+                var breakToSubtract = breakMinutes * fraction;
+                overlapMinutes = Math.Max(0, overlapMinutes - breakToSubtract);
             }
 
-            return 0;
+            return Math.Round(overlapMinutes / 60m, 2);
         }
         #endregion
 

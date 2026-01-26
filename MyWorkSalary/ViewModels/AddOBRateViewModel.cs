@@ -7,6 +7,7 @@ using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
+using MyWorkSalary.Services.Interfaces;
 
 namespace MyWorkSalary.ViewModels
 {
@@ -15,6 +16,7 @@ namespace MyWorkSalary.ViewModels
         #region Fields
         private readonly DatabaseService _databaseService;
         private readonly JobProfile _activeJob;
+        private readonly IOBEventService _obEventService;
 
         // Properties för formuläret
         private string _name = string.Empty;
@@ -35,10 +37,11 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Constructor
-        public AddOBRateViewModel(DatabaseService databaseService)
+        public AddOBRateViewModel(DatabaseService databaseService, IOBEventService obEventService)
         {
             _databaseService = databaseService;
             _activeJob = _databaseService.JobProfiles.GetActiveJob();
+            _obEventService = obEventService;
 
             // Initiera commands
             SaveCommand = new Command(OnSave);
@@ -271,6 +274,10 @@ namespace MyWorkSalary.ViewModels
                 };
 
                 _databaseService.OBRates.SaveOBRate(obRate);
+
+                // REBUILD 4 månader bakåt (bara om det finns aktivt jobb)
+                if (_activeJob != null)
+                    await _obEventService.RebuildForJobLastMonths(_activeJob.Id, 4);
 
                 await Shell.Current.DisplayAlert(
                     Resources.Resx.Resources.Save_Success_Title,

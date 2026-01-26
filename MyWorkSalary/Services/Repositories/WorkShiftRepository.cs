@@ -25,14 +25,24 @@ namespace MyWorkSalary.Services.Repositories
                            .ToList();
         }
 
-        public List<WorkShift> GetWorkShifts(int jobProfileId, DateTime fromDate, DateTime toDate)
+        public List<WorkShift> GetWorkShifts(int jobProfileId, DateTime fromDate, DateTime toDateExclusive)
         {
-            return _database.Table<WorkShift>()
-                           .Where(x => x.JobProfileId == jobProfileId &&
-                                      x.ShiftDate >= fromDate &&
-                                      x.ShiftDate <= toDate)
-                           .OrderBy(x => x.ShiftDate)
-                           .ToList();
+            // Hämta på ShiftDate (enkel query som SQLite klarar)
+            var fromDay = fromDate.Date.AddDays(-1);
+            var toDayExclusive = toDateExclusive.Date.AddDays(1);
+
+            var candidates = _database.Table<WorkShift>()
+                .Where(x => x.JobProfileId == jobProfileId
+                         && x.ShiftDate >= fromDay
+                         && x.ShiftDate < toDayExclusive)
+                .ToList();
+
+            // Filtrera i minnet för exakt overlap (inkl pass som går över midnatt)
+            return candidates
+                .Where(s => s.StartTime.HasValue && s.EndTime.HasValue)
+                .Where(s => s.EndTime.Value > fromDate && s.StartTime.Value < toDateExclusive) // overlap
+                .OrderBy(s => s.StartTime)
+                .ToList();
         }
 
         public WorkShift GetWorkShift(int id)
@@ -137,8 +147,8 @@ namespace MyWorkSalary.Services.Repositories
         public List<WorkShift> GetWorkShiftsForMonth(int jobProfileId, int year, int month)
         {
             var startDate = new DateTime(year, month, 1);
-            var endDate = startDate.AddMonths(1).AddDays(-1);
-            return GetWorkShifts(jobProfileId, startDate, endDate);
+            var endDateExclusive = startDate.AddMonths(1);
+            return GetWorkShifts(jobProfileId, startDate, endDateExclusive);
         }
 
         public (decimal TotalHours, decimal TotalPay, int TotalShifts) GetMonthlyStats(int jobProfileId, int year, int month)

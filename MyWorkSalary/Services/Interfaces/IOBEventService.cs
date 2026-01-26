@@ -7,6 +7,9 @@ namespace MyWorkSalary.Services.Interfaces
     {
         ObSummary RebuildForWorkShift(WorkShift shift);
         ObSummary RebuildForWorkShift(WorkShift shift, IReadOnlyList<OBRate> obRates);
+
+        // Rebuild för många pass i en period
+        Task RebuildForJobLastMonths(int jobProfileId, int monthsBack = 4);
     }
 
     public sealed class ObSummary

@@ -9,11 +9,13 @@ namespace MyWorkSalary.Services
     {
         private readonly IOBEventRepository _obEventRepository;
         private readonly IOBRateRepository _obRateRepository;
+        private readonly IWorkShiftRepository _workShiftRepository;
 
-        public OBEventService(IOBEventRepository obEventRepository, IOBRateRepository obRateRepository)
+        public OBEventService(IOBEventRepository obEventRepository, IOBRateRepository obRateRepository, IWorkShiftRepository workShiftRepository)
         {
             _obEventRepository = obEventRepository;
             _obRateRepository = obRateRepository;
+            _workShiftRepository = workShiftRepository;
         }
 
         // Overload 1: hämta rates från DB
@@ -226,6 +228,48 @@ namespace MyWorkSalary.Services
                 summary.NightPay += ev.TotalAmount;
                 summary.NightRate = Math.Max(summary.NightRate, ev.RatePerHour);
             }
+        }
+
+        public Task RebuildForJobLastMonths(int jobProfileId, int monthsBack = 4)
+        {
+            // 4 månader bakåt räknat från NU (inkl nuvarande månad)
+            var to = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);  // exklusiv
+            var from = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-monthsBack); // inkl
+
+            // Hämta OB-regler en gång
+            var obRates = _obRateRepository.GetOBRates(jobProfileId)
+                .Where(r => r.IsActive)
+                .ToList();
+
+            // Hämta pass i perioden
+            var shifts = _workShiftRepository.GetWorkShiftsForDateRange(jobProfileId, from, to)
+                .Where(s => s.ShiftType == ShiftType.Regular)
+                .Where(s => s.StartTime.HasValue && s.EndTime.HasValue)
+                .ToList();
+
+            foreach (var shift in shifts)
+            {
+                // Bygg om events för passet baserat på NUVARANDE regler
+                var summary = RebuildForWorkShift(shift, obRates);
+
+                // Uppdatera WorkShift så historik/UI stämmer
+                shift.EveningHours = summary.EveningHours;
+                shift.NightHours = summary.NightHours;
+                shift.OBHours = summary.TotalObHours;
+
+                shift.EveningOBRate = summary.EveningRate;
+                shift.NightOBRate = summary.NightRate;
+
+                shift.EveningOBPay = summary.EveningPay;
+                shift.NightOBPay = summary.NightPay;
+
+                shift.OBPay = summary.TotalObPay;
+                shift.TotalPay = shift.RegularPay + shift.OBPay;
+
+                _workShiftRepository.SaveWorkShift(shift);
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

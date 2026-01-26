@@ -2,6 +2,7 @@
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
+using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Views.Pages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -16,16 +17,18 @@ namespace MyWorkSalary.ViewModels
         private JobProfile _activeJob;
         private ObservableCollection<JobProfile> _allJobs;
         private bool _isChangingJob = false;
-        private AppSettings _appSettings; 
-        
+        private AppSettings _appSettings;
+        private readonly IOBEventService _obEventService;
+
         private bool _isDarkTheme;
         private LanguageOption _selectedLanguage;
         #endregion
 
         #region Constructor
-        public SettingsViewModel(DatabaseService databaseService)
+        public SettingsViewModel(DatabaseService databaseService, IOBEventService obEventService)
         {
             _databaseService = databaseService;
+            _obEventService = obEventService;
 
             TranslationManager.Instance.CultureChanged += OnCultureChanged;
 
@@ -339,6 +342,9 @@ namespace MyWorkSalary.ViewModels
 
                 if (deletedRows > 0)
                 {
+                    // rebuild 4 månader bakåt
+                    await _obEventService.RebuildForJobLastMonths(ActiveJob.Id, 4);
+
                     LoadOBRates();
                 }
                 else

@@ -14,7 +14,7 @@ namespace MyWorkSalary.Services.Interfaces
         /// <summary>
         /// Hämtar alla arbetspass för ett jobb under en specifik period.
         /// </summary>
-        IEnumerable<WorkShift> GetShiftsForPeriod(int jobId, DateTime start, DateTime end);
+        IEnumerable<WorkShift> GetShiftsForPeriod(int jobId, DateTime start, DateTime endExclusive);
 
         /// <summary>
         /// Hämtar alla OB-pass för ett jobb under en specifik period.

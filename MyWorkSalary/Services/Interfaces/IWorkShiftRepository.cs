@@ -7,7 +7,7 @@ namespace MyWorkSalary.Services.Interfaces
     {
         // Basic CRUD
         List<WorkShift> GetWorkShifts(int jobProfileId);
-        List<WorkShift> GetWorkShifts(int jobProfileId, DateTime fromDate, DateTime toDate);
+        List<WorkShift> GetWorkShifts(int jobProfileId, DateTime fromDate, DateTime toDateExclusive);
         WorkShift GetWorkShift(int id);
         WorkShift SaveWorkShift(WorkShift workShift);
         Task<WorkShift> SaveWorkShiftAsync(WorkShift workShift);

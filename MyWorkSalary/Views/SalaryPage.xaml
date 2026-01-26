@@ -221,6 +221,7 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
 
+                        <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
                         <Label FontAttributes="Bold">
                             <Label.FormattedText>
                                 <FormattedString>

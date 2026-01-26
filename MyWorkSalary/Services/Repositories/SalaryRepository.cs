@@ -19,15 +19,24 @@ namespace MyWorkSalary.Services.Repositories
 
         #region Shifts & WorkTime
 
-        public IEnumerable<WorkShift> GetShiftsForPeriod(int jobId, DateTime start, DateTime end)
+        public IEnumerable<WorkShift> GetShiftsForPeriod(int jobId, DateTime start, DateTime endExclusive)
         {
             try
             {
-                return _database.Table<WorkShift>()
-                                .Where(x => x.JobProfileId == jobId &&
-                                            x.ShiftDate >= start &&
-                                            x.ShiftDate < end)
-                                .ToList();
+                var fromDay = start.Date.AddDays(-1);
+                var toDayExclusive = endExclusive.Date.AddDays(1);
+
+                var candidates = _database.Table<WorkShift>()
+                    .Where(x => x.JobProfileId == jobId
+                             && x.ShiftDate >= fromDay
+                             && x.ShiftDate < toDayExclusive)
+                    .ToList();
+
+                return candidates
+                    .Where(s => s.StartTime.HasValue && s.EndTime.HasValue)
+                    .Where(s => s.EndTime.Value > start && s.StartTime.Value < endExclusive) // overlap
+                    .OrderBy(s => s.StartTime)
+                    .ToList();
             }
             catch (Exception ex)
             {
