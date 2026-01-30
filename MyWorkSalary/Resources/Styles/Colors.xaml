@@ -88,6 +88,7 @@
     <Color x:Key="TextPrimary">#212121</Color>
     <Color x:Key="TextSecondary">#757575</Color>
     <Color x:Key="TextHint">#BDBDBD</Color>
+    <Color x:Key="TextEmptyList">#444444</Color>
 
     <Color x:Key="SalaryTabUnselected">#757575</Color>
     <Color x:Key="BorderColor">#E0E0E0</Color>
@@ -103,8 +104,9 @@
     <Color x:Key="SalaryCardBackgroundDark">#353535</Color>
 
     <Color x:Key="TextPrimaryDark">#FFFFFF</Color>
-    <Color x:Key="TextSecondaryDark">#B3B3B3</Color>
-    <Color x:Key="TextHintDark">#808080</Color>
+    <Color x:Key="TextSecondaryDark">#9a9a9a</Color>
+    <Color x:Key="TextHintDark">#B3B3B3</Color>
+    <Color x:Key="TextEmptyListDark">#DADADA</Color>
 
     <Color x:Key="SalaryTabUnselectedDark">#999999</Color>
     <Color x:Key="BorderColorDark">#404040</Color>

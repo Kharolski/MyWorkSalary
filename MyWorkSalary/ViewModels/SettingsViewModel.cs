@@ -4,6 +4,7 @@ using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Views.Pages;
+using MyWorkSalary.Views.Pages.Templates;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -39,7 +40,10 @@ namespace MyWorkSalary.ViewModels
             DeleteJobCommand = new Command<JobProfile>(OnDeleteJob);
 
             AddOBRateCommand = new Command(OnAddOBRate, () => HasActiveJob);
+            EditOBRateCommand = new Command<OBRate>(OnEditOBRate);
             DeleteOBRateCommand = new Command<OBRate>(OnDeleteOBRate);
+            AddOBTemplateCommand = new Command(async () => await OnOpenOBTemplates(false), () => HasActiveJob);
+            ReplaceWithTemplateCommand = new Command(async () => await OnOpenOBTemplates(true), () => HasActiveJob && HasOBRates);
 
             LoadJobs();
             LoadOBRates();
@@ -57,6 +61,10 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ActiveJobText));
                 OnPropertyChanged(nameof(HasActiveJob));
+
+                ((Command)AddOBRateCommand).ChangeCanExecute();
+                ((Command)AddOBTemplateCommand).ChangeCanExecute();
+                ((Command)ReplaceWithTemplateCommand).ChangeCanExecute();
             }
         }
 
@@ -89,9 +97,11 @@ namespace MyWorkSalary.ViewModels
                 _obRates = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasOBRates));
+                OnPropertyChanged(nameof(HasNoOBRates));
             }
         }
         public bool HasOBRates => OBRates?.Count > 0;
+        public bool HasNoOBRates => !HasOBRates;
 
         // Tema-properties
         public bool IsDarkTheme
@@ -108,13 +118,11 @@ namespace MyWorkSalary.ViewModels
                 }
             }
         }
-
         public string ThemeDescription => IsDarkTheme
             ? Resources.Resx.Resources.DarkThemeActive
             : Resources.Resx.Resources.LightThemeActive;
 
         // Tillgängliga språk i appen
-
         public ObservableCollection<LanguageOption> AvailableLanguages { get; } =
             LanguageProvider.GetAvailableLanguages();
 
@@ -139,8 +147,11 @@ namespace MyWorkSalary.ViewModels
 
         public ICommand DeleteJobCommand { get; }
         public ICommand AddOBRateCommand { get; }
+        public ICommand EditOBRateCommand { get; }
         public ICommand DeleteOBRateCommand { get; }
 
+        public ICommand AddOBTemplateCommand { get; }
+        public ICommand ReplaceWithTemplateCommand { get; }
         #endregion
 
         #region Methods
@@ -159,29 +170,6 @@ namespace MyWorkSalary.ViewModels
             ((Command)AddOBRateCommand).ChangeCanExecute();
 
             LoadOBRates();
-        }
-
-        private void LoadOBRates()
-        {
-            if (ActiveJob != null)
-            {
-                var obRates = _databaseService.OBRates.GetOBRates(ActiveJob.Id);
-
-                // Sätt rätt valuta för varje OBRate
-                foreach (var ob in obRates)
-                {
-                    ob.CurrencyCode = ActiveJob.CurrencyCode ?? "SEK";
-                }
-
-                OBRates = new ObservableCollection<OBRate>(obRates);
-
-                OnPropertyChanged(nameof(HasOBRates));
-            }
-            else
-            {
-                OBRates.Clear();
-                OnPropertyChanged(nameof(HasOBRates));
-            }
         }
 
         public void RefreshActiveJob()
@@ -245,11 +233,6 @@ namespace MyWorkSalary.ViewModels
         private async void OnAddJob()
         {
             await Shell.Current.GoToAsync(nameof(AddJobPage));
-        }
-
-        private async void OnAddOBRate()
-        {
-            await Shell.Current.GoToAsync(nameof(AddOBRatePage));
         }
 
         private async void OnEditActiveJob()
@@ -321,6 +304,57 @@ namespace MyWorkSalary.ViewModels
                     string.Format(Resources.Resx.Resources.DeleteJobFailedMessageFormat, ex.Message),
                     Resources.Resx.Resources.Ok);
             }
+        }
+
+        #endregion
+
+        #region OB Methods
+        private void LoadOBRates()
+        {
+            if (ActiveJob != null)
+            {
+                var obRates = _databaseService.OBRates.GetOBRates(ActiveJob.Id);
+
+                // Sätt rätt valuta för varje OBRate
+                foreach (var ob in obRates)
+                {
+                    ob.CurrencyCode = ActiveJob.CurrencyCode ?? "SEK";
+                }
+
+                OBRates = new ObservableCollection<OBRate>(obRates);
+
+                ((Command)ReplaceWithTemplateCommand).ChangeCanExecute();
+                OnPropertyChanged(nameof(HasOBRates));
+            }
+            else
+            {
+                OBRates.Clear();
+                OnPropertyChanged(nameof(HasOBRates));
+            }
+        }
+
+        private async Task OnOpenOBTemplates(bool replaceMode)
+        {
+            if (ActiveJob == null)
+                return;
+
+            var mode = replaceMode ? "replace" : "add";
+
+            // Shell query parameters (jobId + mode)
+            await Shell.Current.GoToAsync($"{nameof(OBTemplatesPage)}?jobId={ActiveJob.Id}&mode={mode}");
+        }
+
+        private async void OnAddOBRate()
+        {
+            await Shell.Current.GoToAsync(nameof(AddOBRatePage));
+        }
+
+        private async void OnEditOBRate(OBRate obRate)
+        {
+            if (obRate == null)
+                return;
+
+            await Shell.Current.GoToAsync($"{nameof(AddOBRatePage)}?obRateId={obRate.Id}");
         }
 
         private async void OnDeleteOBRate(OBRate obRate)

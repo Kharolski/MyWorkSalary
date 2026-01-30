@@ -388,11 +388,20 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ➕ Add Unsocial Hours Rule.
+        ///   Looks up a localized string similar to ➕ Add Rule.
         /// </summary>
         internal static string AddOBRule {
             get {
                 return ResourceManager.GetString("AddOBRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ➕ Add Template.
+        /// </summary>
+        internal static string AddOBTemplate {
+            get {
+                return ResourceManager.GetString("AddOBTemplate", resourceCulture);
             }
         }
         
@@ -645,6 +654,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ChooseLanguage {
             get {
                 return ResourceManager.GetString("ChooseLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Common_Cancel {
+            get {
+                return ResourceManager.GetString("Common_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace.
+        /// </summary>
+        internal static string Common_Replace {
+            get {
+                return ResourceManager.GetString("Common_Replace", resourceCulture);
             }
         }
         
@@ -1064,6 +1091,96 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fri.
+        /// </summary>
+        internal static string Day_Fri_Short {
+            get {
+                return ResourceManager.GetString("Day_Fri_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mon.
+        /// </summary>
+        internal static string Day_Mon_Short {
+            get {
+                return ResourceManager.GetString("Day_Mon_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sat.
+        /// </summary>
+        internal static string Day_Sat_Short {
+            get {
+                return ResourceManager.GetString("Day_Sat_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sun.
+        /// </summary>
+        internal static string Day_Sun_Short {
+            get {
+                return ResourceManager.GetString("Day_Sun_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thu.
+        /// </summary>
+        internal static string Day_Thu_Short {
+            get {
+                return ResourceManager.GetString("Day_Thu_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tue.
+        /// </summary>
+        internal static string Day_Tue_Short {
+            get {
+                return ResourceManager.GetString("Day_Tue_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wed.
+        /// </summary>
+        internal static string Day_Wed_Short {
+            get {
+                return ResourceManager.GetString("Day_Wed_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Big holidays.
+        /// </summary>
+        internal static string DayGroup_BigHolidays {
+            get {
+                return ResourceManager.GetString("DayGroup_BigHolidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holidays.
+        /// </summary>
+        internal static string DayGroup_Holidays {
+            get {
+                return ResourceManager.GetString("DayGroup_Holidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No days selected.
+        /// </summary>
+        internal static string DayGroup_NoneSelected {
+            get {
+                return ResourceManager.GetString("DayGroup_NoneSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ☀️ Day shift starts.
         /// </summary>
         internal static string DayStart {
@@ -1376,6 +1493,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Earned {
             get {
                 return ResourceManager.GetString("Earned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ✏️  Edit.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -2262,6 +2388,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add an unsocial hour rule manually, or use a template to get started..
+        /// </summary>
+        internal static string NoOBRulesText {
+            get {
+                return ResourceManager.GetString("NoOBRulesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No unsocial hours rules yet.
+        /// </summary>
+        internal static string NoOBRulesTitle {
+            get {
+                return ResourceManager.GetString("NoOBRulesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  📝.
         /// </summary>
         internal static string NoShiftsIcon {
@@ -2330,6 +2474,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ObHoursText {
             get {
                 return ResourceManager.GetString("ObHoursText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Big holiday.
+        /// </summary>
+        internal static string OBRule_BigHoliday_Name {
+            get {
+                return ResourceManager.GetString("OBRule_BigHoliday_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Big Holiday.
+        /// </summary>
+        internal static string OBRule_BigHolidays {
+            get {
+                return ResourceManager.GetString("OBRule_BigHolidays", resourceCulture);
             }
         }
         
@@ -2541,11 +2703,236 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Weekday evening.
+        /// </summary>
+        internal static string OBRule_WeekdayEvening_Name {
+            get {
+                return ResourceManager.GetString("OBRule_WeekdayEvening_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekday night.
+        /// </summary>
+        internal static string OBRule_WeekdayNight_Name {
+            get {
+                return ResourceManager.GetString("OBRule_WeekdayNight_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend (Saturday).
+        /// </summary>
+        internal static string OBRule_Weekend_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Weekend_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend extra (Sunday).
+        /// </summary>
+        internal static string OBRule_WeekendExtra_Name {
+            get {
+                return ResourceManager.GetString("OBRule_WeekendExtra_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend .
+        /// </summary>
+        internal static string OBRule_WeekendOB_Name {
+            get {
+                return ResourceManager.GetString("OBRule_WeekendOB_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ⏰ Unsocial hours settings.
         /// </summary>
         internal static string OBSettings {
             get {
                 return ResourceManager.GetString("OBSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekday evening Unsocial hour (editable).
+        /// </summary>
+        internal static string OBTemplate_EveningOnly_Desc {
+            get {
+                return ResourceManager.GetString("OBTemplate_EveningOnly_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekday evening.
+        /// </summary>
+        internal static string OBTemplate_EveningOnly_Name {
+            get {
+                return ResourceManager.GetString("OBTemplate_EveningOnly_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening only.
+        /// </summary>
+        internal static string OBTemplate_EveningOnly_Title {
+            get {
+                return ResourceManager.GetString("OBTemplate_EveningOnly_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekday Night Unsocial hour (editable).
+        /// </summary>
+        internal static string OBTemplate_NightOnly_Desc {
+            get {
+                return ResourceManager.GetString("OBTemplate_NightOnly_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Night only.
+        /// </summary>
+        internal static string OBTemplate_NightOnly_Title {
+            get {
+                return ResourceManager.GetString("OBTemplate_NightOnly_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common Unsocial Hour rules for municipal healthcare (editable).
+        /// </summary>
+        internal static string OBTemplate_Standard_Desc {
+            get {
+                return ResourceManager.GetString("OBTemplate_Standard_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard municipality (healthcare).
+        /// </summary>
+        internal static string OBTemplate_Standard_Title {
+            get {
+                return ResourceManager.GetString("OBTemplate_Standard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simple weekend Unsocial hour (editable).
+        /// </summary>
+        internal static string OBTemplate_WeekendOnly_Desc {
+            get {
+                return ResourceManager.GetString("OBTemplate_WeekendOnly_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend only.
+        /// </summary>
+        internal static string OBTemplate_WeekendOnly_Title {
+            get {
+                return ResourceManager.GetString("OBTemplate_WeekendOnly_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add these rules.
+        /// </summary>
+        internal static string OBTemplates_AddButton {
+            get {
+                return ResourceManager.GetString("OBTemplates_AddButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📌 Template amounts are examples. After adding a template, you can edit the rates in Settings → Unsocial Hour settings..
+        /// </summary>
+        internal static string OBTemplates_AmountsNote {
+            get {
+                return ResourceManager.GetString("OBTemplates_AmountsNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Templates.
+        /// </summary>
+        internal static string OBTemplates_ChooseTemplate {
+            get {
+                return ResourceManager.GetString("OBTemplates_ChooseTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Templates are examples. Adjust times and amounts to match your agreement..
+        /// </summary>
+        internal static string OBTemplates_InfoText {
+            get {
+                return ResourceManager.GetString("OBTemplates_InfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a template.
+        /// </summary>
+        internal static string OBTemplates_InfoTitle {
+            get {
+                return ResourceManager.GetString("OBTemplates_InfoTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        internal static string OBTemplates_Preview {
+            get {
+                return ResourceManager.GetString("OBTemplates_Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace all rules.
+        /// </summary>
+        internal static string OBTemplates_ReplaceButton {
+            get {
+                return ResourceManager.GetString("OBTemplates_ReplaceButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will remove all existing OB rules for this job and replace them with the selected template..
+        /// </summary>
+        internal static string OBTemplates_ReplaceConfirmMessage {
+            get {
+                return ResourceManager.GetString("OBTemplates_ReplaceConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace OB rules?.
+        /// </summary>
+        internal static string OBTemplates_ReplaceConfirmTitle {
+            get {
+                return ResourceManager.GetString("OBTemplates_ReplaceConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a template to preview its rules..
+        /// </summary>
+        internal static string OBTemplates_SelectToPreview {
+            get {
+                return ResourceManager.GetString("OBTemplates_SelectToPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsocial Hour Templates.
+        /// </summary>
+        internal static string OBTemplates_Title {
+            get {
+                return ResourceManager.GetString("OBTemplates_Title", resourceCulture);
             }
         }
         
@@ -3086,6 +3473,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ReplaceShift_Title {
             get {
                 return ResourceManager.GetString("ReplaceShift_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch Template.
+        /// </summary>
+        internal static string ReplaceWithTemplate {
+            get {
+                return ResourceManager.GetString("ReplaceWithTemplate", resourceCulture);
             }
         }
         
@@ -4404,7 +4800,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 💡 Swipe left to delete a rule.
+        ///   Looks up a localized string similar to 💡 Swipe right to edit, swipe left to delete a rule.
         /// </summary>
         internal static string SwipeDeleteOBHint {
             get {

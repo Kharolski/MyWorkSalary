@@ -1,4 +1,5 @@
 ﻿using MyWorkSalary.Views.Pages;
+using MyWorkSalary.Views.Pages.Templates;
 
 namespace MyWorkSalary
 {
@@ -13,6 +14,9 @@ namespace MyWorkSalary
             Routing.RegisterRoute(nameof(EditJobPage), typeof(EditJobPage));
             Routing.RegisterRoute(nameof(AddShiftPage), typeof(AddShiftPage));
             Routing.RegisterRoute(nameof(AddOBRatePage), typeof(AddOBRatePage));
+
+            // OB Templates Page
+            Routing.RegisterRoute(nameof(OBTemplatesPage), typeof(OBTemplatesPage));
         }
     }
 }

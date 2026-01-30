@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyWorkSalary.Views.Pages.Templates.OBTemplatesPage"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             xmlns:converters="clr-namespace:MyWorkSalary.Helpers.Converters"
+             Title="{resx:Translate OBTemplates_Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Info -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{resx:Translate OBTemplates_InfoTitle}"
+                           Style="{StaticResource FieldTitleLabel}" />
+                    <Label Text="{resx:Translate OBTemplates_InfoText}"
+                           Style="{StaticResource TipsLabel}"
+                           FontSize="12" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Välj mall -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{resx:Translate OBTemplates_ChooseTemplate}"
+                           Style="{StaticResource FieldTitleLabel}" />
+
+                    <CollectionView ItemsSource="{Binding Templates}"
+                                    SelectedItem="{Binding SelectedTemplate}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="12"
+                                       Margin="0,4"
+                                       CornerRadius="10"
+                                       HasShadow="False">
+                                    <Frame.BackgroundColor>
+                                        <MultiBinding Converter="{StaticResource SelectedTemplateBackgroundConverter}">
+                                            <Binding Path="." />
+                                            <Binding Path="BindingContext.SelectedTemplate" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                        </MultiBinding>
+                                    </Frame.BackgroundColor>
+
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectTemplateCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
+
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="14">
+                                            <Label.TextColor>
+                                                <MultiBinding Converter="{StaticResource SelectedTemplateTextColorConverter}">
+                                                    <Binding Path="." />
+                                                    <Binding Path="BindingContext.SelectedTemplate" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                </MultiBinding>
+                                            </Label.TextColor>
+                                        </Label>
+                                        <Label Text="{Binding Description}" Style="{StaticResource OBInfoLabel}" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Förhandsvisa regler -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{resx:Translate OBTemplates_Preview}"
+                           Style="{StaticResource FieldTitleLabel}" />
+                    <Label Text="{resx:Translate OBTemplates_AmountsNote}"
+                           Style="{StaticResource NoItemsLabel}"
+                           FontSize="12" IsVisible="{Binding HasSelectedTemplate}" />
+
+                    <CollectionView ItemsSource="{Binding PreviewRules}"
+                                    SelectionMode="None"
+                                    EmptyView="{resx:Translate OBTemplates_SelectToPreview}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Style="{StaticResource OBRuleFrame}">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <StackLayout Grid.Column="0" Spacing="2">
+                                            <Label Text="{Binding Name}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="14" />
+                                            <Label Text="{Binding PreviewText}"
+                                                   FontSize="12"
+                                                   Style="{StaticResource HelpLabel}" />
+                                        </StackLayout>
+                                        <Label Grid.Column="1"
+                                               Text="{Binding RateDisplayText}"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Actions -->
+            <VerticalStackLayout Spacing="8">
+                <Button Text="{resx:Translate OBTemplates_AddButton}"
+                        Command="{Binding AddTemplateCommand}"
+                        BackgroundColor="{StaticResource ButtonPrimary}"
+                        TextColor="{StaticResource White}"
+                        CornerRadius="8"
+                        Padding="0,15"
+                        IsEnabled="{Binding HasSelectedTemplate}" />
+
+                <!-- Om du öppnar denna sida i “ersätt-läge” -->
+                <Button Text="{resx:Translate OBTemplates_ReplaceButton}"
+                        Command="{Binding ReplaceTemplateCommand}"
+                        BackgroundColor="{StaticResource ButtonCancel}"
+                        TextColor="{StaticResource White}"
+                        CornerRadius="8"
+                        Padding="0,15"
+                        IsVisible="{Binding IsReplaceMode}"
+                        IsEnabled="{Binding HasSelectedTemplate}" />
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

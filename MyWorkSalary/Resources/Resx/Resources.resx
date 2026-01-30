@@ -234,7 +234,7 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Placeholder text</comment>
   </data>
   <data name="AddOBRule" xml:space="preserve">
-    <value>➕ Add Unsocial Hours Rule</value>
+    <value>➕ Add Rule</value>
     <comment>Button text</comment>
   </data>
   <data name="AddShift" xml:space="preserve">
@@ -1296,7 +1296,8 @@ when employment ends (no later than one month afterwards).</value>
     <value>💡 Swipe left to delete a job</value>
   </data>
   <data name="SwipeDeleteOBHint" xml:space="preserve">
-    <value>💡 Swipe left to delete a rule</value>
+    <value>💡 Swipe right to edit, swipe left to delete a rule</value>
+    <comment>SettingsPage</comment>
   </data>
   <data name="TaxRate_Label" xml:space="preserve">
     <value>Tax rate (%)</value>
@@ -2361,5 +2362,181 @@ The work shift has been saved!</value>
   </data>
   <data name="ShiftTimesHint" xml:space="preserve">
     <value>💡 Tip: These times should normally match your unsocial hours rules.</value>
+  </data>
+  <data name="OBTemplates_Title" xml:space="preserve">
+    <value>Unsocial Hour Templates</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="AddOBTemplate" xml:space="preserve">
+    <value>➕ Add Template</value>
+    <comment>Settings page</comment>
+  </data>
+  <data name="ReplaceWithTemplate" xml:space="preserve">
+    <value>Switch Template</value>
+    <comment>Settings page</comment>
+  </data>
+  <data name="NoOBRulesTitle" xml:space="preserve">
+    <value>No unsocial hours rules yet</value>
+    <comment>Settings page</comment>
+  </data>
+  <data name="NoOBRulesText" xml:space="preserve">
+    <value>Add an unsocial hour rule manually, or use a template to get started.</value>
+    <comment>Settings page</comment>
+  </data>
+  <data name="OBRule_BigHolidays" xml:space="preserve">
+    <value>Big Holiday</value>
+    <comment>AddOBRatePage</comment>
+  </data>
+  <data name="OBTemplates_InfoTitle" xml:space="preserve">
+    <value>Choose a template</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplates_InfoText" xml:space="preserve">
+    <value>Templates are examples. Adjust times and amounts to match your agreement.</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplates_ChooseTemplate" xml:space="preserve">
+    <value>Templates</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplates_Preview" xml:space="preserve">
+    <value>Preview</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplates_SelectToPreview" xml:space="preserve">
+    <value>Select a template to preview its rules.</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplates_AddButton" xml:space="preserve">
+    <value>Add these rules</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplates_ReplaceButton" xml:space="preserve">
+    <value>Replace all rules</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplates_ReplaceConfirmTitle" xml:space="preserve">
+    <value>Replace OB rules?</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplates_ReplaceConfirmMessage" xml:space="preserve">
+    <value>This will remove all existing OB rules for this job and replace them with the selected template.</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="Common_Replace" xml:space="preserve">
+    <value>Replace</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>✏️  Edit</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="OBTemplates_AmountsNote" xml:space="preserve">
+    <value>📌 Template amounts are examples. After adding a template, you can edit the rates in Settings → Unsocial Hour settings.</value>
+    <comment>OBTemplatesPage</comment>
+  </data>
+  <data name="OBTemplate_Standard_Title" xml:space="preserve">
+    <value>Standard municipality (healthcare)</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBTemplate_Standard_Desc" xml:space="preserve">
+    <value>Common Unsocial Hour rules for municipal healthcare (editable)</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBRule_WeekdayEvening_Name" xml:space="preserve">
+    <value>Weekday evening</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBRule_WeekdayNight_Name" xml:space="preserve">
+    <value>Weekday night</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBRule_Weekend_Name" xml:space="preserve">
+    <value>Weekend (Saturday)</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBRule_WeekendExtra_Name" xml:space="preserve">
+    <value>Weekend extra (Sunday)</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBRule_BigHoliday_Name" xml:space="preserve">
+    <value>Big holiday</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBTemplate_EveningOnly_Title" xml:space="preserve">
+    <value>Evening only</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBTemplate_EveningOnly_Desc" xml:space="preserve">
+    <value>Weekday evening Unsocial hour (editable)</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBTemplate_EveningOnly_Name" xml:space="preserve">
+    <value>Weekday evening</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBTemplate_NightOnly_Title" xml:space="preserve">
+    <value>Night only</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBTemplate_NightOnly_Desc" xml:space="preserve">
+    <value>Weekday Night Unsocial hour (editable)</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBTemplate_WeekendOnly_Title" xml:space="preserve">
+    <value>Weekend only</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBTemplate_WeekendOnly_Desc" xml:space="preserve">
+    <value>Simple weekend Unsocial hour (editable)</value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="OBRule_WeekendOB_Name" xml:space="preserve">
+    <value>Weekend </value>
+    <comment>TemplateFactory.cs</comment>
+  </data>
+  <data name="DayGroup_BigHolidays" xml:space="preserve">
+    <value>Big holidays</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="DayGroup_Holidays" xml:space="preserve">
+    <value>Holidays</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="Day_Mon_Short" xml:space="preserve">
+    <value>Mon</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="DayGroup_NoneSelected" xml:space="preserve">
+    <value>No days selected</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="Day_Tue_Short" xml:space="preserve">
+    <value>Tue</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="Day_Wed_Short" xml:space="preserve">
+    <value>Wed</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="Day_Thu_Short" xml:space="preserve">
+    <value>Thu</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="Day_Fri_Short" xml:space="preserve">
+    <value>Fri</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="Day_Sat_Short" xml:space="preserve">
+    <value>Sat</value>
+    <comment>OBRateTemplate.cs</comment>
+  </data>
+  <data name="Day_Sun_Short" xml:space="preserve">
+    <value>Sun</value>
+    <comment>OBRateTemplate.cs</comment>
   </data>
 </root>

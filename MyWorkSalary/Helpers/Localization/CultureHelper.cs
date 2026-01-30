@@ -15,8 +15,8 @@ namespace MyWorkSalary.Helpers.Localization
                 "sv" => "sv-SE", // Svenska (Sverige)
                 "en" => "en-IE", // Engelska (Irland, använder EUR)
                 "ru" => "ru-RU", // Ryska (Ryssland)
-                //"no" => "nb-NO", // Norska (Bokmål)
-                //"da" => "da-DK", // Danska (Danmark)
+                "no" => "nb-NO", // Norska (Bokmål)
+                "da" => "da-DK", // Danska (Danmark)
                 //"pl" => "pl-PL", // Polska
                 _ => languageCode // fallback, t.ex. "fr-FR" om redan full
             };

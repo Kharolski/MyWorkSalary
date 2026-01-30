@@ -280,6 +280,45 @@
                                        Dark={StaticResource TextHintDark}}" />
     </Style>
 
+    <!-- Help Label Style -->
+    <Style TargetType="Label" x:Key="HelpLabel">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Light={StaticResource TextSecondary}, 
+                                   Dark={StaticResource TextSecondaryDark}}" />
+    </Style>
+
+    <!-- Tom data Label Style -->
+    <Style TargetType="Label" x:Key="NoItemsLabel">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextEmptyList}, 
+                               Dark={StaticResource TextEmptyListDark}}" />
+    </Style>
+
+    <!-- OB list Label Style -->
+    <Style TargetType="Label" x:Key="OBHeaderLabel">
+        <Setter Property="TextColor" 
+                Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                       Dark={StaticResource White}}" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="OBInfoLabel">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" 
+                Value="{AppThemeBinding Light={StaticResource TextSecondary}, 
+                                       Dark={StaticResource TextSecondaryDark}}" />
+    </Style>
+
+    <!-- OB Template Labels Style -->
+    <Style TargetType="Label" x:Key="OBTemplateTitleListLabel">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontFamily" Value="OpenSansBold" />
+        <Setter Property="TextColor" 
+                Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                        Dark={StaticResource White}}" />
+    </Style>
+
     <Style TargetType="Label" x:Key="ActiveJob">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="TextColor" 
@@ -289,8 +328,8 @@
 
     <Style TargetType="Label" x:Key="QuestionLabel">
         <Setter Property="TextColor" 
-        Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                               Dark={StaticResource TextPrimaryDark}}" />
+                Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                       Dark={StaticResource TextPrimaryDark}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="HorizontalOptions" Value="Center" />

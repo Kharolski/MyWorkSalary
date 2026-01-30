@@ -13,8 +13,7 @@ namespace MyWorkSalary.Helpers.Localization
             { "EUR", "en-IE" },
             { "USD", "en-US" },
             { "NOK", "nb-NO" },
-            { "DKK", "da-DK" },
-            { "PLN", "pl-PL" }
+            { "DKK", "da-DK" }
         };
 
         #endregion
@@ -57,7 +56,6 @@ namespace MyWorkSalary.Helpers.Localization
                 "USD" => "US Dollar (USD)",
                 "NOK" => "Norska kronor (NOK)",
                 "DKK" => "Danska kronor (DKK)",
-                "PLN" => "Polska zloty (PLN)",
                 _ => currencyCode
             };
         }

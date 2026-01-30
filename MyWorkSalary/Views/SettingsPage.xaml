@@ -131,8 +131,7 @@
                     <!-- Hjälptext (visa alltid när det finns jobb) -->
                     <Label Text="{resx:Translate SwipeDeleteJobHint}"
                            FontSize="12"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                       Dark={StaticResource TextSecondaryDark}}"
+                           Style="{StaticResource TipsLabel}"
                            HorizontalOptions="Center"
                            IsVisible="{Binding HasActiveJob}"
                            Margin="0,5,0,0" />
@@ -147,16 +146,41 @@
                            Style="{StaticResource SectionTitleLabel}" />
 
                     <!-- Hjälptext / Tips -->
-                    <Label Text="{resx:Translate OBTips}"
-                           Style="{StaticResource TipsLabel}"
-                           LineBreakMode="WordWrap"
-                           FontSize="12" />
+                    <Label Text="{resx:Translate OBTips}" Style="{StaticResource TipsLabel}" LineBreakMode="WordWrap" FontSize="12" />
+
+                    <!-- Tomt-state när inga OB-regler finns -->
+                    <StackLayout IsVisible="{Binding HasNoOBRates}"
+                                 Spacing="8"
+                                 Margin="10,0"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+
+                        <Label Text="⏱️" FontSize="40" HorizontalOptions="Center" />
+                        <Label Text="{resx:Translate NoOBRulesTitle}"
+                               FontAttributes="Bold"
+                               FontSize="16"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="{resx:Translate NoOBRulesText}"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               Style="{StaticResource NoItemsLabel}" />
+                    </StackLayout>
 
                     <!-- Visa befintliga OB-regler med SwipeView -->
-                    <CollectionView ItemsSource="{Binding OBRates}">
+                    <CollectionView ItemsSource="{Binding OBRates}" IsVisible="{Binding HasOBRates}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <SwipeView>
+                                    <!-- Swipe från vänster för att ändra -->
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="{resx:Translate Edit}"
+                                                       BackgroundColor="{StaticResource EditButtonColor}"
+                                                       Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.EditOBRateCommand}"
+                                                       CommandParameter="{Binding .}" />
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
                                     <!-- Swipe från höger för att radera -->
                                     <SwipeView.RightItems>
                                         <SwipeItems>
@@ -174,19 +198,16 @@
                                                 <Label Text="{Binding Name}"
                                                        FontAttributes="Bold"
                                                        FontSize="14"
-                                                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                                                  Dark={StaticResource White}}" />
+                                                       Style="{StaticResource OBHeaderLabel}" />
                                                 <Label Text="{Binding ., Converter={StaticResource OBTimeRangeConverter}}"
                                                        FontSize="12"
-                                                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
-                                                                                  Dark={StaticResource TextSecondaryDark}}" />
+                                                       Style="{StaticResource OBInfoLabel}" />
                                             </StackLayout>
                                             <Label Grid.Column="1"
                                                    Text="{Binding RateDisplayText}"
                                                    FontAttributes="Bold"
                                                    VerticalOptions="Center"
-                                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                                              Dark={StaticResource White}}" />
+                                                   Style="{StaticResource OBHeaderLabel}" />
                                         </Grid>
                                     </Frame>
                                 </SwipeView>
@@ -194,19 +215,39 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <!-- Lägg till OB-regel knapp -->
-                    <Button Text="{resx:Translate AddOBRule}"
-                            Command="{Binding AddOBRateCommand}"
-                            BackgroundColor="{StaticResource ButtonPrimary}"
-                            TextColor="{StaticResource White}"
-                            CornerRadius="8"
-                            Padding="0,12" />
+                    <!-- Knappar för OB -->
+                    <VerticalStackLayout Spacing="8" Margin="0,10,0,0">
+
+                        <!-- Rad 1: Lägg till regel + Mall -->
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <Button Grid.Column="0"
+                                    Text="{resx:Translate AddOBRule}"
+                                    Command="{Binding AddOBRateCommand}"
+                                    BackgroundColor="{StaticResource ButtonPrimary}"
+                                    TextColor="{StaticResource White}"
+                                    CornerRadius="8"
+                                    Padding="0,12" />
+
+                            <Button Grid.Column="1"
+                                    Text="{resx:Translate AddOBTemplate}"
+                                    Command="{Binding AddOBTemplateCommand}"
+                                    Style="{StaticResource EditButton}" />
+                        </Grid>
+
+                        <!-- Rad 2: Byt/ersätt -->
+                        <Button Text="{resx:Translate ReplaceWithTemplate}"
+                                Command="{Binding ReplaceWithTemplateCommand}"
+                                BackgroundColor="{StaticResource ButtonCancel}"
+                                TextColor="{StaticResource White}"
+                                CornerRadius="8"
+                                Padding="0,12"
+                                IsVisible="{Binding HasOBRates}" />
+                    </VerticalStackLayout>
 
                     <!--  HJÄLPTEXT visas när det FINNS OB-regler -->
                     <Label Text="{resx:Translate SwipeDeleteOBHint}"
                            FontSize="12"
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, 
-                                                      Dark={StaticResource TextSecondaryDark}}"
+                           Style="{StaticResource TipsLabel}"
                            HorizontalOptions="Center"
                            IsVisible="{Binding HasOBRates}" />
                 </VerticalStackLayout>

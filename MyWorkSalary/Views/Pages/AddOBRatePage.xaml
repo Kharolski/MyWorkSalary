@@ -87,7 +87,7 @@
                            Style="{StaticResource FieldTitleLabel}" />
 
                     <Grid ColumnDefinitions="*,*" 
-                          RowDefinitions="Auto,Auto,Auto,Auto" 
+                          RowDefinitions="Auto,Auto,Auto,Auto, Auto" 
                           ColumnSpacing="10" 
                           RowSpacing="8">
 
@@ -148,11 +148,19 @@
                         </StackLayout>
 
                         <!-- Helgdagar -->
-                        <StackLayout Grid.Row="3" Grid.Column="1" 
+                        <StackLayout Grid.Row="4" Grid.Column="0" 
                                      Orientation="Horizontal" Spacing="8">
                             <CheckBox IsChecked="{Binding Holidays}"
                                      Style="{StaticResource ThemedCheckBox}" />
                             <Label Text="{x:Static resx:Resources.OBRule_Holidays}" Style="{StaticResource DayLabel}" />
+                        </StackLayout>
+
+                        <!-- Storhelg -->
+                        <StackLayout Grid.Row="4" Grid.Column="1"
+                                    Orientation="Horizontal" Spacing="8">
+                            <CheckBox IsChecked="{Binding BigHolidays}"
+                                    Style="{StaticResource ThemedCheckBox}" />
+                            <Label Text="{x:Static resx:Resources.OBRule_BigHolidays}" Style="{StaticResource DayLabel}" />
                         </StackLayout>
                     </Grid>
 

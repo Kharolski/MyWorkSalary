@@ -1,24 +1,27 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using MyWorkSalary.Models;
+﻿using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
-    public class AddOBRateViewModel : INotifyPropertyChanged
+    public class AddOBRateViewModel : BaseViewModel
     {
         #region Fields
         private readonly DatabaseService _databaseService;
         private readonly JobProfile _activeJob;
         private readonly IOBEventService _obEventService;
+        private int _editingOBRateId = 0;
 
-        // Properties för formuläret
+        // för formuläret
         private string _name = string.Empty;
         private TimeSpan _startTime = new TimeSpan(18, 0, 0); // Default 18:00
         private TimeSpan _endTime = new TimeSpan(22, 0, 0);   // Default 22:00
@@ -34,6 +37,7 @@ namespace MyWorkSalary.ViewModels
         private bool _saturday;
         private bool _sunday;
         private bool _holidays;
+        private bool _bigHolidays;
         #endregion
 
         #region Constructor
@@ -60,6 +64,62 @@ namespace MyWorkSalary.ViewModels
                 Resources.Resx.Resources.Category_Holiday
             };
         }
+        #endregion
+
+        #region Edit/Create Initialization
+
+        public void PrepareForCreate()
+        {
+            _editingOBRateId = 0;
+
+            // återställ feltexter
+            NameError = RateError = CategoryError = DaysError = string.Empty;
+
+        }
+
+        public void LoadForEdit(int obRateId)
+        {
+            var ob = _databaseService.OBRates.GetOBRate(obRateId);
+            if (ob == null)
+                return;
+
+            _editingOBRateId = ob.Id;
+
+            Name = ob.Name;
+            StartTime = ob.StartTime;
+            EndTime = ob.EndTime;
+            RatePerHour = ob.RatePerHour.ToString();
+
+            // Category -> SelectedCategory text
+            SelectedCategory = CategoryToText(ob.Category);
+
+            Monday = ob.Monday;
+            Tuesday = ob.Tuesday;
+            Wednesday = ob.Wednesday;
+            Thursday = ob.Thursday;
+            Friday = ob.Friday;
+            Saturday = ob.Saturday;
+            Sunday = ob.Sunday;
+            Holidays = ob.Holidays;
+            BigHolidays = ob.BigHolidays;
+
+            // Nollställ fel
+            NameError = RateError = CategoryError = DaysError = string.Empty;
+        }
+
+        private string CategoryToText(OBCategory category)
+        {
+            return category switch
+            {
+                OBCategory.Evening => Resources.Resx.Resources.Category_Evening,
+                OBCategory.Night => Resources.Resx.Resources.Category_Night,
+                OBCategory.Weekend => Resources.Resx.Resources.Category_Weekend,
+                OBCategory.WeekendExtra => Resources.Resx.Resources.Category_WeekendExtra,
+                OBCategory.Holiday => Resources.Resx.Resources.Category_Holiday,
+                _ => Resources.Resx.Resources.Category_Placeholder
+            };
+        }
+
         #endregion
 
         #region Properties
@@ -92,9 +152,11 @@ namespace MyWorkSalary.ViewModels
             get => _ratePerHour;
             set
             {
-                if (SetProperty(ref _ratePerHour, value))
+                var normalized = NormalizeDecimalInput(value);
+
+                if (SetProperty(ref _ratePerHour, normalized))
                 {
-                    ValidateNotEmpty(value, msg => RateError = msg, Resources.Resx.Resources.Validation_OBRateRequired);
+                    ValidateNotEmpty(normalized, msg => RateError = msg, Resources.Resx.Resources.Validation_OBRateRequired);
                 }
             }
         }
@@ -157,7 +219,6 @@ namespace MyWorkSalary.ViewModels
                     ValidateDays();
             }
         }
-
         public bool Tuesday
         {
             get => _tuesday;
@@ -167,7 +228,6 @@ namespace MyWorkSalary.ViewModels
                     ValidateDays();
             }
         }
-
         public bool Wednesday
         {
             get => _wednesday;
@@ -177,7 +237,6 @@ namespace MyWorkSalary.ViewModels
                     ValidateDays();
             }
         }
-
         public bool Thursday
         {
             get => _thursday;
@@ -187,7 +246,6 @@ namespace MyWorkSalary.ViewModels
                     ValidateDays();
             }
         }
-
         public bool Friday
         {
             get => _friday;
@@ -197,7 +255,6 @@ namespace MyWorkSalary.ViewModels
                     ValidateDays();
             }
         }
-
         public bool Saturday
         {
             get => _saturday;
@@ -207,7 +264,6 @@ namespace MyWorkSalary.ViewModels
                     ValidateDays();
             }
         }
-
         public bool Sunday
         {
             get => _sunday;
@@ -224,6 +280,15 @@ namespace MyWorkSalary.ViewModels
             set
             {
                 if (SetProperty(ref _holidays, value))
+                    ValidateDays();
+            }
+        }
+        public bool BigHolidays
+        {
+            get => _bigHolidays;
+            set
+            {
+                if (SetProperty(ref _bigHolidays, value))
                     ValidateDays();
             }
         }
@@ -244,7 +309,7 @@ namespace MyWorkSalary.ViewModels
 
             try
             {
-                if (!decimal.TryParse(RatePerHour, out decimal rate))
+                if (!TryParseRate(RatePerHour, out decimal rate))
                 {
                     await Shell.Current.DisplayAlert(
                         Resources.Resx.Resources.Save_Error_Title,
@@ -253,14 +318,18 @@ namespace MyWorkSalary.ViewModels
                     return;
                 }
 
+                var category = ParseCategory(SelectedCategory);
                 var obRate = new OBRate
                 {
+                    Id = _editingOBRateId,
                     JobProfileId = _activeJob.Id,
                     Name = Name,
                     StartTime = StartTime,
                     EndTime = EndTime,
                     RatePerHour = rate,
-                    Category = ParseCategory(SelectedCategory),
+                    Category = category,
+
+                    Priority = GetDefaultPriority(category, BigHolidays),
                     Monday = Monday,
                     Tuesday = Tuesday,
                     Wednesday = Wednesday,
@@ -269,9 +338,14 @@ namespace MyWorkSalary.ViewModels
                     Saturday = Saturday,
                     Sunday = Sunday,
                     Holidays = Holidays,
-                    CreatedDate = DateTime.Now,
+                    BigHolidays = BigHolidays,
+
                     IsActive = true
                 };
+
+                // CreatedDate: bara om ny post 
+                if (_editingOBRateId == 0)
+                    obRate.CreatedDate = DateTime.Now;
 
                 _databaseService.OBRates.SaveOBRate(obRate);
 
@@ -352,7 +426,7 @@ namespace MyWorkSalary.ViewModels
             }
 
             // Minst en dag vald
-            if (!Monday && !Tuesday && !Wednesday && !Thursday && !Friday && !Saturday && !Sunday && !Holidays)
+            if (!Monday && !Tuesday && !Wednesday && !Thursday && !Friday && !Saturday && !Sunday && !Holidays && !BigHolidays)
             {
                 DaysError = Resources.Resx.Resources.Validation_OBDaysRequired;
                 isValid = false;
@@ -377,7 +451,7 @@ namespace MyWorkSalary.ViewModels
 
         private void ValidateDays()
         {
-            if (!Monday && !Tuesday && !Wednesday && !Thursday && !Friday && !Saturday && !Sunday && !Holidays)
+            if (!Monday && !Tuesday && !Wednesday && !Thursday && !Friday && !Saturday && !Sunday && !Holidays && !BigHolidays)
                 DaysError = Resources.Resx.Resources.Validation_OBDaysRequired;
             else
                 DaysError = string.Empty;
@@ -395,24 +469,61 @@ namespace MyWorkSalary.ViewModels
                 _ => OBCategory.Evening // default fallback (men borde aldrig hända)
             };
         }
-        #endregion
 
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private int GetDefaultPriority(OBCategory category, bool bigHoliday)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (bigHoliday)
+                return 60;
+
+            return category switch
+            {
+                OBCategory.Evening => 10,
+                OBCategory.Night => 20,
+                OBCategory.Weekend => 30,
+                OBCategory.WeekendExtra => 40,
+                OBCategory.Holiday => 50,
+                _ => 0
+            };
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = "")
+        private bool TryParseRate(string input, out decimal rate)
         {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
+            return decimal.TryParse(input, NumberStyles.Number, CultureInfo.CurrentCulture, out rate);
+        }
 
-            backingStore = value;
-            OnPropertyChanged(propertyName);
-            return true;
+        private string NormalizeDecimalInput(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            // tillåt bara siffror + en decimal-separator
+            var decSep = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator; // "," eller "."
+            var altSep = decSep == "," ? "." : ",";
+
+            input = input.Trim();
+
+            // byt alternativ separator till aktuell
+            input = input.Replace(altSep, decSep);
+
+            // filtrera bort allt annat än siffror och decimal-separator
+            var sb = new StringBuilder();
+            bool hasSep = false;
+
+            foreach (var ch in input)
+            {
+                if (char.IsDigit(ch))
+                {
+                    sb.Append(ch);
+                }
+                else if (!hasSep && ch.ToString() == decSep)
+                {
+                    sb.Append(decSep);
+                    hasSep = true;
+                }
+                // ignorera övriga tecken
+            }
+
+            return sb.ToString();
         }
         #endregion
     }

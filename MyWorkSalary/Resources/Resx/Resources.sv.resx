@@ -211,7 +211,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>t.ex. Ljungby Kommun</value>
   </data>
   <data name="AddOBRule" xml:space="preserve">
-    <value>➕ Lägg till OB-regel</value>
+    <value>➕ Lägg till OB</value>
   </data>
   <data name="AddShift" xml:space="preserve">
     <value>➕ Lägg till pass</value>
@@ -1154,7 +1154,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>💡 Svep åt vänster för att radera ett jobb</value>
   </data>
   <data name="SwipeDeleteOBHint" xml:space="preserve">
-    <value>💡 Svep åt vänster för att radera en OB-regel</value>
+    <value>💡 Svep åt höger för att redigera, svep åt vänster för att radera en regel</value>
   </data>
   <data name="TaxRate_Label" xml:space="preserve">
     <value>Skattesats (%)</value>
@@ -1292,7 +1292,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Ange namn på OB-regeln</value>
   </data>
   <data name="Validation_OBRateRequired" xml:space="preserve">
-    <value>Ange giltig OB-lön</value>
+    <value>Ange ett giltigt timpris</value>
   </data>
   <data name="Validation_VacationDays" xml:space="preserve">
     <value>Ange giltiga semesterdagar</value>
@@ -1981,5 +1981,137 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="ShiftTimesHint" xml:space="preserve">
     <value>💡 Dessa tider bör normalt stämma överens med dina OB-regler.</value>
+  </data>
+  <data name="OBTemplates_Title" xml:space="preserve">
+    <value>OB Mallar</value>
+  </data>
+  <data name="AddOBTemplate" xml:space="preserve">
+    <value>➕ Lägg till mall</value>
+  </data>
+  <data name="ReplaceWithTemplate" xml:space="preserve">
+    <value>Byt mall</value>
+  </data>
+  <data name="NoOBRulesTitle" xml:space="preserve">
+    <value>Inga OB regler ännu</value>
+  </data>
+  <data name="NoOBRulesText" xml:space="preserve">
+    <value>Lägg till en OB-regel manuellt eller använd en mall för att komma igång.</value>
+  </data>
+  <data name="OBRule_BigHolidays" xml:space="preserve">
+    <value>Stor Helg</value>
+  </data>
+  <data name="OBTemplates_InfoTitle" xml:space="preserve">
+    <value>Välj en mall</value>
+  </data>
+  <data name="OBTemplates_InfoText" xml:space="preserve">
+    <value>Mallarna är exempel. Anpassa tider och belopp efter ditt avtal.</value>
+  </data>
+  <data name="OBTemplates_ChooseTemplate" xml:space="preserve">
+    <value>Mallar</value>
+  </data>
+  <data name="OBTemplates_Preview" xml:space="preserve">
+    <value>Förhandsvisning</value>
+  </data>
+  <data name="OBTemplates_SelectToPreview" xml:space="preserve">
+    <value>Välj en mall för att se reglerna.</value>
+  </data>
+  <data name="OBTemplates_AddButton" xml:space="preserve">
+    <value>Lägg till dessa regler</value>
+  </data>
+  <data name="OBTemplates_ReplaceButton" xml:space="preserve">
+    <value>Ersätt alla regler</value>
+  </data>
+  <data name="OBTemplates_ReplaceConfirmTitle" xml:space="preserve">
+    <value>Ersätt OB-regler?</value>
+  </data>
+  <data name="OBTemplates_ReplaceConfirmMessage" xml:space="preserve">
+    <value>Detta tar bort alla befintliga OB-regler för jobbet och ersätter dem med den valda mallen.</value>
+  </data>
+  <data name="Common_Replace" xml:space="preserve">
+    <value>Ersätt</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>✏️ Ändra</value>
+  </data>
+  <data name="OBTemplates_AmountsNote" xml:space="preserve">
+    <value>📌 Beloppen i mallarna är exempel. När du har lagt till en mall kan du ändra beloppen i Inställningar → OB-Inställningar.</value>
+  </data>
+  <data name="OBTemplate_Standard_Title" xml:space="preserve">
+    <value>Standard kommun (vård/omsorg)</value>
+  </data>
+  <data name="OBTemplate_Standard_Desc" xml:space="preserve">
+    <value>Vanliga OB-regler för kommunal vård/omsorg (ändringsbara)</value>
+  </data>
+  <data name="OBRule_WeekdayEvening_Name" xml:space="preserve">
+    <value>Vardag kväll</value>
+  </data>
+  <data name="OBRule_WeekdayNight_Name" xml:space="preserve">
+    <value>Vardag natt</value>
+  </data>
+  <data name="OBRule_Weekend_Name" xml:space="preserve">
+    <value>Veckoslut (lördag)</value>
+  </data>
+  <data name="OBRule_WeekendExtra_Name" xml:space="preserve">
+    <value>Veckoslut extra (söndag)</value>
+  </data>
+  <data name="OBRule_BigHoliday_Name" xml:space="preserve">
+    <value>Storhelg</value>
+  </data>
+  <data name="OBTemplate_EveningOnly_Title" xml:space="preserve">
+    <value>Endast kväll</value>
+  </data>
+  <data name="OBTemplate_EveningOnly_Desc" xml:space="preserve">
+    <value>Veckodag kväll OB (redigerbar)</value>
+  </data>
+  <data name="OBTemplate_EveningOnly_Name" xml:space="preserve">
+    <value>Vardags kväll</value>
+  </data>
+  <data name="OBTemplate_NightOnly_Title" xml:space="preserve">
+    <value>Endast Natt</value>
+  </data>
+  <data name="OBTemplate_NightOnly_Desc" xml:space="preserve">
+    <value>OB för vardags Natt (ändringsbar)</value>
+  </data>
+  <data name="OBTemplate_WeekendOnly_Title" xml:space="preserve">
+    <value>Endast Helg</value>
+  </data>
+  <data name="OBTemplate_WeekendOnly_Desc" xml:space="preserve">
+    <value>Enkel Helg-OB (ändringsbar)</value>
+  </data>
+  <data name="OBRule_WeekendOB_Name" xml:space="preserve">
+    <value>Helg-OB</value>
+  </data>
+  <data name="DayGroup_BigHolidays" xml:space="preserve">
+    <value>Storhelg</value>
+  </data>
+  <data name="DayGroup_Holidays" xml:space="preserve">
+    <value>Helgdagar</value>
+  </data>
+  <data name="Day_Mon_Short" xml:space="preserve">
+    <value>Mån</value>
+  </data>
+  <data name="DayGroup_NoneSelected" xml:space="preserve">
+    <value>Inga dagar valda</value>
+  </data>
+  <data name="Day_Tue_Short" xml:space="preserve">
+    <value>Tis</value>
+  </data>
+  <data name="Day_Wed_Short" xml:space="preserve">
+    <value>Ons</value>
+  </data>
+  <data name="Day_Thu_Short" xml:space="preserve">
+    <value>Tor</value>
+  </data>
+  <data name="Day_Fri_Short" xml:space="preserve">
+    <value>Fre</value>
+  </data>
+  <data name="Day_Sat_Short" xml:space="preserve">
+    <value>Lör</value>
+  </data>
+  <data name="Day_Sun_Short" xml:space="preserve">
+    <value>Sön</value>
   </data>
 </root>

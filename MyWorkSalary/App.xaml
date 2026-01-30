@@ -40,6 +40,10 @@
             <!-- Settings Converters -->
             <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
 
+            <!-- OB Template Converters -->
+            <converters:SelectedTemplateBackgroundConverter x:Key="SelectedTemplateBackgroundConverter" />
+            <converters:SelectedTemplateTextColorConverter x:Key="SelectedTemplateTextColorConverter" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

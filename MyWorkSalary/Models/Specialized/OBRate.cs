@@ -21,6 +21,7 @@ namespace MyWorkSalary.Models.Specialized
         public TimeSpan StartTime { get; set; }             // 22:00
         public TimeSpan EndTime { get; set; }               // 06:00
         public decimal RatePerHour { get; set; }            // 56.70
+        public int Priority { get; set; } = 0;
         public OBCategory Category { get; set; }
 
         public string CurrencyCode { get; set; } = "SEK";
@@ -34,6 +35,7 @@ namespace MyWorkSalary.Models.Specialized
         public bool Saturday { get; set; }
         public bool Sunday { get; set; }
         public bool Holidays { get; set; }                  // Röda dagar
+        public bool BigHolidays { get; set; } // Storhelg (jul/nyår/midsommar etc)
 
         // Metadata
         public DateTime CreatedDate { get; set; } = DateTime.Now;

@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
-    public class SalaryPageViewModel : INotifyPropertyChanged
+    public class SalaryPageViewModel : BaseViewModel
     {
         #region Private Fields
         private readonly IDashboardService _dashboardService;
@@ -134,8 +134,8 @@ namespace MyWorkSalary.ViewModels
         public string CurrentMonthBadgeText => IsCurrentMonth ? "NU" : "";
         public bool ShowCurrentMonthBadge => IsCurrentMonth;
 
-        public string MonthlySalaryText => CurrentStats == null ? "–" : $"{CurrentStats.NetSalary:N0} kr";
-        public string GrossSalaryText => CurrentStats == null ? "–" : $"{CurrentStats.GrossSalary:N0} kr";
+        public string MonthlySalaryText => CurrentStats == null ? "–" : FormatMoney(CurrentStats.NetSalary);
+        public string GrossSalaryText => CurrentStats == null ? "–" : FormatMoney(CurrentStats.GrossSalary);
         public string CurrentMonthYearText => SelectedMonth.ToString("MMMM yyyy", new CultureInfo("sv-SE"));
         public string HoursSummaryText
         {
@@ -191,18 +191,18 @@ namespace MyWorkSalary.ViewModels
                 if (ActiveJob.EmploymentType == EmploymentType.Permanent)
                 {
                     return ActiveJob.MonthlySalary.HasValue
-                        ? $"{ActiveJob.MonthlySalary.Value:N0} kr"
+                        ? FormatMoney(ActiveJob.MonthlySalary.Value)
                         : "Ej angiven";
                 }
 
                 // Timanställd
                 return ActiveJob.HourlyRate.HasValue
-                    ? $"{ActiveJob.HourlyRate.Value:N0} kr/tim"
+                    ? FormatRate(ActiveJob.HourlyRate.Value)
                     : "Ej angiven";
             }
         }
         public bool ShowVacationPay => ActiveJob?.EmploymentType != EmploymentType.Permanent;
-        public string VacationPayText => CurrentStats == null ? "–" : $"{CurrentStats.VacationPay:N0} kr";
+        public string VacationPayText => CurrentStats == null ? "–" : FormatMoney(CurrentStats.VacationPay);
 
         public string TotalHoursText
         {
@@ -233,7 +233,7 @@ namespace MyWorkSalary.ViewModels
                 if (CurrentStats.TaxRate <= 0)
                     return "–";
 
-                return $"-{CurrentStats.TaxAmount:N0} kr";
+                return $"-{CurrencyHelper.FormatCurrency(CurrentStats.TaxAmount, JobCurrency)}";
             }
         }
 
@@ -272,8 +272,8 @@ namespace MyWorkSalary.ViewModels
                 }).ToList() ?? new List<ObDetails>();
 
         public string ObPayText => CurrentStats == null
-            ? "0 kr"
-            : $"{CurrentStats.ObPay:N0} kr";
+            ? FormatMoney(0m)
+            : FormatMoney(CurrentStats.ObPay);
 
         public string FlexBalanceText
         {
@@ -327,6 +327,23 @@ namespace MyWorkSalary.ViewModels
         }
 
         public string BalanceChevronIcon => IsBalanceExpanded ? "▼" : "▶";
+        #endregion
+
+        #region Formatting
+
+        private string JobCurrency => ActiveJob?.CurrencyCode ?? "SEK";
+
+        private string FormatMoney(decimal amount)
+        {
+            return CurrencyHelper.FormatCurrency(amount, JobCurrency);
+        }
+
+        private string FormatRate(decimal amountPerHour)
+        {
+            // Ex: "150,00 kr/tim" eller "$20.00 /h" (du kan justera suffix senare)
+            return $"{CurrencyHelper.FormatCurrency(amountPerHour, JobCurrency)}/tim";
+        }
+
         #endregion
 
         #region Commands
@@ -421,15 +438,6 @@ namespace MyWorkSalary.ViewModels
             }
 
             CurrentStats = _salaryHandler.CalculateMonthlyStats(ActiveJob.Id, SelectedMonth);
-        }
-        #endregion
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

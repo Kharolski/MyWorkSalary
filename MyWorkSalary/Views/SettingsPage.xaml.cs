@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.ViewModels;
+﻿using MyWorkSalary.Helpers;
+using MyWorkSalary.ViewModels;
 
 namespace MyWorkSalary.Views;
 
@@ -21,5 +22,8 @@ public partial class SettingsPage : ContentPage
         {
             viewModel.RefreshActiveJob();
         }
+
+        // Fixar ett känt MAUI/Shell-problem där sidan som navigeras tillbaka till
+        NavigationHelper.UseNoAnimationBackButton(this);
     }
 }
