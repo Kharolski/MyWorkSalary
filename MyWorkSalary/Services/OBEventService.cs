@@ -25,7 +25,7 @@ namespace MyWorkSalary.Services
             return RebuildForWorkShift(shift, rates);
         }
 
-        // Overload 2: V2 - använd listan som skickas in
+        // använd listan som skickas in
         public ObSummary RebuildForWorkShift(WorkShift workShift, IReadOnlyList<OBRate> obRates)
         {
             var summary = new ObSummary();
@@ -52,7 +52,7 @@ namespace MyWorkSalary.Services
             if (rates.Count == 0)
                 return summary;
 
-            // V2: minut-scan + gruppera sammanhängande segment med samma (kategori + rate + tidsspann)
+            // minut-scan + gruppera sammanhängande segment med samma (kategori + rate + tidsspann)
             OBRate current = null;
             DateTime segmentStart = shiftStart;
 
@@ -124,49 +124,6 @@ namespace MyWorkSalary.Services
             return summary;
         }
 
-        private OBRate FindBestMatchingRate(DateTime dt, WorkShift shift, List<OBRate> rates)
-        {
-            var time = dt.TimeOfDay;
-            var day = dt.DayOfWeek;
-
-            // matcha regler
-            var matches = rates.Where(r =>
-                IsDayMatch(r, day, shift.IsHoliday) &&
-                IsTimeInRange(r.StartTime, r.EndTime, time));
-
-            // V2: om flera matchar samma minut -> högsta ersättning vinner
-            return matches
-                .OrderByDescending(r => r.RatePerHour)
-                .FirstOrDefault();
-        }
-
-        private static bool IsDayMatch(OBRate rate, DayOfWeek dayOfWeek, bool isHoliday)
-        {
-            if (isHoliday && rate.Holidays)
-                return true;
-
-            return dayOfWeek switch
-            {
-                DayOfWeek.Monday => rate.Monday,
-                DayOfWeek.Tuesday => rate.Tuesday,
-                DayOfWeek.Wednesday => rate.Wednesday,
-                DayOfWeek.Thursday => rate.Thursday,
-                DayOfWeek.Friday => rate.Friday,
-                DayOfWeek.Saturday => rate.Saturday,
-                DayOfWeek.Sunday => rate.Sunday,
-                _ => false
-            };
-        }
-
-        private static bool IsTimeInRange(TimeSpan start, TimeSpan end, TimeSpan time)
-        {
-            if (start <= end)
-                return time >= start && time < end;
-
-            // över midnatt (t.ex 22:00-06:00)
-            return time >= start || time < end;
-        }
-
         private void SaveSegmentSplitByMidnight(DateTime from, DateTime to, OBRate rateRule, WorkShift shift, ObSummary summary)
         {
             if (to <= from)
@@ -204,6 +161,21 @@ namespace MyWorkSalary.Services
                 ratePerHour: rateRule.RatePerHour,
                 notes: null
             );
+
+            // Snapshot av regel-id + prioritet för spårbarhet i lönerevision.
+            // Gör det enklare att felsöka “varför blev OB så här?” även efter regeländringar.
+            ev.OBRateId = rateRule.Id;
+            ev.Priority = rateRule.Priority;
+            
+            // Day type
+            var date = from.Date;
+            var isWeekend = date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
+
+            ev.DayType =
+                shift.IsBigHoliday ? OBDayType.BigHoliday :
+                shift.IsHoliday ? OBDayType.Holiday :
+                isWeekend ? OBDayType.Weekend :
+                OBDayType.Weekday;
 
             // sätt exakt (så totalsumma blir stabil)
             ev.Hours = Math.Round(hours, 2);
@@ -271,5 +243,59 @@ namespace MyWorkSalary.Services
 
             return Task.CompletedTask;
         }
+
+        #region Matching (Priority + DayType)
+
+        private OBRate FindBestMatchingRate(DateTime dt, WorkShift shift, List<OBRate> rates)
+        {
+            var time = dt.TimeOfDay;
+            var day = dt.DayOfWeek;
+
+            var matches = rates.Where(r =>
+                IsDayMatch(r, day, shift.IsHoliday, shift.IsBigHoliday) &&
+                IsTimeInRange(r.StartTime, r.EndTime, time));
+
+            return matches
+                .OrderByDescending(r => r.Priority)
+                .ThenByDescending(r => r.RatePerHour)
+                .ThenByDescending(r => r.Id)
+                .FirstOrDefault();
+        }
+
+        private static bool IsDayMatch(OBRate rate, DayOfWeek dayOfWeek, bool isHoliday, bool isBigHoliday)
+        {
+            if (isBigHoliday && rate.BigHolidays)
+                return true;
+
+            if (isHoliday && rate.Holidays)
+                return true;
+
+            return dayOfWeek switch
+            {
+                DayOfWeek.Monday => rate.Monday,
+                DayOfWeek.Tuesday => rate.Tuesday,
+                DayOfWeek.Wednesday => rate.Wednesday,
+                DayOfWeek.Thursday => rate.Thursday,
+                DayOfWeek.Friday => rate.Friday,
+                DayOfWeek.Saturday => rate.Saturday,
+                DayOfWeek.Sunday => rate.Sunday,
+                _ => false
+            };
+        }
+
+        private static bool IsTimeInRange(TimeSpan start, TimeSpan end, TimeSpan time)
+        {
+            // SPECIAL: 00:00–00:00 (eller samma tid) = gäller hela dygnet
+            if (start == end)
+                return true;
+
+            if (start < end)
+                return time >= start && time < end;
+
+            // över midnatt (t.ex 22:00–06:00)
+            return time >= start || time < end;
+        }
+
+        #endregion
     }
 }

@@ -586,6 +586,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        internal static string Category_Day {
+            get {
+                return ResourceManager.GetString("Category_Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Evening.
         /// </summary>
         internal static string Category_Evening {
@@ -663,6 +672,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Common_Cancel {
             get {
                 return ResourceManager.GetString("Common_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NOW.
+        /// </summary>
+        internal static string Common_Current {
+            get {
+                return ResourceManager.GetString("Common_Current", resourceCulture);
             }
         }
         
@@ -1931,6 +1949,15 @@ namespace MyWorkSalary.Resources.Resx {
         /// <summary>
         ///   Looks up a localized string similar to h.
         /// </summary>
+        internal static string Hours_Abbreviation {
+            get {
+                return ResourceManager.GetString("Hours_Abbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to h.
+        /// </summary>
         internal static string HoursAbbreviation {
             get {
                 return ResourceManager.GetString("HoursAbbreviation", resourceCulture);
@@ -2442,6 +2469,60 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OB is not configured..
+        /// </summary>
+        internal static string OB_NotConfigured {
+            get {
+                return ResourceManager.GetString("OB_NotConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overtime for work in {0}.
+        /// </summary>
+        internal static string OB_PeriodHint {
+            get {
+                return ResourceManager.GetString("OB_PeriodHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount.
+        /// </summary>
+        internal static string OB_Table_Amount {
+            get {
+                return ResourceManager.GetString("OB_Table_Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string OB_Table_Date {
+            get {
+                return ResourceManager.GetString("OB_Table_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hours.
+        /// </summary>
+        internal static string OB_Table_Hours {
+            get {
+                return ResourceManager.GetString("OB_Table_Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No events to calculate. Showing estimate from current rules..
+        /// </summary>
+        internal static string OB_UsingFallback {
+            get {
+                return ResourceManager.GetString("OB_UsingFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Evening.
         /// </summary>
         internal static string OBCategory_Evening {
@@ -2465,6 +2546,42 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OBCategory_Weekend {
             get {
                 return ResourceManager.GetString("OBCategory_Weekend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Big holiday.
+        /// </summary>
+        internal static string OBDay_BigHoliday {
+            get {
+                return ResourceManager.GetString("OBDay_BigHoliday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holiday.
+        /// </summary>
+        internal static string OBDay_Holiday {
+            get {
+                return ResourceManager.GetString("OBDay_Holiday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekday.
+        /// </summary>
+        internal static string OBDay_Weekday {
+            get {
+                return ResourceManager.GetString("OBDay_Weekday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend.
+        /// </summary>
+        internal static string OBDay_Weekend {
+            get {
+                return ResourceManager.GetString("OBDay_Weekend", resourceCulture);
             }
         }
         
@@ -2937,6 +3054,33 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        internal static string OBTime_Day {
+            get {
+                return ResourceManager.GetString("OBTime_Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening.
+        /// </summary>
+        internal static string OBTime_Evening {
+            get {
+                return ResourceManager.GetString("OBTime_Evening", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Night.
+        /// </summary>
+        internal static string OBTime_Night {
+            get {
+                return ResourceManager.GetString("OBTime_Night", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 💡 Tip: If no rule exists for a specific time, no unsocial hours pay is applied, even if evening or night is active..
         /// </summary>
         internal static string OBTips {
@@ -3306,6 +3450,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Big holiday (special).
+        /// </summary>
+        internal static string RegularShift_BigHoliday {
+            get {
+                return ResourceManager.GetString("RegularShift_BigHoliday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ☕ Break (minutes).
         /// </summary>
         internal static string RegularShift_Break {
@@ -3360,6 +3513,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day type.
+        /// </summary>
+        internal static string RegularShift_DayType {
+            get {
+                return ResourceManager.GetString("RegularShift_DayType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💡 Mark this shift as a public holiday or big holiday if it applies..
+        /// </summary>
+        internal static string RegularShift_DayTypeHint {
+            get {
+                return ResourceManager.GetString("RegularShift_DayTypeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error saving shift: {0}.
         /// </summary>
         internal static string RegularShift_Error_Saving {
@@ -3383,6 +3554,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string RegularShift_From {
             get {
                 return ResourceManager.GetString("RegularShift_From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public holiday.
+        /// </summary>
+        internal static string RegularShift_Holiday {
+            get {
+                return ResourceManager.GetString("RegularShift_Holiday", resourceCulture);
             }
         }
         
@@ -3513,11 +3693,227 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 📅 Expected Hours.
+        /// </summary>
+        internal static string Salary_Balance_ExpectedHours {
+            get {
+                return ResourceManager.GetString("Salary_Balance_ExpectedHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🧭 On Call.
+        /// </summary>
+        internal static string Salary_Balance_OnCall {
+            get {
+                return ResourceManager.GetString("Salary_Balance_OnCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🤒 Sick Days.
+        /// </summary>
+        internal static string Salary_Balance_SickDays {
+            get {
+                return ResourceManager.GetString("Salary_Balance_SickDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🏦 Time Bank.
+        /// </summary>
+        internal static string Salary_Balance_TimeBank {
+            get {
+                return ResourceManager.GetString("Salary_Balance_TimeBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Off &amp; Balance.
+        /// </summary>
+        internal static string Salary_Balance_Title {
+            get {
+                return ResourceManager.GetString("Salary_Balance_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👶 Parental Leave.
+        /// </summary>
+        internal static string Salary_Balance_VAB {
+            get {
+                return ResourceManager.GetString("Salary_Balance_VAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🌴 Vacation.
+        /// </summary>
+        internal static string Salary_Balance_Vacation {
+            get {
+                return ResourceManager.GetString("Salary_Balance_Vacation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary: Not set.
+        /// </summary>
+        internal static string Salary_BaseSalary_NotSet {
+            get {
+                return ResourceManager.GetString("Salary_BaseSalary_NotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balanced schedule.
+        /// </summary>
+        internal static string Salary_Hours_Balanced {
+            get {
+                return ResourceManager.GetString("Salary_Hours_Balanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deficit: −{0:F1} h.
+        /// </summary>
+        internal static string Salary_Hours_Deficit {
+            get {
+                return ResourceManager.GetString("Salary_Hours_Deficit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Surplus: +{0:F1} h.
+        /// </summary>
+        internal static string Salary_Hours_Surplus {
+            get {
+                return ResourceManager.GetString("Salary_Hours_Surplus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No salary report yet — create a job first..
+        /// </summary>
+        internal static string Salary_NoReport_CreateJob {
+            get {
+                return ResourceManager.GetString("Salary_NoReport_CreateJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not set.
+        /// </summary>
+        internal static string Salary_NotSet {
+            get {
+                return ResourceManager.GetString("Salary_NotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overtime Details.
+        /// </summary>
+        internal static string Salary_OB_Title {
+            get {
+                return ResourceManager.GetString("Salary_OB_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Overtime.
+        /// </summary>
+        internal static string Salary_OB_Total {
+            get {
+                return ResourceManager.GetString("Salary_OB_Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly Salary Report.
+        /// </summary>
+        internal static string Salary_PageTitle {
+            get {
+                return ResourceManager.GetString("Salary_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 💰 Salary information.
         /// </summary>
         internal static string Salary_SectionTitle {
             get {
                 return ResourceManager.GetString("Salary_SectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base Salary.
+        /// </summary>
+        internal static string Salary_Summary_BaseSalary {
+            get {
+                return ResourceManager.GetString("Salary_Summary_BaseSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hours Worked.
+        /// </summary>
+        internal static string Salary_Summary_HoursWorked {
+            get {
+                return ResourceManager.GetString("Salary_Summary_HoursWorked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overtime Pay.
+        /// </summary>
+        internal static string Salary_Summary_OB {
+            get {
+                return ResourceManager.GetString("Salary_Summary_OB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax.
+        /// </summary>
+        internal static string Salary_Summary_Tax {
+            get {
+                return ResourceManager.GetString("Salary_Summary_Tax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📊 Summary.
+        /// </summary>
+        internal static string Salary_Summary_Title {
+            get {
+                return ResourceManager.GetString("Salary_Summary_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Paid.
+        /// </summary>
+        internal static string Salary_Summary_TotalPaid {
+            get {
+                return ResourceManager.GetString("Salary_Summary_TotalPaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vacation Pay.
+        /// </summary>
+        internal static string Salary_Summary_VacationPay {
+            get {
+                return ResourceManager.GetString("Salary_Summary_VacationPay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total {0:F1} {1}.
+        /// </summary>
+        internal static string Salary_TotalHours {
+            get {
+                return ResourceManager.GetString("Salary_TotalHours", resourceCulture);
             }
         }
         

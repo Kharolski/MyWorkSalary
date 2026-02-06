@@ -1,16 +1,12 @@
 ﻿using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
-using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services.Interfaces;
-using MyWorkSalary.Services.Repositories;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels.ShiftTypes
 {
-    public class RegularShiftViewModel : INotifyPropertyChanged
+    public class RegularShiftViewModel : BaseViewModel
     {
         #region Private Fields
         private readonly IWorkShiftRepository _workShiftRepository;
@@ -26,11 +22,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         private int _breakMinutes = 0;
         private string _breakSuggestionText = "";
         private string _notes = string.Empty;
-        private bool _isExtraShift = false;
         private bool _showCalculation;
         private bool _canSave;
         private decimal _calculatedHours;
-        private decimal _calculatedPay;
+        
         #endregion
 
         #region Constructor
@@ -128,6 +123,48 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
+        #region Day type flags
+        private bool _isHoliday;
+        private bool _isBigHoliday;
+        private bool _isExtraShift = false;
+        public bool IsHoliday
+        {
+            get => _isHoliday;
+            set
+            {
+                if (_isHoliday == value)
+                    return;
+
+                _isHoliday = value;
+                OnPropertyChanged();
+
+                // Om man stänger av helgdag -> storhelg måste av
+                if (!_isHoliday && IsBigHoliday)
+                {
+                    _isBigHoliday = false;
+                    OnPropertyChanged(nameof(IsBigHoliday));
+                }
+            }
+        }
+        public bool IsBigHoliday
+        {
+            get => _isBigHoliday;
+            set
+            {
+                if (_isBigHoliday == value)
+                    return;
+
+                _isBigHoliday = value;
+                OnPropertyChanged();
+
+                // Om man väljer storhelg -> helgdag måste på
+                if (_isBigHoliday && !IsHoliday)
+                {
+                    _isHoliday = true;
+                    OnPropertyChanged(nameof(IsHoliday));
+                }
+            }
+        }
         public bool IsExtraShift
         {
             get => _isExtraShift;
@@ -137,6 +174,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 OnPropertyChanged();
             }
         }
+        #endregion
 
         public string CalculationSummary
         {
@@ -211,6 +249,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
             CalculatedHours = result.TotalHours;
 
+            OnPropertyChanged(nameof(CalculationSummary));
             UpdateBreakSuggestion();
 
             ShowCalculation = result.TotalHours > 0;
@@ -265,6 +304,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                         : SelectedDate.Date.AddDays(1).Add(EndTime), // Hantera nattpass
                     BreakMinutes = BreakMinutes,
 
+                    IsHoliday = IsHoliday,
+                    IsBigHoliday = IsBigHoliday,
+
                     // Timmar
                     TotalHours = result.TotalHours,
                     RegularHours = result.RegularHours,
@@ -287,6 +329,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
                 // Spara via repository
                 var savedShift = _workShiftRepository.SaveWorkShift(workShift);
+
                 if (savedShift == null || savedShift.Id <= 0)
                 {
                     System.Diagnostics.Debug.WriteLine("Kunde inte spara passet");
@@ -298,7 +341,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 {
                     var obSummary = _obEventService.RebuildForWorkShift(savedShift);
 
-                    // Endast totalsummor (V2)
+                    // Endast totalsummor 
                     savedShift.OBHours = obSummary.TotalObHours;
                     savedShift.OBPay = obSummary.TotalObPay;
                     savedShift.TotalPay = savedShift.RegularPay + savedShift.OBPay;
@@ -331,18 +374,13 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             EndTime = new TimeSpan(16, 0, 0);
             BreakMinutes = 0;
             Notes = string.Empty;
+            IsHoliday = false;
+            IsBigHoliday = false;
             IsExtraShift = false;
 
             CalculateHours();
         }
         #endregion
 
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 }

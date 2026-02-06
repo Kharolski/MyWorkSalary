@@ -78,14 +78,25 @@ namespace MyWorkSalary.Services.Repositories
 
         public OBRate GetOBRateForTime(int jobProfileId, TimeSpan time, DayOfWeek dayOfWeek)
         {
-            return _database.Table<OBRate>()
-                           .Where(x => x.JobProfileId == jobProfileId &&
-                                      x.IsActive &&
-                                      x.StartTime <= time &&
-                                      x.EndTime > time)
-                           .FirstOrDefault();
+            var rates = _database.Table<OBRate>()
+                .Where(x => x.JobProfileId == jobProfileId && x.IsActive)
+                .ToList();
+
+            return rates
+                .Where(r => IsTimeInRangeRepo(r.StartTime, r.EndTime, time))
+                .FirstOrDefault();
         }
 
+        private static bool IsTimeInRangeRepo(TimeSpan start, TimeSpan end, TimeSpan time)
+        {
+            if (start == end)
+                return true;
+
+            if (start < end)
+                return time >= start && time < end;
+
+            return time >= start || time < end;
+        }
         #endregion
 
         #region Validation

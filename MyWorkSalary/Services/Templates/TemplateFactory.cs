@@ -46,7 +46,7 @@ namespace MyWorkSalary.Services.Templates
                         RatePerHour = 66.10m,
                         Priority = 20,
                         Saturday = true,
-                        Category = OBCategory.Weekend
+                        Category = OBCategory.Day
                     },
 
                     new OBRateTemplateRule
@@ -57,7 +57,7 @@ namespace MyWorkSalary.Services.Templates
                         RatePerHour = 76.00m,
                         Priority = 30,
                         Sunday = true,
-                        Category = OBCategory.WeekendExtra
+                        Category = OBCategory.Day
                     },
 
                     new OBRateTemplateRule
@@ -68,7 +68,7 @@ namespace MyWorkSalary.Services.Templates
                         RatePerHour = 126.90m,
                         Priority = 40,
                         BigHolidays = true,
-                        Category = OBCategory.Holiday
+                        Category = OBCategory.Day
                     }
                 }
             };
@@ -141,7 +141,7 @@ namespace MyWorkSalary.Services.Templates
                         Priority = 10,
                         Saturday = true,
                         Sunday = true,
-                        Category = OBCategory.Weekend
+                        Category = OBCategory.Day
                     }
                 }
             };

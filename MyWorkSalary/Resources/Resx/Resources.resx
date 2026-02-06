@@ -2539,4 +2539,175 @@ The work shift has been saved!</value>
     <value>Sun</value>
     <comment>OBRateTemplate.cs</comment>
   </data>
+  <data name="RegularShift_DayType" xml:space="preserve">
+    <value>Day type</value>
+    <comment>AddRegularShift</comment>
+  </data>
+  <data name="RegularShift_Holiday" xml:space="preserve">
+    <value>Public holiday</value>
+  </data>
+  <data name="RegularShift_BigHoliday" xml:space="preserve">
+    <value>Big holiday (special)</value>
+  </data>
+  <data name="RegularShift_DayTypeHint" xml:space="preserve">
+    <value>💡 Mark this shift as a public holiday or big holiday if it applies.</value>
+  </data>
+  <data name="Category_Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="OBTime_Day" xml:space="preserve">
+    <value>Day</value>
+    <comment>SalaryPageViewModel</comment>
+  </data>
+  <data name="OBTime_Evening" xml:space="preserve">
+    <value>Evening</value>
+    <comment>SalaryPageViewModel</comment>
+  </data>
+  <data name="OBTime_Night" xml:space="preserve">
+    <value>Night</value>
+    <comment>SalaryPageViewModel</comment>
+  </data>
+  <data name="OBDay_Weekday" xml:space="preserve">
+    <value>Weekday</value>
+    <comment>SalaryPageViewModel</comment>
+  </data>
+  <data name="OBDay_Weekend" xml:space="preserve">
+    <value>Weekend</value>
+    <comment>SalaryPageViewModel</comment>
+  </data>
+  <data name="OBDay_Holiday" xml:space="preserve">
+    <value>Holiday</value>
+    <comment>SalaryPageViewModel</comment>
+  </data>
+  <data name="OBDay_BigHoliday" xml:space="preserve">
+    <value>Big holiday</value>
+    <comment>SalaryPageViewModel</comment>
+  </data>
+  <data name="Salary_OB_Title" xml:space="preserve">
+    <value>Overtime Details</value>
+    <comment>SalaryPage</comment>
+  </data>
+  <data name="Salary_OB_Total" xml:space="preserve">
+    <value>Total Overtime</value>
+    <comment>SalaryPage</comment>
+  </data>
+  <data name="OB_Table_Date" xml:space="preserve">
+    <value>Date</value>
+    <comment>SalaryPage</comment>
+  </data>
+  <data name="OB_Table_Hours" xml:space="preserve">
+    <value>Hours</value>
+    <comment>SalaryPage</comment>
+  </data>
+  <data name="OB_Table_Amount" xml:space="preserve">
+    <value>Amount</value>
+    <comment>SalaryPage</comment>
+  </data>
+  <data name="Salary_NoReport_CreateJob" xml:space="preserve">
+    <value>No salary report yet — create a job first.</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_PageTitle" xml:space="preserve">
+    <value>Monthly Salary Report</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Summary_Title" xml:space="preserve">
+    <value>📊 Summary</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Summary_BaseSalary" xml:space="preserve">
+    <value>Base Salary</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Summary_HoursWorked" xml:space="preserve">
+    <value>Hours Worked</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Summary_OB" xml:space="preserve">
+    <value>Overtime Pay</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Summary_VacationPay" xml:space="preserve">
+    <value>Vacation Pay</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Summary_Tax" xml:space="preserve">
+    <value>Tax</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Summary_TotalPaid" xml:space="preserve">
+    <value>Total Paid</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Balance_Title" xml:space="preserve">
+    <value>Time Off &amp; Balance</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Balance_TimeBank" xml:space="preserve">
+    <value>🏦 Time Bank</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Balance_ExpectedHours" xml:space="preserve">
+    <value>📅 Expected Hours</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Balance_SickDays" xml:space="preserve">
+    <value>🤒 Sick Days</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Balance_Vacation" xml:space="preserve">
+    <value>🌴 Vacation</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Balance_VAB" xml:space="preserve">
+    <value>👶 Parental Leave</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_Balance_OnCall" xml:space="preserve">
+    <value>🧭 On Call</value>
+    <comment>SalaryPage.xaml</comment>
+  </data>
+  <data name="Salary_BaseSalary_NotSet" xml:space="preserve">
+    <value>Salary: Not set</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="Salary_NotSet" xml:space="preserve">
+    <value>Not set</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="Salary_Hours_Balanced" xml:space="preserve">
+    <value>Balanced schedule</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="Salary_Hours_Surplus" xml:space="preserve">
+    <value>Surplus: +{0:F1} h</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="Salary_Hours_Deficit" xml:space="preserve">
+    <value>Deficit: −{0:F1} h</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="Salary_TotalHours" xml:space="preserve">
+    <value>Total {0:F1} {1}</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="OB_NotConfigured" xml:space="preserve">
+    <value>OB is not configured.</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="OB_UsingFallback" xml:space="preserve">
+    <value>No events to calculate. Showing estimate from current rules.</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="OB_PeriodHint" xml:space="preserve">
+    <value>Overtime for work in {0}</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="Common_Current" xml:space="preserve">
+    <value>NOW</value>
+    <comment>SalaryViewModel.cs</comment>
+  </data>
+  <data name="Hours_Abbreviation" xml:space="preserve">
+    <value>h</value>
+  </data>
 </root>

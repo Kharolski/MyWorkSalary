@@ -1,13 +1,10 @@
-﻿using MyWorkSalary.Models;
-using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
 
@@ -57,11 +54,9 @@ namespace MyWorkSalary.ViewModels
             Categories = new ObservableCollection<string> 
             {
                 Resources.Resx.Resources.Category_Placeholder,
+                Resources.Resx.Resources.Category_Day,
                 Resources.Resx.Resources.Category_Evening,
-                Resources.Resx.Resources.Category_Night,
-                Resources.Resx.Resources.Category_Weekend,
-                Resources.Resx.Resources.Category_WeekendExtra,
-                Resources.Resx.Resources.Category_Holiday
+                Resources.Resx.Resources.Category_Night
             };
         }
         #endregion
@@ -111,11 +106,9 @@ namespace MyWorkSalary.ViewModels
         {
             return category switch
             {
+                OBCategory.Day => Resources.Resx.Resources.Category_Day,
                 OBCategory.Evening => Resources.Resx.Resources.Category_Evening,
                 OBCategory.Night => Resources.Resx.Resources.Category_Night,
-                OBCategory.Weekend => Resources.Resx.Resources.Category_Weekend,
-                OBCategory.WeekendExtra => Resources.Resx.Resources.Category_WeekendExtra,
-                OBCategory.Holiday => Resources.Resx.Resources.Category_Holiday,
                 _ => Resources.Resx.Resources.Category_Placeholder
             };
         }
@@ -314,7 +307,16 @@ namespace MyWorkSalary.ViewModels
                     await Shell.Current.DisplayAlert(
                         Resources.Resx.Resources.Save_Error_Title,
                         Resources.Resx.Resources.Validation_OBRateRequired,
-                        "OK");
+                        Resources.Resx.Resources.Dialog_Ok);
+                    return;
+                }
+
+                if (_activeJob == null)
+                {
+                    await Shell.Current.DisplayAlert(
+                        Resources.Resx.Resources.Save_Error_Title,
+                        Resources.Resx.Resources.NoActiveJob, 
+                        Resources.Resx.Resources.Dialog_Ok);
                     return;
                 }
 
@@ -329,7 +331,8 @@ namespace MyWorkSalary.ViewModels
                     RatePerHour = rate,
                     Category = category,
 
-                    Priority = GetDefaultPriority(category, BigHolidays),
+                    Priority = GetDefaultPriority(category, Holidays, BigHolidays, Saturday, Sunday),
+
                     Monday = Monday,
                     Tuesday = Tuesday,
                     Wednesday = Wednesday,
@@ -337,6 +340,7 @@ namespace MyWorkSalary.ViewModels
                     Friday = Friday,
                     Saturday = Saturday,
                     Sunday = Sunday,
+
                     Holidays = Holidays,
                     BigHolidays = BigHolidays,
 
@@ -356,7 +360,7 @@ namespace MyWorkSalary.ViewModels
                 await Shell.Current.DisplayAlert(
                     Resources.Resx.Resources.Save_Success_Title,
                     string.Format(Resources.Resx.Resources.Save_Success_Message, Name),
-                    "OK");
+                    Resources.Resx.Resources.Dialog_Ok);
 
                 await Shell.Current.GoToAsync("..");
             }
@@ -365,7 +369,7 @@ namespace MyWorkSalary.ViewModels
                 await Shell.Current.DisplayAlert(
                     Resources.Resx.Resources.Save_Error_Title,
                     string.Format(Resources.Resx.Resources.Save_Error_Message, ex.Message),
-                    "OK");
+                    Resources.Resx.Resources.Dialog_Ok);
             }
         }
 
@@ -383,7 +387,8 @@ namespace MyWorkSalary.ViewModels
 
         private void OnSelectAllDays()
         {
-            Monday = Tuesday = Wednesday = Thursday = Friday = Saturday = Sunday = Holidays = true;
+            Monday = Tuesday = Wednesday = Thursday = Friday = Saturday = Sunday = true;
+            Holidays = BigHolidays = false;
         }
         #endregion
 
@@ -461,27 +466,29 @@ namespace MyWorkSalary.ViewModels
         {
             return category switch
             {
+                var c when c == Resources.Resx.Resources.Category_Day => OBCategory.Day,
                 var c when c == Resources.Resx.Resources.Category_Evening => OBCategory.Evening,
                 var c when c == Resources.Resx.Resources.Category_Night => OBCategory.Night,
-                var c when c == Resources.Resx.Resources.Category_Weekend => OBCategory.Weekend,
-                var c when c == Resources.Resx.Resources.Category_WeekendExtra => OBCategory.WeekendExtra,
-                var c when c == Resources.Resx.Resources.Category_Holiday => OBCategory.Holiday,
-                _ => OBCategory.Evening // default fallback (men borde aldrig hända)
+                _ => OBCategory.Day
             };
         }
 
-        private int GetDefaultPriority(OBCategory category, bool bigHoliday)
+        private int GetDefaultPriority(OBCategory category, bool isHoliday, bool isBigHoliday, bool saturday, bool sunday)
         {
-            if (bigHoliday)
+            // 1) Dagtyp (styr konflikter)
+            if (isBigHoliday)
                 return 60;
+            if (isHoliday)
+                return 50;
+            if (saturday || sunday)
+                return 40;
 
+            // 2) Tid (inom samma dagtyp)
             return category switch
             {
-                OBCategory.Evening => 10,
                 OBCategory.Night => 20,
-                OBCategory.Weekend => 30,
-                OBCategory.WeekendExtra => 40,
-                OBCategory.Holiday => 50,
+                OBCategory.Evening => 10,
+                OBCategory.Day => 5,
                 _ => 0
             };
         }

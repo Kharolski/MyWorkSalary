@@ -37,6 +37,7 @@ namespace MyWorkSalary.Models.Core
         public decimal NightHours { get; set; }
         public bool IsExtraShift { get; set; } = false;     // Markerar inbeordrat pass
         public bool IsHoliday { get; set; } = false;        // Markerar om passet är på röd dag / helgdag.
+        public bool IsBigHoliday { get; set; } = false;
 
         // Debug / refactor-hjälp
         public decimal CalculatedOBHours => EveningHours + NightHours;

@@ -318,7 +318,7 @@ namespace MyWorkSalary.ViewModels
                 // Sätt rätt valuta för varje OBRate
                 foreach (var ob in obRates)
                 {
-                    ob.CurrencyCode = ActiveJob.CurrencyCode ?? "SEK";
+                    ob.CurrencyCode = string.IsNullOrWhiteSpace(ActiveJob.CurrencyCode) ? "SEK" : ActiveJob.CurrencyCode;
                 }
 
                 OBRates = new ObservableCollection<OBRate>(obRates);

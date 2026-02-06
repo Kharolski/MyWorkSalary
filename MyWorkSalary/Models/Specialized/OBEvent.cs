@@ -21,13 +21,16 @@ namespace MyWorkSalary.Models.Specialized
 
         // OB-information
         public decimal Hours { get; set; }          // Antal OB-timmar (t.ex. 4.0)
-        public OBCategory OBType { get; set; }      // "Kväll", "Natt", "Helg", osv.
+        public OBCategory OBType { get; set; }      // "Kväll", "Natt", "Dag"
+        public OBDayType DayType { get; set; }      // Veckodag, Helg, Storhelg
         public decimal RatePerHour { get; set; }    // OB-tilläget per timme
         public decimal TotalAmount { get; set; }    // Beräknat totalt OB-tillägg (Hours * RatePerHour)
 
         // Metadata
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public string Notes { get; set; }           // Eventuella anteckningar
+        public string? Notes { get; set; }           // Eventuella anteckningar
+        public int? OBRateId { get; set; }          // snapshot: vilken OBRate gav detta event
+        public int? Priority { get; set; }          // snapshot: priority vid skapande
 
         // Konstruktor för enkel skapelse
         public OBEvent() {   }

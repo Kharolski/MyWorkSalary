@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using MyWorkSalary.Helpers.Localization;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace MyWorkSalary.ViewModels
@@ -7,6 +8,24 @@ namespace MyWorkSalary.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        // Datum UK/EU format
+        public string DatePickerFormat => TranslationManager.Instance.DatePickerFormat;
+
+        // 24h format
+        public string TimePickerFormat => "HH:mm";
+
+        #region Constructor
+        protected BaseViewModel()
+        {
+            TranslationManager.Instance.CultureChanged += (_, __) =>
+            {
+                OnPropertyChanged(nameof(DatePickerFormat));
+                OnPropertyChanged(nameof(TimePickerFormat));
+            };
+        }
+        #endregion
+
+        #region Property Changed
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -21,5 +40,7 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
+        #endregion
+
     }
 }

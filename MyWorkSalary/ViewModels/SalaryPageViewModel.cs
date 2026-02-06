@@ -4,9 +4,7 @@ using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Reports;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
-using System.ComponentModel;
-using System.Globalization;
-using System.Runtime.CompilerServices;
+ using System.Globalization;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
@@ -22,6 +20,7 @@ namespace MyWorkSalary.ViewModels
         private SalaryStats _currentStats;
 
         private DateTime _selectedMonth;
+        private CultureInfo AppCulture => TranslationManager.Instance.CurrentCulture;
 
         // Att slippa anropa nya Command() varje gång
         private ICommand _prevMonthCommand;
@@ -56,7 +55,9 @@ namespace MyWorkSalary.ViewModels
 
         public bool HasActiveJob => ActiveJob != null;
 
-        public string WelcomeText => HasActiveJob ? $"Aktivt jobb - {ActiveJob.JobTitle}" : "Välkommen till din löneapp!";
+        public string WelcomeText => HasActiveJob 
+            ? $"{LocalizationHelper.Translate("ActiveJob")} - {ActiveJob.JobTitle}" 
+            : LocalizationHelper.Translate("WelcomeMessage");
 
         public SalaryStats CurrentStats
         {
@@ -93,7 +94,6 @@ namespace MyWorkSalary.ViewModels
 
                 // info text om OB betalning 
                 OnPropertyChanged(nameof(ObPeriodHintText));
-                OnPropertyChanged(nameof(ObEmptyText));
 
                 RefreshStats();
             }
@@ -130,13 +130,12 @@ namespace MyWorkSalary.ViewModels
                 return SelectedMonth == now;
             }
         }
-
-        public string CurrentMonthBadgeText => IsCurrentMonth ? "NU" : "";
+        public string CurrentMonthBadgeText => IsCurrentMonth ? LocalizationHelper.Translate("Common_Current") : "";
         public bool ShowCurrentMonthBadge => IsCurrentMonth;
 
         public string MonthlySalaryText => CurrentStats == null ? "–" : FormatMoney(CurrentStats.NetSalary);
         public string GrossSalaryText => CurrentStats == null ? "–" : FormatMoney(CurrentStats.GrossSalary);
-        public string CurrentMonthYearText => SelectedMonth.ToString("MMMM yyyy", new CultureInfo("sv-SE"));
+        public string CurrentMonthYearText => SelectedMonth.ToString("MMMM yyyy", AppCulture);
         public string HoursSummaryText
         {
             get
@@ -149,17 +148,18 @@ namespace MyWorkSalary.ViewModels
                     var diff = CurrentStats.TotalHours - CurrentStats.ExpectedHours;
 
                     if (diff == 0)
-                        return "I balans mot schema";
+                        return LocalizationHelper.Translate("Salary_Hours_Balanced");
 
                     var absDiff = Math.Abs(diff);
 
                     return diff > 0
-                        ? $"Överskott: +{absDiff:F1} t"
-                        : $"Underskott: −{absDiff:F1} t";
+                        ? string.Format(LocalizationHelper.Translate("Salary_Hours_Surplus"), absDiff)
+                        : string.Format(LocalizationHelper.Translate("Salary_Hours_Deficit"), absDiff);
                 }
                 else // Timanställd
                 {
-                    return $"Totalt {CurrentStats.TotalHours:F1} t";
+                    return string.Format(LocalizationHelper.Translate("Salary_TotalHours"),
+                        CurrentStats.TotalHours, LocalizationHelper.Translate("Hours_Abbreviation"));
                 }
             }
         }
@@ -187,18 +187,18 @@ namespace MyWorkSalary.ViewModels
             get
             {
                 if (ActiveJob == null)
-                    return "Lön: Ej angiven";
+                    return LocalizationHelper.Translate("Salary_BaseSalary_NotSet");
                 if (ActiveJob.EmploymentType == EmploymentType.Permanent)
                 {
                     return ActiveJob.MonthlySalary.HasValue
                         ? FormatMoney(ActiveJob.MonthlySalary.Value)
-                        : "Ej angiven";
+                        : LocalizationHelper.Translate("Salary_NotSet");
                 }
 
                 // Timanställd
                 return ActiveJob.HourlyRate.HasValue
                     ? FormatRate(ActiveJob.HourlyRate.Value)
-                    : "Ej angiven";
+                    : LocalizationHelper.Translate("Salary_NotSet");
             }
         }
         public bool ShowVacationPay => ActiveJob?.EmploymentType != EmploymentType.Permanent;
@@ -211,14 +211,12 @@ namespace MyWorkSalary.ViewModels
                 if (CurrentStats == null)
                     return "–";
 
-                if (ActiveJob?.EmploymentType == EmploymentType.Permanent)
-                {
-                    var diff = CurrentStats.TotalHours - CurrentStats.ExpectedHours;
-                    return $"{diff:+0.0;-0.0;0.0} t";
-                }
-
                 // Timanställd
-                return $"{CurrentStats.TotalHours:0.0} t";
+                return string.Format(
+                    LocalizationHelper.Translate("Salary_TotalHours"),
+                    CurrentStats.TotalHours,
+                    LocalizationHelper.Translate("Hours_Abbreviation")
+                );
             }
         }
 
@@ -245,55 +243,96 @@ namespace MyWorkSalary.ViewModels
                 var workMonth = SelectedMonth.AddMonths(-1);
 
                 // Ex: "OB avser arbete december 2025"
-                return $"OB avser arbete {workMonth.ToString("MMMM yyyy", new CultureInfo("sv-SE"))}";
-            }
-        }
-        public string ObEmptyText
-        {
-            get
-            {
-                var workMonth = SelectedMonth.AddMonths(-1);
-                return $"Inga OB-timmar registrerade för {workMonth.ToString("MMMM yyyy", new CultureInfo("sv-SE"))}.";
+                return string.Format(
+                    LocalizationHelper.Translate("OB_PeriodHint"),
+                    workMonth.ToString("MMMM yyyy", AppCulture)
+                );
             }
         }
         public string TotalObHoursText => CurrentStats == null ? "" : $"{CurrentStats.TotalObHours:F1}";
         public Color ObHoursColor => (CurrentStats?.TotalObHours ?? 0) > 0 ? Colors.Green : Colors.Gray;
-        public IReadOnlyList<ObDetails> ObDetails =>
-            CurrentStats?.ObDetails?
-                .Where(x => x.Hours > 0)
-                .Select(x => new ObDetails
-                {
-                    Date = x.Date,
-                    Hours = x.Hours,
-                    RatePerHour = x.RatePerHour,
-                    Category = x.Category,
-                    Pay = x.Pay,
-                    CategoryName = LocalizationHelper.Translate($"OBCategory_{x.Category}") // Översättning
-                }).ToList() ?? new List<ObDetails>();
+        public string ObPayText
+        {
+            get
+            {
+                if (CurrentStats == null)
+                    return FormatMoney(0m);
 
-        public string ObPayText => CurrentStats == null
-            ? FormatMoney(0m)
-            : FormatMoney(CurrentStats.ObPay);
+                if (!CurrentStats.HasObRulesConfigured)
+                    return "—";
 
-        public string FlexBalanceText
+                return FormatMoney(CurrentStats.ObPay);
+            }
+        }
+        public bool ShowObStatus => CurrentStats != null && (!CurrentStats.HasObRulesConfigured || CurrentStats.UsedObFallback);
+        public string ObStatusText
         {
             get
             {
                 if (CurrentStats == null)
                     return "";
-                var sign = CurrentStats.FlexBalance > 0 ? "+" : "";
-                return $"Flexsaldo: {sign}{CurrentStats.FlexBalance:F1} h";
+
+                if (!CurrentStats.HasObRulesConfigured)
+                    return LocalizationHelper.Translate("OB_NotConfigured");
+
+                if (CurrentStats.UsedObFallback)
+                    return LocalizationHelper.Translate("OB_UsingFallback");
+
+                return "";
+            }
+        }
+        public Color ObStatusColor
+        {
+            get
+            {
+                if (CurrentStats == null)
+                    return Color.FromArgb("#9E9E9E");   // grå
+                if (!CurrentStats.HasObRulesConfigured)
+                    return Color.FromArgb("#E53935"); // röd
+                if (CurrentStats.UsedObFallback)
+                    return Color.FromArgb("#FB8C00"); // orange
+                return Color.FromArgb("#43A047"); // grön
             }
         }
 
-        public string SickDaysText => CurrentStats == null ? "" : $"Sjukdagar: {CurrentStats.SickDays}";
+        // Kort 4
+        public bool IsPermanent => ActiveJob?.EmploymentType == EmploymentType.Permanent;
+        public bool ShowTimeBank => IsPermanent;
+        public string TimeBankText
+        {
+            get
+            {
+                if (!IsPermanent || ActiveJob == null)
+                    return "";
 
-        public string VacationDaysText => CurrentStats == null ? "" : $"Semesterdagar: {CurrentStats.VacationDays}";
+                // Ex: "+12.5 h" eller "-3.0 h"
+                var sign = ActiveJob.TimeBankHours > 0 ? "+" : "";
+                return $"{sign}{ActiveJob.TimeBankHours:0.0} {LocalizationHelper.Translate("Hours_Abbreviation")}";
+            }
+        }
+        public decimal TimeBankColorValue => IsPermanent && ActiveJob != null
+                ? ActiveJob.TimeBankHours
+                : 0m;
+        public string ExpectedHoursText
+        {
+            get
+            {
+                if (!IsPermanent || CurrentStats == null)
+                    return "-";
 
-        public string VabDaysText => CurrentStats == null ? "" : $"Vård av barn dagar: {CurrentStats.VabDays}";
+                return $"{CurrentStats.ExpectedHours:0.0} h";
+            }
+        }
+        public bool ShowBalanceSeparator => ShowTimeBank || IsPermanent;
+
+        public string SickDaysText => CurrentStats == null ? "" : $"{CurrentStats.SickDays}";
+
+        public string VacationDaysText => CurrentStats == null ? "" : $"{CurrentStats.VacationDays}";
+
+        public string VabDaysText => CurrentStats == null ? "" : $"{CurrentStats.VabDays}";
 
         // Jour kommer vi lägga till i SalaryStats sen
-        public string JourText => CurrentStats == null ? "" : $"Jour: {CurrentStats.JourHours:F1}";
+        public string JourText => CurrentStats == null ? "" : $"{CurrentStats.JourHours:F1}";
 
         // expand/collapse
         public bool IsObExpanded
@@ -327,6 +366,106 @@ namespace MyWorkSalary.ViewModels
         }
 
         public string BalanceChevronIcon => IsBalanceExpanded ? "▼" : "▶";
+        #endregion
+
+        #region OB Grouped UI
+
+        private List<ObCategoryGroupRow> _obGrouped = new();
+        public IReadOnlyList<ObCategoryGroupRow> ObGrouped => _obGrouped;
+
+        private void RebuildObGrouped()
+        {
+            _obGrouped = new List<ObCategoryGroupRow>();
+
+            if (CurrentStats == null || !CurrentStats.HasObRulesConfigured)
+            {
+                OnPropertyChanged(nameof(ObGrouped));
+                return;
+            }
+
+            // viktig: använd ActiveJobs valuta
+            var currency = string.IsNullOrWhiteSpace(ActiveJob.CurrencyCode) ? "SEK" : ActiveJob.CurrencyCode;
+
+            var rows = CurrentStats.ObDetails ?? new List<ObDetails>();
+
+            _obGrouped = rows
+                .Where(x => x.Hours > 0)
+                .GroupBy(x => new { x.Category, x.DayType })
+                .OrderByDescending(g => g.Sum(x => x.Pay))
+                .Select(g => new ObCategoryGroupRow
+                {
+                    Category = g.Key.Category,
+                    DayType = g.Key.DayType,
+
+                    DisplayName = BuildObDisplayName(g.Key.Category, g.Key.DayType),
+
+                    CurrencyCode = currency,    // viktigt för TotalPayText
+
+                    TotalHours = Math.Round(g.Sum(x => x.Hours), 2),
+                    TotalPay = Math.Round(g.Sum(x => x.Pay), 2),
+
+                    Details = g
+                        .OrderBy(x => x.Date)
+                        .Select(d => new ObCategoryDetailRow
+                        {
+                            DateText = d.Date.ToString("dd-MM", AppCulture),
+                            HoursText = $"{d.Hours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}",
+                            PayText = CurrencyHelper.FormatCurrency(d.Pay, currency)
+                        })
+                        .ToList()
+                })
+                .ToList();
+
+            OnPropertyChanged(nameof(ObGrouped));
+        }
+        public ICommand ToggleObGroupCommand => new Command<ObCategoryGroupRow>(row =>
+        {
+            if (row == null)
+                return;
+
+            foreach (var r in _obGrouped)
+            {
+                if (!ReferenceEquals(r, row) && r.IsExpanded)
+                    r.IsExpanded = false;
+            }
+
+            row.IsExpanded = !row.IsExpanded;
+
+            // Trigga refresh för Chevron/IsVisible
+            OnPropertyChanged(nameof(ObGrouped));
+        });
+
+        #endregion
+
+        #region OB Display Helpers
+        private string BuildObDisplayName(OBCategory cat, OBDayType dayType)
+        {
+            var tDay = LocalizationHelper.Translate("OBTime_Day");
+            var tEvening = LocalizationHelper.Translate("OBTime_Evening");
+            var tNight = LocalizationHelper.Translate("OBTime_Night");
+
+            var dWeekday = LocalizationHelper.Translate("OBDay_Weekday");
+            var dWeekend = LocalizationHelper.Translate("OBDay_Weekend");
+            var dHoliday = LocalizationHelper.Translate("OBDay_Holiday");
+            var dBigHoliday = LocalizationHelper.Translate("OBDay_BigHoliday");
+
+            var dayText = dayType switch
+            {
+                OBDayType.BigHoliday => dBigHoliday,
+                OBDayType.Holiday => dHoliday,
+                OBDayType.Weekend => dWeekend,
+                _ => dWeekday
+            };
+
+            // Visa bara tid när det är Evening/Night Ex: "Natt • Storhelg"
+            return cat switch
+            {
+                OBCategory.Evening => $"{tEvening} • {dayText}",
+                OBCategory.Night => $"{tNight} • {dayText}",
+                _ => dayText    // visar bara: “Helgdag” (utan “Dag • …”)
+            };
+            
+        }
         #endregion
 
         #region Formatting
@@ -388,7 +527,7 @@ namespace MyWorkSalary.ViewModels
 
             _selectedMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
-            LoadData();
+            _ = LoadData();
         }
         #endregion
 
@@ -406,6 +545,7 @@ namespace MyWorkSalary.ViewModels
         private void NotifyStatsBindingsChanged()
         {
             OnPropertyChanged(nameof(MonthlySalaryText));
+            OnPropertyChanged(nameof(CurrentMonthYearText));
             OnPropertyChanged(nameof(HoursSummaryText));
             OnPropertyChanged(nameof(HoursSummaryColor));
             OnPropertyChanged(nameof(BaseSalaryText));
@@ -417,8 +557,21 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(ObDetails));
             OnPropertyChanged(nameof(ObPayText));
             OnPropertyChanged(nameof(ObHoursColor));
+            OnPropertyChanged(nameof(ShowObStatus));
+            OnPropertyChanged(nameof(ObPeriodHintText));
+            OnPropertyChanged(nameof(ObStatusText));
+            OnPropertyChanged(nameof(ObStatusColor));
 
-            OnPropertyChanged(nameof(FlexBalanceText));
+            // KORT 4 
+            OnPropertyChanged(nameof(IsPermanent));
+            OnPropertyChanged(nameof(ShowTimeBank));
+            OnPropertyChanged(nameof(TimeBankText));
+            OnPropertyChanged(nameof(TimeBankColorValue));
+            OnPropertyChanged(nameof(ExpectedHoursText));
+            OnPropertyChanged(nameof(ShowBalanceSeparator));
+
+            RebuildObGrouped();
+
             OnPropertyChanged(nameof(SickDaysText));
             OnPropertyChanged(nameof(VacationDaysText));
             OnPropertyChanged(nameof(VabDaysText));
@@ -434,10 +587,14 @@ namespace MyWorkSalary.ViewModels
             if (ActiveJob == null)
             {
                 CurrentStats = null;
+                RebuildObGrouped();
                 return;
             }
 
             CurrentStats = _salaryHandler.CalculateMonthlyStats(ActiveJob.Id, SelectedMonth);
+
+            // bygg grupperna direkt efter att CurrentStats är klar
+            RebuildObGrouped();
         }
         #endregion
     }

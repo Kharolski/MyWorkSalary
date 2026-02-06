@@ -3,9 +3,6 @@ using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Reports; // här ligger SalaryStats
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MyWorkSalary.Services.Handlers
 {
@@ -184,6 +181,7 @@ namespace MyWorkSalary.Services.Handlers
 
             if (events.Any())
             {
+                stats.HasObRulesConfigured = true;
                 stats.UsedObFallback = false;
                 stats.ObInfoNote = null;
 
@@ -198,6 +196,7 @@ namespace MyWorkSalary.Services.Handlers
                         Hours = ev.Hours,
                         RatePerHour = ev.RatePerHour,
                         Category = ev.OBType,
+                        DayType = ev.DayType,
                         Pay = ev.TotalAmount
                     });
                 }
@@ -222,14 +221,29 @@ namespace MyWorkSalary.Services.Handlers
             // (Din SalaryRepository returnerar alla OBRates ändå.)
             var obRates = _salaryRepository.GetObShiftsForPeriod(jobId, DateTime.MinValue, DateTime.MaxValue) ?? Enumerable.Empty<OBRate>();
 
+            stats.HasObRulesConfigured = obRates.Any(r => r.IsActive);
+            if (!stats.HasObRulesConfigured)
+            {
+                stats.UsedObFallback = false; // fallback gick inte att använda
+                stats.ObInfoNote = "OB är inte konfigurerat. Lägg till OB-regler i Inställningar.";
+                return;
+            }
+
             foreach (var shift in shifts)
             {
                 if (!shift.StartTime.HasValue || !shift.EndTime.HasValue)
                     continue;
 
+                var isWeekend = shift.ShiftDate.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
+
+                var dayType =
+                    shift.IsBigHoliday ? OBDayType.BigHoliday :
+                    shift.IsHoliday ? OBDayType.Holiday :
+                    isWeekend ? OBDayType.Weekend :
+                    OBDayType.Weekday;
+
                 var obByCategory = CalculateObHoursByCategory(shift, obRates);
 
-                // Respektera ShiftTimeSettings-snapshots
                 obByCategory = obByCategory
                     .Where(x =>
                         (x.Category != OBCategory.Evening || shift.EveningActiveAtThatTime) &&
@@ -256,6 +270,7 @@ namespace MyWorkSalary.Services.Handlers
                         Hours = hours,
                         RatePerHour = rate.RatePerHour,
                         Category = category,
+                        DayType = dayType,
                         Pay = pay
                     });
                 }
@@ -284,10 +299,13 @@ namespace MyWorkSalary.Services.Handlers
                 var timeOfDay = current.TimeOfDay;
                 var dayOfWeek = current.DayOfWeek;
 
-                var matchingRate = obRates.FirstOrDefault(rate =>
-                    rate.IsActive &&
-                    IsDayMatch(rate, dayOfWeek, shift.IsHoliday) &&
-                    IsTimeInRange(rate.StartTime, rate.EndTime, timeOfDay));
+                var matchingRate = obRates
+                    .Where(rate =>
+                        rate.IsActive &&
+                        IsDayMatch(rate, dayOfWeek, shift.IsHoliday, shift.IsBigHoliday) &&
+                        IsTimeInRange(rate.StartTime, rate.EndTime, timeOfDay))
+                    .OrderByDescending(r => r.Priority)
+                    .FirstOrDefault();
 
                 if (matchingRate != null)
                     result[matchingRate.Category] += 1m / 60m;
@@ -298,8 +316,10 @@ namespace MyWorkSalary.Services.Handlers
             return result.Select(kv => (kv.Key, Math.Round(kv.Value, 2))).ToList();
         }
 
-        private bool IsDayMatch(OBRate rate, DayOfWeek dayOfWeek, bool isHoliday)
+        private bool IsDayMatch(OBRate rate, DayOfWeek dayOfWeek, bool isHoliday, bool isBigHoliday)
         {
+            if (isBigHoliday && rate.BigHolidays)
+                return true;
             if (isHoliday && rate.Holidays)
                 return true;
 
@@ -316,9 +336,13 @@ namespace MyWorkSalary.Services.Handlers
             };
         }
 
-        private bool IsTimeInRange(TimeSpan start, TimeSpan end, TimeSpan time)
+        private static bool IsTimeInRange(TimeSpan start, TimeSpan end, TimeSpan time)
         {
-            if (start <= end)
+            // SPECIAL: 00:00–00:00 (eller samma tid) = gäller hela dygnet
+            if (start == end)
+                return true;
+
+            if (start < end)
                 return time >= start && time < end;
 
             // över midnatt (t.ex 22:00–06:00)

@@ -2114,4 +2114,136 @@ Arbetspasset har sparats!</value>
   <data name="Day_Sun_Short" xml:space="preserve">
     <value>Sön</value>
   </data>
+  <data name="RegularShift_DayType" xml:space="preserve">
+    <value>Dagtyp</value>
+  </data>
+  <data name="RegularShift_Holiday" xml:space="preserve">
+    <value>Röd dag / helgdag</value>
+  </data>
+  <data name="RegularShift_BigHoliday" xml:space="preserve">
+    <value>Storhelg</value>
+  </data>
+  <data name="RegularShift_DayTypeHint" xml:space="preserve">
+    <value>💡 Markera om passet ligger på röd dag eller storhelg enligt ditt avtal.</value>
+  </data>
+  <data name="Category_Day" xml:space="preserve">
+    <value>Dag</value>
+  </data>
+  <data name="OBTime_Day" xml:space="preserve">
+    <value>Dag</value>
+  </data>
+  <data name="OBTime_Evening" xml:space="preserve">
+    <value>Kväll</value>
+  </data>
+  <data name="OBTime_Night" xml:space="preserve">
+    <value>Natt</value>
+  </data>
+  <data name="OBDay_Weekday" xml:space="preserve">
+    <value>Vardag</value>
+  </data>
+  <data name="OBDay_Weekend" xml:space="preserve">
+    <value>Helg</value>
+  </data>
+  <data name="OBDay_Holiday" xml:space="preserve">
+    <value>Helgdag</value>
+  </data>
+  <data name="OBDay_BigHoliday" xml:space="preserve">
+    <value>Storhelg</value>
+  </data>
+  <data name="Salary_OB_Title" xml:space="preserve">
+    <value>OB-ersättning</value>
+  </data>
+  <data name="Salary_OB_Total" xml:space="preserve">
+    <value>Total OB-ersättning</value>
+  </data>
+  <data name="OB_Table_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="OB_Table_Hours" xml:space="preserve">
+    <value>Timmar</value>
+  </data>
+  <data name="OB_Table_Amount" xml:space="preserve">
+    <value>Belopp</value>
+  </data>
+  <data name="Salary_NoReport_CreateJob" xml:space="preserve">
+    <value>Ingen lönerapport än – skapa ett jobb först.</value>
+  </data>
+  <data name="Salary_PageTitle" xml:space="preserve">
+    <value>Månads lönerapport</value>
+  </data>
+  <data name="Salary_Summary_Title" xml:space="preserve">
+    <value>📊 Sammanfattning</value>
+  </data>
+  <data name="Salary_Summary_BaseSalary" xml:space="preserve">
+    <value>Grundlön</value>
+  </data>
+  <data name="Salary_Summary_HoursWorked" xml:space="preserve">
+    <value>Arbetade timmar</value>
+  </data>
+  <data name="Salary_Summary_OB" xml:space="preserve">
+    <value>OB-ersättning</value>
+  </data>
+  <data name="Salary_Summary_VacationPay" xml:space="preserve">
+    <value>Semesterersättning</value>
+  </data>
+  <data name="Salary_Summary_Tax" xml:space="preserve">
+    <value>Skatt</value>
+  </data>
+  <data name="Salary_Summary_TotalPaid" xml:space="preserve">
+    <value>Totalt utbetalt</value>
+  </data>
+  <data name="Salary_Balance_Title" xml:space="preserve">
+    <value>Frånvaro och balans</value>
+  </data>
+  <data name="Salary_Balance_TimeBank" xml:space="preserve">
+    <value>🏦 Timbank</value>
+  </data>
+  <data name="Salary_Balance_ExpectedHours" xml:space="preserve">
+    <value>📅 Förväntade timmar</value>
+  </data>
+  <data name="Salary_Balance_SickDays" xml:space="preserve">
+    <value>🤒 Sjukdagar</value>
+  </data>
+  <data name="Salary_Balance_Vacation" xml:space="preserve">
+    <value>🌴 Semester</value>
+  </data>
+  <data name="Salary_Balance_VAB" xml:space="preserve">
+    <value>👶 VAB</value>
+  </data>
+  <data name="Salary_Balance_OnCall" xml:space="preserve">
+    <value>🧭 Jour</value>
+  </data>
+  <data name="Salary_BaseSalary_NotSet" xml:space="preserve">
+    <value>Lön: Ej angiven</value>
+  </data>
+  <data name="Salary_NotSet" xml:space="preserve">
+    <value>Ej angiven</value>
+  </data>
+  <data name="Salary_Hours_Balanced" xml:space="preserve">
+    <value>I balans mot schema</value>
+  </data>
+  <data name="Salary_Hours_Surplus" xml:space="preserve">
+    <value>Överskott: +{0:F1} t</value>
+  </data>
+  <data name="Salary_Hours_Deficit" xml:space="preserve">
+    <value>Underskott: −{0:F1} t</value>
+  </data>
+  <data name="Salary_TotalHours" xml:space="preserve">
+    <value>Totalt {0:F1} {1}</value>
+  </data>
+  <data name="OB_NotConfigured" xml:space="preserve">
+    <value>OB är inte konfigurerat.</value>
+  </data>
+  <data name="OB_UsingFallback" xml:space="preserve">
+    <value>Inga händelser att beräkna. Visar uppskattning från nuvarande regler.</value>
+  </data>
+  <data name="OB_PeriodHint" xml:space="preserve">
+    <value>OB avser arbete {0}</value>
+  </data>
+  <data name="Common_Current" xml:space="preserve">
+    <value>NU</value>
+  </data>
+  <data name="Hours_Abbreviation" xml:space="preserve">
+    <value>t</value>
+  </data>
 </root>

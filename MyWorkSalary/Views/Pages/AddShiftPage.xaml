@@ -26,7 +26,7 @@
                        Style="{StaticResource FieldLabel}" />
                 <DatePicker Date="{Binding SelectedDate}"
                             Style="{StaticResource ThemedDatePicker}"
-                            Format="dddd d MMMM yyyy" />
+                            Format="{Binding DatePickerFormat}" />
             </VerticalStackLayout>
 
             <!-- Passtyp -->

@@ -32,11 +32,36 @@
                    TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" />
         </VerticalStackLayout>
 
-        <!-- Inbeordring -->
-        <HorizontalStackLayout Spacing="10">
-            <CheckBox IsChecked="{Binding IsExtraShift}" />
-            <Label Text="{resx:Translate RegularShift_ExtraShift}" VerticalOptions="Center" />
-        </HorizontalStackLayout>
+        <!-- Helgdag / Storhelg / Inbeordring -->
+        <Frame Style="{StaticResource CardFrame}">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="{resx:Translate RegularShift_DayType}" Style="{StaticResource FieldLabel}" />
+
+                <!-- Inbeordring -->
+                <HorizontalStackLayout Spacing="10">
+                    <CheckBox IsChecked="{Binding IsExtraShift}" />
+                    <Label Text="{resx:Translate RegularShift_ExtraShift}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <!-- Röd dag -->
+                <HorizontalStackLayout Spacing="10">
+                    <CheckBox IsChecked="{Binding IsHoliday}" />
+                    <Label Text="{resx:Translate RegularShift_Holiday}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <!-- Storhelg -->
+                <HorizontalStackLayout Spacing="10">
+                    <CheckBox IsChecked="{Binding IsBigHoliday}" IsEnabled="{Binding IsHoliday}" />
+                    <Label Text="{resx:Translate RegularShift_BigHoliday}" VerticalOptions="Center"
+                           Opacity="{Binding IsHoliday, Converter={StaticResource BoolToOpacityConverter}}" />
+                </HorizontalStackLayout>
+
+                <Label Text="{resx:Translate RegularShift_DayTypeHint}"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                   Dark={StaticResource TextSecondaryDark}}" />
+            </VerticalStackLayout>
+        </Frame>
 
         <!-- Anteckningar -->
         <VerticalStackLayout Spacing="5">

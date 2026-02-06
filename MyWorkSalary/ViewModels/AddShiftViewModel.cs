@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
-    public class AddShiftViewModel : INotifyPropertyChanged
+    public class AddShiftViewModel : BaseViewModel
     {
         #region Private Fields
         private readonly IJobProfileRepository _jobProfileRepository;
@@ -62,6 +62,12 @@ namespace MyWorkSalary.ViewModels
             {
                 if (e.PropertyName == nameof(RegularShiftVM.CanSave))
                     ValidateAndUpdateCanSave();
+
+                if (e.PropertyName == nameof(RegularShiftVM.ShowCalculation))
+                    OnPropertyChanged(nameof(ShowGeneralCalculation));
+
+                if (e.PropertyName == nameof(RegularShiftVM.CalculationSummary))
+                    OnPropertyChanged(nameof(CalculationSummary));
             };
 
             // Prenumerera på ValidationChanged events
@@ -643,14 +649,6 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
-        #endregion
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         #endregion
     }
 }

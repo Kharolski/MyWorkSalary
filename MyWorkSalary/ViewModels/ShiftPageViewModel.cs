@@ -13,8 +13,12 @@ using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
-    public class ShiftPageViewModel : INotifyPropertyChanged
+    public class ShiftPageViewModel : BaseViewModel
     {
+        #region Culture
+        private CultureInfo AppCulture => TranslationManager.Instance.CurrentCulture;
+        #endregion
+
         #region Private Fields
         private readonly IJobProfileRepository _jobProfileRepository;
         private readonly IWorkShiftRepository _workShiftRepository;
@@ -63,9 +67,23 @@ namespace MyWorkSalary.ViewModels
         public string ActiveJobTitle => _activeJob?.JobTitle ?? LocalizationHelper.Translate("NoActiveJob");
 
         public string Workplace => _activeJob?.Workplace ?? "";
-        public string SalaryDisplayText => _activeJob?.ExpectedHoursPerMonth > 0
-            ? $"{_activeJob.SalaryDisplayText:NO} • {LocalizationHelper.Translate("FlexTime")}"
-            : LocalizationHelper.Translate("HourlyWage");
+        public string SalaryDisplayText
+        {
+            get
+            {
+                if (_activeJob == null)
+                    return "";
+
+                // Fast anställd
+                if (_activeJob.EmploymentType == EmploymentType.Permanent)
+                {
+                    return $"{_activeJob.SalaryDisplayText} • {LocalizationHelper.Translate("FlexTime")}";
+                }
+
+                // Timanställd / övrigt
+                return $"{_activeJob.SalaryDisplayText} • {LocalizationHelper.Translate("HourlyWage")}";
+            }
+        }
 
         private ObservableCollection<GroupedWorkShift> _groupedWorkShifts;
         public ObservableCollection<GroupedWorkShift> GroupedWorkShifts
@@ -144,7 +162,7 @@ namespace MyWorkSalary.ViewModels
                 await Shell.Current.DisplayAlert(
                     LocalizationHelper.Translate("NoJobAlertTitle"),
                     LocalizationHelper.Translate("NoJobAlertMessage"),
-                    "OK");
+                    LocalizationHelper.Translate("Dialog_Ok"));
                 return;
             }
 
@@ -183,14 +201,14 @@ namespace MyWorkSalary.ViewModels
                     await Shell.Current.DisplayAlert(
                         LocalizationHelper.Translate("DeletedTitle"),
                         deletedMessage,
-                        "OK");
+                        LocalizationHelper.Translate("Dialog_Ok"));
                 }
                 catch (Exception ex)
                 {
                     await Shell.Current.DisplayAlert(
                         LocalizationHelper.Translate("DeleteError"),
                         string.Format(LocalizationHelper.Translate("DeleteErrorMessage"), ex.Message),
-                        "OK");
+                        LocalizationHelper.Translate("Dialog_Ok"));
                 }
             }
         }
@@ -256,21 +274,21 @@ namespace MyWorkSalary.ViewModels
         private string GetMonthYearKey(WorkShift shift)
         {
             // Använd ShiftDate för alla passtyper
-            return shift.ShiftDate.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
+            return shift.ShiftDate.ToString("MMMM yyyy", AppCulture);
         }
 
         // Skapa bekräftelsemeddelande
         private string GetDeleteConfirmationMessage(WorkShift shift)
         {
-            var dateStr = shift.ShiftDate.ToString("dddd d MMMM", CultureInfo.CurrentCulture);
+            var dateStr = shift.ShiftDate.ToString("dddd d MMMM", AppCulture);
 
             if (shift.ShiftType == ShiftType.Regular && shift.StartTime.HasValue && shift.EndTime.HasValue)
             {
                 return string.Format(
                     LocalizationHelper.Translate("DeleteShiftWithTimeConfirm"),
                     dateStr,
-                    shift.StartTime?.ToString("t", CultureInfo.CurrentCulture),  // t = kort tidformat (HH:mm)
-                    shift.EndTime?.ToString("t", CultureInfo.CurrentCulture));
+                    shift.StartTime?.ToString("t", AppCulture),  // t = kort tidformat (HH:mm)
+                    shift.EndTime?.ToString("t", AppCulture));
             }
 
             var messageKey = shift.ShiftType switch
@@ -316,23 +334,33 @@ namespace MyWorkSalary.ViewModels
         }
 
         #endregion
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 
     public class GroupedWorkShift : List<WorkShift>, INotifyPropertyChanged
     {
+        #region Notes Keys (Do not localize)
+        private const string VabPrefix = "VABData:";
+        private const string WorkedKey = "Worked=";
+        private const string PlannedHoursKey = "PlannedHours:";
+        #endregion
+
+        #region Property
+        private string HoursAbbr => LocalizationHelper.Translate("Hours_Abbreviation"); // ex "h" / "t"
+
         public string MonthYear { get; private set; }
         public decimal TotalHours { get; private set; }
 
         // Visa bara timmar
-        public string HoursSummary => FormatHelper.FormatHours(TotalHours);
+        public string HoursSummary
+        {
+            get
+            {
+                var sign = TotalHours > 0 ? "+" : "";
+                return $"{sign}{TotalHours:0.##} {HoursAbbr}";
+            }
+        }
+        #endregion
+
 
         #region Expand/Collapse
         private bool _isExpanded = true; // Default: öppen
@@ -367,17 +395,25 @@ namespace MyWorkSalary.ViewModels
             {
                 case ShiftType.VAB:
                     // VAB: Räkna bara jobbade timmar (inte förlorade)
-                    if (shift.Notes != null && shift.Notes.StartsWith("VABData:"))
+                    if (shift.Notes != null && shift.Notes.StartsWith(VabPrefix))
                     {
                         try
                         {
-                            var data = shift.Notes.Replace("VABData:", "");
+                            var data = shift.Notes.Replace(VabPrefix, "");
                             var parts = data.Split('|');
-                            var workedPart = parts.FirstOrDefault(p => p.StartsWith("Worked="));
+                            var workedPart = parts.FirstOrDefault(p => p.StartsWith(WorkedKey));
 
                             if (workedPart != null)
                             {
-                                var worked = decimal.Parse(workedPart.Replace("Worked=", ""));
+                                var workedText = workedPart.Replace(WorkedKey, "");
+
+                                if (!decimal.TryParse(workedText, NumberStyles.Number, CultureInfo.InvariantCulture, out var worked) &&
+                                    !decimal.TryParse(workedText, NumberStyles.Number, CultureInfo.CurrentCulture, out worked))
+                                {
+                                    return 0;
+                                }
+
+
                                 return worked; // Bara jobbade timmar
                             }
                         }
@@ -390,17 +426,19 @@ namespace MyWorkSalary.ViewModels
 
                 case ShiftType.Vacation when shift.TotalHours <= 0:
                     // Obetald semester: Hämta planerade timmar och gör negativa
-                    if (shift.Notes != null && shift.Notes.Contains("PlannedHours:"))
+                    if (shift.Notes != null && shift.Notes.Contains(PlannedHoursKey))
                     {
                         var parts = shift.Notes.Split('|');
-                        var plannedPart = parts.FirstOrDefault(p => p.StartsWith("PlannedHours:"));
+                        var plannedPart = parts.FirstOrDefault(p => p.StartsWith(PlannedHoursKey));
                         if (plannedPart != null)
                         {
-                            var hoursText = plannedPart.Replace("PlannedHours:", "");
-                            if (decimal.TryParse(hoursText, out decimal plannedHours))
+                            var hoursText = plannedPart.Replace(PlannedHoursKey, "");
+                            if (!decimal.TryParse(hoursText, NumberStyles.Number, CultureInfo.InvariantCulture, out var plannedHours) &&
+                                !decimal.TryParse(hoursText, NumberStyles.Number, CultureInfo.CurrentCulture, out plannedHours))
                             {
-                                return -plannedHours;  // Returnera negativa timmar
+                                return 0;
                             }
+                            return -plannedHours; // Negativa timmar för obetald semester
                         }
                     }
                     return 0;
@@ -414,10 +452,33 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        /// <summary>
+        /// Räknar om TotalHours och HoursSummary för gruppen baserat på aktuella WorkShift-data.
+        /// 
+        /// OBS:
+        /// Anropas INTE i dagsläget eftersom grupperna alltid byggs om via LoadData().
+        /// Metoden finns för framtida scenarion där ett enskilt pass uppdateras,
+        /// läggs till eller tas bort utan att hela listan behöver återskapas.
+        /// 
+        /// Exempel på framtida användning:
+        /// - Uppdatering av VAB/Sjuk/Notes
+        /// - Live-uppdatering av timmar i UI
+        /// - Optimering för stora datamängder
+        /// </summary>
+        public void RecalculateTotals()
+        {
+            TotalHours = this.Sum(s => GetEffectiveHours(s));
+            OnPropertyChanged(nameof(TotalHours));
+            OnPropertyChanged(nameof(HoursSummary));
+        }
+
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+
     }
 }

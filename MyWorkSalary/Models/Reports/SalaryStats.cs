@@ -56,6 +56,7 @@ namespace MyWorkSalary.Models.Reports
 
         #region OB-detaljer
         public List<ObDetails> ObDetails { get; set; } = new();
+        public bool HasObRulesConfigured { get; set; }
         public bool UsedObFallback { get; set; } // true när vi räknar "live" istället för OBEvents
         public string? ObInfoNote { get; set; } // valfri text till UI
         #endregion
