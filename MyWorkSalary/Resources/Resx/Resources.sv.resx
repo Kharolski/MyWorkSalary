@@ -381,9 +381,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="DeletedTitle" xml:space="preserve">
     <value>Raderat</value>
   </data>
-  <data name="DeletedVAB" xml:space="preserve">
-    <value>VAB har raderats</value>
-  </data>
   <data name="DeletedVacation" xml:space="preserve">
     <value>Semestern har raderats</value>
   </data>
@@ -436,9 +433,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="DeleteSickLeaveConfirm" xml:space="preserve">
     <value>Är du säker på att du vill radera denna sjukdag från {0}?</value>
   </data>
-  <data name="DeleteVABConfirm" xml:space="preserve">
-    <value>Är du säker på att du vill radera denna VAB-dag från {0}?</value>
-  </data>
   <data name="DeleteVacationConfirm" xml:space="preserve">
     <value>Är du säker på att du vill radera denna semesterdag från {0}?</value>
   </data>
@@ -458,7 +452,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Fyll i alla obligatoriska fält</value>
   </data>
   <data name="Dialog_SuccessTitle" xml:space="preserve">
-    <value>Framgång</value>
+    <value>✅ Framgång</value>
   </data>
   <data name="Earned" xml:space="preserve">
     <value>Intjänat</value>
@@ -491,10 +485,10 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>OK</value>
   </data>
   <data name="EditJob_SuccessMessage" xml:space="preserve">
-    <value>Jobbet har uppdaterats!</value>
+    <value>✅ Jobbet har uppdaterats!</value>
   </data>
   <data name="EditJob_SuccessTitle" xml:space="preserve">
-    <value>Framgång</value>
+    <value>✅ Framgång</value>
   </data>
   <data name="EditJob_Title" xml:space="preserve">
     <value>Redigera jobb</value>
@@ -595,9 +589,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="HoursDisplay_OnCall" xml:space="preserve">
     <value>Jour</value>
   </data>
-  <data name="HoursDisplay_VAB" xml:space="preserve">
-    <value>VAB</value>
-  </data>
   <data name="HoursDisplay_ZeroHours" xml:space="preserve">
     <value>0t</value>
   </data>
@@ -626,7 +617,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Bytte till: {0}</value>
   </data>
   <data name="JobDeletedSuccessMessage" xml:space="preserve">
-    <value>Jobbet har raderats.</value>
+    <value>✅ Jobbet har raderats.</value>
   </data>
   <data name="JobDeletedTitle" xml:space="preserve">
     <value>Raderat</value>
@@ -650,7 +641,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Svenska</value>
   </data>
   <data name="LastJobDeletedSuccessMessage" xml:space="preserve">
-    <value>Sista jobbet raderat. Du kan skapa ett nytt jobb via 'Lägg till' knapen.</value>
+    <value>✅ Sista jobbet raderat. Du kan skapa ett nytt jobb via 'Lägg till' knapen.</value>
   </data>
   <data name="LightThemeActive" xml:space="preserve">
     <value>Ljust utseende aktiverat</value>
@@ -971,7 +962,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>T.ex. övertid, speciella omständigheter...</value>
   </data>
   <data name="RegularShift_ShiftSaved" xml:space="preserve">
-    <value>Passet sparades</value>
+    <value>✅ Passet sparades</value>
   </data>
   <data name="RegularShift_To" xml:space="preserve">
     <value>Till</value>
@@ -1027,9 +1018,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="SaveError_SickLeave" xml:space="preserve">
     <value>Kunde inte spara sjukdag</value>
   </data>
-  <data name="SaveError_VAB" xml:space="preserve">
-    <value>Kunde inte spara VAB-dag: {0}</value>
-  </data>
   <data name="SaveError_Vacation" xml:space="preserve">
     <value>Kunde inte spara semester: {0}</value>
   </data>
@@ -1037,16 +1025,13 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>✅ Sparat!</value>
   </data>
   <data name="SaveSuccess_OnCall" xml:space="preserve">
-    <value>Jourpass registrerat</value>
+    <value>✅ Jourpass registrerat</value>
   </data>
   <data name="SaveSuccess_RegularShift" xml:space="preserve">
-    <value>Vanligt pass registrerat</value>
+    <value>✅ Vanligt pass registrerat</value>
   </data>
   <data name="SaveSuccess_SickLeave" xml:space="preserve">
-    <value>Sjukdag registrerad</value>
-  </data>
-  <data name="SaveSuccess_VAB" xml:space="preserve">
-    <value>VAB-dag registrerad</value>
+    <value>✅ Sjukdag registrerad</value>
   </data>
   <data name="Save_Error_Message" xml:space="preserve">
     <value>Kunde inte spara OB-regel: {0}</value>
@@ -1055,10 +1040,10 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Fel</value>
   </data>
   <data name="Save_Success_Message" xml:space="preserve">
-    <value>OB-regel '{0}' har sparats.</value>
+    <value>✅ OB-regel '{0}' har sparats.</value>
   </data>
   <data name="Save_Success_Title" xml:space="preserve">
-    <value>Sparat!</value>
+    <value>✅ Sparat!</value>
   </data>
   <data name="SelectShiftType_Placeholder" xml:space="preserve">
     <value>Välj passtyp</value>
@@ -1077,9 +1062,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   </data>
   <data name="ShiftType_Add_Regular" xml:space="preserve">
     <value>Vanligt arbetspass</value>
-  </data>
-  <data name="ShiftType_Add_VAB" xml:space="preserve">
-    <value>Vård av barn (VAB)</value>
   </data>
   <data name="ShiftType_AllDay" xml:space="preserve">
     <value>Heldag</value>
@@ -1117,9 +1099,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="ShiftType_UnpaidLeave" xml:space="preserve">
     <value>Obetald ledighet</value>
   </data>
-  <data name="ShiftType_VAB" xml:space="preserve">
-    <value>VAB</value>
-  </data>
   <data name="ShiftType_Vacation" xml:space="preserve">
     <value>Semester</value>
   </data>
@@ -1148,7 +1127,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Sjuk på ledig dag</value>
   </data>
   <data name="Success" xml:space="preserve">
-    <value>Framgång</value>
+    <value>✅ Framgång</value>
   </data>
   <data name="SwipeDeleteJobHint" xml:space="preserve">
     <value>💡 Svep åt vänster för att radera ett jobb</value>
@@ -1179,33 +1158,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   </data>
   <data name="TodayDate" xml:space="preserve">
     <value>Idag, {0:dd MMMM yyyy}</value>
-  </data>
-  <data name="VAB" xml:space="preserve">
-    <value>VAB</value>
-  </data>
-  <data name="VABIcon" xml:space="preserve">
-    <value>👶</value>
-  </data>
-  <data name="VAB_Default" xml:space="preserve">
-    <value>"Vård av barn - Heldag"</value>
-  </data>
-  <data name="VAB_Description_Hourly" xml:space="preserve">
-    <value>VAB - Vård av barn (Timlön: Inget avdrag)</value>
-  </data>
-  <data name="VAB_Description_NoInfo" xml:space="preserve">
-    <value>VAB - Vård av barn (Ingen löneinfo tillgänglig)</value>
-  </data>
-  <data name="VAB_Description_WithDeduction" xml:space="preserve">
-    <value>VAB - Vård av barn ({0}h avdrag: {1:C})</value>
-  </data>
-  <data name="VAB_Employee" xml:space="preserve">
-    <value>"VAB - Timanställd"</value>
-  </data>
-  <data name="VAB_FullDay" xml:space="preserve">
-    <value>"VAB - Heldag"</value>
-  </data>
-  <data name="VAB_PartialDay" xml:space="preserve">
-    <value>"VAB - Delvis (-{0:F1}t)"</value>
   </data>
   <data name="Vacation" xml:space="preserve">
     <value>Semester</value>
@@ -1381,23 +1333,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="Vacation_Unpaid_Info" xml:space="preserve">
     <value>Ingen lön utbetalas. Registreras för dokumentation och statistik.</value>
   </data>
-  <data name="VAB_Confirm_ReplaceExistingShift" xml:space="preserve">
-    <value>Du har redan ett {0} registrerat för {1}.
-
-Vill du ersätta det med VAB?</value>
-  </data>
-  <data name="VAB_Save_Success" xml:space="preserve">
-    <value>VAB registrerat</value>
-  </data>
-  <data name="VAB_Save_Error" xml:space="preserve">
-    <value>Fel vid VAB-registrering: {0}</value>
-  </data>
-  <data name="VAB_Confirm_ReplaceSuccess" xml:space="preserve">
-    <value>Befintligt pass ersatt med VAB</value>
-  </data>
-  <data name="VAB_Confirm_ReplaceError" xml:space="preserve">
-    <value>Fel vid ersättning med VAB: {0}</value>
-  </data>
   <data name="ShiftType_RegularShift" xml:space="preserve">
     <value>arbetspass</value>
   </data>
@@ -1407,101 +1342,11 @@ Vill du ersätta det med VAB?</value>
   <data name="ShiftType_VacationShift" xml:space="preserve">
     <value>semesterdag</value>
   </data>
-  <data name="ShiftType_VABShift" xml:space="preserve">
-    <value>Vård av barn</value>
-  </data>
   <data name="ShiftType_Default" xml:space="preserve">
     <value>pass</value>
   </data>
-  <data name="VAB_Explanation_Hourly" xml:space="preserve">
-    <value>Som timanställd: Ingen arbetstid = ingen lön från företaget. Försäkringskassan betalar VAB-ersättning.</value>
-  </data>
-  <data name="VAB_Explanation_Salaried" xml:space="preserve">
-    <value>Som fast anställd: Företaget drar arbetstid från lön. Försäkringskassan ersätter med VAB-pengar.</value>
-  </data>
-  <data name="VAB_Summary_HourlyEmployee" xml:space="preserve">
-    <value>VAB-dag registrerad - Ingen lön från företaget</value>
-  </data>
-  <data name="VAB_Summary_WorkedVsPlanned" xml:space="preserve">
-    <value>VAB: Jobbade {0:F1}{3}, skulle {1:F1}{3} = {2:F1}{3} netto</value>
-  </data>
-  <data name="VAB_Summary_ZeroHours" xml:space="preserve">
-    <value>VAB-dag: Skulle varit ledig (0 timmar)</value>
-  </data>
-  <data name="VAB_Summary_MissingHours" xml:space="preserve">
-    <value>VAB-dag: Ange timmar som skulle jobbats</value>
-  </data>
-  <data name="VAB_Pay_Monthly" xml:space="preserve">
-    <value>Lön: +{0:N0} {3}, Avdrag: -{1:N0} {3} = {2:N0} {3} netto</value>
-  </data>
-  <data name="VAB_Pay_Hourly" xml:space="preserve">
-    <value>Lön: {0:N0} {2}, Förlorat: -{1:N0} {2}</value>
-  </data>
-  <data name="VAB_Validation_MissingFields" xml:space="preserve">
-    <value>Kontrollera att alla obligatoriska fält är ifyllda.</value>
-  </data>
-  <data name="VAB_Confirm_Replace_Title" xml:space="preserve">
-    <value>Ersätt befintligt pass?</value>
-  </data>
   <data name="Dialog_YesReplace" xml:space="preserve">
     <value>Ja, ersätt</value>
-  </data>
-  <data name="VAB_Unexpected_Message" xml:space="preserve">
-    <value>Konstigt meddelande efter avbryt: {0}</value>
-  </data>
-  <data name="VAB_SaveError" xml:space="preserve">
-    <value>Fel vid sparande: {0}</value>
-  </data>
-  <data name="VAB_Validation_MissingScheduledHours" xml:space="preserve">
-    <value>* Ange antal timmar som skulle jobbats.</value>
-  </data>
-  <data name="VAB_Validation_InvalidScheduledHours" xml:space="preserve">
-    <value>Ogiltigt värde för "skulle jobbat". Använd siffror (t.ex. 8 eller 7.5).</value>
-  </data>
-  <data name="VAB_Validation_ScheduledTooHigh" xml:space="preserve">
-    <value>Arbetstid kan inte vara längre än 24 timmar.</value>
-  </data>
-  <data name="VAB_Validation_MissingWorkedHours" xml:space="preserve">
-    <value>* Ange antal timmar som faktiskt jobbades.</value>
-  </data>
-  <data name="VAB_Validation_InvalidWorkedHours" xml:space="preserve">
-    <value>Ogiltigt värde för "jobbade timmar". Använd siffror (t.ex. 4 eller 0).</value>
-  </data>
-  <data name="VAB_Validation_WorkedTooHigh" xml:space="preserve">
-    <value>Jobbade timmar kan inte vara längre än 24 timmar.</value>
-  </data>
-  <data name="VAB_Validation_WorkedMoreThanPlanned" xml:space="preserve">
-    <value>Jobbade timmar kan inte vara fler än planerade timmar.</value>
-  </data>
-  <data name="VAB_Validation_NoVABNeeded" xml:space="preserve">
-    <value>💡 Ingen VAB behövs – du jobbade alla planerade timmar. Registrera som vanligt arbetspass istället.</value>
-  </data>
-  <data name="VAB_Header" xml:space="preserve">
-    <value>🍼 VAB - Vård av barn</value>
-  </data>
-  <data name="VAB_Label_ScheduledHours" xml:space="preserve">
-    <value>🕐 Timmar som skulle jobbats</value>
-  </data>
-  <data name="VAB_Placeholder_ScheduledHours" xml:space="preserve">
-    <value>Ange timmar (t.ex. 8, 7.5, 0)</value>
-  </data>
-  <data name="VAB_Hint_ScheduledZero" xml:space="preserve">
-    <value>💡 Skriv 0 om du skulle vara ledig denna dag</value>
-  </data>
-  <data name="VAB_Label_WorkedHours" xml:space="preserve">
-    <value>💼 Timmar som faktiskt jobbades</value>
-  </data>
-  <data name="VAB_Placeholder_WorkedHours" xml:space="preserve">
-    <value>Ange timmar (t.ex. 4, 0)</value>
-  </data>
-  <data name="VAB_Hint_WorkedZero" xml:space="preserve">
-    <value>💡 Skriv 0 om du inte jobbade alls denna dag</value>
-  </data>
-  <data name="VAB_Info_Header" xml:space="preserve">
-    <value>💰 VAB-information</value>
-  </data>
-  <data name="VAB_Info_Compensation" xml:space="preserve">
-    <value>✅ Försäkringskassan betalar VAB-ersättning</value>
   </data>
   <data name="SickLeave_ShouldHaveWorked" xml:space="preserve">
     <value>Skulle ha jobbat (sjuk)</value>
@@ -1540,7 +1385,7 @@ Vill du ersätta det med VAB?</value>
     <value>✅ Sparat!</value>
   </data>
   <data name="SickLeave_Save_SuccessMessage" xml:space="preserve">
-    <value>Sjukdag registrerad</value>
+    <value>✅ Sjukdag registrerad</value>
   </data>
   <data name="SickLeave_Save_ErrorTitle" xml:space="preserve">
     <value>❌ Fel</value>
@@ -1610,9 +1455,6 @@ Vill du ersätta det med VAB?</value>
   </data>
   <data name="Sick_NoPayNotes" xml:space="preserve">
     <value>Sjukdag - skulle varit ledig (ingen ersättning)</value>
-  </data>
-  <data name="Conflict_SickWithVAB" xml:space="preserve">
-    <value>Du kan inte vara sjuk när du VAB:ar</value>
   </data>
   <data name="Conflict_SickWithVacation" xml:space="preserve">
     <value>Du har redan beviljad semester denna dag</value>
@@ -1773,12 +1615,6 @@ Ta bort sjukskrivningen först innan du registrerar semester.</value>
 
 Ta bort jourpasset först innan du registrerar semester.</value>
   </data>
-  <data name="Vacation_Conflict_VAB" xml:space="preserve">
-    <value>Du har redan VAB registrerat denna dag:
-👶 Vård av barn
-
-Ta bort VAB först innan du registrerar semester.</value>
-  </data>
   <data name="Vacation_Conflict_Generic" xml:space="preserve">
     <value>Du har redan ett pass registrerat denna dag.
 Ta bort det först innan du registrerar semester.</value>
@@ -1824,15 +1660,6 @@ Ta bort det först innan du registrerar semester.</value>
   </data>
   <data name="ShiftValidation_WorkShift_Generic" xml:space="preserve">
     <value>Arbetspass</value>
-  </data>
-  <data name="ShiftValidation_VAB_Exists" xml:space="preserve">
-    <value>Du har VAB registrerat denna dag.</value>
-  </data>
-  <data name="ShiftValidation_VAB_Remove" xml:space="preserve">
-    <value>Ta bort VAB:en först.</value>
-  </data>
-  <data name="ShiftValidation_VAB_Info" xml:space="preserve">
-    <value>Vård av barn.</value>
   </data>
   <data name="ShiftValidation_Date" xml:space="preserve">
     <value>📅 Datum {0}</value>
@@ -1926,10 +1753,10 @@ Arbetspasset har sparats!</value>
     <value>Ändra tiden för att undvika överlapp.</value>
   </data>
   <data name="WorkShift_SaveSuccess_Default" xml:space="preserve">
-    <value>Passet har sparats!</value>
+    <value>✅ Passet har sparats!</value>
   </data>
   <data name="WorkShift_SaveSuccess_Vacation" xml:space="preserve">
-    <value>Semester på {0} dagar har sparats!</value>
+    <value>✅ Semester på {0} dagar har sparats!</value>
   </data>
   <data name="WorkShift_SaveFailed" xml:space="preserve">
     <value>Fel vid sparande: {0}</value>
@@ -2206,9 +2033,6 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="Salary_Balance_Vacation" xml:space="preserve">
     <value>🌴 Semester</value>
-  </data>
-  <data name="Salary_Balance_VAB" xml:space="preserve">
-    <value>👶 VAB</value>
   </data>
   <data name="Salary_Balance_OnCall" xml:space="preserve">
     <value>🧭 Jour</value>

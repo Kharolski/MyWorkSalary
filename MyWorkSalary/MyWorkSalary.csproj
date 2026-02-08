@@ -108,6 +108,11 @@
 	  <Compile Remove="Resources\TranslateExtension.cs" />
 	  <Compile Remove="Services\Interfaces\IShiftTimeSettingsRepository.cs" />
 	  <Compile Remove="Services\Repositories\ShiftTimeSettingsRepository.cs" />
+	  <Compile Remove="Views\Pages\ShiftTypeView\VABFormView.xaml.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Remove="Views\Pages\ShiftTypeView\VABFormView.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -148,9 +153,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\ShiftTypeView\SickLeaveFormView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Pages\ShiftTypeView\VABFormView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\ShiftTypeView\VacationFormView.xaml">

@@ -5,8 +5,7 @@
         Regular,        // Vanligt arbetspass (inkl. övertid/OB baserat på tid)
         OnCall,         // Jour - speciella regler 
         SickLeave,      // Sjukskrivning
-        Vacation,       // Semester
-        VAB             // Vård av barn
+        Vacation        // Semester
     }
 
     public enum SickLeaveType
@@ -14,12 +13,6 @@
         WorkedPartially,    // Jobbat delvis
         ShouldHaveWorked,   // Skulle jobbat
         WouldBeFree         // Skulle varit ledig
-    }
-
-    public enum VABType
-    {
-        FullDay,     // Hela dagen VAB
-        PartialDay   // Delvis VAB (jobbade en del)
     }
 
     public enum VacationType

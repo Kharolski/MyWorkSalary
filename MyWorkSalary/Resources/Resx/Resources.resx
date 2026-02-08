@@ -418,9 +418,6 @@ when employment ends (no later than one month afterwards).</value>
   <data name="DeletedTitle" xml:space="preserve">
     <value>Deleted</value>
   </data>
-  <data name="DeletedVAB" xml:space="preserve">
-    <value>Childcare has been deleted</value>
-  </data>
   <data name="DeletedVacation" xml:space="preserve">
     <value>Vacation has been deleted</value>
   </data>
@@ -473,9 +470,6 @@ when employment ends (no later than one month afterwards).</value>
   <data name="DeleteSickLeaveConfirm" xml:space="preserve">
     <value>Are you sure you want to delete this sick leave on {0}?</value>
   </data>
-  <data name="DeleteVABConfirm" xml:space="preserve">
-    <value>Are you sure you want to delete this Childcare day on {0}?</value>
-  </data>
   <data name="DeleteVacationConfirm" xml:space="preserve">
     <value>Are you sure you want to delete this vacation day on {0}?</value>
   </data>
@@ -495,7 +489,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>Please fill in all required fields</value>
   </data>
   <data name="Dialog_SuccessTitle" xml:space="preserve">
-    <value>Success</value>
+    <value>✅ Success</value>
   </data>
   <data name="Earned" xml:space="preserve">
     <value>Earned</value>
@@ -529,10 +523,10 @@ when employment ends (no later than one month afterwards).</value>
     <value>OK</value>
   </data>
   <data name="EditJob_SuccessMessage" xml:space="preserve">
-    <value>The job has been updated!</value>
+    <value>✅ The job has been updated!</value>
   </data>
   <data name="EditJob_SuccessTitle" xml:space="preserve">
-    <value>Success</value>
+    <value>✅ Success</value>
   </data>
   <data name="EditJob_Title" xml:space="preserve">
     <value>Edit job</value>
@@ -644,9 +638,6 @@ when employment ends (no later than one month afterwards).</value>
   <data name="HoursDisplay_OnCall" xml:space="preserve">
     <value>On-Call</value>
   </data>
-  <data name="HoursDisplay_VAB" xml:space="preserve">
-    <value>Childcare</value>
-  </data>
   <data name="HoursDisplay_ZeroHours" xml:space="preserve">
     <value>0h</value>
   </data>
@@ -678,7 +669,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>Changed to: {0}</value>
   </data>
   <data name="JobDeletedSuccessMessage" xml:space="preserve">
-    <value>The job has been deleted.</value>
+    <value>✅ The job has been deleted.</value>
   </data>
   <data name="JobDeletedTitle" xml:space="preserve">
     <value>Deleted</value>
@@ -702,7 +693,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>Swedish</value>
   </data>
   <data name="LastJobDeletedSuccessMessage" xml:space="preserve">
-    <value>Last job deleted. You can create a new job via the 'Add' button.</value>
+    <value>✅ Last job deleted. You can create a new job via the 'Add' button.</value>
   </data>
   <data name="LightThemeActive" xml:space="preserve">
     <value>Bright appearance enabled</value>
@@ -1083,7 +1074,7 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_ShiftSaved" xml:space="preserve">
-    <value>Shift saved successfully</value>
+    <value>✅ Shift saved successfully</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_To" xml:space="preserve">
@@ -1153,10 +1144,6 @@ when employment ends (no later than one month afterwards).</value>
     <value>Could not save sick day</value>
     <comment>Add shift viewmodel</comment>
   </data>
-  <data name="SaveError_VAB" xml:space="preserve">
-    <value>Could not save VAB day: {0}</value>
-    <comment>Add shift viewmodel</comment>
-  </data>
   <data name="SaveError_Vacation" xml:space="preserve">
     <value>Could not save vacation: {0}</value>
     <comment>Add shift viewmodel</comment>
@@ -1165,19 +1152,15 @@ when employment ends (no later than one month afterwards).</value>
     <value>✅ Saved!</value>
   </data>
   <data name="SaveSuccess_OnCall" xml:space="preserve">
-    <value>On-call shift registered</value>
+    <value>✅ On-call shift registered</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveSuccess_RegularShift" xml:space="preserve">
-    <value>Regular shift registered</value>
+    <value>✅ Regular shift registered</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveSuccess_SickLeave" xml:space="preserve">
-    <value>Sick day registered</value>
-    <comment>Add shift viewmodel</comment>
-  </data>
-  <data name="SaveSuccess_VAB" xml:space="preserve">
-    <value>Childcare day registered</value>
+    <value>✅ Sick day registered</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="Save_Error_Message" xml:space="preserve">
@@ -1187,10 +1170,10 @@ when employment ends (no later than one month afterwards).</value>
     <value>Error</value>
   </data>
   <data name="Save_Success_Message" xml:space="preserve">
-    <value>Unsocial hours rule '{0}' has been saved.</value>
+    <value>✅ Overtime rule '{0}' has been saved.</value>
   </data>
   <data name="Save_Success_Title" xml:space="preserve">
-    <value>Saved!</value>
+    <value>✅ Saved!</value>
   </data>
   <data name="SelectShiftType_Placeholder" xml:space="preserve">
     <value>Select Shift Type</value>
@@ -1212,10 +1195,6 @@ when employment ends (no later than one month afterwards).</value>
   <data name="ShiftType_Add_Regular" xml:space="preserve">
     <value>Regular Work</value>
     <comment>Add shift viewmodel</comment>
-  </data>
-  <data name="ShiftType_Add_VAB" xml:space="preserve">
-    <value>Parental Leave </value>
-    <comment>Add shift viewwmodel</comment>
   </data>
   <data name="ShiftType_AllDay" xml:space="preserve">
     <value>All day</value>
@@ -1253,9 +1232,6 @@ when employment ends (no later than one month afterwards).</value>
   <data name="ShiftType_UnpaidLeave" xml:space="preserve">
     <value>Unpaid leave</value>
   </data>
-  <data name="ShiftType_VAB" xml:space="preserve">
-    <value>Childcare</value>
-  </data>
   <data name="ShiftType_Vacation" xml:space="preserve">
     <value>Vacation</value>
   </data>
@@ -1290,7 +1266,7 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Sick on a day off</comment>
   </data>
   <data name="Success" xml:space="preserve">
-    <value>Success</value>
+    <value>✅ Success</value>
   </data>
   <data name="SwipeDeleteJobHint" xml:space="preserve">
     <value>💡 Swipe left to delete a job</value>
@@ -1323,38 +1299,6 @@ when employment ends (no later than one month afterwards).</value>
   <data name="TodayDate" xml:space="preserve">
     <value>Today, {0:MMMM dd, yyyy}</value>
     <comment>Date format with placeholder</comment>
-  </data>
-  <data name="VAB" xml:space="preserve">
-    <value>Childcare</value>
-    <comment>Label for VAB</comment>
-  </data>
-  <data name="VABIcon" xml:space="preserve">
-    <value> 👶</value>
-    <comment>Icon for VAB</comment>
-  </data>
-  <data name="VAB_Default" xml:space="preserve">
-    <value>"Child Care - Full Day"</value>
-  </data>
-  <data name="VAB_Description_Hourly" xml:space="preserve">
-    <value>Childcare Leave (Hourly: No deduction)</value>
-    <comment>Shift calculation service</comment>
-  </data>
-  <data name="VAB_Description_NoInfo" xml:space="preserve">
-    <value>Childcare Leave (No salary info available)</value>
-    <comment>Shift calculation service</comment>
-  </data>
-  <data name="VAB_Description_WithDeduction" xml:space="preserve">
-    <value>Childcare Leave ({0}h deduction: {1:C})</value>
-    <comment>Shift calculation service</comment>
-  </data>
-  <data name="VAB_Employee" xml:space="preserve">
-    <value>"Childcare - Employee"</value>
-  </data>
-  <data name="VAB_FullDay" xml:space="preserve">
-    <value>"Childcare - Full Day"</value>
-  </data>
-  <data name="VAB_PartialDay" xml:space="preserve">
-    <value>"Childcare - Partial (-{0:F1}h)"</value>
   </data>
   <data name="Vacation" xml:space="preserve">
     <value>Vacation</value>
@@ -1570,28 +1514,6 @@ when employment ends (no later than one month afterwards).</value>
     <value>No salary paid. Registered for documentation and statistics.</value>
     <comment>Vacation viewmodel</comment>
   </data>
-  <data name="VAB_Confirm_ReplaceExistingShift" xml:space="preserve">
-    <value>You already have a {0} registered for {1}.
-
-Do you want to replace it with Sick Child Care?</value>
-    <comment>VABHaandler</comment>
-  </data>
-  <data name="VAB_Save_Success" xml:space="preserve">
-    <value>Sick Child Care registered</value>
-    <comment>VABHandler</comment>
-  </data>
-  <data name="VAB_Save_Error" xml:space="preserve">
-    <value>Error saving Sick Child Care: {0}</value>
-    <comment>VABHandler</comment>
-  </data>
-  <data name="VAB_Confirm_ReplaceSuccess" xml:space="preserve">
-    <value>Existing shift replaced with Sick Child Care</value>
-    <comment>VABHandler</comment>
-  </data>
-  <data name="VAB_Confirm_ReplaceError" xml:space="preserve">
-    <value>Error replacing with Sick Child Care: {0}</value>
-    <comment>VABHandler</comment>
-  </data>
   <data name="ShiftType_RegularShift" xml:space="preserve">
     <value>work shift</value>
     <comment>VABHaandler</comment>
@@ -1604,133 +1526,12 @@ Do you want to replace it with Sick Child Care?</value>
     <value>vacation day</value>
     <comment>VABHandler</comment>
   </data>
-  <data name="ShiftType_VABShift" xml:space="preserve">
-    <value>child care</value>
-    <comment>VABHandler</comment>
-  </data>
   <data name="ShiftType_Default" xml:space="preserve">
     <value>shift</value>
     <comment>VAABHandler</comment>
   </data>
-  <data name="VAB_Explanation_Hourly" xml:space="preserve">
-    <value>As an hourly worker: if you don't work, there is no company pay. The social insurance covers childcare leave.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Explanation_Salaried" xml:space="preserve">
-    <value>As a salaried employee: the employer deducts working time from salary. Social insurance provides childcare compensation.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Summary_HourlyEmployee" xml:space="preserve">
-    <value>Childcare leave day registered — no employer pay.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Summary_WorkedVsPlanned" xml:space="preserve">
-    <value>Childcare: worked {0:F1}{3}, planned {1:F1}{3} → {2:F1}{3} net</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Summary_ZeroHours" xml:space="preserve">
-    <value>Childcare day: Would have been off (0 hours)</value>
-    <comment>VAB viewwmodel</comment>
-  </data>
-  <data name="VAB_Summary_MissingHours" xml:space="preserve">
-    <value>Childcare day: Enter the number of hours that were planned to work</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Pay_Monthly" xml:space="preserve">
-    <value>Pay: +{0:N0} {3}, Deduction: -{1:N0} {3} → {2:N0} {3} net</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Pay_Hourly" xml:space="preserve">
-    <value>Pay: {0:N0} {2}, Lost: -{1:N0} {2}</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_MissingFields" xml:space="preserve">
-    <value>Please make sure all required fields are filled in.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Confirm_Replace_Title" xml:space="preserve">
-    <value>Replace existing shift?</value>
-    <comment>VAB viewmodel</comment>
-  </data>
   <data name="Dialog_YesReplace" xml:space="preserve">
     <value>Yes, replace</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Unexpected_Message" xml:space="preserve">
-    <value>Unexpected message after cancel: {0}</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_SaveError" xml:space="preserve">
-    <value>Error while saving: {0}</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_MissingScheduledHours" xml:space="preserve">
-    <value>* Please enter the number of planned working hours.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_InvalidScheduledHours" xml:space="preserve">
-    <value>Invalid value for "planned hours". Use numbers (e.g., 8 or 7.5).</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_ScheduledTooHigh" xml:space="preserve">
-    <value>Planned working time cannot exceed 24 hours.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_MissingWorkedHours" xml:space="preserve">
-    <value>* Please enter the number of hours actually worked.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_InvalidWorkedHours" xml:space="preserve">
-    <value>Invalid value for "worked hours". Use numbers (e.g., 4 or 0).</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_WorkedTooHigh" xml:space="preserve">
-    <value>Worked hours cannot exceed 24 hours.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_WorkedMoreThanPlanned" xml:space="preserve">
-    <value>Worked hours cannot be more than planned hours.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Validation_NoVABNeeded" xml:space="preserve">
-    <value>💡 No childcare leave needed – you worked all planned hours. Register it as a normal shift instead.</value>
-    <comment>VAB viewmodel</comment>
-  </data>
-  <data name="VAB_Header" xml:space="preserve">
-    <value>🍼 Childcare Leave (VAB)</value>
-    <comment>VAB form view</comment>
-  </data>
-  <data name="VAB_Label_ScheduledHours" xml:space="preserve">
-    <value>🕐 Planned working hours</value>
-    <comment>VAB form view</comment>
-  </data>
-  <data name="VAB_Placeholder_ScheduledHours" xml:space="preserve">
-    <value>Enter hours (e.g. 8, 7.5, 0)</value>
-    <comment>VAB form view</comment>
-  </data>
-  <data name="VAB_Hint_ScheduledZero" xml:space="preserve">
-    <value>💡 Enter 0 if this was a day off</value>
-    <comment>VAB form view</comment>
-  </data>
-  <data name="VAB_Label_WorkedHours" xml:space="preserve">
-    <value>💼 Hours actually worked</value>
-    <comment>VAB form view</comment>
-  </data>
-  <data name="VAB_Placeholder_WorkedHours" xml:space="preserve">
-    <value>Enter hours (e.g. 4, 0)</value>
-    <comment>VAB form view</comment>
-  </data>
-  <data name="VAB_Hint_WorkedZero" xml:space="preserve">
-    <value>💡 Enter 0 if you did not work at all</value>
-    <comment>VAB form view</comment>
-  </data>
-  <data name="VAB_Info_Header" xml:space="preserve">
-    <value>💰 Childcare Leave Summary</value>
-    <comment>VAB form view</comment>
-  </data>
-  <data name="VAB_Info_Compensation" xml:space="preserve">
-    <value>✅ Social insurance will pay childcare compensation</value>
-    <comment>VAB form view</comment>
   </data>
   <data name="SickLeave_ShouldHaveWorked" xml:space="preserve">
     <value> Should have worked (sick)</value>
@@ -1781,7 +1582,7 @@ Do you want to replace it with Sick Child Care?</value>
     <comment>SickLeave viewmodel</comment>
   </data>
   <data name="SickLeave_Save_SuccessMessage" xml:space="preserve">
-    <value>Sick day registered</value>
+    <value>✅ Sick day registered</value>
     <comment>SickLeave viewmodel</comment>
   </data>
   <data name="SickLeave_Save_ErrorTitle" xml:space="preserve">
@@ -1874,10 +1675,6 @@ Do you want to replace it with Sick Child Care?</value>
   </data>
   <data name="Sick_NoPayNotes" xml:space="preserve">
     <value>Sick day - would have been off (no pay)</value>
-    <comment>SickLeave Handler</comment>
-  </data>
-  <data name="Conflict_SickWithVAB" xml:space="preserve">
-    <value>Cannot be sick while on child care</value>
     <comment>SickLeave Handler</comment>
   </data>
   <data name="Conflict_SickWithVacation" xml:space="preserve">
@@ -2089,13 +1886,6 @@ Remove the sick leave before registering vacation.</value>
 Remove the on-call shift before registering vacation.</value>
     <comment>VacationHandler</comment>
   </data>
-  <data name="Vacation_Conflict_VAB" xml:space="preserve">
-    <value>You already have VAB registered this day:
-👶 Care of sick child
-
-Remove VAB before registering vacation.</value>
-    <comment>VacationHandler</comment>
-  </data>
   <data name="Vacation_Conflict_Generic" xml:space="preserve">
     <value>You already have a shift registered this day.
 Remove it before registering vacation.</value>
@@ -2155,18 +1945,6 @@ Remove it before registering vacation.</value>
   </data>
   <data name="ShiftValidation_WorkShift_Generic" xml:space="preserve">
     <value>Work shift</value>
-    <comment>ShiftValidationService</comment>
-  </data>
-  <data name="ShiftValidation_VAB_Exists" xml:space="preserve">
-    <value>You have Child care registered on this day.</value>
-    <comment>ShiftValidationService</comment>
-  </data>
-  <data name="ShiftValidation_VAB_Remove" xml:space="preserve">
-    <value>Remove the Child care first.</value>
-    <comment>ShiftValidationService</comment>
-  </data>
-  <data name="ShiftValidation_VAB_Info" xml:space="preserve">
-    <value>Care of child.</value>
     <comment>ShiftValidationService</comment>
   </data>
   <data name="ShiftValidation_Date" xml:space="preserve">
@@ -2291,11 +2069,11 @@ The work shift has been saved!</value>
     <comment>WorkShiftService</comment>
   </data>
   <data name="WorkShift_SaveSuccess_Default" xml:space="preserve">
-    <value>Shift has been saved!</value>
+    <value>✅ Shift has been saved!</value>
     <comment>WorkShiftService</comment>
   </data>
   <data name="WorkShift_SaveSuccess_Vacation" xml:space="preserve">
-    <value>Vacation for {0} days has been saved!</value>
+    <value>✅ Vacation for {0} days has been saved!</value>
     <comment>WorkShiftService</comment>
   </data>
   <data name="WorkShift_SaveFailed" xml:space="preserve">
@@ -2657,10 +2435,6 @@ The work shift has been saved!</value>
   </data>
   <data name="Salary_Balance_Vacation" xml:space="preserve">
     <value>🌴 Vacation</value>
-    <comment>SalaryPage.xaml</comment>
-  </data>
-  <data name="Salary_Balance_VAB" xml:space="preserve">
-    <value>👶 Parental Leave</value>
     <comment>SalaryPage.xaml</comment>
   </data>
   <data name="Salary_Balance_OnCall" xml:space="preserve">

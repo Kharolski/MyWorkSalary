@@ -22,7 +22,6 @@ namespace MyWorkSalary.ViewModels
         #region Private Fields
         private readonly IJobProfileRepository _jobProfileRepository;
         private readonly IWorkShiftRepository _workShiftRepository;
-        private readonly IVABLeaveRepository _vabLeaveRepository;
         private readonly IVacationLeaveRepository _vacationLeaveRepository;
         private readonly ISickLeaveRepository _sickLeaveRepository;
         private readonly IOnCallRepository _onCallRepository;
@@ -36,7 +35,6 @@ namespace MyWorkSalary.ViewModels
         public ShiftPageViewModel(
             IJobProfileRepository jobProfileRepository,
             IWorkShiftRepository workShiftRepository,
-            IVABLeaveRepository vabLeaveRepository,
             IVacationLeaveRepository vacationLeaveRepository,
             ISickLeaveRepository sickLeaveRepository,
             IOnCallRepository onCallRepository,
@@ -44,7 +42,6 @@ namespace MyWorkSalary.ViewModels
         {
             _jobProfileRepository = jobProfileRepository;
             _workShiftRepository = workShiftRepository;
-            _vabLeaveRepository = vabLeaveRepository;
             _vacationLeaveRepository = vacationLeaveRepository;
             _sickLeaveRepository = sickLeaveRepository;
             _onCallRepository = onCallRepository;
@@ -240,14 +237,6 @@ namespace MyWorkSalary.ViewModels
                     }
                     break;
 
-                case ShiftType.VAB:
-                    var vabLeave = await _vabLeaveRepository.GetByWorkShiftIdAsync(shift.Id);
-                    if (vabLeave != null)
-                    {
-                        await _vabLeaveRepository.DeleteAsync(vabLeave.Id);
-                    }
-                    break;
-
                 case ShiftType.Vacation:
                     // Hitta VacationLeave via WorkShift relation
                     var vacationLeaves = await _vacationLeaveRepository.GetByJobProfileAsync(shift.JobProfileId);
@@ -297,7 +286,6 @@ namespace MyWorkSalary.ViewModels
             {
                 ShiftType.Vacation => "DeleteVacationConfirm",
                 ShiftType.SickLeave => "DeleteSickLeaveConfirm",
-                ShiftType.VAB => "DeleteVABConfirm",
                 ShiftType.OnCall => "DeleteOnCallConfirm",
                 _ => "DeleteShiftConfirm"
             };
@@ -312,7 +300,6 @@ namespace MyWorkSalary.ViewModels
             {
                 ShiftType.Vacation => LocalizationHelper.Translate("DeletedVacation"),
                 ShiftType.SickLeave => LocalizationHelper.Translate("DeletedSickLeave"),
-                ShiftType.VAB => LocalizationHelper.Translate("DeletedVAB"),
                 ShiftType.OnCall => LocalizationHelper.Translate("DeletedOnCall"),
                 _ => LocalizationHelper.Translate("DeletedShift")
             };
@@ -341,8 +328,6 @@ namespace MyWorkSalary.ViewModels
     public class GroupedWorkShift : List<WorkShift>, INotifyPropertyChanged
     {
         #region Notes Keys (Do not localize)
-        private const string VabPrefix = "VABData:";
-        private const string WorkedKey = "Worked=";
         private const string PlannedHoursKey = "PlannedHours:";
         #endregion
 
@@ -395,37 +380,6 @@ namespace MyWorkSalary.ViewModels
         {
             switch (shift.ShiftType)
             {
-                case ShiftType.VAB:
-                    // VAB: Räkna bara jobbade timmar (inte förlorade)
-                    if (shift.Notes != null && shift.Notes.StartsWith(VabPrefix))
-                    {
-                        try
-                        {
-                            var data = shift.Notes.Replace(VabPrefix, "");
-                            var parts = data.Split('|');
-                            var workedPart = parts.FirstOrDefault(p => p.StartsWith(WorkedKey));
-
-                            if (workedPart != null)
-                            {
-                                var workedText = workedPart.Replace(WorkedKey, "");
-
-                                if (!decimal.TryParse(workedText, NumberStyles.Number, CultureInfo.InvariantCulture, out var worked) &&
-                                    !decimal.TryParse(workedText, NumberStyles.Number, CultureInfo.CurrentCulture, out worked))
-                                {
-                                    return 0;
-                                }
-
-
-                                return worked; // Bara jobbade timmar
-                            }
-                        }
-                        catch
-                        {
-                            // Fallback
-                        }
-                    }
-                    return 0; // Fallback för VAB
-
                 case ShiftType.Vacation when shift.TotalHours <= 0:
                     // Obetald semester: Hämta planerade timmar och gör negativa
                     if (shift.Notes != null && shift.Notes.Contains(PlannedHoursKey))

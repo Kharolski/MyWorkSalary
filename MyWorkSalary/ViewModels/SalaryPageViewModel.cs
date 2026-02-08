@@ -329,8 +329,6 @@ namespace MyWorkSalary.ViewModels
 
         public string VacationDaysText => CurrentStats == null ? "" : $"{CurrentStats.VacationDays}";
 
-        public string VabDaysText => CurrentStats == null ? "" : $"{CurrentStats.VabDays}";
-
         // Jour kommer vi lägga till i SalaryStats sen
         public string JourText => CurrentStats == null ? "" : $"{CurrentStats.JourHours:F1}";
 
@@ -616,7 +614,6 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(ShowExtraPay));
             OnPropertyChanged(nameof(ExtraPayText));
             OnPropertyChanged(nameof(HasExtraShifts));
-            OnPropertyChanged(nameof(ExtraPayText));
             OnPropertyChanged(nameof(TotalExtraHoursText));
 
             // KORT 3 - OB
@@ -641,7 +638,6 @@ namespace MyWorkSalary.ViewModels
 
             OnPropertyChanged(nameof(SickDaysText));
             OnPropertyChanged(nameof(VacationDaysText));
-            OnPropertyChanged(nameof(VabDaysText));
             OnPropertyChanged(nameof(JourText));
 
             OnPropertyChanged(nameof(ShowVacationPay));

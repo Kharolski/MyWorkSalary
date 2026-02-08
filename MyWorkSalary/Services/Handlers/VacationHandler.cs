@@ -224,8 +224,6 @@ namespace MyWorkSalary.Services.Handlers
 
                         ShiftType.OnCall => LocalizationHelper.Translate("Vacation_Conflict_OnCall"),
 
-                        ShiftType.VAB => LocalizationHelper.Translate("Vacation_Conflict_VAB"),
-
                         _ => LocalizationHelper.Translate("Vacation_Conflict_Generic")
                     };
 

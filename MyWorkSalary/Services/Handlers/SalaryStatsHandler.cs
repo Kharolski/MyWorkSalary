@@ -84,7 +84,7 @@ namespace MyWorkSalary.Services.Handlers
             stats.FlexBalance = 0;
             stats.SickDays = 0;
             stats.VacationDays = 0;
-            stats.VabDays = 0;
+            stats.JourHours = 0;
             stats.OvertimePay = 0;
             stats.ExtraPay = 0;
 
@@ -394,7 +394,7 @@ namespace MyWorkSalary.Services.Handlers
         #endregion
 
         #region Leave
-        // Kommer senare: GetSickDays, GetVacationDays, GetVABDays etc.
+        // Kommer senare: GetSickDays, GetVacationDays etc.
         #endregion
 
         #region OnCall / Jour

@@ -15,6 +15,7 @@ namespace MyWorkSalary.Services
         public DatabaseService(string dbPath)
         {
             _database = new SQLiteConnection(dbPath);
+
             CreateTables();
             InitializeRepositories();
         }
@@ -28,7 +29,6 @@ namespace MyWorkSalary.Services
         public FlexTimeRepository FlexTime { get; private set; }
         public WorkShiftRepository WorkShifts { get; private set; }
         public SickLeaveRepository SickLeaves { get; private set; }
-        public VABLeaveRepository VABLeaves { get; private set; }
         public VacationLeaveRepository VacationLeaves { get; private set; }
         public OnCallShiftRepository OnCallShifts { get; private set; }
         public HolidayRepository Holidays { get; private set; }
@@ -59,7 +59,6 @@ namespace MyWorkSalary.Services
             _database.DeleteAll<WorkShift>();
             _database.DeleteAll<OBEvent>();
             _database.DeleteAll<SickLeave>();
-            _database.DeleteAll<VABLeave>();
             _database.DeleteAll<VacationLeave>();
             _database.DeleteAll<OnCallShift>();
             _database.DeleteAll<Holiday>();
@@ -75,7 +74,6 @@ namespace MyWorkSalary.Services
             _database.CreateTable<WorkShift>();
             _database.CreateTable<OBEvent>();
             _database.CreateTable<SickLeave>();
-            _database.CreateTable<VABLeave>();
             _database.CreateTable<VacationLeave>();
             _database.CreateTable<OnCallShift>();
             _database.CreateTable<Holiday>();
@@ -89,12 +87,33 @@ namespace MyWorkSalary.Services
             FlexTime = new FlexTimeRepository(this);
             WorkShifts = new WorkShiftRepository(this);
             SickLeaves = new SickLeaveRepository(this);
-            VABLeaves = new VABLeaveRepository(this);
             VacationLeaves = new VacationLeaveRepository(this);
             OnCallShifts = new OnCallShiftRepository(this);
             Holidays = new HolidayRepository(this);
         }
         #endregion
+
+        // Denna metod används för att helt ta bort VAB-relaterade data och tabeller, i syfte att "ta bort VAB-funktionen" från appen.
+        private void RemoveVabCompletely()
+        {
+            try
+            {
+                // 1) Rensa ev. VABLeave data (om tabellen finns)
+                _database.Execute("DELETE FROM VABLeave");
+
+                // 2) Ta bort WorkShift-rader som är VAB.
+                // OBS: VAB låg sist i enumen och var därför normalt int=4.
+                _database.Execute("DELETE FROM WorkShift WHERE ShiftType = ?", 4);
+
+                // 3) Droppa VABLeave-tabellen helt
+                _database.Execute("DROP TABLE IF EXISTS VABLeave");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ RemoveVabCompletely error: {ex.Message}");
+                // medvetet: vi kastar inte här för att inte blocka app-start
+            }
+        }
 
     }
 }

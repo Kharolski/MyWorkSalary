@@ -26,9 +26,6 @@ namespace MyWorkSalary.Services.Interfaces
         // Semester
         decimal CalculateVacationPay(int days, JobProfile jobProfile);
 
-        // Vård av barn - VAB
-        VABDeductionResult CalculateVABDeduction(DateTime date, JobProfile jobProfile);
-
         // Sjukskrivning
         public decimal CalculateHourlyRateFromMonthlySalary(JobProfile jobProfile);
 

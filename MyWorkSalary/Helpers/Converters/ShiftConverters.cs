@@ -20,7 +20,6 @@ namespace MyWorkSalary.Helpers.Converters
                     ShiftType.Vacation => $"🏖️",     //  {LocalizationHelper.Translate("ShiftType_Vacation")}
                     ShiftType.SickLeave => $"🤒",    //  {LocalizationHelper.Translate("ShiftType_SickLeave")}
                     ShiftType.OnCall => $"📞",       //  {LocalizationHelper.Translate("ShiftType_OnCall")}
-                    ShiftType.VAB => $"👶",          //  {LocalizationHelper.Translate("ShiftType_VAB")}
                     ShiftType.Regular => "🕒",
                     _ => $"📋"   //  {LocalizationHelper.Translate("ShiftType_Regular")}
                 };
@@ -90,12 +89,6 @@ namespace MyWorkSalary.Helpers.Converters
         {
             if (value is WorkShift shift)
             {
-                // SPECIALHANTERING FÖR VAB
-                if (shift.ShiftType == ShiftType.VAB)
-                {
-                    return GetVABDescription(shift);
-                }
-
                 // SPECIALHANTERING FÖR SEMESTER
                 if (shift.ShiftType == ShiftType.Vacation)
                 {
@@ -185,52 +178,6 @@ namespace MyWorkSalary.Helpers.Converters
             return LocalizationHelper.Translate("SickLeave_Loading");
         }
 
-        private string GetVABDescription(WorkShift shift)
-        {
-            // Parse VAB-data från Notes
-            if (shift.Notes != null && shift.Notes.StartsWith("VABData:"))
-            {
-                try
-                {
-                    var data = shift.Notes.Replace("VABData:", "");
-                    var parts = data.Split('|');
-
-                    var scheduledPart = parts.FirstOrDefault(p => p.StartsWith("Scheduled="));
-                    var workedPart = parts.FirstOrDefault(p => p.StartsWith("Worked="));
-                    var isHourlyPart = parts.FirstOrDefault(p => p.StartsWith("IsHourly="));
-
-                    if (scheduledPart != null && workedPart != null && isHourlyPart != null)
-                    {
-                        var scheduled = decimal.Parse(scheduledPart.Replace("Scheduled=", ""));
-                        var worked = decimal.Parse(workedPart.Replace("Worked=", ""));
-                        var isHourly = bool.Parse(isHourlyPart.Replace("IsHourly=", ""));
-
-                        if (isHourly)
-                        {
-                            return LocalizationHelper.Translate("VAB_Employee");
-                        }
-                        else if (worked == 0)
-                        {
-                            return LocalizationHelper.Translate("VAB_FullDay");
-                        }
-                        else
-                        {
-                            var lostHours = scheduled - worked;
-                            return string.Format(LocalizationHelper.Translate("VAB_PartialDay"), lostHours);
-                            //return $"Vab - Delvis (-{lostHours:F1}t)"; // Visa förlorade timmar i beskrivningen
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"❌ VAB description error: {ex.Message}");
-                }
-            }
-
-            // Fallback
-            return LocalizationHelper.Translate("VAB_Default");
-        }
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
@@ -261,7 +208,6 @@ namespace MyWorkSalary.Helpers.Converters
                         ? $"{shift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")}"
                         : LocalizationHelper.Translate("HoursDisplay_OnCall"),
                     ShiftType.SickLeave => GetSickLeaveHours(shift),  // Async-hantering
-                    ShiftType.VAB => GetVABHours(shift),
                     ShiftType.Vacation => GetVacationHours(shift),
                     _ => $"{shift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")}"
                 };
@@ -337,48 +283,6 @@ namespace MyWorkSalary.Helpers.Converters
 
             // Fallback
             return LocalizationHelper.Translate("HoursDisplay_ZeroHours");
-        }
-
-        private string GetVABHours(WorkShift shift)
-        {
-            // Parse VAB-data från Notes
-            if (shift.Notes != null && shift.Notes.StartsWith("VABData:"))
-            {
-                try
-                {
-                    var data = shift.Notes.Replace("VABData:", "");
-                    var parts = data.Split('|');
-
-                    var scheduledPart = parts.FirstOrDefault(p => p.StartsWith("Scheduled="));
-                    var workedPart = parts.FirstOrDefault(p => p.StartsWith("Worked="));
-                    var isHourlyPart = parts.FirstOrDefault(p => p.StartsWith("IsHourly="));
-
-                    if (scheduledPart != null && workedPart != null && isHourlyPart != null)
-                    {
-                        var scheduled = decimal.Parse(scheduledPart.Replace("Scheduled=", ""));
-                        var worked = decimal.Parse(workedPart.Replace("Worked=", ""));
-                        var isHourly = bool.Parse(isHourlyPart.Replace("IsHourly=", ""));
-
-                        if (isHourly)
-                        {
-                            return LocalizationHelper.Translate("HoursDisplay_VAB"); // Timanställd
-                        }
-                        else
-                        {
-                            return worked == 0
-                                ? LocalizationHelper.Translate("HoursDisplay_ZeroHours")                // Heldag VAB = 0 arbetade timmar
-                                : $"{worked:F1}{LocalizationHelper.Translate("HoursAbbreviation")}";    // Delvis VAB = bara arbetade timmar
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"❌ {LocalizationHelper.Translate("HoursDisplay_Error")} vid VAB-parsing: {ex.Message}");
-                }
-            }
-
-            // Fallback
-            return LocalizationHelper.Translate("HoursDisplay_VAB");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

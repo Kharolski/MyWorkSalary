@@ -32,11 +32,6 @@ namespace MyWorkSalary.Services.Interfaces
         /// Hämtar alla semesterdagar under perioden.
         /// </summary>
         IEnumerable<VacationLeave> GetVacationForPeriod(int jobId, DateTime start, DateTime end);
-
-        /// <summary>
-        /// Hämtar alla VAB-dagar under perioden.
-        /// </summary>
-        IEnumerable<VABLeave> GetVabForPeriod(int jobId, DateTime start, DateTime end);
         #endregion
 
         #region OnCall

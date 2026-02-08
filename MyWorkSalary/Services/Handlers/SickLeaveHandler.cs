@@ -511,15 +511,6 @@ namespace MyWorkSalary.Services.Handlers
 
         #region Validation Methods
         /// <summary>
-        /// Kontrollerar konflikter för sjukskrivning (från HandleSickLeave)
-        /// </summary>
-        private ConflictCheckResult CheckForConflicts(DateTime date, int jobProfileId, SickLeaveType sickType)
-        {
-            // Konvertera SickLeaveType till ShiftType och använd huvudmetoden
-            return CheckForConflicts(date, jobProfileId, ShiftType.SickLeave);
-        }
-
-        /// <summary>
         /// Kontrollerar om det finns konflikter för valt datum
         /// </summary>
         public ConflictCheckResult CheckForConflicts(DateTime date, int jobProfileId, ShiftType newShiftType)  // ÄNDRA från SickLeaveType till ShiftType
@@ -533,12 +524,6 @@ namespace MyWorkSalary.Services.Handlers
 
                 return shift.ShiftType switch
                 {
-                    ShiftType.VAB => new ConflictCheckResult
-                    {
-                        CanProceed = false,
-                        ErrorMessage = LocalizationHelper.Translate("Conflict_SickWithVAB")
-                    },
-
                     ShiftType.Vacation => new ConflictCheckResult
                     {
                         CanProceed = false,

@@ -447,13 +447,7 @@
                             <Label Text="{resx:Translate Salary_Balance_Vacation}" />
                             <Label Text="{Binding VacationDaysText}" Grid.Column="1" />
                         </Grid>
-
-                        <!-- VAB -->
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Label Text="{resx:Translate Salary_Balance_VAB}" />
-                            <Label Text="{Binding VabDaysText}" Grid.Column="1" />
-                        </Grid>
-
+                        
                         <!-- Jour -->
                         <Grid ColumnDefinitions="*,Auto">
                             <Label Text="{resx:Translate Salary_Balance_OnCall}" />

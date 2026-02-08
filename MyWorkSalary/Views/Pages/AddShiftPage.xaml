@@ -44,11 +44,6 @@
                 <shifttypes:SickLeaveFormView BindingContext="{Binding SickLeaveVM}" />
             </ContentView>
 
-            <!-- 🍼 VAB FORM -->
-            <ContentView IsVisible="{Binding ShowVABForm}">
-                <shifttypes:VABFormView BindingContext="{Binding VABVM}" />
-            </ContentView>
-
             <!-- 📞 ONCALL/JOUR FORM - LÄGG TILL DENNA -->
             <ContentView IsVisible="{Binding ShowOnCallForm}">
                 <shifttypes:OnCallFormView BindingContext="{Binding OnCallVM}" />

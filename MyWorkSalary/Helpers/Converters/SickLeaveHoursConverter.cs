@@ -25,7 +25,6 @@ public class SickLeaveHoursConverter : AsyncValueConverter<WorkShift, string>
             ShiftType.OnCall => workShift.TotalHours > 0
                 ? $"{workShift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")}"
                 : LocalizationHelper.Translate("ShiftType_OnCallShift"),
-            ShiftType.VAB => $"-8{LocalizationHelper.Translate("HoursAbbreviation")}",
             ShiftType.Vacation => $"8{LocalizationHelper.Translate("HoursAbbreviation")}",
             _ => $"{workShift.TotalHours:F1}{LocalizationHelper.Translate("HoursAbbreviation")}"
         };

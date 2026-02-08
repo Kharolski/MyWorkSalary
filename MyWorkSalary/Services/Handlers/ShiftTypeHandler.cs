@@ -13,7 +13,6 @@ namespace MyWorkSalary.Services.Handlers
 
         private readonly IWorkShiftRepository _workShiftRepository;
         private readonly ISickLeaveRepository _sickLeaveRepository;
-        private readonly VABHandler _vabHandler;
         private readonly SickLeaveHandler _sickLeaveHandler;
 
         #endregion
@@ -23,12 +22,10 @@ namespace MyWorkSalary.Services.Handlers
         public ShiftTypeHandler(
             IWorkShiftRepository workShiftRepository,
             ISickLeaveRepository sickLeaveRepository,
-            VABHandler vabHandler,
             SickLeaveHandler sickLeaveHandler)
         {
             _workShiftRepository = workShiftRepository;
             _sickLeaveRepository = sickLeaveRepository;
-            _vabHandler = vabHandler;
             _sickLeaveHandler = sickLeaveHandler;
         }
 
@@ -55,7 +52,6 @@ namespace MyWorkSalary.Services.Handlers
 
             return shiftType switch
             {
-                ShiftType.VAB => await _vabHandler.HandleVAB(date, jobProfile, startTime, endTime),
                 ShiftType.SickLeave => HandleSickLeaveRequest(date, jobProfile),
                 ShiftType.Regular => HandleRegular(date, startTime, endTime, jobProfile),
                 _ => new ShiftHandlerResult { Success = false, Message = "Okänd passtyp" }
@@ -124,18 +120,6 @@ namespace MyWorkSalary.Services.Handlers
                 RequiresTimeInput = true,
                 Message = LocalizationHelper.Translate("Shift_EnterTime")
             };
-        }
-
-        #endregion
-
-        #region VAB Handling
-
-        /// <summary>
-        /// Bekräftar ersättning för VAB
-        /// </summary>
-        public async Task<ShiftHandlerResult> ConfirmReplaceWithVAB(DateTime date, JobProfile jobProfile)
-        {
-            return await _vabHandler.ConfirmReplaceWithVAB(date, jobProfile);
         }
 
         #endregion
@@ -231,12 +215,6 @@ namespace MyWorkSalary.Services.Handlers
                             _sickLeaveRepository.DeleteSickLeave(sickLeave.Id);
                         }
                         break;
-
-                        // case ShiftType.VAB:
-                        //     // Hantera VAB-data
-                        //     break;
-
-                        // Lägg till fler typer här när de implementeras
                 }
 
                 // Radera huvudpasset

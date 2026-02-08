@@ -91,33 +91,6 @@ namespace MyWorkSalary.Services.Repositories
             }
         }
 
-        public IEnumerable<VABLeave> GetVabForPeriod(int jobId, DateTime startDate, DateTime endDate)
-        {
-            try
-            {
-                var vabLeaves = (from v in _database.Table<VABLeave>()
-                                 join w in _database.Table<WorkShift>()
-                                 on v.WorkShiftId equals w.Id
-                                 where w.JobProfileId == jobId &&
-                                       w.ShiftDate >= startDate && w.ShiftDate <= endDate
-                                 orderby w.ShiftDate
-                                 select v).ToList();
-
-                foreach (var vab in vabLeaves)
-                {
-                    vab.WorkShift = _database.Table<WorkShift>()
-                                             .FirstOrDefault(w => w.Id == vab.WorkShiftId);
-                }
-
-                return vabLeaves;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"FEL i GetVabForPeriod: {ex.Message}");
-                throw;
-            }
-        }
-
         public IEnumerable<VacationLeave> GetVacationForPeriod(int jobId, DateTime startDate, DateTime endDate)
         {
             try

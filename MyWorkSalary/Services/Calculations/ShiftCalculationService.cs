@@ -29,7 +29,6 @@ namespace MyWorkSalary.Services.Calculations
                 return shiftType switch
                 {
                     ShiftType.Vacation => (Hours: 0, Pay: CalculateVacationPay(numberOfDays, jobProfile)),
-                    ShiftType.VAB => CalculateVABShift(selectedDate, jobProfile), 
                     ShiftType.Regular or ShiftType.OnCall => CalculateRegularShift(selectedDate, startTime, endTime, jobProfile, breakMinutes),
                     _ => (Hours: 0, Pay: 0)
                 };
@@ -78,17 +77,6 @@ namespace MyWorkSalary.Services.Calculations
             return (Hours: hours, Pay: regularPay);
         }
 
-        /// <summary>
-        /// Beräknar VAB-pass (använder VAB-logiken)
-        /// </summary>
-        private (decimal Hours, decimal Pay) CalculateVABShift(DateTime selectedDate, JobProfile jobProfile)
-        {
-            // VAB = inga arbetstimmar, men kan ha ersättning från Försäkringskassan
-            var vabResult = CalculateVABDeduction(selectedDate, jobProfile);
-
-            // Returnera 0 timmar och VAB-ersättning från företaget 0
-            return (Hours: 0, Pay: 0);
-        }
         #endregion
 
         #region CalculateRegularShift
@@ -137,74 +125,6 @@ namespace MyWorkSalary.Services.Calculations
 
             // Semester = full lön, 8h/dag standard
             return days * 8 * jobProfile.HourlyRate.Value;
-        }
-        #endregion
-
-        #region VAB Calculations
-        /// <summary>
-        /// Beräknar VAB-avdrag för månadslön
-        /// </summary>
-        /// <param name="date">VAB-datum</param>
-        /// <param name="jobProfile">Jobbprofil</param>
-        /// <returns>VAB avdragsinformation</returns>
-        public VABDeductionResult CalculateVABDeduction(DateTime date, JobProfile jobProfile)
-        {
-            // Timanställd - inget avdrag (FK betalar)
-            if (jobProfile.EmploymentType == EmploymentType.Temporary)
-            {
-                return new VABDeductionResult
-                {
-                    HasDeduction = false,
-                    DeductionAmount = 0,
-                    ExpectedHours = 0,
-                    Description = LocalizationHelper.Translate("VAB_Description_Hourly")
-                };
-            }
-
-            // Månadslön - beräkna avdrag
-            if (jobProfile.MonthlySalary.HasValue && jobProfile.MonthlySalary > 0)
-            {
-                var expectedHours = 8.0m; // Standard arbetsdag
-                var dailyRate = jobProfile.MonthlySalary.Value / 21; // Genomsnittliga arbetsdagar per månad
-
-                return new VABDeductionResult
-                {
-                    HasDeduction = true,
-                    DeductionAmount = dailyRate,
-                    ExpectedHours = expectedHours,
-                    Description = string.Format(
-                        LocalizationHelper.Translate("VAB_Description_WithDeduction"),
-                        expectedHours,
-                        dailyRate)
-                };
-            }
-
-            // Timlön med fast anställning
-            if (jobProfile.HourlyRate.HasValue && jobProfile.HourlyRate > 0)
-            {
-                var expectedHours = 8.0m;
-                var dailyRate = expectedHours * jobProfile.HourlyRate.Value;
-
-                return new VABDeductionResult
-                {
-                    HasDeduction = true,
-                    DeductionAmount = dailyRate,
-                    ExpectedHours = expectedHours,
-                    Description = string.Format(
-                        LocalizationHelper.Translate("VAB_Description_WithDeduction"),
-                        expectedHours,
-                        dailyRate)
-                };
-            }
-
-            // Fallback
-            return new VABDeductionResult
-            {
-                HasDeduction = false,
-                DeductionAmount = 0,
-                ExpectedHours = 0,
-                Description = LocalizationHelper.Translate("VAB_Description_NoInfo")
-            };
         }
         #endregion
 
@@ -288,17 +208,4 @@ namespace MyWorkSalary.Services.Calculations
         #endregion
 
     }
-
-    #region Result Classes
-    /// <summary>
-    /// Resultat av VAB-avdragsberäkning
-    /// </summary>
-    public class VABDeductionResult
-    {
-        public bool HasDeduction { get; set; }
-        public decimal DeductionAmount { get; set; }
-        public decimal ExpectedHours { get; set; }
-        public string Description { get; set; } = string.Empty;
-    }
-    #endregion
 }

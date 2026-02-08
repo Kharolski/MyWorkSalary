@@ -76,15 +76,6 @@ namespace MyWorkSalary.Services.Validation
                             "💼 " + shiftInfo + "\n\n" +
                             LocalizationHelper.Translate("ShiftValidation_WorkShift_Remove"),
                             conflictingShifts);
-
-                    case ShiftType.VAB:
-                        conflictingShifts.Add(existing);
-                        return (false,
-                            LocalizationHelper.Translate("ShiftValidation_VAB_Exists") + "\n\n" +
-                            LocalizationHelper.Translate("ShiftValidation_Date", dateText) + "\n" +
-                            "👶 " + LocalizationHelper.Translate("ShiftValidation_VAB_Info") + "\n\n" +
-                            LocalizationHelper.Translate("ShiftValidation_VAB_Remove"),
-                            conflictingShifts);
                 }
             }
 

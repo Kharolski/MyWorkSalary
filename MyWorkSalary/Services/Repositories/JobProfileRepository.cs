@@ -101,10 +101,6 @@ namespace MyWorkSalary.Services.Repositories
                     var onCallShifts = _database.Table<OnCallShift>().Where(x => x.WorkShiftId == shift.Id).ToList();
                     foreach (var onCall in onCallShifts)
                         _database.Delete<OnCallShift>(onCall.Id);
-
-                    var vabLeaves = _database.Table<VABLeave>().Where(x => x.WorkShiftId == shift.Id).ToList();
-                    foreach (var vab in vabLeaves)
-                        _database.Delete<VABLeave>(vab.Id);
                 }
 
                 // 3. Radera alla WorkShifts

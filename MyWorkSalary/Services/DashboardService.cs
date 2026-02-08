@@ -97,26 +97,6 @@ namespace MyWorkSalary.Services
                         stats.RegularHours += shift.RegularHours;
                         break;
 
-                    case ShiftType.VAB: // Vård av barn
-                        stats.VabDays++;
-
-                        var vabLeave = _databaseService.VABLeaves.GetByWorkShiftId(shift.Id);
-                        if (vabLeave != null)
-                        {
-                            // Alltid delvis VAB - räkna bara bort de timmar man inte jobbat
-                            decimal scheduled = vabLeave.ScheduledHours;
-                            decimal worked = vabLeave.WorkedHours;
-                            decimal notWorked = scheduled - worked;
-
-                            hoursToDeduct += notWorked;
-                            stats.VabHours += notWorked;
-                            stats.TotalHours += worked;
-
-                            // Räkna som arbetsdag om man jobbat något
-                            if (worked > 0)
-                                stats.WorkDays++;
-                        }
-                        break;
                 }
             }
 
@@ -243,13 +223,6 @@ namespace MyWorkSalary.Services
                         activity.TimeText = GetTimeDisplayText(shift);
                         activity.Description = LocalizationHelper.Translate("OnCall");
                         activity.Duration = LocalizationHelper.Translate("OnCallLabel");
-                        break;
-
-                    case ShiftType.VAB: // Vård av barn
-                        activity.Icon = LocalizationHelper.Translate("VABIcon");
-                        activity.TimeText = GetDateDisplayText(shift.ShiftDate);
-                        activity.Description = LocalizationHelper.Translate("VAB");
-                        activity.Duration = LocalizationHelper.Translate("OneDay");
                         break;
                 }
 

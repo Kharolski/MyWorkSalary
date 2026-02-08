@@ -19,7 +19,6 @@ namespace MyWorkSalary.Models.Reports
         #region Frånvaro
         public int SickDays { get; set; }
         public int VacationDays { get; set; }
-        public int VabDays { get; set; }
         #endregion
 
         #region Lön – BRUTTO (före skatt)
