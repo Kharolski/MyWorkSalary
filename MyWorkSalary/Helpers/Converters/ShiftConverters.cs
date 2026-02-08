@@ -102,8 +102,8 @@ namespace MyWorkSalary.Helpers.Converters
                     // Kolla om det är obetald semester
                     bool isUnpaidVacation = shift.Notes != null && shift.Notes.Contains("PlannedHours:");
 
-                    return isUnpaidVacation 
-                        ? LocalizationHelper.Translate("ShiftType_UnpaidLeave") 
+                    return isUnpaidVacation
+                        ? LocalizationHelper.Translate("ShiftType_UnpaidLeave")
                         : LocalizationHelper.Translate("ShiftType_Vacation");
                 }
 
@@ -413,4 +413,56 @@ namespace MyWorkSalary.Helpers.Converters
             WorkShiftId = workShiftId;
         }
     }
+
+    #region Extra pass
+    public class ShiftToShowExtraShiftStatusConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is WorkShift s && s.ShiftType == ShiftType.Regular && s.IsExtraShift;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
+    }
+
+    public class ShiftToExtraShiftStatusTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not WorkShift s)
+                return "";
+
+            if (s.ShiftType != ShiftType.Regular || !s.IsExtraShift)
+                return "";
+
+            var job = ActiveJobProvider.Current;
+            if (job?.ExtraShiftEnabled == true)
+                return LocalizationHelper.Translate("ExtraShift_Status_Active");
+
+            return LocalizationHelper.Translate("ExtraShift_Status_DisabledInSettings");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
+    }
+
+    public class ShiftToExtraShiftStatusColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not WorkShift s || s.ShiftType != ShiftType.Regular || !s.IsExtraShift)
+                return Colors.Transparent;
+
+            var job = ActiveJobProvider.Current;
+            if (job?.ExtraShiftEnabled == true)
+                return Colors.Green;
+
+            return Color.FromArgb("#FB8C00"); // orange
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
+    }
+    #endregion
 }

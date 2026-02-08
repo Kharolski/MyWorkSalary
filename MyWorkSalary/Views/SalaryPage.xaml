@@ -115,39 +115,45 @@
             <!-- ===================== -->
             <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
                 <VerticalStackLayout Spacing="12">
-                    <!-- TODO: resx Salary_Summary_Title och på alla hårdkodat text -->
                     <Label Text="{resx:Translate Salary_Summary_Title}" Style="{StaticResource SectionTitleLabel}" />
 
-                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto, Auto,Auto" RowSpacing="8">
-
+                    <VerticalStackLayout Spacing="8">
                         <!-- Rad 1: Lön -->
-                        <Label Text="{resx:Translate Salary_Summary_BaseSalary}" />
-                        <Label Text="{Binding BaseSalaryText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="{resx:Translate Salary_Summary_BaseSalary}" />
+                            <Label Text="{Binding BaseSalaryText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
+                        </Grid>
 
                         <!-- Rad 2: Arbetade timmar -->
-                        <Label Text="{resx:Translate Salary_Summary_HoursWorked}" Grid.Row="1" />
-                        <Label Text="{Binding TotalHoursText}" Grid.Row="1" Grid.Column="1"
-                               Style="{StaticResource SalaryPositiveText}"/>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="{resx:Translate Salary_Summary_HoursWorked}" />
+                            <Label Text="{Binding TotalHoursText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}"/>
+                        </Grid>
 
                         <!-- Rad 3: OB-ersättning -->
-                        <Label Text="{resx:Translate Salary_Summary_OB}" Grid.Row="2" />
-                        <Label Text="{Binding ObPayText}"
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                Style="{StaticResource SalaryPositiveText}" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="{resx:Translate Salary_Summary_OB}" />
+                            <Label Text="{Binding ObPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
+                        </Grid>
 
-                        <!-- Rad 4: Semesterersättning (Timanställd) -->
-                        <Label Text="{resx:Translate Salary_Summary_VacationPay}" Grid.Row="3" IsVisible="{Binding ShowVacationPay}" />
-                        <Label Text="{Binding VacationPayText}"
-                               Grid.Row="3"
-                               Grid.Column="1"
-                               Style="{StaticResource SalaryPositiveText}"
-                               IsVisible="{Binding ShowVacationPay}" />
+                        <!-- Rad 4: Extra pass -->
+                        <Grid  ColumnDefinitions="*,Auto" IsVisible="{Binding ShowExtraPay}">
+                            <Label Text="{resx:Translate Salary_Summary_ExtraShift}"/>
+                            <Label Text="{Binding ExtraPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
+                        </Grid>
                         
-                        <!-- Rad 5: Skatt -->
-                        <Label Text="{resx:Translate Salary_Summary_Tax}" Grid.Row="4" />
-                        <Label Text="{Binding TaxText}" Grid.Row="4" Grid.Column="1" Style="{StaticResource SalaryNegativeText}" />
-                    </Grid>
+                        <!-- Rad 5: Semesterersättning (Timanställd) -->
+                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowVacationPay}">
+                            <Label Text="{resx:Translate Salary_Summary_VacationPay}" />
+                            <Label Text="{Binding VacationPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}"/>
+                        </Grid>
+                        
+                        <!-- Rad 6: Skatt -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="{resx:Translate Salary_Summary_Tax}" />
+                            <Label Text="{Binding TaxText}" Grid.Column="1" Style="{StaticResource SalaryNegativeText}" />
+                        </Grid>
+                    </VerticalStackLayout>
 
                     <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
                     <Grid ColumnDefinitions="*,Auto">
@@ -308,6 +314,82 @@
             </Frame>
 
             <!-- ===================== -->
+            <!-- ⚡ KORT 3.5: EXTRA PASS (EXPANDERBAR) -->
+            <!-- ===================== -->
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasExtraShifts}">
+                <VerticalStackLayout Spacing="10">
+
+                    <!-- Header (klickbar) -->
+                    <Grid ColumnDefinitions="40,*,Auto,25" Padding="5">
+                        <Label Text="⚡" FontSize="20" VerticalOptions="Center" />
+
+                        <Label Text="{resx:Translate Salary_ExtraShift_Title}"
+                               Grid.Column="1"
+                               Style="{StaticResource SectionTitleLabel}"
+                               VerticalOptions="Center"
+                               LineBreakMode="TailTruncation" />
+
+                        <Label Text="{Binding ExtraPayText}"
+                               Grid.Column="2"
+                               Style="{StaticResource SalaryPositiveText}"
+                               HorizontalTextAlignment="End"
+                               VerticalOptions="Center" />
+
+                        <Label Grid.Column="3"
+                               Text="{Binding ExtraChevronIcon}"
+                               FontSize="18"
+                               VerticalOptions="Center"
+                               HorizontalTextAlignment="End" />
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleExtraCardCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <!-- Expand -->
+                    <VerticalStackLayout IsVisible="{Binding IsExtraExpanded}" Spacing="8" Padding="0,0,0,2">
+
+                        <!-- Detaljheader -->
+                        <Grid ColumnDefinitions="80,*,100" ColumnSpacing="10">
+                            <Label Text="{resx:Translate Common_Date}" FontSize="12" TextColor="Gray" />
+                            <Label Text="{resx:Translate Common_Hours}" Grid.Column="1" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
+                            <Label Text="{resx:Translate Common_Amount}" Grid.Column="2" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
+                        </Grid>
+
+                        <!-- Rader -->
+                        <CollectionView ItemsSource="{Binding ExtraShiftRows}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="80,*,100" ColumnSpacing="10" Padding="0,2">
+                                        <Label Text="{Binding DateText}" />
+                                        <Label Text="{Binding HoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
+                                        <Label Text="{Binding PayText}" Grid.Column="2" HorizontalTextAlignment="End"
+                                   Style="{StaticResource SalaryPositiveText}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <!-- Footer -->
+                        <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
+                        <Grid ColumnDefinitions="170,Auto,*" Margin="2,0">
+                            <Label Text="{resx:Translate Salary_ExtraShift_Total}" FontAttributes="Bold" />
+                            <Label Text="{Binding TotalExtraHoursText, StringFormat='{0} h'}"
+                       Grid.Column="1"
+                       Style="{StaticResource SalaryPositiveText}"
+                       VerticalOptions="Center" />
+                            <Label Text="{Binding ExtraPayText}"
+                       Grid.Column="2"
+                       FontAttributes="Bold"
+                       Style="{StaticResource SalaryPositiveText}"
+                       HorizontalTextAlignment="End" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ===================== -->
             <!-- 👤 KORT 4: FRÅNVARO & BALANS (EXPANDERBAR) -->
             <!-- ===================== -->
             <Frame
@@ -342,7 +424,7 @@
                         <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowTimeBank}">
                             <Label Text="{resx:Translate Salary_Balance_TimeBank}" />
                             <Label Text="{Binding TimeBankText}" Grid.Column="1"
-                                    TextColor="{Binding TimeBankColorValue, Converter={StaticResource AmountToColorConverter}}" />
+                                   TextColor="{Binding TimeBankColorValue, Converter={StaticResource AmountToColorConverter}}" />
                         </Grid>
 
                         <!-- Förväntade timmar -->

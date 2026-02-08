@@ -2,7 +2,8 @@
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Models.Enums;
-using MyWorkSalary.Models.Reports; // här ligger SalaryStats
+using MyWorkSalary.Models.Reports;
+using MyWorkSalary.Helpers.Localization; // här ligger SalaryStats
 
 namespace MyWorkSalary.Services.Handlers
 {
@@ -90,6 +91,32 @@ namespace MyWorkSalary.Services.Handlers
             // Arbetade timmar (klippt inom vald period)
             var hoursStart = profile.EmploymentType == EmploymentType.Permanent ? payStart : workStart;
             var hoursEnd = profile.EmploymentType == EmploymentType.Permanent ? payEnd : workEnd;
+
+            stats.ExtraPay = 0;
+            // Extra pass: betalas i payMonth men avser workMonth
+            stats.ExtraShiftDetails.Clear();
+
+            if (profile.ExtraShiftEnabled)
+            {
+                var extraShifts = (_salaryRepository.GetShiftsForPeriod(jobId, workStart, workEnd) ?? Enumerable.Empty<WorkShift>())
+                .Where(s => s.ShiftType == ShiftType.Regular)
+                .Where(s => s.IsExtraShift)
+                .Where(s => s.ExtraShiftPay > 0)
+                .OrderBy(s => s.ShiftDate)
+                .ToList();
+
+                foreach (var s in extraShifts)
+                {
+                    stats.ExtraShiftDetails.Add(new ExtraShiftDetail
+                    {
+                        Date = s.ShiftDate,
+                        Hours = s.TotalHours,
+                        ExtraPay = s.ExtraShiftPay
+                    });
+                }
+
+                stats.ExtraPay = Math.Round(extraShifts.Sum(s => s.ExtraShiftPay), 2);
+            }
 
             stats.TotalHours = shifts.Sum(s => ShiftHoursSafe(s, hoursStart, hoursEnd));
 
@@ -214,7 +241,7 @@ namespace MyWorkSalary.Services.Handlers
 
             // ===== FALLBACK: räkna "live" från pass + OBRates =====
             stats.UsedObFallback = true;
-            stats.ObInfoNote = "OB beräknas från nuvarande regler (OB-händelser saknas för perioden).";
+            stats.ObInfoNote = LocalizationHelper.Translate("ObInfo_FallbackUsed");
 
             // För fallback behöver vi OB-rates för jobbet
             // Om du inte har en repository här, kan du använda _salaryRepository.GetObShiftsForPeriod(jobId, ...) om den finns kvar.
@@ -225,7 +252,7 @@ namespace MyWorkSalary.Services.Handlers
             if (!stats.HasObRulesConfigured)
             {
                 stats.UsedObFallback = false; // fallback gick inte att använda
-                stats.ObInfoNote = "OB är inte konfigurerat. Lägg till OB-regler i Inställningar.";
+                stats.ObInfoNote = LocalizationHelper.Translate("ObInfo_NoRulesConfigured");
                 return;
             }
 
@@ -243,12 +270,6 @@ namespace MyWorkSalary.Services.Handlers
                     OBDayType.Weekday;
 
                 var obByCategory = CalculateObHoursByCategory(shift, obRates);
-
-                obByCategory = obByCategory
-                    .Where(x =>
-                        (x.Category != OBCategory.Evening || shift.EveningActiveAtThatTime) &&
-                        (x.Category != OBCategory.Night || shift.NightActiveAtThatTime))
-                    .ToList();
 
                 foreach (var (category, hours) in obByCategory)
                 {

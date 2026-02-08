@@ -667,6 +667,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Amount.
+        /// </summary>
+        internal static string Common_Amount {
+            get {
+                return ResourceManager.GetString("Common_Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Common_Cancel {
@@ -681,6 +690,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Common_Current {
             get {
                 return ResourceManager.GetString("Common_Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string Common_Date {
+            get {
+                return ResourceManager.GetString("Common_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hours.
+        /// </summary>
+        internal static string Common_Hours {
+            get {
+                return ResourceManager.GetString("Common_Hours", resourceCulture);
             }
         }
         
@@ -1821,6 +1848,114 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra shift (mandated).
+        /// </summary>
+        internal static string ExtraShift_Status_Active {
+            get {
+                return ResourceManager.GetString("ExtraShift_Status_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra shift (inactive in Settings).
+        /// </summary>
+        internal static string ExtraShift_Status_DisabledInSettings {
+            get {
+                return ResourceManager.GetString("ExtraShift_Status_DisabledInSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fixed amount.
+        /// </summary>
+        internal static string ExtraShiftPayType_FixedAmount {
+            get {
+                return ResourceManager.GetString("ExtraShiftPayType_FixedAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Per hour.
+        /// </summary>
+        internal static string ExtraShiftPayType_PerHour {
+            get {
+                return ResourceManager.GetString("ExtraShiftPayType_PerHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount per pass.
+        /// </summary>
+        internal static string ExtraShiftSettings_AmountFixed {
+            get {
+                return ResourceManager.GetString("ExtraShiftSettings_AmountFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount per hour.
+        /// </summary>
+        internal static string ExtraShiftSettings_AmountPerHour {
+            get {
+                return ResourceManager.GetString("ExtraShiftSettings_AmountPerHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        internal static string ExtraShiftSettings_Enable {
+            get {
+                return ResourceManager.GetString("ExtraShiftSettings_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mandated shift bonus: {0} per shift.
+        /// </summary>
+        internal static string ExtraShiftSettings_Summary_Fixed {
+            get {
+                return ResourceManager.GetString("ExtraShiftSettings_Summary_Fixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mandated shift bonus: {0} per hour.
+        /// </summary>
+        internal static string ExtraShiftSettings_Summary_PerHour {
+            get {
+                return ResourceManager.GetString("ExtraShiftSettings_Summary_PerHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💡 Enable replacement for passes marked as extra passes..
+        /// </summary>
+        internal static string ExtraShiftSettings_Tip {
+            get {
+                return ResourceManager.GetString("ExtraShiftSettings_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra shift (mandatory).
+        /// </summary>
+        internal static string ExtraShiftSettings_Title {
+            get {
+                return ResourceManager.GetString("ExtraShiftSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string ExtraShiftSettings_Type {
+            get {
+                return ResourceManager.GetString("ExtraShiftSettings_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balanced.
         /// </summary>
         internal static string FlexBalanced {
@@ -2591,6 +2726,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ObHoursText {
             get {
                 return ResourceManager.GetString("ObHoursText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overtime is calculated from the current rules (no Overtime events found for this period)..
+        /// </summary>
+        internal static string ObInfo_FallbackUsed {
+            get {
+                return ResourceManager.GetString("ObInfo_FallbackUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overtime is not configured. Add Unsocial hour rules in Settings..
+        /// </summary>
+        internal static string ObInfo_NoRulesConfigured {
+            get {
+                return ResourceManager.GetString("ObInfo_NoRulesConfigured", resourceCulture);
             }
         }
         
@@ -3540,11 +3693,29 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to On-call shift (extra hours).
+        ///   Looks up a localized string similar to Extra passes.
         /// </summary>
         internal static string RegularShift_ExtraShift {
             get {
                 return ResourceManager.GetString("RegularShift_ExtraShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💡 Mark whether the passport is ordered / urgent extra work. May provide additional compensation depending on the rules..
+        /// </summary>
+        internal static string RegularShift_ExtraShiftHint {
+            get {
+                return ResourceManager.GetString("RegularShift_ExtraShiftHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra pass.
+        /// </summary>
+        internal static string RegularShift_ExtraShiftInfoTitle {
+            get {
+                return ResourceManager.GetString("RegularShift_ExtraShiftInfoTitle", resourceCulture);
             }
         }
         
@@ -3765,6 +3936,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra shifts.
+        /// </summary>
+        internal static string Salary_ExtraShift_Title {
+            get {
+                return ResourceManager.GetString("Salary_ExtraShift_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        internal static string Salary_ExtraShift_Total {
+            get {
+                return ResourceManager.GetString("Salary_ExtraShift_Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balanced schedule.
         /// </summary>
         internal static string Salary_Hours_Balanced {
@@ -3855,6 +4044,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra shift.
+        /// </summary>
+        internal static string Salary_Summary_ExtraShift {
+            get {
+                return ResourceManager.GetString("Salary_Summary_ExtraShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hours Worked.
         /// </summary>
         internal static string Salary_Summary_HoursWorked {
@@ -3909,7 +4107,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total {0:F1} {1}.
+        ///   Looks up a localized string similar to {0:F1} {1}.
         /// </summary>
         internal static string Salary_TotalHours {
             get {
@@ -4121,6 +4319,42 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount.
+        /// </summary>
+        internal static string Settings_ExtraShift_Amount {
+            get {
+                return ResourceManager.GetString("Settings_ExtraShift_Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        internal static string Settings_ExtraShift_Enable {
+            get {
+                return ResourceManager.GetString("Settings_ExtraShift_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compensation for extra shift.
+        /// </summary>
+        internal static string Settings_ExtraShift_Title {
+            get {
+                return ResourceManager.GetString("Settings_ExtraShift_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Settings_ExtraShift_Type {
+            get {
+                return ResourceManager.GetString("Settings_ExtraShift_Type", resourceCulture);
             }
         }
         

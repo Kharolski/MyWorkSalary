@@ -53,6 +53,11 @@ namespace MyWorkSalary.Models.Core
         public decimal OBPay { get; set; }                  // Totalt OB-tillägg
         public decimal TotalPay { get; set; }               // Summa
 
+        public decimal ExtraShiftPay { get; set; }                      // beräknad ersättning för detta pass
+        public decimal ExtraShiftAmountSnapshot { get; set; }           // vad regeln var vid tillfället
+        public ExtraShiftPayType ExtraShiftPayTypeSnapshot { get; set; } // per timme / fast
+        public bool ExtraShiftRuleEnabledSnapshot { get; set; }         // optional, men tydligt
+
         // Debug / refactor-hjälp
         public decimal CalculatedOBPay => EveningOBPay + NightOBPay;
         #endregion
@@ -63,13 +68,6 @@ namespace MyWorkSalary.Models.Core
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime? ModifiedDate { get; set; }
         public bool IsConfirmed { get; set; } = false;     // Användaren har verifierat
-
-        #endregion
-
-        #region Shift Rule Snapshot (att ShiftConverters fungerar rätt med icons)
-
-        public bool EveningActiveAtThatTime { get; set; } = true;
-        public bool NightActiveAtThatTime { get; set; } = true;
 
         #endregion
 

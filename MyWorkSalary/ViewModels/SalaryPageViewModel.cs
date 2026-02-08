@@ -468,6 +468,65 @@ namespace MyWorkSalary.ViewModels
         }
         #endregion
 
+        #region Extra Shift
+        public bool ShowExtraPay => CurrentStats?.ExtraPay > 0;
+        public string ExtraPayText => CurrentStats == null ? "–" : FormatMoney(CurrentStats.ExtraPay);
+        public bool HasExtraShifts => CurrentStats?.HasExtraShifts == true;
+
+        private bool _isExtraExpanded;
+        public bool IsExtraExpanded
+        {
+            get => _isExtraExpanded;
+            set
+            {
+                if (_isExtraExpanded == value)
+                    return;
+                _isExtraExpanded = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ExtraChevronIcon));
+            }
+        }
+        public string ExtraChevronIcon => IsExtraExpanded ? "▼" : "▶";
+        public string TotalExtraHoursText => CurrentStats == null ? "" : $"{CurrentStats.TotalExtraShiftHours:0.0}";
+
+        public class ExtraShiftRow
+        {
+            public string DateText { get; set; } = "";
+            public string HoursText { get; set; } = "";
+            public string PayText { get; set; } = "";
+        }
+
+        private List<ExtraShiftRow> _extraShiftRows = new();
+        public IReadOnlyList<ExtraShiftRow> ExtraShiftRows => _extraShiftRows;
+
+        private void RebuildExtraShiftRows()
+        {
+            _extraShiftRows = new List<ExtraShiftRow>();
+
+            if (CurrentStats?.ExtraShiftDetails == null || !CurrentStats.ExtraShiftDetails.Any())
+            {
+                OnPropertyChanged(nameof(ExtraShiftRows));
+                return;
+            }
+
+            _extraShiftRows = CurrentStats.ExtraShiftDetails
+                .OrderBy(x => x.Date)
+                .Select(x => new ExtraShiftRow
+                {
+                    DateText = x.Date.ToString("dd-MM", AppCulture),
+                    HoursText = $"{x.Hours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}",
+                    PayText = FormatMoney(x.ExtraPay)
+                })
+                .ToList();
+
+            OnPropertyChanged(nameof(ExtraShiftRows));
+        }
+        public ICommand ToggleExtraCardCommand => new Command(() =>
+        {
+            IsExtraExpanded = !IsExtraExpanded;
+        });
+        #endregion
+
         #region Formatting
 
         private string JobCurrency => ActiveJob?.CurrencyCode ?? "SEK";
@@ -553,6 +612,14 @@ namespace MyWorkSalary.ViewModels
 
             OnPropertyChanged(nameof(TaxText));
 
+            // kort 2 Extra shift
+            OnPropertyChanged(nameof(ShowExtraPay));
+            OnPropertyChanged(nameof(ExtraPayText));
+            OnPropertyChanged(nameof(HasExtraShifts));
+            OnPropertyChanged(nameof(ExtraPayText));
+            OnPropertyChanged(nameof(TotalExtraHoursText));
+
+            // KORT 3 - OB
             OnPropertyChanged(nameof(TotalObHoursText));
             OnPropertyChanged(nameof(ObDetails));
             OnPropertyChanged(nameof(ObPayText));
@@ -592,6 +659,8 @@ namespace MyWorkSalary.ViewModels
             }
 
             CurrentStats = _salaryHandler.CalculateMonthlyStats(ActiveJob.Id, SelectedMonth);
+
+            RebuildExtraShiftRows();
 
             // bygg grupperna direkt efter att CurrentStats är klar
             RebuildObGrouped();

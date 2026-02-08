@@ -1,8 +1,6 @@
 ﻿using MyWorkSalary.Helpers.Localization;
-using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
-using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services.Interfaces;
 
 namespace MyWorkSalary.Services.Calculations

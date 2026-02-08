@@ -1,5 +1,6 @@
 ﻿using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
+using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
@@ -7,6 +8,7 @@ using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views.Pages.Templates;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
@@ -58,9 +60,23 @@ namespace MyWorkSalary.ViewModels
             set
             {
                 _activeJob = value;
+                _extraShiftAmountText = null;
+                _selectedExtraShiftType = null;
+
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ActiveJobText));
                 OnPropertyChanged(nameof(HasActiveJob));
+
+                // Extra shift properties
+                OnPropertyChanged(nameof(ExtraShiftEnabled));
+                OnPropertyChanged(nameof(ExtraShiftPayType));
+                OnPropertyChanged(nameof(ExtraShiftAmount));
+                OnPropertyChanged(nameof(ExtraShiftSummaryText));
+                OnPropertyChanged(nameof(ShowExtraShiftSettings));
+                OnPropertyChanged(nameof(ExtraShiftAmountLabelText));
+                OnPropertyChanged(nameof(ExtraShiftAmountText));
+                OnPropertyChanged(nameof(SelectedExtraShiftType));
+                OnPropertyChanged(nameof(ExtraShiftTypes));
 
                 ((Command)AddOBRateCommand).ChangeCanExecute();
                 ((Command)AddOBTemplateCommand).ChangeCanExecute();
@@ -160,6 +176,10 @@ namespace MyWorkSalary.ViewModels
             var jobs = _databaseService.JobProfiles.GetJobProfiles();
             AllJobs = new ObservableCollection<JobProfile>(jobs);
             ActiveJob = jobs.FirstOrDefault(j => j.IsActive);
+
+            // Så att pickern får rätt text direkt
+            RefreshExtraShiftTypeTexts();
+            OnPropertyChanged(nameof(SelectedExtraShiftType));
 
             OnPropertyChanged(nameof(HasActiveJob));
             OnPropertyChanged(nameof(HasMultipleJobs));
@@ -392,6 +412,188 @@ namespace MyWorkSalary.ViewModels
         }
         #endregion
 
+        #region Extra shift settings (JobProfile)
+        public class ExtraShiftTypeOption
+        {
+            public ExtraShiftPayType Type { get; set; }
+            public string Text { get; set; } = "";
+        }
+
+        public ObservableCollection<ExtraShiftTypeOption> ExtraShiftTypes { get; } =
+            new ObservableCollection<ExtraShiftTypeOption>
+            {
+                new ExtraShiftTypeOption { Type = ExtraShiftPayType.PerHour, Text = Resources.Resx.Resources.ExtraShiftPayType_PerHour},
+                new ExtraShiftTypeOption { Type = ExtraShiftPayType.FixedAmount, Text = Resources.Resx.Resources.ExtraShiftPayType_FixedAmount},
+            };
+
+        private ExtraShiftTypeOption _selectedExtraShiftType;
+        public ExtraShiftTypeOption SelectedExtraShiftType
+        {
+            get
+            {
+                if (_selectedExtraShiftType != null)
+                    return _selectedExtraShiftType;
+                _selectedExtraShiftType = ExtraShiftTypes.FirstOrDefault(x => x.Type == ExtraShiftPayType)
+                                         ?? ExtraShiftTypes.First();
+                return _selectedExtraShiftType;
+            }
+            set
+            {
+                if (value == null)
+                    return;
+                _selectedExtraShiftType = value;
+                ExtraShiftPayType = value.Type; 
+                OnPropertyChanged();
+            }
+        }
+
+        private void RefreshExtraShiftTypeTexts()
+        {
+            // Bygg om texterna (så UI alltid uppdateras)
+            ExtraShiftTypes.Clear();
+
+            ExtraShiftTypes.Add(new ExtraShiftTypeOption
+            {
+                Type = ExtraShiftPayType.PerHour,
+                Text = Resources.Resx.Resources.ExtraShiftPayType_PerHour
+            });
+
+            ExtraShiftTypes.Add(new ExtraShiftTypeOption
+            {
+                Type = ExtraShiftPayType.FixedAmount,
+                Text = Resources.Resx.Resources.ExtraShiftPayType_FixedAmount
+            });
+
+            // Tvinga omval baserat på jobbet
+            _selectedExtraShiftType = null;
+            OnPropertyChanged(nameof(ExtraShiftTypes));
+            OnPropertyChanged(nameof(SelectedExtraShiftType));
+        }
+
+        public bool ExtraShiftEnabled
+        {
+            get => ActiveJob?.ExtraShiftEnabled ?? false;
+            set
+            {
+                if (ActiveJob == null)
+                    return;
+                if (ActiveJob.ExtraShiftEnabled == value)
+                    return;
+
+                ActiveJob.ExtraShiftEnabled = value;
+                SaveActiveJob();
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ExtraShiftSummaryText));
+                OnPropertyChanged(nameof(ShowExtraShiftSettings));
+            }
+        }
+
+        public bool ShowExtraShiftSettings => HasActiveJob && ExtraShiftEnabled;
+
+        public ExtraShiftPayType ExtraShiftPayType
+        {
+            get => ActiveJob?.ExtraShiftPayType ?? ExtraShiftPayType.PerHour;
+            set
+            {
+                if (ActiveJob == null)
+                    return;
+                if (ActiveJob.ExtraShiftPayType == value)
+                    return;
+
+                ActiveJob.ExtraShiftPayType = value;
+                SaveActiveJob();
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ExtraShiftSummaryText));
+                OnPropertyChanged(nameof(ExtraShiftAmountLabelText));
+                OnPropertyChanged(nameof(SelectedExtraShiftType));
+            }
+        }
+
+        public decimal ExtraShiftAmount
+        {
+            get => ActiveJob?.ExtraShiftAmount ?? 0m;
+            set
+            {
+                if (ActiveJob == null)
+                    return;
+                if (ActiveJob.ExtraShiftAmount == value)
+                    return;
+
+                ActiveJob.ExtraShiftAmount = value;
+                SaveActiveJob();
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ExtraShiftSummaryText));
+            }
+        }
+
+        // Label i UI (inte "kr/timme" – vi låter valutan styra)
+        public string ExtraShiftAmountLabelText =>
+            ExtraShiftPayType == ExtraShiftPayType.PerHour
+                ? Resources.Resx.Resources.ExtraShiftSettings_AmountPerHour
+                : Resources.Resx.Resources.ExtraShiftSettings_AmountFixed;
+
+        // En liten sammanfattning (valuta format)
+        public string ExtraShiftSummaryText
+        {
+            get
+            {
+                if (ActiveJob == null || !ActiveJob.ExtraShiftEnabled || ActiveJob.ExtraShiftAmount <= 0)
+                    return "—";
+
+                var currency = string.IsNullOrWhiteSpace(ActiveJob.CurrencyCode) ? "SEK" : ActiveJob.CurrencyCode;
+                var money = CurrencyHelper.FormatCurrency(ActiveJob.ExtraShiftAmount, currency);
+
+                return ExtraShiftPayType == ExtraShiftPayType.PerHour
+                    ? string.Format(Resources.Resx.Resources.ExtraShiftSettings_Summary_PerHour, money)
+                    : string.Format(Resources.Resx.Resources.ExtraShiftSettings_Summary_Fixed, money);
+            }
+        }
+
+        private void SaveActiveJob()
+        {
+            if (ActiveJob == null)
+                return;
+            _databaseService.JobProfiles.SaveJobProfile(ActiveJob);
+        }
+
+        private string _extraShiftAmountText;
+        public string ExtraShiftAmountText
+        {
+            get
+            {
+                if (_extraShiftAmountText != null)
+                    return _extraShiftAmountText;
+                _extraShiftAmountText = (ActiveJob?.ExtraShiftAmount ?? 0m).ToString("0.##", CultureInfo.CurrentCulture);
+                return _extraShiftAmountText;
+            }
+            set
+            {
+                _extraShiftAmountText = value;
+                OnPropertyChanged();
+
+                if (ActiveJob == null)
+                    return;
+
+                // tolerera både , och .
+                var input = (value ?? "").Trim().Replace(",", ".");
+                if (decimal.TryParse(input, System.Globalization.NumberStyles.Number,
+                                     System.Globalization.CultureInfo.InvariantCulture, out var amount))
+                {
+                    if (ActiveJob.ExtraShiftAmount != amount)
+                    {
+                        ActiveJob.ExtraShiftAmount = amount;
+                        // Spara helst inte på varje tecken om du vill — men funkar om du accepterar det:
+                        SaveActiveJob();
+                        OnPropertyChanged(nameof(ExtraShiftSummaryText));
+                    }
+                }
+            }
+        }
+        #endregion
+
         #region Theme Methods
         private void LoadAppSettings()
         {
@@ -471,6 +673,12 @@ namespace MyWorkSalary.ViewModels
             // Trigga språkändringshändelsen globalt (så vyer kan reagera)
             LocalizationHelper.NotifyLanguageChanged();
 
+            // Uppdatera ExtraShift picker-texter
+            RefreshExtraShiftTypeTexts();
+            OnPropertyChanged(nameof(ExtraShiftAmountLabelText));
+            OnPropertyChanged(nameof(ExtraShiftSummaryText));
+            OnPropertyChanged(nameof(SelectedExtraShiftType));
+
             // Spara inställningen 
             _appSettings.LanguageCode = lang.Code;
             _databaseService.AppSettings.SaveAppSettings(_appSettings);
@@ -506,4 +714,6 @@ namespace MyWorkSalary.ViewModels
         public string DisplayName { get; set; }
         public string Code { get; set; }
     }
+
+
 }

@@ -959,7 +959,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Fel vid sparande av pass: {0}</value>
   </data>
   <data name="RegularShift_ExtraShift" xml:space="preserve">
-    <value>Inbeordring (extra pass)</value>
+    <value>Extra pass</value>
   </data>
   <data name="RegularShift_From" xml:space="preserve">
     <value>Från</value>
@@ -2229,7 +2229,7 @@ Arbetspasset har sparats!</value>
     <value>Underskott: −{0:F1} t</value>
   </data>
   <data name="Salary_TotalHours" xml:space="preserve">
-    <value>Totalt {0:F1} {1}</value>
+    <value>{0:F1} {1}</value>
   </data>
   <data name="OB_NotConfigured" xml:space="preserve">
     <value>OB är inte konfigurerat.</value>
@@ -2245,5 +2245,83 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="Hours_Abbreviation" xml:space="preserve">
     <value>t</value>
+  </data>
+  <data name="RegularShift_ExtraShiftInfoTitle" xml:space="preserve">
+    <value>Extra pass</value>
+  </data>
+  <data name="RegularShift_ExtraShiftHint" xml:space="preserve">
+    <value>💡 Markera om passet är beordrat/akut extra arbete. Kan ge extra ersättning beroende på regler.</value>
+  </data>
+  <data name="Settings_ExtraShift_Title" xml:space="preserve">
+    <value>Ersättning för extra pass</value>
+  </data>
+  <data name="Settings_ExtraShift_Enable" xml:space="preserve">
+    <value>Aktivera</value>
+  </data>
+  <data name="Settings_ExtraShift_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Settings_ExtraShift_Amount" xml:space="preserve">
+    <value>Belopp</value>
+  </data>
+  <data name="ExtraShiftSettings_Title" xml:space="preserve">
+    <value>Extra pass (beordrat)</value>
+  </data>
+  <data name="ExtraShiftSettings_Tip" xml:space="preserve">
+    <value>💡 Aktivera ersättning för pass som markerats som extra pass.</value>
+  </data>
+  <data name="ExtraShiftSettings_Enable" xml:space="preserve">
+    <value>Aktivera</value>
+  </data>
+  <data name="ExtraShiftSettings_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="ExtraShiftSettings_AmountPerHour" xml:space="preserve">
+    <value>Belopp per timme</value>
+  </data>
+  <data name="ExtraShiftSettings_AmountFixed" xml:space="preserve">
+    <value>Belopp per pass</value>
+  </data>
+  <data name="ExtraShiftPayType_PerHour" xml:space="preserve">
+    <value>Per timme</value>
+  </data>
+  <data name="ExtraShiftPayType_FixedAmount" xml:space="preserve">
+    <value>Fast belopp</value>
+  </data>
+  <data name="ExtraShiftSettings_Summary_PerHour" xml:space="preserve">
+    <value>Tillägg vid beordrat pass: {0} kr/timme</value>
+  </data>
+  <data name="ExtraShiftSettings_Summary_Fixed" xml:space="preserve">
+    <value>Tillägg vid beordrat pass: {0} kr per pass</value>
+  </data>
+  <data name="ObInfo_FallbackUsed" xml:space="preserve">
+    <value>OB beräknas från nuvarande regler (OB‑händelser saknas för perioden).</value>
+  </data>
+  <data name="ObInfo_NoRulesConfigured" xml:space="preserve">
+    <value>OB är inte konfigurerat. Lägg till OB‑regler i Inställningar.</value>
+  </data>
+  <data name="Salary_Summary_ExtraShift" xml:space="preserve">
+    <value>Extra pass</value>
+  </data>
+  <data name="Salary_ExtraShift_Title" xml:space="preserve">
+    <value>Extra pass</value>
+  </data>
+  <data name="Salary_ExtraShift_Total" xml:space="preserve">
+    <value>Totalt</value>
+  </data>
+  <data name="Common_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Common_Hours" xml:space="preserve">
+    <value>Timmar</value>
+  </data>
+  <data name="Common_Amount" xml:space="preserve">
+    <value>Belopp</value>
+  </data>
+  <data name="ExtraShift_Status_Active" xml:space="preserve">
+    <value>Extra pass (beordrat)</value>
+  </data>
+  <data name="ExtraShift_Status_DisabledInSettings" xml:space="preserve">
+    <value>Extra pass (inaktivt i Inställningar)</value>
   </data>
 </root>

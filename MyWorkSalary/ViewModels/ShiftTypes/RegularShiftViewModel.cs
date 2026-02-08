@@ -293,6 +293,16 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     BreakMinutes
                 );
 
+                var extraPay = 0m;
+
+                if (IsExtraShift && ActiveJob.ExtraShiftEnabled && ActiveJob.ExtraShiftAmount > 0)
+                {
+                    if (ActiveJob.ExtraShiftPayType == ExtraShiftPayType.PerHour)
+                        extraPay = Math.Round(result.TotalHours * ActiveJob.ExtraShiftAmount, 2);
+                    else
+                        extraPay = Math.Round(ActiveJob.ExtraShiftAmount, 2);
+                }
+
                 var workShift = new WorkShift
                 {
                     JobProfileId = ActiveJob.Id,
@@ -320,11 +330,12 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     NightOBPay = 0,
 
                     OBPay = 0,
-                    TotalPay = result.RegularPay,
+                    TotalPay = result.RegularPay + extraPay,
 
                     Notes = Notes,
                     CreatedDate = DateTime.Now,
-                    IsExtraShift = IsExtraShift
+                    IsExtraShift = IsExtraShift,
+                    ExtraShiftPay = extraPay
                 };
 
                 // Spara via repository
@@ -344,7 +355,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     // Endast totalsummor 
                     savedShift.OBHours = obSummary.TotalObHours;
                     savedShift.OBPay = obSummary.TotalObPay;
-                    savedShift.TotalPay = savedShift.RegularPay + savedShift.OBPay;
+                    savedShift.TotalPay = savedShift.RegularPay + savedShift.OBPay + savedShift.ExtraShiftPay;
 
                     // Spara igen så historik/UI stämmer
                     _workShiftRepository.SaveWorkShift(savedShift);

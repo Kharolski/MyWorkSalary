@@ -125,6 +125,8 @@ namespace MyWorkSalary.ViewModels
         {
             // Ladda aktivt jobb - ANVÄNDER REPOSITORY METOD
             _activeJob = _jobProfileRepository.GetActiveJob();
+            ActiveJobProvider.Current = _activeJob;
+
             OnPropertyChanged(nameof(ActiveJobTitle));
             OnPropertyChanged(nameof(Workplace));
             OnPropertyChanged(nameof(SalaryDisplayText));

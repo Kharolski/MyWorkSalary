@@ -36,6 +36,12 @@ namespace MyWorkSalary.Models.Core
         public SupportedCountry Country { get; set; }
         #endregion
 
+        #region Extra pass Property
+        public bool ExtraShiftEnabled { get; set; }
+        public ExtraShiftPayType ExtraShiftPayType { get; set; } = ExtraShiftPayType.PerHour;
+        public decimal ExtraShiftAmount { get; set; } = 0m;
+        #endregion
+
         #region Currency / Country
         public string CurrencyCode { get; set; } // t.ex. "SEK", "EUR", "USD"
         public string CountryCode { get; set; } = "SE";   // ISO 2-letter, t.ex. "SE", "IE", "US"

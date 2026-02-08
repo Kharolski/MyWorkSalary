@@ -1067,7 +1067,7 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_ExtraShift" xml:space="preserve">
-    <value>On-call shift (extra hours)</value>
+    <value>Extra passes</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_From" xml:space="preserve">
@@ -2688,7 +2688,7 @@ The work shift has been saved!</value>
     <comment>SalaryViewModel.cs</comment>
   </data>
   <data name="Salary_TotalHours" xml:space="preserve">
-    <value>Total {0:F1} {1}</value>
+    <value>{0:F1} {1}</value>
     <comment>SalaryViewModel.cs</comment>
   </data>
   <data name="OB_NotConfigured" xml:space="preserve">
@@ -2709,5 +2709,101 @@ The work shift has been saved!</value>
   </data>
   <data name="Hours_Abbreviation" xml:space="preserve">
     <value>h</value>
+  </data>
+  <data name="RegularShift_ExtraShiftInfoTitle" xml:space="preserve">
+    <value>Extra pass</value>
+    <comment>RegularShiftFormView </comment>
+  </data>
+  <data name="RegularShift_ExtraShiftHint" xml:space="preserve">
+    <value>💡 Mark whether the passport is ordered / urgent extra work. May provide additional compensation depending on the rules.</value>
+    <comment>RegularShiftFormView </comment>
+  </data>
+  <data name="Settings_ExtraShift_Title" xml:space="preserve">
+    <value>Compensation for extra shift</value>
+    <comment>RegularShiftFormView </comment>
+  </data>
+  <data name="Settings_ExtraShift_Enable" xml:space="preserve">
+    <value>Activate</value>
+    <comment>RegularShiftFormView </comment>
+  </data>
+  <data name="Settings_ExtraShift_Type" xml:space="preserve">
+    <value>Type</value>
+    <comment>RegularShiftFormView </comment>
+  </data>
+  <data name="Settings_ExtraShift_Amount" xml:space="preserve">
+    <value>Amount</value>
+    <comment>RegularShiftFormView </comment>
+  </data>
+  <data name="ExtraShiftSettings_Title" xml:space="preserve">
+    <value>Extra shift (mandatory)</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="ExtraShiftSettings_Tip" xml:space="preserve">
+    <value>💡 Enable replacement for passes marked as extra passes.</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="ExtraShiftSettings_Enable" xml:space="preserve">
+    <value>Activate</value>
+    <comment>SettingsPage   </comment>
+  </data>
+  <data name="ExtraShiftSettings_Type" xml:space="preserve">
+    <value>Type</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="ExtraShiftSettings_AmountPerHour" xml:space="preserve">
+    <value>Amount per hour</value>
+    <comment>SettingsPage   </comment>
+  </data>
+  <data name="ExtraShiftSettings_AmountFixed" xml:space="preserve">
+    <value>Amount per pass</value>
+    <comment>SettingsPage   </comment>
+  </data>
+  <data name="ExtraShiftPayType_PerHour" xml:space="preserve">
+    <value>Per hour</value>
+    <comment>SettingsPage   </comment>
+  </data>
+  <data name="ExtraShiftPayType_FixedAmount" xml:space="preserve">
+    <value>Fixed amount</value>
+    <comment>SettingsPage   </comment>
+  </data>
+  <data name="ExtraShiftSettings_Summary_PerHour" xml:space="preserve">
+    <value>Mandated shift bonus: {0} per hour</value>
+  </data>
+  <data name="ExtraShiftSettings_Summary_Fixed" xml:space="preserve">
+    <value>Mandated shift bonus: {0} per shift</value>
+  </data>
+  <data name="ObInfo_FallbackUsed" xml:space="preserve">
+    <value>Overtime is calculated from the current rules (no Overtime events found for this period).</value>
+    <comment>SalaryStatsHandler</comment>
+  </data>
+  <data name="ObInfo_NoRulesConfigured" xml:space="preserve">
+    <value>Overtime is not configured. Add Unsocial hour rules in Settings.</value>
+    <comment>SalaryStatsHandler</comment>
+  </data>
+  <data name="Salary_Summary_ExtraShift" xml:space="preserve">
+    <value>Extra shift</value>
+  </data>
+  <data name="Salary_ExtraShift_Title" xml:space="preserve">
+    <value>Extra shifts</value>
+  </data>
+  <data name="Salary_ExtraShift_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Common_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Common_Hours" xml:space="preserve">
+    <value>Hours</value>
+  </data>
+  <data name="Common_Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="ExtraShift_Status_Active" xml:space="preserve">
+    <value>Extra shift (mandated)</value>
+    <comment>Extra shift converter</comment>
+  </data>
+  <data name="ExtraShift_Status_DisabledInSettings" xml:space="preserve">
+    <value>Extra shift (inactive in Settings)</value>
+    <comment>Extra shift i converter</comment>
   </data>
 </root>

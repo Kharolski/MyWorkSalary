@@ -117,7 +117,7 @@
                                             <!-- PASS-KORT -->
                                             <Grid Padding="0,2">
                                                 <Frame Style="{StaticResource CardFrame}" Margin="10,0">
-                                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
+                                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto, Auto">
                                                         <!-- PASS-TYP IKON -->
                                                         <Label Grid.Row="0" Grid.Column="0"
                                                                Text="{Binding ., Converter={StaticResource ShiftTypeToIconConverter}}"
@@ -149,6 +149,15 @@
                                                                TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                                                            Dark={StaticResource TextSecondaryDark}}"
                                                                Margin="10,2,0,0" />
+
+                                                        <!-- EXTRA PASS STATUS -->
+                                                        <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                                               Text="{Binding ., Converter={StaticResource ShiftToExtraShiftStatusTextConverter}}"
+                                                               IsVisible="{Binding ., Converter={StaticResource ShiftToShowExtraShiftStatusConverter}}"
+                                                               FontSize="12"
+                                                               FontAttributes="Italic"
+                                                               TextColor="{Binding ., Converter={StaticResource ShiftToExtraShiftStatusColorConverter}}"
+                                                               Margin="10,0,0,0" />
                                                     </Grid>
                                                 </Frame>
                                             </Grid>

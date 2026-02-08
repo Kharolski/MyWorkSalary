@@ -44,6 +44,11 @@
             <converters:SelectedTemplateBackgroundConverter x:Key="SelectedTemplateBackgroundConverter" />
             <converters:SelectedTemplateTextColorConverter x:Key="SelectedTemplateTextColorConverter" />
 
+            <!-- Extra shift Converters -->
+            <converters:ShiftToShowExtraShiftStatusConverter x:Key="ShiftToShowExtraShiftStatusConverter" />
+            <converters:ShiftToExtraShiftStatusTextConverter x:Key="ShiftToExtraShiftStatusTextConverter" />
+            <converters:ShiftToExtraShiftStatusColorConverter x:Key="ShiftToExtraShiftStatusColorConverter" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

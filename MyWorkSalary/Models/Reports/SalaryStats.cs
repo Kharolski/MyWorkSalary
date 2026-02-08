@@ -60,6 +60,12 @@ namespace MyWorkSalary.Models.Reports
         public bool UsedObFallback { get; set; } // true när vi räknar "live" istället för OBEvents
         public string? ObInfoNote { get; set; } // valfri text till UI
         #endregion
+
+        #region Extra Pass
+        public List<ExtraShiftDetail> ExtraShiftDetails { get; set; } = new();
+        public decimal TotalExtraShiftHours => ExtraShiftDetails.Sum(x => x.Hours);
+        public bool HasExtraShifts => ExtraShiftDetails.Any();
+        #endregion
     }
 
 }

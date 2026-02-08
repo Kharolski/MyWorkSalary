@@ -253,6 +253,68 @@
                 </VerticalStackLayout>
             </Frame>
 
+            <!-- Extra pass / Beordringsersättning -->
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{resx:Translate ExtraShiftSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
+                    <Label Text="{resx:Translate ExtraShiftSettings_Tip}" Style="{StaticResource TipsLabel}" FontSize="12" />
+
+                    <!-- Aktivera -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Label Text="{resx:Translate ExtraShiftSettings_Enable}" VerticalOptions="Center"
+                               FontSize="16" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                                                           Dark={StaticResource TextPrimaryDark}}"/>
+                        
+                        <!-- Custom Switch med synlig track -->
+                        <Frame Grid.Column="1" BackgroundColor="{AppThemeBinding Light={StaticResource SwitchTrackOff}, 
+                                                                                Dark={StaticResource SwitchTrackOffDark}}"
+       
+                            CornerRadius="15"
+                            Padding="2" Margin="0,5,5,5"
+                            HeightRequest="30"
+                            WidthRequest="50"
+                            VerticalOptions="Center">
+                            <Switch IsToggled="{Binding ExtraShiftEnabled}"
+                                    OnColor="{StaticResource ButtonPrimary}"
+                                    ThumbColor="{AppThemeBinding Light={StaticResource SwitchThumbLight}, 
+                                                                Dark={StaticResource White}}"
+                                    BackgroundColor="Transparent"
+                                    Scale="0.8" />
+                        </Frame>
+                    </Grid>
+
+                    <VerticalStackLayout IsVisible="{Binding ShowExtraShiftSettings}" Spacing="8">
+                        <!-- Typ -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Label Text="{resx:Translate ExtraShiftSettings_Type}" FontAttributes="Bold" VerticalOptions="Center"/>
+                            <Picker ItemsSource="{Binding ExtraShiftTypes}" Grid.Column="1"
+                                    ItemDisplayBinding="{Binding Text}" 
+                                    HorizontalOptions="End"
+                                    SelectedItem="{Binding SelectedExtraShiftType}"
+                                    WidthRequest="150" MinimumWidthRequest="110"
+                                    Style="{StaticResource ThemedPicker}"/>
+                        </Grid>
+                        
+                        <!-- Belopp -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Label Text="{Binding ExtraShiftAmountLabelText}" FontAttributes="Bold" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
+                            <Entry Text="{Binding ExtraShiftAmountText}" Grid.Column="1"
+                                   Keyboard="Numeric" 
+                                   Style="{StaticResource ThemedEntry}"
+                                   WidthRequest="150" MinimumWidthRequest="110"
+                                   HorizontalTextAlignment="End" />
+                        </Grid>
+                        
+                        <!-- Inline-hint -->
+                        <Label Text="{Binding ExtraShiftSummaryText}" FontSize="12"
+                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                           Dark={StaticResource TextSecondaryDark}}" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
             <!-- App Inställningar -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">

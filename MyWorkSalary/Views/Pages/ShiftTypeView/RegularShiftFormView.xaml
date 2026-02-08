@@ -37,11 +37,21 @@
             <VerticalStackLayout Spacing="10">
                 <Label Text="{resx:Translate RegularShift_DayType}" Style="{StaticResource FieldLabel}" />
 
-                <!-- Inbeordring -->
+                <!-- Extra pass -->
                 <HorizontalStackLayout Spacing="10">
                     <CheckBox IsChecked="{Binding IsExtraShift}" />
                     <Label Text="{resx:Translate RegularShift_ExtraShift}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
+
+                <!-- hjälptext  -->
+                <Label Text="{resx:Translate RegularShift_ExtraShiftHint}"
+                       FontSize="12"
+                       Margin="34,0,0,0"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                   Dark={StaticResource TextSecondaryDark}}" />
+
+                <!-- Separator -->
+                <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
 
                 <!-- Röd dag -->
                 <HorizontalStackLayout Spacing="10">
@@ -56,8 +66,9 @@
                            Opacity="{Binding IsHoliday, Converter={StaticResource BoolToOpacityConverter}}" />
                 </HorizontalStackLayout>
 
+                <!-- hjälptext  -->
                 <Label Text="{resx:Translate RegularShift_DayTypeHint}"
-                       FontSize="12"
+                       FontSize="12" Margin="34,0,0,0"
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                    Dark={StaticResource TextSecondaryDark}}" />
             </VerticalStackLayout>
