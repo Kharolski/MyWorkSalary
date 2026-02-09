@@ -907,10 +907,6 @@ when employment ends (no later than one month afterwards).</value>
     <value>Active time</value>
     <comment>On call viewmodel</comment>
   </data>
-  <data name="OnCall_CalculationTitle" xml:space="preserve">
-    <value>📊 Preliminary Calculation</value>
-    <comment>On-call form</comment>
-  </data>
   <data name="OnCall_Calculation_Active" xml:space="preserve">
     <value>Active time: {0:F1}{3} × {1} = {2}</value>
     <comment>On call viewmodel</comment>
@@ -963,10 +959,6 @@ when employment ends (no later than one month afterwards).</value>
     <value>Error while saving: {0}</value>
     <comment>On call viewmodel</comment>
   </data>
-  <data name="OnCall_StandbyHours" xml:space="preserve">
-    <value>{0:F1} {1} on-call</value>
-    <comment>On call viewmodel</comment>
-  </data>
   <data name="OnCall_StandbyLabel" xml:space="preserve">
     <value>On-call</value>
     <comment>On call viewwmodel</comment>
@@ -975,33 +967,9 @@ when employment ends (no later than one month afterwards).</value>
     <value>🕐 Standby Time</value>
     <comment>On-call form</comment>
   </data>
-  <data name="OnCall_StandbyTip" xml:space="preserve">
-    <value>💡 Tip: Overnight on-call works (e.g., 18:00-08:00)</value>
-    <comment>On call form</comment>
-  </data>
   <data name="OnCall_TotalEstimate" xml:space="preserve">
     <value>Preliminary total: {0}</value>
     <comment>On call form</comment>
-  </data>
-  <data name="OnCall_Validation_ActiveTooLong" xml:space="preserve">
-    <value>Active work time cannot exceed on-call time</value>
-    <comment>On call viewmodel</comment>
-  </data>
-  <data name="OnCall_Validation_InvalidActive" xml:space="preserve">
-    <value>Invalid value for active work time</value>
-    <comment>On call viewmodel</comment>
-  </data>
-  <data name="OnCall_Validation_RateTooLow" xml:space="preserve">
-    <value>On-call rate must be greater than 0</value>
-    <comment>On call viewmodel</comment>
-  </data>
-  <data name="OnCall_Validation_TooLong" xml:space="preserve">
-    <value>On-call time cannot exceed 24 hours</value>
-    <comment>On call viewmodel</comment>
-  </data>
-  <data name="OnCall_Validation_ZeroHours" xml:space="preserve">
-    <value>On-call time must be longer than 0 hours</value>
-    <comment>On call viewmodel</comment>
   </data>
   <data name="OneDay" xml:space="preserve">
     <value>(1 day)</value>
@@ -1152,7 +1120,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>✅ Saved!</value>
   </data>
   <data name="SaveSuccess_OnCall" xml:space="preserve">
-    <value>✅ On-call shift registered</value>
+    <value>On-call shift registered</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveSuccess_RegularShift" xml:space="preserve">
@@ -2579,5 +2547,184 @@ The work shift has been saved!</value>
   <data name="ExtraShift_Status_DisabledInSettings" xml:space="preserve">
     <value>Extra shift (inactive in Settings)</value>
     <comment>Extra shift i converter</comment>
+  </data>
+  <data name="OnCallSettings_Title" xml:space="preserve">
+    <value>On-call settings</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_Tip" xml:space="preserve">
+    <value>💡 Set how on-call pay should be calculated.</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_StandbyRate" xml:space="preserve">
+    <value>Standby (per hour)</value>
+    <comment>SettingsPage.xaml </comment>
+  </data>
+  <data name="OnCallSettings_ActiveRate" xml:space="preserve">
+    <value>Called in / active (per hour)</value>
+    <comment>SettingsPage.xaml </comment>
+  </data>
+  <data name="OnCallSettings_Allowance" xml:space="preserve">
+    <value>Allowance per on‑call shift</value>
+    <comment>SettingsPage.xaml </comment>
+  </data>
+  <data name="OnCallSettings_RecalcMonths" xml:space="preserve">
+    <value>Recalculate last months</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_Enable" xml:space="preserve">
+    <value>Enable on-call</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_StandbyPayType" xml:space="preserve">
+    <value>Standby pay type</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_Amount" xml:space="preserve">
+    <value>Amount</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_AmountPerHour" xml:space="preserve">
+    <value>Amount per hour</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_AmountPerShift" xml:space="preserve">
+    <value>Amount per shift</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_ActivePayMode" xml:space="preserve">
+    <value>Active time pay</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_ActiveCustomRate" xml:space="preserve">
+    <value>Custom hourly rate</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_RecalcNow" xml:space="preserve">
+    <value>Recalculate now</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallPayType_None" xml:space="preserve">
+    <value>None (0)</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallPayType_PerHour" xml:space="preserve">
+    <value>Per hour</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallPayType_PerShift" xml:space="preserve">
+    <value>Per shift</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallActivePay_DefaultHourly" xml:space="preserve">
+    <value>Default hourly rate</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallActivePay_CustomHourly" xml:space="preserve">
+    <value>Custom hourly rate</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="Recalc_None" xml:space="preserve">
+    <value>None</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="Recalc_1Month" xml:space="preserve">
+    <value>1 month</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="Recalc_2Months" xml:space="preserve">
+    <value>2 months</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="Recalc_3Months" xml:space="preserve">
+    <value>3 months</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_StandbyLabel" xml:space="preserve">
+    <value>Standby</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_Standby_None" xml:space="preserve">
+    <value>None</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_Active_DefaultHourly" xml:space="preserve">
+    <value>Active: default hourly</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_Active_CustomHourly" xml:space="preserve">
+    <value>Active: custom hourly</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_Recalc_None" xml:space="preserve">
+    <value>No recalculation</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_Recalc_LastXMonths" xml:space="preserve">
+    <value>Recalculate last {0} months</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCallSettings_RecalcNotReadyYet" xml:space="preserve">
+    <value>Recalculation will be added soon.</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="InfoTitle" xml:space="preserve">
+    <value>Info</value>
+    <comment>SettingsPage.xaml</comment>
+  </data>
+  <data name="OnCall_Validation_NotEnabled" xml:space="preserve">
+    <value>On-call is not enabled in settings.</value>
+    <comment>OnCallViewModel</comment>
+  </data>
+  <data name="OnCall_Validation_InvalidStandbyPay" xml:space="preserve">
+    <value>Invalid standby compensation amount.</value>
+    <comment>OnCallViewModel</comment>
+  </data>
+  <data name="OnCall_Validation_InvalidActiveRate" xml:space="preserve">
+    <value>Invalid active hourly rate.</value>
+    <comment>OnCallViewModel</comment>
+  </data>
+  <data name="OnCall_Validation_CalloutZero" xml:space="preserve">
+    <value>Each callout must have a valid time interval.</value>
+    <comment>OnCallViewModel</comment>
+  </data>
+  <data name="OnCall_Validation_CalloutTooLong" xml:space="preserve">
+    <value>A callout interval is too long.</value>
+    <comment>OnCallViewModel</comment>
+  </data>
+  <data name="OnCall_TotalsTitle" xml:space="preserve">
+    <value>📊 Totals</value>
+    <comment>On-call form</comment>
+  </data>
+  <data name="OnCall_TotalsHint" xml:space="preserve">
+    <value>Pay and OB are calculated in Salary based on callout times.</value>
+    <comment>On-call form</comment>
+  </data>
+  <data name="OnCall_CalloutsTitle" xml:space="preserve">
+    <value>Callouts (active work)</value>
+  </data>
+  <data name="OnCall_CalloutsTip" xml:space="preserve">
+    <value>💡 Add each time interval when you were called out. Overtime will be calculated from these times.</value>
+  </data>
+  <data name="OnCall_NoCallouts" xml:space="preserve">
+    <value>No active times yet</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="OnCall_CalloutNotesPlaceholder" xml:space="preserve">
+    <value>Note (optional)</value>
+  </data>
+  <data name="OnCall_ActiveTime" xml:space="preserve">
+    <value>🕐 Active time</value>
+  </data>
+  <data name="OnCall_AddActiveTime" xml:space="preserve">
+    <value>Add active time</value>
+  </data>
+  <data name="OnCall_ActiveNotesPlaceholder" xml:space="preserve">
+    <value>Note for this active period (optional)</value>
+  </data>
+  <data name="OnCall_ActiveTimesListTitle" xml:space="preserve">
+    <value>Added active times</value>
   </data>
 </root>

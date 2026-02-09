@@ -21,11 +21,11 @@
         UnpaidVacation     // Timanställd - obetald ledighet  
     }
 
-    public enum OnCallType
-    {
-        StandbyOnly,        // Bara jourtid, ingen utryckning
-        ActiveOnly,         // Bara aktiv arbetstid (ovanligt)
-        Mixed,              // Både jour + aktiv tid (vanligast)
-        Emergency           // Akut inkallning
-    }
+    //public enum OnCallType
+    //{
+    //    StandbyOnly,        // Bara jourtid, ingen utryckning
+    //    ActiveOnly,         // Bara aktiv arbetstid (ovanligt)
+    //    Mixed,              // Både jour + aktiv tid (vanligast)
+    //    Emergency           // Akut inkallning
+    //}
 }

@@ -1,31 +1,34 @@
-﻿using MyWorkSalary.Models.Core;
+﻿using MyWorkSalary.Helpers.Localization;
+using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
-using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Services.Handlers;
+using MyWorkSalary.Services.Interfaces;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MyWorkSalary.Helpers.Localization;
+using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels.ShiftTypes
 {
     public class OnCallViewModel : INotifyPropertyChanged, IDisposable
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event Action ValidationChanged;
+
+        #region Private Fields
         private readonly IWorkShiftRepository _workShiftRepository;
         private readonly IShiftValidationService _validationService;
         private readonly OnCallHandler _onCallHandler;
-        private bool _disposed = false;
+        private ObservableCollection<CalloutRow> _callouts;
 
+        private bool _disposed = false;
         private DateTime _selectedDate;
         private JobProfile _activeJob;
         private TimeSpan _standbyStartTime = new TimeSpan(18, 0, 0); // 18:00
         private TimeSpan _standbyEndTime = new TimeSpan(8, 0, 0);    // 08:00
-        private string _activeHours = "0";
-        private string _onCallRate = "40";
         private string _notes = "";
         private string _validationMessage = "";
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event Action ValidationChanged;
+        #endregion
 
         #region Constructor
 
@@ -39,11 +42,44 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             _onCallHandler = onCallHandler;
 
             LocalizationHelper.LanguageChanged += OnLanguageChanged;
+
         }
 
         #endregion
 
         #region Properties
+        public ObservableCollection<CalloutRow> Callouts
+        {
+            get => _callouts ??= new ObservableCollection<CalloutRow>();
+            private set
+            {
+                _callouts = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasCallouts));
+                OnPropertyChanged(nameof(HasNoCallouts));
+                OnPropertyChanged(nameof(OnCallTotalsText));
+            }
+        }
+        private TimeSpan _newCalloutStart = new TimeSpan(21, 0, 0);
+        public TimeSpan NewCalloutStart
+        {
+            get => _newCalloutStart;
+            set { _newCalloutStart = value; OnPropertyChanged(); }
+        }
+
+        private TimeSpan _newCalloutEnd = new TimeSpan(22, 0, 0);
+        public TimeSpan NewCalloutEnd
+        {
+            get => _newCalloutEnd;
+            set { _newCalloutEnd = value; OnPropertyChanged(); }
+        }
+
+        private string? _newCalloutNotes;
+        public string? NewCalloutNotes
+        {
+            get => _newCalloutNotes;
+            set { _newCalloutNotes = value; OnPropertyChanged(); }
+        }
 
         public TimeSpan StandbyStartTime
         {
@@ -54,13 +90,11 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 OnPropertyChanged();
 
                 NotifyLocalizedProperties();
-                OnPropertyChanged(nameof(CalculatedPay));
-                OnPropertyChanged(nameof(FormattedCalculatedPay));
+                OnPropertyChanged(nameof(OnCallTotalsText));
                 ValidateInput();
                 ValidationChanged?.Invoke();
             }
         }
-
         public TimeSpan StandbyEndTime
         {
             get => _standbyEndTime;
@@ -70,45 +104,11 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 OnPropertyChanged();
 
                 NotifyLocalizedProperties();
-                OnPropertyChanged(nameof(CalculatedPay));
-                OnPropertyChanged(nameof(FormattedCalculatedPay));
+                OnPropertyChanged(nameof(OnCallTotalsText));
                 ValidateInput();
                 ValidationChanged?.Invoke();
             }
         }
-
-        public string ActiveHours
-        {
-            get => _activeHours;
-            set
-            {
-                _activeHours = value;
-                OnPropertyChanged();
-
-                NotifyLocalizedProperties();
-                OnPropertyChanged(nameof(CalculatedPay));
-                OnPropertyChanged(nameof(FormattedCalculatedPay));
-                ValidateInput();
-                ValidationChanged?.Invoke();
-            }
-        }
-
-        public string OnCallRate
-        {
-            get => _onCallRate;
-            set
-            {
-                _onCallRate = value;
-                OnPropertyChanged();
-
-                NotifyLocalizedProperties();
-                OnPropertyChanged(nameof(CalculatedPay));
-                OnPropertyChanged(nameof(FormattedCalculatedPay));
-                ValidateInput();
-                ValidationChanged?.Invoke();
-            }
-        }
-
         public string Notes
         {
             get => _notes;
@@ -120,7 +120,6 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         }
 
         public bool HasValidationMessage => !string.IsNullOrEmpty(ValidationMessage);
-
         public string ValidationMessage
         {
             get => _validationMessage;
@@ -133,8 +132,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         }
 
         // Visibility
-        public bool ShowCalculation => true;
-        public bool ShowActiveHoursInfo => GetActiveHoursValue() > 0;
+        public bool ShowActiveHoursInfo => GetTotalActiveHoursFromCallouts() > 0m;
+        public bool HasCallouts => Callouts?.Count > 0;
+        public bool HasNoCallouts => !HasCallouts;
 
         // Display texts
         public string OnCallExplanationText
@@ -151,102 +151,64 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 }
             }
         }
-
-        public string StandbyHoursText
+        public string OnCallTotalsText
         {
             get
             {
-                var hours = CalculateStandbyHours();
-                return string.Format(
-                    LocalizationHelper.Translate("OnCall_StandbyHours"),
-                    hours,
-                    LocalizationHelper.Translate("HoursAbbreviation")
-                );
+                var standby = CalculateStandbyHours();
+                var active = Callouts?.Sum(GetCalloutHours) ?? 0m;
+
+                var h = LocalizationHelper.Translate("HoursAbbreviation");
+                return $"Standby: {standby:0.##}{h} • Aktiv: {active:0.##}{h}";
             }
         }
 
-        public string CalculationSummary
+        #endregion
+
+        #region Commands
+        public ICommand AddCalloutCommand => new Command(() =>
         {
-            get
+            // Basic validation för input-raden
+            if (NewCalloutEnd == NewCalloutStart)
             {
-                var standbyHours = CalculateStandbyHours();
-                var activeHours = GetActiveHoursValue();
-                var onCallRate = GetOnCallRateValue();
-                var hourlyRate = GetHourlyRate();
-                var currencyCode = _activeJob?.CurrencyCode ?? "SEK";
-
-                // Om tiderna är fel
-                if (standbyHours <= 0)
-                    return LocalizationHelper.Translate("OnCall_CheckTimes");
-
-                // Lokala etiketter
-                var standbyLabel = LocalizationHelper.Translate("OnCall_StandbyLabel");              // ex. "Jour"
-                var activeLabel = LocalizationHelper.Translate("OnCall_ActiveLabel");   // ex. "Aktiv tid"
-                var hoursAbbr = LocalizationHelper.Translate("HoursAbbreviation");      // ex. "h"
-
-                // Jourdel
-                var standbyPay = standbyHours * onCallRate;
-                var formattedStandbyPay = CurrencyHelper.FormatCurrency(standbyPay, currencyCode);
-                var summary = $"{standbyLabel}: {standbyHours:F1}{hoursAbbr} × {onCallRate:N0} = {formattedStandbyPay}";
-
-                // Aktiv del (endast om aktiv tid finns)
-                if (activeHours > 0)
-                {
-                    var activePay = activeHours * hourlyRate;
-                    var formattedActivePay = CurrencyHelper.FormatCurrency(activePay, currencyCode);
-                    summary += $"\n{activeLabel}: {activeHours:F1}{hoursAbbr} × {hourlyRate:N0} = {formattedActivePay}";
-                }
-
-                return summary;
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_CalloutZero");
+                return;
             }
-        }
 
-        public decimal CalculatedPay
+            var row = new CalloutRow
+            {
+                Start = NewCalloutStart,
+                End = NewCalloutEnd,
+                Notes = string.IsNullOrWhiteSpace(NewCalloutNotes) ? null : NewCalloutNotes.Trim()
+            };
+
+            Callouts.Add(row);
+
+            // reset notes (tider kan du välja att behålla)
+            NewCalloutNotes = null;
+
+            OnPropertyChanged(nameof(HasCallouts));
+            OnPropertyChanged(nameof(HasNoCallouts));
+            OnPropertyChanged(nameof(OnCallTotalsText));
+            OnPropertyChanged(nameof(ShowActiveHoursInfo));
+
+            ValidateInput();
+        });
+
+        public ICommand DeleteCalloutCommand => new Command<CalloutRow>(row =>
         {
-            get
-            {
-                var standbyHours = CalculateStandbyHours();
-                var activeHours = GetActiveHoursValue();
-                var onCallRate = GetOnCallRateValue();
-                var hourlyRate = GetHourlyRate();
+            if (row == null)
+                return;
 
-                var standbyPay = standbyHours * onCallRate;
-                var activePay = activeHours * hourlyRate;
+            Callouts.Remove(row);
 
-                return standbyPay + activePay;
-            }
-        }
+            OnPropertyChanged(nameof(HasCallouts));
+            OnPropertyChanged(nameof(HasNoCallouts));
+            OnPropertyChanged(nameof(OnCallTotalsText));
+            OnPropertyChanged(nameof(ShowActiveHoursInfo));
 
-        public string FormattedCalculatedPay
-        {
-            get
-            {
-                var currencyCode = _activeJob?.CurrencyCode ?? "SEK";
-                return CurrencyHelper.FormatCurrency(CalculatedPay, currencyCode);
-            }
-        }
-
-        public string TotalEstimateText
-        {
-            get
-            {
-                // Hämta översatt text, t.ex. "Preliminärt totalt: {0}"
-                var label = LocalizationHelper.Translate("OnCall_TotalEstimate");
-
-                var currencyCode = _activeJob?.CurrencyCode ?? "SEK";
-                var formatted = CurrencyHelper.FormatCurrency(CalculatedPay, currencyCode);
-
-                // Sätt in värdet
-                return string.Format(label, formatted);
-            }
-        }
-
-        public string RateTipText =>
-            string.Format(
-                LocalizationHelper.Translate("OnCall_RateTip"),
-                _activeJob != null ? CurrencyHelper.GetSymbol(_activeJob.CurrencyCode) : "kr"
-            );
-
+            ValidateInput();
+        });
         #endregion
 
         #region Public Methods
@@ -259,9 +221,12 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             // Uppdatera språk- och valuta-beroende properties
             NotifyLocalizedProperties();
 
+            OnPropertyChanged(nameof(OnCallExplanationText));
+            OnPropertyChanged(nameof(OnCallTotalsText));
+            OnPropertyChanged(nameof(HasCallouts));
+            OnPropertyChanged(nameof(HasNoCallouts));
+
             // Uppdatera övriga properties
-            OnPropertyChanged(nameof(CalculatedPay));
-            OnPropertyChanged(nameof(FormattedCalculatedPay));
             ValidateInput();
         }
 
@@ -269,16 +234,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             if (_activeJob == null)
                 return false;
-
+            if (!_activeJob.OnCallEnabled)
+                return false;
             if (CalculateStandbyHours() <= 0)
                 return false;
-
-            if (GetOnCallRateValue() <= 0)
-                return false;
-
-            if (GetActiveHoursValue() < 0)
-                return false;
-
             return string.IsNullOrEmpty(ValidationMessage);
         }
 
@@ -298,8 +257,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                     _selectedDate,
                     _standbyStartTime,
                     _standbyEndTime,
-                    GetActiveHoursValue(),
-                    GetOnCallRateValue(),
+                    Callouts,
                     _notes
                 );
 
@@ -320,27 +278,18 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             // Återställ core-data
             _standbyStartTime = new TimeSpan(18, 0, 0);  // 18:00 standard
             _standbyEndTime = new TimeSpan(8, 0, 0);     // 08:00 standard
-            _activeHours = "0";
-            _onCallRate = "40";
             _notes = "";
             _validationMessage = "";
 
             // Trigger UI updates
             OnPropertyChanged(nameof(StandbyStartTime));
             OnPropertyChanged(nameof(StandbyEndTime));
-            OnPropertyChanged(nameof(ActiveHours));
-            OnPropertyChanged(nameof(OnCallRate));
             OnPropertyChanged(nameof(Notes));
             OnPropertyChanged(nameof(ValidationMessage));
             OnPropertyChanged(nameof(HasValidationMessage));
 
             // Lokala språkberoende properties
             NotifyLocalizedProperties();
-
-            // Om beroenden finns
-            OnPropertyChanged(nameof(CalculatedPay));
-            OnPropertyChanged(nameof(FormattedCalculatedPay));
-            OnPropertyChanged(nameof(ShowActiveHoursInfo));
 
             // Kör validering
             ValidateInput();
@@ -359,11 +308,33 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             NotifyLocalizedProperties();
 
             // Update other properties that might depend on language
-            OnPropertyChanged(nameof(CalculatedPay));
-            OnPropertyChanged(nameof(FormattedCalculatedPay));
-            OnPropertyChanged(nameof(ShowActiveHoursInfo));
+            OnPropertyChanged(nameof(HasCallouts));
         }
+        private decimal GetTotalActiveHoursFromCallouts()
+        {
+            if (Callouts == null || Callouts.Count == 0)
+                return 0m;
 
+            decimal total = 0m;
+
+            foreach (var c in Callouts)
+            {
+                var start = c.Start;
+                var end = c.End;
+
+                // Hantera om inkallning går över midnatt
+                if (end <= start)
+                    end = end.Add(TimeSpan.FromDays(1));
+
+                var duration = end - start;
+                var hours = (decimal)duration.TotalHours;
+
+                if (hours > 0)
+                    total += hours;
+            }
+
+            return total;
+        }
         private decimal CalculateStandbyHours()
         {
             var start = _standbyStartTime;
@@ -379,86 +350,91 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             return (decimal)duration.TotalHours;
         }
 
-        private decimal GetActiveHoursValue()
-        {
-            if (string.IsNullOrWhiteSpace(ActiveHours))
-                return 0;
-
-            var normalizedInput = ActiveHours.Replace(',', '.');
-            if (decimal.TryParse(normalizedInput, System.Globalization.NumberStyles.Float,
-                               System.Globalization.CultureInfo.InvariantCulture, out decimal result))
-            {
-                return Math.Max(0, result);
-            }
-            return 0;
-        }
-
-        private decimal GetOnCallRateValue()
-        {
-            if (string.IsNullOrWhiteSpace(OnCallRate))
-                return 40; // Default
-
-            var normalizedInput = OnCallRate.Replace(',', '.');
-            if (decimal.TryParse(normalizedInput, System.Globalization.NumberStyles.Float,
-                               System.Globalization.CultureInfo.InvariantCulture, out decimal result))
-            {
-                return Math.Max(0, result);
-            }
-            return 40;
-        }
-
-        private decimal GetHourlyRate()
-        {
-            if (_activeJob?.EmploymentType == EmploymentType.Temporary)
-            {
-                return _activeJob.HourlyRate ?? 0;
-            }
-            else if (_activeJob?.MonthlySalary > 0)
-            {
-                decimal monthlyHours = _activeJob.ExpectedHoursPerMonth > 0
-                    ? _activeJob.ExpectedHoursPerMonth
-                    : 173.33m;
-                return _activeJob.MonthlySalary.Value / monthlyHours;
-            }
-            return 0;
-        }
-
         private void ValidateInput()
         {
             ValidationMessage = "";
 
+            if (_activeJob == null)
+            {
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Save_ErrorMissing");
+                return;
+            }
+
+            // Måste vara aktiverat i settings
+            if (!_activeJob.OnCallEnabled)
+            {
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_NotEnabled");
+                return;
+            }
+
+            // Standby timmar
             var standbyHours = CalculateStandbyHours();
             if (standbyHours <= 0)
             {
                 ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_ZeroHours");
                 return;
             }
-
             if (standbyHours > 24)
             {
                 ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_TooLong");
                 return;
             }
 
-            var activeHours = GetActiveHoursValue();
-            if (activeHours < 0)
+            // Validera ersättningsinställningar
+            if (_activeJob.OnCallStandbyPayType == OnCallStandbyPayType.None)
             {
-                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_InvalidActive");
+                // ok om det är None, men om du vill kräva att det är satt kan du stoppa här
+            }
+            else
+            {
+                if (_activeJob.OnCallStandbyPayAmount < 0)
+                {
+                    ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_InvalidStandbyPay");
+                    return;
+                }
+            }
+
+            if (_activeJob.OnCallActivePayMode == OnCallActivePayMode.CustomHourly &&
+                _activeJob.OnCallActiveHourlyRate <= 0)
+            {
+                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_InvalidActiveRate");
                 return;
             }
 
-            if (activeHours > standbyHours)
+            // Validera callouts (inkallningar)
+            foreach (var c in Callouts)
+            {
+                var start = c.Start;
+                var end = c.End;
+
+                // över midnatt ok
+                if (end <= start)
+                    end = end.Add(TimeSpan.FromDays(1));
+
+                var duration = end - start;
+                var hours = (decimal)duration.TotalHours;
+
+                if (hours <= 0)
+                {
+                    ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_CalloutZero");
+                    return;
+                }
+
+                if (hours > 24)
+                {
+                    ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_CalloutTooLong");
+                    return;
+                }
+            }
+
+            // Total aktiv tid får inte vara större än standby (rimlig regel)
+            var activeTotal = GetTotalActiveHoursFromCallouts();
+            if (activeTotal > standbyHours)
             {
                 ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_ActiveTooLong");
                 return;
             }
 
-            var onCallRate = GetOnCallRateValue();
-            if (onCallRate <= 0)
-            {
-                ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_RateTooLow");
-                return;
-            }
         }
 
         /// <summary>
@@ -468,10 +444,24 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         private void NotifyLocalizedProperties()
         {
             OnPropertyChanged(nameof(OnCallExplanationText));
-            OnPropertyChanged(nameof(StandbyHoursText));
-            OnPropertyChanged(nameof(CalculationSummary));
-            OnPropertyChanged(nameof(TotalEstimateText));
-            OnPropertyChanged(nameof(RateTipText));
+            OnPropertyChanged(nameof(OnCallTotalsText));
+        }
+
+        private decimal GetCalloutHours(CalloutRow c)
+        {
+            if (c == null)
+                return 0m;
+
+            var s = c.Start;
+            var e = c.End;
+
+            if (e == s)
+                return 0m;
+
+            if (e <= s)
+                e = e.Add(TimeSpan.FromDays(1));
+
+            return (decimal)(e - s).TotalHours;
         }
         #endregion
 
@@ -491,5 +481,74 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+
+    public class CalloutRow : INotifyPropertyChanged
+    {
+        private TimeSpan _start;
+        private TimeSpan _end;
+        private string? _notes;
+
+        public TimeSpan Start
+        {
+            get => _start;
+            set
+            {
+                if (_start == value)
+                    return;
+                _start = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TimeRangeText));
+                OnPropertyChanged(nameof(HoursText));
+            }
+        }
+
+        public TimeSpan End
+        {
+            get => _end;
+            set
+            {
+                if (_end == value)
+                    return;
+                _end = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TimeRangeText));
+                OnPropertyChanged(nameof(HoursText));
+            }
+        }
+
+        public string? Notes
+        {
+            get => _notes;
+            set
+            {
+                if (_notes == value)
+                    return;
+                _notes = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasNotes));
+            }
+        }
+
+        public bool HasNotes => !string.IsNullOrWhiteSpace(Notes);
+
+        // UI-texter
+        public string TimeRangeText => $"{Start:hh\\:mm} - {End:hh\\:mm}";
+        public string HoursText => $"{GetHours():0.##}h";
+
+        private decimal GetHours()
+        {
+            var s = Start;
+            var e = End;
+            if (e == s)
+                return 0m;
+            if (e <= s)
+                e = e.Add(TimeSpan.FromDays(1));
+            return (decimal)(e - s).TotalHours;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string? name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

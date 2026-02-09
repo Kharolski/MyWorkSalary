@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView x:Class="MyWorkSalary.Views.Pages.ShiftTypeView.OnCallFormView"
+             x:Name="Root"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization">
-    
+
     <VerticalStackLayout Spacing="20">
-        <!-- 📞 Förklaring av jour -->
+
+        <!-- 📞 Förklaring -->
         <Frame Style="{StaticResource ActiveJobFrame}">
             <VerticalStackLayout Spacing="5">
                 <Label Text="{resx:Translate OnCall_InfoTitle}"
@@ -18,129 +20,169 @@
             </VerticalStackLayout>
         </Frame>
 
-        <!-- 🕐 Jourtid -->
+        <!-- 🕐 Standby-tid -->
         <VerticalStackLayout Spacing="5">
-            <Label Text="{resx:Translate OnCall_StandbyTime}"
-                   Style="{StaticResource FieldLabel}" />
+            <Label Text="{resx:Translate OnCall_StandbyTime}" Style="{StaticResource FieldLabel}" />
+
             <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
-                <!-- Starttid -->
                 <VerticalStackLayout Grid.Column="0" Spacing="3">
-                    <Label Text="{resx:Translate From}" 
-                           FontSize="12" 
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" 
+                    <Label Text="{resx:Translate From}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}"
                            HorizontalOptions="Center" />
                     <TimePicker Time="{Binding StandbyStartTime}"
                                 Style="{StaticResource ThemedTimePicker}"
                                 Format="HH:mm" />
                 </VerticalStackLayout>
-                <!-- Separator -->
+
                 <Label Grid.Column="1"
                        Text="→"
                        FontSize="20"
                        VerticalOptions="Center"
-                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" />
-                <!-- Sluttid -->
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                   Dark={StaticResource TextSecondaryDark}}" />
+
                 <VerticalStackLayout Grid.Column="2" Spacing="3">
-                    <Label Text="{resx:Translate To}" 
-                           FontSize="12" 
-                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" 
+                    <Label Text="{resx:Translate To}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}"
                            HorizontalOptions="Center" />
                     <TimePicker Time="{Binding StandbyEndTime}"
                                 Style="{StaticResource ThemedTimePicker}"
                                 Format="HH:mm" />
                 </VerticalStackLayout>
             </Grid>
-            <!-- Jourtimmar info -->
-            <Label Text="{Binding StandbyHoursText}"
-                   FontSize="12"
-                   FontAttributes="Bold"
-                   TextColor="{AppThemeBinding Light={StaticResource SalaryPrimary},
-                                               Dark={StaticResource SalaryPrimaryDark}}"
-                   HorizontalOptions="Center"
-                   Margin="0,5,0,0" />
-            <Label Text="{resx:Translate OnCall_StandbyTip}"
-                   FontSize="12"
-                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                               Dark={StaticResource TextSecondaryDark}}"
-                   Margin="0,5,0,0" />
+
         </VerticalStackLayout>
 
-        <!-- ⚡ Aktiv arbetstid -->
-        <VerticalStackLayout Spacing="5">
-            <Label Text="{resx:Translate OnCall_ActiveHours}"
-                   Style="{StaticResource FieldLabel}" />
-            <Entry Text="{Binding ActiveHours}"
-                   Placeholder="0"
-                   Keyboard="Numeric"
-                   Style="{StaticResource ThemedEntry}" />
-            <Label Text="{resx:Translate OnCall_ActiveHoursTip}"
-                   FontSize="12"
-                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                               Dark={StaticResource TextSecondaryDark}}" />
-            <!-- Aktiv arbetstid info -->
-            <Frame Style="{StaticResource InfoFrame}"
-                    IsVisible="{Binding ShowActiveHoursInfo}">
-                <VerticalStackLayout Spacing="3">
-                    <Label Text="{resx:Translate OnCall_ActiveHoursRegistered}"
+        <!-- ⚡ Aktiv tid -->
+        <VerticalStackLayout Spacing="6">
+            <Label Text="{resx:Translate OnCall_ActiveTime}" Style="{StaticResource FieldLabel}" />
+
+            <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0" Spacing="3">
+                    <Label Text="{resx:Translate From}"
                            FontSize="12"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                       Dark={StaticResource White}}" />
-                    <Label Text="{resx:Translate OnCall_ActiveHoursInfo}"
-                           FontSize="11"
                            TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                       Dark={StaticResource TextSecondaryDark}}" />
+                                                       Dark={StaticResource TextSecondaryDark}}"
+                   HorizontalOptions="Center" />
+                    <TimePicker Time="{Binding NewCalloutStart}"
+                                Format="HH:mm"
+                                Style="{StaticResource ThemedTimePicker}" />
                 </VerticalStackLayout>
-            </Frame>
+
+                <Label Grid.Column="1"
+                       Text="→"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                   Dark={StaticResource TextSecondaryDark}}" />
+
+                <VerticalStackLayout Grid.Column="2" Spacing="3">
+                    <Label Text="{resx:Translate To}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}"
+                           HorizontalOptions="Center" />
+                    <TimePicker Time="{Binding NewCalloutEnd}"
+                                Format="HH:mm"
+                                Style="{StaticResource ThemedTimePicker}" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Editor Text="{Binding NewCalloutNotes}"
+                    Placeholder="{resx:Translate OnCall_ActiveNotesPlaceholder}"
+                    Style="{StaticResource ThemedEditor}"
+                    HeightRequest="70" />
+
+            <Button Text="{resx:Translate OnCall_AddActiveTime}"
+                    Command="{Binding AddCalloutCommand}"
+                    Style="{StaticResource EditButton}"
+                    Padding="12,8"
+                    HorizontalOptions="End" />
         </VerticalStackLayout>
 
-        <!-- 💰 Jourersättning -->
-        <VerticalStackLayout Spacing="5">
-            <Label Text="{resx:Translate OnCall_Rate}"
-                   Style="{StaticResource FieldLabel}" />
-            <Entry Text="{Binding OnCallRate}"
-                   Placeholder="40"
-                   Keyboard="Numeric"
-                   Style="{StaticResource ThemedEntry}" />
-            <Label Text="{Binding RateTipText}"
-                   FontSize="12"
-                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                               Dark={StaticResource TextSecondaryDark}}" />
-        </VerticalStackLayout>
+        <!-- 📌 Tillagda aktiva tider -->
+        <Frame Style="{StaticResource CardFrame}">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="{resx:Translate OnCall_ActiveTimesListTitle}" Style="{StaticResource SectionTitleLabel}" />
 
-        <!-- 📊 Preliminär beräkning -->
-        <Frame Style="{StaticResource CalculationFrame}"  IsVisible="{Binding ShowCalculation}">
-            <VerticalStackLayout Spacing="8">
+                <Label Text="{resx:Translate OnCall_CalloutsTip}"
+                        FontSize="12"
+                        Style="{StaticResource TipsLabel}"
+                        LineBreakMode="WordWrap" />
 
-                <!-- Rubrik -->
-                <Label Text="{resx:Translate OnCall_CalculationTitle}"
-               FontSize="16"
-               FontAttributes="Bold"
-               TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                           Dark={StaticResource White}}" />
+                <StackLayout IsVisible="{Binding HasNoCallouts}" Spacing="6" Margin="0,4">
+                    <Label Text="📌" FontSize="28" HorizontalOptions="Center"/>
+                    <Label Text="{resx:Translate OnCall_NoCallouts}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           Style="{StaticResource NoItemsLabel}" />
+                </StackLayout>
 
-                <!-- Detaljerad breakdown -->
-                <Label Text="{Binding CalculationSummary}"
-               FontSize="13"
-               TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                           Dark={StaticResource White}}" />
+                <CollectionView ItemsSource="{Binding Callouts}" IsVisible="{Binding HasCallouts}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource OBRuleFrame}">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
 
-                <!-- Total ersättning -->
-                <Label Text="{Binding TotalEstimateText}"
-               FontSize="14"
-               FontAttributes="Bold"
-               TextColor="{StaticResource Success}" />
+                                    <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                        <Label Text="{Binding TimeRangeText}"
+                                               FontAttributes="Bold"
+                                               FontSize="14" />
 
-                <!-- OB-notis -->
-                <Label Text="{resx:Translate OnCall_OBNotice}"
-               FontSize="11"
-               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                           Dark={StaticResource TextSecondaryDark}}" />
+                                        <Label Text="{Binding HoursText}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                                           Dark={StaticResource TextSecondaryDark}}" />
+
+                                        <Label Text="{Binding Notes}"
+                                               IsVisible="{Binding HasNotes}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                                           Dark={StaticResource TextSecondaryDark}}" />
+                                    </VerticalStackLayout>
+
+                                    <Button Grid.Column="1"
+                                            Text="🗑️"
+                                            Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteCalloutCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent"
+                                            Padding="8"
+                                            VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
             </VerticalStackLayout>
         </Frame>
 
-        <!-- ⚠️ Validation meddelanden -->
+        <!-- ✅ Jour – Totals (timmar) -->
+        <Frame Style="{StaticResource InfoFrame}">
+            <VerticalStackLayout Spacing="6">
+                <Label Text="{resx:Translate OnCall_TotalsTitle}"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                   Dark={StaticResource White}}" />
+
+                <Label Text="{Binding OnCallTotalsText}"
+                       FontSize="13"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                   Dark={StaticResource White}}" />
+
+                <Label Text="{resx:Translate OnCall_TotalsHint}"
+                       FontSize="11"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                   Dark={StaticResource TextSecondaryDark}}" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- ⚠️ Validation -->
         <ContentView IsVisible="{Binding HasValidationMessage}">
             <Label Text="{Binding ValidationMessage}"
                    FontSize="14"
@@ -158,5 +200,6 @@
                     Style="{StaticResource ThemedEditor}"
                     HeightRequest="80" />
         </VerticalStackLayout>
+
     </VerticalStackLayout>
 </ContentView>

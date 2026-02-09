@@ -2,128 +2,158 @@
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.ViewModels.ShiftTypes;
 
 namespace MyWorkSalary.Services.Handlers
 {
     public class OnCallHandler
     {
+        #region Fields
         private readonly IOnCallRepository _onCallRepository;
         private readonly IWorkShiftRepository _workShiftRepository;
         private readonly IJobProfileRepository _jobProfileRepository;
+        private readonly IOnCallCalloutRepository _onCallCalloutRepository;
+        #endregion
 
+        #region Constructor
         public OnCallHandler(
             IOnCallRepository onCallRepository,
+            IOnCallCalloutRepository onCallCalloutRepository,
             IWorkShiftRepository workShiftRepository,
             IJobProfileRepository jobProfileRepository)
         {
             _onCallRepository = onCallRepository;
+            _onCallCalloutRepository = onCallCalloutRepository;
             _workShiftRepository = workShiftRepository;
             _jobProfileRepository = jobProfileRepository;
         }
+        #endregion
 
         #region Create OnCall Shift
-
         public WorkShift CreateOnCallShift(
                 int jobProfileId,
                 DateTime shiftDate,
                 TimeSpan standbyStartTime,
                 TimeSpan standbyEndTime,
-                decimal activeHours = 0,
-                decimal onCallRatePerHour = 40,
-                string notes = null)
+                IEnumerable<CalloutRow> callouts,
+                string? notes = null)
         {
             var jobProfile = _jobProfileRepository.GetJobProfile(jobProfileId);
             if (jobProfile == null)
                 throw new ArgumentException("JobProfile not found");
 
-            // Beräkna standby-timmar
-            var standbyHours = CalculateStandbyHours(standbyStartTime, standbyEndTime);
+            // 1) Standby DateTimes (hantera över midnatt)
+            var standbyStartDT = shiftDate.Date.Add(standbyStartTime);
+            var standbyEndDT = shiftDate.Date.Add(standbyEndTime);
+            if (standbyEndTime <= standbyStartTime)
+                standbyEndDT = standbyEndDT.AddDays(1);
 
-            // Preliminär beräkning
-            var preliminaryPay = CalculatePreliminaryPay(standbyHours, activeHours, onCallRatePerHour, jobProfile.HourlyRate ?? 0);
+            // 2) Standby timmar
+            var standbyHours = (decimal)(standbyEndDT - standbyStartDT).TotalHours;
 
-            // Skapa WorkShift
+            // 3) Aktiva timmar från callouts (TimeSpan, också midnatt-stöd)
+            var activeHours = 0m;
+            foreach (var c in callouts ?? Enumerable.Empty<CalloutRow>())
+            {
+                if (c == null)
+                    continue;
+
+                var s = c.Start;
+                var e = c.End;
+
+                // tomma / 0-längd ignoreras (valfritt)
+                if (e == s)
+                    continue;
+
+                if (e <= s)
+                    e = e.Add(TimeSpan.FromDays(1));
+
+                activeHours += (decimal)(e - s).TotalHours;
+            }
+
+            // 4) Skapa WorkShift (Salary räknar pay senare)
             var workShift = new WorkShift
             {
                 JobProfileId = jobProfileId,
-                ShiftDate = shiftDate,
+                ShiftDate = shiftDate.Date,
                 ShiftType = ShiftType.OnCall,
-                StartTime = shiftDate.Date.Add(standbyStartTime),
-                EndTime = shiftDate.Date.Add(standbyEndTime),
-                TotalHours = activeHours,  
-                TotalPay = preliminaryPay,
+
+                StartTime = standbyStartDT,
+                EndTime = standbyEndDT,
+
+                TotalHours = Math.Round(activeHours, 2),
+                TotalPay = 0m,          // <— viktigt: Salary tar lön/OB
                 Notes = notes,
                 CreatedDate = DateTime.Now
             };
 
-            // Spara WorkShift
             var savedWorkShift = _workShiftRepository.SaveWorkShift(workShift);
 
-            // Skapa OnCallShift (behåll all jour-info här)
+            // 5) Snapshot: aktiv timlön (om DefaultHourly)
+            var defaultActiveRate = ResolveDefaultActiveHourlyRate(jobProfile);
+
+            // 6) Skapa OnCallShift med snapshots
             var onCallShift = new OnCallShift
             {
                 WorkShiftId = savedWorkShift.Id,
                 StandbyStartTime = standbyStartTime,
                 StandbyEndTime = standbyEndTime,
-                StandbyHours = standbyHours,        // 14h (för lön-beräkning)
-                ActiveHours = activeHours,          // 2h (för lön-beräkning)
-                OnCallRatePerHour = onCallRatePerHour,
+                StandbyHours = Math.Round(standbyHours, 2),
+
+                StandbyPayTypeSnapshot = jobProfile.OnCallStandbyPayType,
+                StandbyPayAmountSnapshot = jobProfile.OnCallStandbyPayAmount,
+
+                ActivePayModeSnapshot = jobProfile.OnCallActivePayMode,
+                ActiveHourlyRateSnapshot = jobProfile.OnCallActivePayMode == OnCallActivePayMode.CustomHourly
+                    ? jobProfile.OnCallActiveHourlyRate
+                    : defaultActiveRate,
+
                 Notes = notes
             };
 
-            // Spara OnCallShift
             _onCallRepository.Insert(onCallShift);
+
+            // IMPORTANT: vi behöver Id för onCallShift → hämta tillbaka den
+            // enklast: GetByWorkShiftId (du har redan)
+            var persisted = _onCallRepository.GetByWorkShiftId(savedWorkShift.Id);
+            if (persisted == null)
+                throw new InvalidOperationException("Failed to persist OnCallShift");
+
+            // 7) Spara callouts
+            foreach (var c in callouts ?? Enumerable.Empty<CalloutRow>())
+            {
+                if (c == null)
+                    continue;
+                if (c.End == c.Start)
+                    continue;
+
+                _onCallCalloutRepository.Insert(new OnCallCallout
+                {
+                    OnCallShiftId = persisted.Id,
+                    StartTime = c.Start,
+                    EndTime = c.End,
+                    Notes = c.Notes
+                });
+            }
 
             return savedWorkShift;
         }
 
-        #endregion
-
-        #region Update OnCall Shift
-
-        public WorkShift UpdateOnCallShift(
-            int workShiftId,
-            TimeSpan standbyStartTime,
-            TimeSpan standbyEndTime,
-            decimal activeHours,
-            decimal onCallRatePerHour,
-            string notes = null)
+        private decimal ResolveDefaultActiveHourlyRate(JobProfile jobProfile)
         {
-            var workShift = _workShiftRepository.GetWorkShift(workShiftId);
-            var onCallShift = _onCallRepository.GetByWorkShiftId(workShiftId);
+            // Timanställd: använd hourly rate direkt
+            if (jobProfile.EmploymentType == EmploymentType.Temporary)
+                return jobProfile.HourlyRate ?? 0m;
 
-            if (workShift == null || onCallShift == null)
-                throw new ArgumentException("OnCall shift not found");
+            // Månadslön: räkna timlön från expected hours
+            if (jobProfile.MonthlySalary > 0)
+            {
+                var monthlyHours = jobProfile.ExpectedHoursPerMonth > 0 ? jobProfile.ExpectedHoursPerMonth : 173.33m;
+                return jobProfile.MonthlySalary.Value / monthlyHours;
+            }
 
-            var jobProfile = _jobProfileRepository.GetJobProfile(workShift.JobProfileId);
-
-            // Beräkna nya värden
-            var standbyHours = CalculateStandbyHours(standbyStartTime, standbyEndTime);
-            var preliminaryPay = CalculatePreliminaryPay(standbyHours, activeHours, onCallRatePerHour, jobProfile.HourlyRate ?? 0);
-
-            // Uppdatera WorkShift
-            workShift.StartTime = workShift.ShiftDate.Date.Add(standbyStartTime);
-            workShift.EndTime = workShift.ShiftDate.Date.Add(standbyEndTime);
-            workShift.TotalHours = standbyHours + activeHours;
-            workShift.TotalPay = preliminaryPay;
-            workShift.Notes = notes;
-            workShift.ModifiedDate = DateTime.Now;
-
-            // Uppdatera OnCallShift
-            onCallShift.StandbyStartTime = standbyStartTime;
-            onCallShift.StandbyEndTime = standbyEndTime;
-            onCallShift.StandbyHours = standbyHours;
-            onCallShift.ActiveHours = activeHours;
-            onCallShift.OnCallRatePerHour = onCallRatePerHour;
-            onCallShift.Notes = notes;
-
-            // Spara ändringar
-            _workShiftRepository.SaveWorkShift(workShift);
-            _onCallRepository.Update(onCallShift);
-
-            return workShift;
+            return jobProfile.HourlyRate ?? 0m;
         }
-
         #endregion
 
         #region Get OnCall Data
@@ -140,38 +170,25 @@ namespace MyWorkSalary.Services.Handlers
 
         #endregion
 
-        #region Calculations
-
-        private decimal CalculateStandbyHours(TimeSpan startTime, TimeSpan endTime)
-        {
-            // Hantera över midnatt (t.ex. 18:00-08:00)
-            if (endTime <= startTime)
-            {
-                endTime = endTime.Add(TimeSpan.FromDays(1));
-            }
-
-            var duration = endTime - startTime;
-            return (decimal)duration.TotalHours;
-        }
-
-        private decimal CalculatePreliminaryPay(decimal standbyHours, decimal activeHours, decimal onCallRate, decimal hourlyRate)
-        {
-            var standbyPay = standbyHours * onCallRate;
-            var activePay = activeHours * hourlyRate;
-
-            return standbyPay + activePay;
-        }
-
-        #endregion
-
         #region Delete
-
         public bool DeleteOnCallShift(int workShiftId)
         {
             try
             {
-                _onCallRepository.DeleteByWorkShiftId(workShiftId);
+                // 1) hitta OnCallShift
+                var onCall = _onCallRepository.GetByWorkShiftId(workShiftId);
+                if (onCall != null)
+                {
+                    // 2) ta bort callouts först
+                    _onCallCalloutRepository.DeleteByOnCallShiftId(onCall.Id);
+
+                    // 3) ta bort OnCallShift
+                    _onCallRepository.Delete(onCall.Id);
+                }
+
+                // 4) ta bort WorkShift
                 _workShiftRepository.DeleteWorkShift(workShiftId);
+
                 return true;
             }
             catch
@@ -179,7 +196,6 @@ namespace MyWorkSalary.Services.Handlers
                 return false;
             }
         }
-
         #endregion
     }
 }

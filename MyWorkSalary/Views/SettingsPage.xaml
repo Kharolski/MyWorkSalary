@@ -315,6 +315,124 @@
                 </VerticalStackLayout>
             </Frame>
 
+            <!-- Jour / OnCall-inställningar (v2) -->
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
+                <VerticalStackLayout Spacing="10">
+
+                    <Label Text="{resx:Translate OnCallSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
+
+                    <Label Text="{resx:Translate OnCallSettings_Tip}" Style="{StaticResource TipsLabel}" FontSize="12" />
+
+                    <!-- Aktivera jour -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Label Text="{resx:Translate OnCallSettings_Enable}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+
+                        <Frame Grid.Column="1"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource SwitchTrackOff},
+                                                                 Dark={StaticResource SwitchTrackOffDark}}"
+                               CornerRadius="15"
+                               Padding="2"
+                               HeightRequest="30"
+                               WidthRequest="50"
+                               VerticalOptions="Center">
+                            <Switch IsToggled="{Binding OnCallEnabled}"
+                                    OnColor="{StaticResource ButtonPrimary}"
+                                    ThumbColor="{AppThemeBinding Light={StaticResource SwitchThumbLight},
+                                                                Dark={StaticResource White}}"
+                                    BackgroundColor="Transparent"
+                                    Scale="0.8" />
+                        </Frame>
+                    </Grid>
+
+                    <!-- Innehåll visas bara om jour är aktivt -->
+                    <VerticalStackLayout IsVisible="{Binding ShowOnCallSettings}" Spacing="10">
+
+                        <!-- Standby: typ -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Label Text="{resx:Translate OnCallSettings_StandbyPayType}"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center" />
+                            <Picker ItemsSource="{Binding OnCallStandbyPayTypes}"
+                                    ItemDisplayBinding="{Binding Text}"
+                                    SelectedItem="{Binding SelectedOnCallStandbyPayType}"
+                                    Grid.Column="1"
+                                    WidthRequest="170"
+                                    MinimumWidthRequest="130"
+                                    Style="{StaticResource ThemedPicker}" />
+                        </Grid>
+
+                        <!-- Standby: belopp (visas om typ != None) -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" IsVisible="{Binding ShowOnCallStandbyAmount}">
+                            <Label Text="{Binding OnCallStandbyAmountLabelText}" FontAttributes="Bold" VerticalOptions="Center" />
+                            <Entry Text="{Binding OnCallStandbyAmountText}"
+                                   Grid.Column="1"
+                                   Keyboard="Numeric"
+                                   Style="{StaticResource ThemedEntry}"
+                                   WidthRequest="170"
+                                   MinimumWidthRequest="130"
+                                   HorizontalTextAlignment="End" />
+                        </Grid>
+
+                        <!-- Aktiv tid: mode -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Label Text="{resx:Translate OnCallSettings_ActivePayMode}" FontAttributes="Bold" VerticalOptions="Center" />
+                            <Picker ItemsSource="{Binding OnCallActivePayModes}"
+                                    ItemDisplayBinding="{Binding Text}"
+                                    SelectedItem="{Binding SelectedOnCallActivePayMode}"
+                                    Grid.Column="1"
+                                    WidthRequest="170"
+                                    MinimumWidthRequest="130"
+                                    Style="{StaticResource ThemedPicker}" />
+                        </Grid>
+
+                        <!-- Aktiv tid: custom rate (visas bara om Custom) -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" IsVisible="{Binding ShowOnCallActiveCustomRate}">
+                            <Label Text="{resx:Translate OnCallSettings_ActiveCustomRate}"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center" />
+                            <Entry Text="{Binding OnCallActiveCustomRateText}"
+                                   Grid.Column="1"
+                                   Keyboard="Numeric"
+                                   Style="{StaticResource ThemedEntry}"
+                                   WidthRequest="170"
+                                   MinimumWidthRequest="130"
+                                   HorizontalTextAlignment="End" />
+                        </Grid>
+
+                        <!-- Recalc månader -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Label Text="{resx:Translate OnCallSettings_RecalcMonths}" FontAttributes="Bold" VerticalOptions="Center" />
+                            <Picker ItemsSource="{Binding OnCallRecalcOptions}"
+                                    ItemDisplayBinding="{Binding Text}"
+                                    SelectedItem="{Binding SelectedOnCallRecalcOption}"
+                                    Grid.Column="1"
+                                    WidthRequest="170"
+                                    MinimumWidthRequest="130"
+                                    Style="{StaticResource ThemedPicker}" />
+                        </Grid>
+
+                        <!-- Räkna om-knapp -->
+                        <Button Text="{resx:Translate OnCallSettings_RecalcNow}"
+                                Command="{Binding RecalcOnCallCommand}"
+                                BackgroundColor="{StaticResource EditButtonColor}"
+                                TextColor="{StaticResource White}"
+                                CornerRadius="8"
+                                Padding="0,12"
+                                IsEnabled="{Binding CanRecalcOnCall}" />
+
+                        <!-- Summary -->
+                        <Label Text="{Binding OnCallSettingsSummaryText}"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                           Dark={StaticResource TextSecondaryDark}}" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
             <!-- App Inställningar -->
             <Frame Style="{StaticResource CardFrame}">
                 <VerticalStackLayout Spacing="15">

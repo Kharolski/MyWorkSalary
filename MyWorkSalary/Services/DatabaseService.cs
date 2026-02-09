@@ -15,8 +15,10 @@ namespace MyWorkSalary.Services
         public DatabaseService(string dbPath)
         {
             _database = new SQLiteConnection(dbPath);
-
             CreateTables();
+
+            //RunMigrations();
+
             InitializeRepositories();
         }
         #endregion
@@ -31,6 +33,7 @@ namespace MyWorkSalary.Services
         public SickLeaveRepository SickLeaves { get; private set; }
         public VacationLeaveRepository VacationLeaves { get; private set; }
         public OnCallShiftRepository OnCallShifts { get; private set; }
+        public OnCallCalloutRepository OnCallCallouts { get; private set; }
         public HolidayRepository Holidays { get; private set; }
 
         #endregion
@@ -61,6 +64,7 @@ namespace MyWorkSalary.Services
             _database.DeleteAll<SickLeave>();
             _database.DeleteAll<VacationLeave>();
             _database.DeleteAll<OnCallShift>();
+            _database.CreateTable<OnCallCallout>();
             _database.DeleteAll<Holiday>();
 
         }
@@ -76,6 +80,7 @@ namespace MyWorkSalary.Services
             _database.CreateTable<SickLeave>();
             _database.CreateTable<VacationLeave>();
             _database.CreateTable<OnCallShift>();
+            _database.CreateTable<OnCallCallout>();
             _database.CreateTable<Holiday>();
         }
 
@@ -89,31 +94,52 @@ namespace MyWorkSalary.Services
             SickLeaves = new SickLeaveRepository(this);
             VacationLeaves = new VacationLeaveRepository(this);
             OnCallShifts = new OnCallShiftRepository(this);
+            OnCallCallouts = new OnCallCalloutRepository(this);
             Holidays = new HolidayRepository(this);
         }
         #endregion
 
-        // Denna metod används för att helt ta bort VAB-relaterade data och tabeller, i syfte att "ta bort VAB-funktionen" från appen.
-        private void RemoveVabCompletely()
+        #region Megrations
+        private void RunMigrations()
         {
             try
             {
-                // 1) Rensa ev. VABLeave data (om tabellen finns)
-                _database.Execute("DELETE FROM VABLeave");
-
-                // 2) Ta bort WorkShift-rader som är VAB.
-                // OBS: VAB låg sist i enumen och var därför normalt int=4.
-                _database.Execute("DELETE FROM WorkShift WHERE ShiftType = ?", 4);
-
-                // 3) Droppa VABLeave-tabellen helt
-                _database.Execute("DROP TABLE IF EXISTS VABLeave");
+                // JobProfile: OnCall/jour columns
+                EnsureColumnExists("JobProfile", "OnCallStandbyRatePerHour", "DECIMAL", "0");
+                EnsureColumnExists("JobProfile", "OnCallActiveRatePerHour", "DECIMAL", "0");
+                EnsureColumnExists("JobProfile", "OnCallAllowancePerShift", "DECIMAL", "0");
+                EnsureColumnExists("JobProfile", "OnCallRecalcMonths", "INTEGER", "2");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ RemoveVabCompletely error: {ex.Message}");
-                // medvetet: vi kastar inte här för att inte blocka app-start
+                System.Diagnostics.Debug.WriteLine($"❌ RunMigrations error: {ex.Message}");
+                // medvetet: krascha inte vid start
             }
         }
+
+        private void EnsureColumnExists(string tableName, string columnName, string columnType, string defaultSqlLiteral)
+        {
+            // PRAGMA table_info(TableName) -> lista kolumner
+            var columns = _database.Query<TableInfoRow>($"PRAGMA table_info({tableName});");
+            var exists = columns.Any(c => string.Equals(c.name, columnName, StringComparison.OrdinalIgnoreCase));
+            if (exists)
+                return;
+
+            // SQLite tillåter ADD COLUMN med DEFAULT
+            _database.Execute($"ALTER TABLE {tableName} ADD COLUMN {columnName} {columnType} DEFAULT {defaultSqlLiteral}");
+        }
+
+        // hjälpklass för PRAGMA-resultat
+        private class TableInfoRow
+        {
+            public int cid { get; set; }
+            public string name { get; set; }
+            public string type { get; set; }
+            public int notnull { get; set; }
+            public string dflt_value { get; set; }
+            public int pk { get; set; }
+        }
+        #endregion
 
     }
 }

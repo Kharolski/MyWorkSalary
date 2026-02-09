@@ -835,9 +835,6 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="OnCall_ActiveLabel" xml:space="preserve">
     <value>Aktiv tid</value>
   </data>
-  <data name="OnCall_CalculationTitle" xml:space="preserve">
-    <value>📊 Preliminär beräkning</value>
-  </data>
   <data name="OnCall_Calculation_Active" xml:space="preserve">
     <value>Aktiv tid: {0:F1}{3} × {1} = {2}</value>
   </data>
@@ -877,35 +874,14 @@ när anställningen upphör (senast en månad efteråt).</value>
   <data name="OnCall_Save_Exception" xml:space="preserve">
     <value>Fel vid sparande: {0}</value>
   </data>
-  <data name="OnCall_StandbyHours" xml:space="preserve">
-    <value>{0:F1} {1} jour</value>
-  </data>
   <data name="OnCall_StandbyLabel" xml:space="preserve">
     <value>Jour</value>
   </data>
   <data name="OnCall_StandbyTime" xml:space="preserve">
     <value>🕐 Jourtid (standby)</value>
   </data>
-  <data name="OnCall_StandbyTip" xml:space="preserve">
-    <value>💡 Tips: Jour över midnatt fungerar (t.ex. 18:00-08:00)</value>
-  </data>
   <data name="OnCall_TotalEstimate" xml:space="preserve">
     <value>Preliminärt totalt: {0}</value>
-  </data>
-  <data name="OnCall_Validation_ActiveTooLong" xml:space="preserve">
-    <value>Aktiv arbetstid kan inte vara längre än jourtid</value>
-  </data>
-  <data name="OnCall_Validation_InvalidActive" xml:space="preserve">
-    <value>Ogiltigt värde för aktiv arbetstid</value>
-  </data>
-  <data name="OnCall_Validation_RateTooLow" xml:space="preserve">
-    <value>Jourersättning måste vara större än 0</value>
-  </data>
-  <data name="OnCall_Validation_TooLong" xml:space="preserve">
-    <value>Jourtid kan inte vara längre än 24 timmar</value>
-  </data>
-  <data name="OnCall_Validation_ZeroHours" xml:space="preserve">
-    <value>Jourtid måste vara längre än 0 timmar</value>
   </data>
   <data name="OneDay" xml:space="preserve">
     <value>(1 dag)</value>
@@ -1025,7 +1001,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>✅ Sparat!</value>
   </data>
   <data name="SaveSuccess_OnCall" xml:space="preserve">
-    <value>✅ Jourpass registrerat</value>
+    <value>Jourpass registrerat</value>
   </data>
   <data name="SaveSuccess_RegularShift" xml:space="preserve">
     <value>✅ Vanligt pass registrerat</value>
@@ -2147,5 +2123,146 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="ExtraShift_Status_DisabledInSettings" xml:space="preserve">
     <value>Extra pass (inaktivt i Inställningar)</value>
+  </data>
+  <data name="OnCallSettings_Title" xml:space="preserve">
+    <value>Jourinställningar</value>
+  </data>
+  <data name="OnCallSettings_Tip" xml:space="preserve">
+    <value>💡 Välj hur jourersättning ska beräknas.</value>
+  </data>
+  <data name="OnCallSettings_StandbyRate" xml:space="preserve">
+    <value>Standby (per timme)</value>
+  </data>
+  <data name="OnCallSettings_ActiveRate" xml:space="preserve">
+    <value>Inkallad/aktiv (per timme)</value>
+  </data>
+  <data name="OnCallSettings_Allowance" xml:space="preserve">
+    <value>Tillägg per jourpass</value>
+  </data>
+  <data name="OnCallSettings_RecalcMonths" xml:space="preserve">
+    <value>Räkna om senaste månader</value>
+  </data>
+  <data name="OnCallSettings_Enable" xml:space="preserve">
+    <value>Aktivera jour</value>
+  </data>
+  <data name="OnCallSettings_StandbyPayType" xml:space="preserve">
+    <value>Ersättning för jour (standby)</value>
+  </data>
+  <data name="OnCallSettings_Amount" xml:space="preserve">
+    <value>Belopp</value>
+  </data>
+  <data name="OnCallSettings_AmountPerHour" xml:space="preserve">
+    <value>Belopp per timme</value>
+  </data>
+  <data name="OnCallSettings_AmountPerShift" xml:space="preserve">
+    <value>Belopp per jourpass</value>
+  </data>
+  <data name="OnCallSettings_ActivePayMode" xml:space="preserve">
+    <value>Ersättning för aktiv tid</value>
+  </data>
+  <data name="OnCallSettings_ActiveCustomRate" xml:space="preserve">
+    <value>Egen timlön (aktiv tid)</value>
+  </data>
+  <data name="OnCallSettings_RecalcNow" xml:space="preserve">
+    <value>Räkna om nu</value>
+  </data>
+  <data name="OnCallPayType_None" xml:space="preserve">
+    <value>Ingen (0)</value>
+  </data>
+  <data name="OnCallPayType_PerHour" xml:space="preserve">
+    <value>Per timme</value>
+  </data>
+  <data name="OnCallPayType_PerShift" xml:space="preserve">
+    <value>Per pass</value>
+  </data>
+  <data name="OnCallActivePay_DefaultHourly" xml:space="preserve">
+    <value>Standard timlön</value>
+  </data>
+  <data name="OnCallActivePay_CustomHourly" xml:space="preserve">
+    <value>Egen timlön</value>
+  </data>
+  <data name="Recalc_None" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="Recalc_1Month" xml:space="preserve">
+    <value>1 månad</value>
+  </data>
+  <data name="Recalc_2Months" xml:space="preserve">
+    <value>2 månader</value>
+  </data>
+  <data name="Recalc_3Months" xml:space="preserve">
+    <value>3 månader</value>
+  </data>
+  <data name="OnCallSettings_StandbyLabel" xml:space="preserve">
+    <value>Standby</value>
+  </data>
+  <data name="OnCallSettings_Standby_None" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="OnCallSettings_Active_DefaultHourly" xml:space="preserve">
+    <value>Aktiv: standard timlön</value>
+  </data>
+  <data name="OnCallSettings_Active_CustomHourly" xml:space="preserve">
+    <value>Aktiv: egen timlön</value>
+  </data>
+  <data name="OnCallSettings_Recalc_None" xml:space="preserve">
+    <value>Ingen omräkning</value>
+  </data>
+  <data name="OnCallSettings_Recalc_LastXMonths" xml:space="preserve">
+    <value>Räkna om senaste {0} månader</value>
+  </data>
+  <data name="OnCallSettings_RecalcNotReadyYet" xml:space="preserve">
+    <value>Omräkning kommer snart.</value>
+  </data>
+  <data name="InfoTitle" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="OnCall_Validation_NotEnabled" xml:space="preserve">
+    <value>Jour är inte aktiverat i inställningar.</value>
+  </data>
+  <data name="OnCall_Validation_InvalidStandbyPay" xml:space="preserve">
+    <value>Ogiltigt belopp för jourersättning.</value>
+  </data>
+  <data name="OnCall_Validation_InvalidActiveRate" xml:space="preserve">
+    <value>Ogiltig timlön för aktiv tid.</value>
+  </data>
+  <data name="OnCall_Validation_CalloutZero" xml:space="preserve">
+    <value>Varje inkallning måste ha en giltig tidsperiod.</value>
+  </data>
+  <data name="OnCall_Validation_CalloutTooLong" xml:space="preserve">
+    <value>En inkallning är för lång.</value>
+  </data>
+  <data name="OnCall_TotalsTitle" xml:space="preserve">
+    <value>📊 Summering</value>
+  </data>
+  <data name="OnCall_TotalsHint" xml:space="preserve">
+    <value>Lön och OB räknas i Lön-sidan baserat på inkallningstider.</value>
+  </data>
+  <data name="OnCall_CalloutsTitle" xml:space="preserve">
+    <value>Inkallningar (aktiv tid)</value>
+  </data>
+  <data name="OnCall_CalloutsTip" xml:space="preserve">
+    <value>💡 Lägg till de tidsintervall då du blev inkallad. OB beräknas automatiskt utifrån dessa tider.</value>
+  </data>
+  <data name="OnCall_NoCallouts" xml:space="preserve">
+    <value>Inga aktiva tider ännu</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Lägg till</value>
+  </data>
+  <data name="OnCall_CalloutNotesPlaceholder" xml:space="preserve">
+    <value>Anteckning (valfritt)</value>
+  </data>
+  <data name="OnCall_ActiveTime" xml:space="preserve">
+    <value>🕐 Jour (aktiv tid)</value>
+  </data>
+  <data name="OnCall_AddActiveTime" xml:space="preserve">
+    <value>Lägg till aktiv tid</value>
+  </data>
+  <data name="OnCall_ActiveNotesPlaceholder" xml:space="preserve">
+    <value>Anteckning för denna aktiva tid (valfritt)</value>
+  </data>
+  <data name="OnCall_ActiveTimesListTitle" xml:space="preserve">
+    <value>Tillagda aktiva tider</value>
   </data>
 </root>

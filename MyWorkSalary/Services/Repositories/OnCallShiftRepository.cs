@@ -7,11 +7,13 @@ namespace MyWorkSalary.Services.Repositories
     public class OnCallShiftRepository : IOnCallRepository
     {
         private readonly DatabaseService _databaseService;
+        private readonly IOnCallCalloutRepository _calloutRepo;
         private SQLiteConnection Database => _databaseService.GetConnection();
 
         public OnCallShiftRepository(DatabaseService databaseService)
         {
             _databaseService = databaseService;
+            _calloutRepo = databaseService.OnCallCallouts;
         }
 
         public OnCallShift GetById(int id)
@@ -45,7 +47,6 @@ namespace MyWorkSalary.Services.Repositories
         {
             return Database.Insert(onCallShift);
         }
-
         public int Update(OnCallShift onCallShift)
         {
             return Database.Update(onCallShift);
@@ -55,10 +56,18 @@ namespace MyWorkSalary.Services.Repositories
         {
             return Database.Delete<OnCallShift>(id);
         }
-
         public int DeleteByWorkShiftId(int workShiftId)
         {
             return Database.Execute("DELETE FROM OnCallShift WHERE WorkShiftId = ?", workShiftId);
+        }
+        public int DeleteShiftCascade(int workShiftId)
+        {
+            var onCall = GetByWorkShiftId(workShiftId);
+            if (onCall == null)
+                return 0;
+
+            _calloutRepo.DeleteByOnCallShiftId(onCall.Id);
+            return Delete(onCall.Id);
         }
     }
 }

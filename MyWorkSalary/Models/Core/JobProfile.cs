@@ -1,14 +1,13 @@
 ﻿using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
+using MyWorkSalary.ViewModels;
 using SQLite;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace MyWorkSalary.Models.Core
 {
-    public class JobProfile : INotifyPropertyChanged
+    public class JobProfile : BaseViewModel
     {
         public JobProfile()
         {
@@ -36,7 +35,7 @@ namespace MyWorkSalary.Models.Core
         public SupportedCountry Country { get; set; }
         #endregion
 
-        #region Extra pass Property
+        #region Extra pass Property (Inbeodring)
         public bool ExtraShiftEnabled { get; set; }
         public ExtraShiftPayType ExtraShiftPayType { get; set; } = ExtraShiftPayType.PerHour;
         public decimal ExtraShiftAmount { get; set; } = 0m;
@@ -89,6 +88,18 @@ namespace MyWorkSalary.Models.Core
         public decimal? InitialVacationBalance { get; set; } // Sparade dagar vid registrering
         #endregion
 
+        #region OnCall / Jour Settings
+        public bool OnCallEnabled { get; set; } = false;
+
+        public OnCallStandbyPayType OnCallStandbyPayType { get; set; } = OnCallStandbyPayType.None;
+        public decimal OnCallStandbyPayAmount { get; set; } = 0m;
+
+        public OnCallActivePayMode OnCallActivePayMode { get; set; } = OnCallActivePayMode.DefaultHourly;
+        public decimal OnCallActiveHourlyRate { get; set; } = 0m; // används bara om CustomHourly
+
+        public int OnCallRecalcMonths { get; set; } = 0;
+        #endregion
+
         #region Tax Properties
         public TaxCalculationMethod TaxMethod { get; set; } = TaxCalculationMethod.Manual;
         public decimal ManualTaxRate { get; set; } = 0.33m;
@@ -133,15 +144,6 @@ namespace MyWorkSalary.Models.Core
                     OnPropertyChanged();
                 }
             }
-        }
-        #endregion
-
-        #region INotifyPropertyChanged Implementation
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

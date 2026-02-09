@@ -12,5 +12,7 @@ namespace MyWorkSalary.Services.Interfaces
         int Update(OnCallShift onCallShift);
         int Delete(int id);
         int DeleteByWorkShiftId(int workShiftId);
+
+        int DeleteShiftCascade(int workShiftId);
     }
 }
