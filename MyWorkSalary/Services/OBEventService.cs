@@ -252,8 +252,12 @@ namespace MyWorkSalary.Services
             var day = dt.DayOfWeek;
 
             var matches = rates.Where(r =>
-                IsDayMatch(r, day, shift.IsHoliday, shift.IsBigHoliday) &&
-                IsTimeInRange(r.StartTime, r.EndTime, time));
+            {
+                var effectiveDay = GetEffectiveDayForRate(r, day, time);
+
+                return IsDayMatch(r, effectiveDay, shift.IsHoliday, shift.IsBigHoliday) &&
+                       IsTimeInRange(r.StartTime, r.EndTime, time);
+            });
 
             return matches
                 .OrderByDescending(r => r.Priority)
@@ -296,6 +300,17 @@ namespace MyWorkSalary.Services
             return time >= start || time < end;
         }
 
+        private static DayOfWeek GetEffectiveDayForRate(OBRate rate, DayOfWeek currentDay, TimeSpan time)
+        {
+            // Regler som går över midnatt (t.ex 22:00–06:00):
+            // efter midnatt-delen (00:00–06:00) ska matcha mot föregående dag.
+            if (rate.StartTime > rate.EndTime && time < rate.EndTime)
+            {
+                return currentDay == DayOfWeek.Sunday ? DayOfWeek.Saturday : currentDay - 1;
+            }
+
+            return currentDay;
+        }
         #endregion
     }
 }

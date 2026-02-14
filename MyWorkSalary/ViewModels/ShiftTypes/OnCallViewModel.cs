@@ -91,6 +91,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
                 NotifyLocalizedProperties();
                 OnPropertyChanged(nameof(OnCallTotalsText));
+
                 ValidateInput();
                 ValidationChanged?.Invoke();
             }
@@ -105,6 +106,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
                 NotifyLocalizedProperties();
                 OnPropertyChanged(nameof(OnCallTotalsText));
+
                 ValidateInput();
                 ValidationChanged?.Invoke();
             }
@@ -163,6 +165,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
         }
 
+        public bool CanSaveShift => CanSave();
         #endregion
 
         #region Commands
@@ -218,6 +221,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             _selectedDate = selectedDate;
             _activeJob = activeJob;
 
+            // nollställ states som inte får hänga med mellan jobb
+            ValidationMessage = "";
+            Callouts.Clear();
+
             // Uppdatera språk- och valuta-beroende properties
             NotifyLocalizedProperties();
 
@@ -225,6 +232,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             OnPropertyChanged(nameof(OnCallTotalsText));
             OnPropertyChanged(nameof(HasCallouts));
             OnPropertyChanged(nameof(HasNoCallouts));
+            OnPropertyChanged(nameof(ShowActiveHoursInfo));
 
             // Uppdatera övriga properties
             ValidateInput();
@@ -434,7 +442,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_ActiveTooLong");
                 return;
             }
-
+            OnPropertyChanged(nameof(CanSaveShift));
+            ValidationChanged?.Invoke();
         }
 
         /// <summary>
@@ -465,6 +474,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         }
         #endregion
 
+        #region Validation
+
+        #endregion
+
         #region IDisposable Implementation
         public void Dispose()
         {
@@ -483,11 +496,14 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         }
     }
 
-    public class CalloutRow : INotifyPropertyChanged
+    public class CalloutRow : BaseViewModel
     {
         private TimeSpan _start;
         private TimeSpan _end;
         private string? _notes;
+
+        private decimal _activePay;
+        private string _currencyCode = "SEK";
 
         public TimeSpan Start
         {
@@ -547,8 +563,31 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             return (decimal)(e - s).TotalHours;
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string? name = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public decimal ActivePay
+        {
+            get => _activePay;
+            set
+            {
+                if (_activePay == value)
+                    return;
+                _activePay = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ActivePayText));
+            }
+        }
+        public string CurrencyCode
+        {
+            get => _currencyCode;
+            set
+            {
+                if (_currencyCode == value)
+                    return;
+                _currencyCode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ActivePayText));
+            }
+        }
+
+        public string ActivePayText => CurrencyHelper.FormatCurrency(ActivePay, CurrencyCode);
     }
 }

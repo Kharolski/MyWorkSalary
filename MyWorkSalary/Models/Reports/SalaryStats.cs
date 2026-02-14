@@ -31,7 +31,7 @@ namespace MyWorkSalary.Models.Reports
         /// <summary>
         /// Total bruttolön (före skatt)
         /// </summary>
-        public decimal GrossSalary => BaseSalary + ObPay + VacationPay + OvertimePay + ExtraPay;
+        public decimal GrossSalary => BaseSalary + ObPay + VacationPay + OvertimePay + ExtraPay + OnCallTotalPay;
         #endregion
 
         #region Skatt
@@ -64,6 +64,21 @@ namespace MyWorkSalary.Models.Reports
         public List<ExtraShiftDetail> ExtraShiftDetails { get; set; } = new();
         public decimal TotalExtraShiftHours => ExtraShiftDetails.Sum(x => x.Hours);
         public bool HasExtraShifts => ExtraShiftDetails.Any();
+        #endregion
+
+        #region Jour (OnCall)
+        public decimal OnCallStandbyHours { get; set; }
+        public decimal OnCallActiveHours { get; set; }
+
+        
+        public decimal OnCallPay { get; set; }          // Bara standby-ersättningen 
+        public decimal OnCallActivePay { get; set; }    // aktiv ersättning (summa callouts)
+        public decimal OnCallTotalPay => OnCallPay + OnCallActivePay;
+
+        // Detaljer till jour-kortet (förklaring)
+        public List<OnCallDetail> OnCallDetails { get; set; } = new();
+
+        public bool HasOnCall => OnCallDetails.Any() || OnCallStandbyHours > 0 || OnCallActiveHours > 0 || OnCallPay != 0 || OnCallActivePay != 0;
         #endregion
     }
 

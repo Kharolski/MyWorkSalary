@@ -2163,9 +2163,6 @@ Arbetspasset har sparats!</value>
   <data name="OnCallSettings_ActiveCustomRate" xml:space="preserve">
     <value>Egen timlön (aktiv tid)</value>
   </data>
-  <data name="OnCallSettings_RecalcNow" xml:space="preserve">
-    <value>Räkna om nu</value>
-  </data>
   <data name="OnCallPayType_None" xml:space="preserve">
     <value>Ingen (0)</value>
   </data>
@@ -2264,5 +2261,44 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="OnCall_ActiveTimesListTitle" xml:space="preserve">
     <value>Tillagda aktiva tider</value>
+  </data>
+  <data name="Salary_Summary_OnCall" xml:space="preserve">
+    <value>Jour</value>
+  </data>
+  <data name="Salary_OnCall_Title" xml:space="preserve">
+    <value>Jour</value>
+  </data>
+  <data name="Salary_OnCall_Hint" xml:space="preserve">
+    <value>💡 Standby-ersättning visas här. OB för aktiv tid syns i OB-kortet.</value>
+  </data>
+  <data name="Salary_OnCall_Standby" xml:space="preserve">
+    <value>Standby</value>
+  </data>
+  <data name="Salary_OnCall_Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Salary_OnCall_NoItems" xml:space="preserve">
+    <value>Inga jourpass i perioden.</value>
+  </data>
+  <data name="Salary_OnCall_Total" xml:space="preserve">
+    <value>Totalt</value>
+  </data>
+  <data name="Salary_OnCall_CalloutsTitle" xml:space="preserve">
+    <value>Aktiv tid</value>
+  </data>
+  <data name="Salary_OnCall_NoCalloutsForDay" xml:space="preserve">
+    <value>Ingen aktiv tid registrerad.</value>
+  </data>
+  <data name="OnCallSettings_RecalcPickMonthsFirst" xml:space="preserve">
+    <value>Välj 1–3 månader först.</value>
+  </data>
+  <data name="OnCallSettings_RecalcNow" xml:space="preserve">
+    <value>Räknar om</value>
+  </data>
+  <data name="OnCallSettings_RecalcRunning" xml:space="preserve">
+    <value>Räknar om…</value>
+  </data>
+  <data name="OnCallSettings_RecalcDoneWithCount" xml:space="preserve">
+    <value>Klart ✓ ({0})</value>
   </data>
 </root>

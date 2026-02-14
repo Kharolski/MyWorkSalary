@@ -7,13 +7,12 @@ using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views.Pages.Templates;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel : BaseViewModel
     {
         #region Private Fields
         private readonly DatabaseService _databaseService;
@@ -22,16 +21,18 @@ namespace MyWorkSalary.ViewModels
         private bool _isChangingJob = false;
         private AppSettings _appSettings;
         private readonly IOBEventService _obEventService;
+        private readonly IOnCallRecalcService _onCallRecalcService;
 
         private bool _isDarkTheme;
         private LanguageOption _selectedLanguage;
         #endregion
 
         #region Constructor
-        public SettingsViewModel(DatabaseService databaseService, IOBEventService obEventService)
+        public SettingsViewModel(DatabaseService databaseService, IOBEventService obEventService, IOnCallRecalcService onCallRecalcService)
         {
             _databaseService = databaseService;
             _obEventService = obEventService;
+            _onCallRecalcService = onCallRecalcService;
 
             TranslationManager.Instance.CultureChanged += OnCultureChanged;
 
@@ -80,8 +81,15 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged(nameof(SelectedExtraShiftType));
                 OnPropertyChanged(nameof(ExtraShiftTypes));
 
-                // On-call / jour 
+                // On-call / jour
+                _onCallStandbyAmountText = null;
+                _onCallActiveCustomRateText = null;
+                _selectedOnCallStandbyPayType = null;
+                _selectedOnCallActivePayMode = null;
+                _selectedOnCallRecalcOption = null;
+
                 InitOnCallOptionTexts();
+                NotifyOnCallBindings();
 
                 ((Command)AddOBRateCommand).ChangeCanExecute();
                 ((Command)AddOBTemplateCommand).ChangeCanExecute();
@@ -619,9 +627,7 @@ namespace MyWorkSalary.ViewModels
                 ActiveJob.OnCallEnabled = value;
                 SaveActiveJob();
 
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(ShowOnCallSettings));
-                OnPropertyChanged(nameof(OnCallSettingsSummaryText));
+                NotifyOnCallBindings();
             }
         }
         public bool ShowOnCallSettings => HasActiveJob && OnCallEnabled;
@@ -654,15 +660,11 @@ namespace MyWorkSalary.ViewModels
                 ActiveJob.OnCallStandbyPayType = value.Value;
                 SaveActiveJob();
 
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(ShowOnCallStandbyAmount));
-                OnPropertyChanged(nameof(OnCallStandbyAmountLabelText));
-                OnPropertyChanged(nameof(OnCallSettingsSummaryText));
+                NotifyOnCallBindings();
             }
         }
 
-        public bool ShowOnCallStandbyAmount =>
-            HasActiveJob && OnCallEnabled && (ActiveJob?.OnCallStandbyPayType != OnCallStandbyPayType.None);
+        public bool ShowOnCallStandbyAmount => HasActiveJob && OnCallEnabled && (ActiveJob?.OnCallStandbyPayType != OnCallStandbyPayType.None);
 
         public string OnCallStandbyAmountLabelText
         {
@@ -814,18 +816,73 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanRecalcOnCall));
                 OnPropertyChanged(nameof(OnCallSettingsSummaryText));
+
+                OnPropertyChanged(nameof(CanRecalcOnCall));
+                OnPropertyChanged(nameof(RecalcButtonIsEnabled));
+                OnPropertyChanged(nameof(RecalcButtonText));
             }
         }
 
-        public bool CanRecalcOnCall => HasActiveJob && OnCallEnabled && (ActiveJob?.OnCallRecalcMonths ?? 0) > 0;
+        // Knappen
+        private bool _isRecalcRunning;
+        public bool IsRecalcRunning
+        {
+            get => _isRecalcRunning;
+            set
+            {
+                _isRecalcRunning = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CanRecalcOnCall));
+                OnPropertyChanged(nameof(RecalcButtonText));
+                OnPropertyChanged(nameof(RecalcButtonIsEnabled));
+            }
+        }
 
+        private string? _recalcButtonOverrideText;
+        public string RecalcButtonText
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(_recalcButtonOverrideText))
+                    return _recalcButtonOverrideText;
+
+                if ((ActiveJob?.OnCallRecalcMonths ?? 0) <= 0)
+                    return Resources.Resx.Resources.OnCallSettings_RecalcPickMonthsFirst; // "Välj månader…"
+
+                return Resources.Resx.Resources.OnCallSettings_RecalcNow; // "Räkna om"
+            }
+        }
+
+        public bool RecalcButtonIsEnabled => CanRecalcOnCall && !IsRecalcRunning;
+        public bool CanRecalcOnCall => HasActiveJob && OnCallEnabled && (ActiveJob?.OnCallRecalcMonths ?? 0) > 0;
         public ICommand RecalcOnCallCommand => new Command(async () =>
         {
-            // v2: vi kopplar detta senare till “rebuild OB events + jour snapshots”
-            await Shell.Current.DisplayAlert(
-                Resources.Resx.Resources.InfoTitle,
-                Resources.Resx.Resources.OnCallSettings_RecalcNotReadyYet,
-                Resources.Resx.Resources.Ok);
+            if (!CanRecalcOnCall || IsRecalcRunning)
+                return;
+
+            try
+            {
+                IsRecalcRunning = true;
+
+                _recalcButtonOverrideText = Resources.Resx.Resources.OnCallSettings_RecalcRunning; // "Räknar om…"
+                OnPropertyChanged(nameof(RecalcButtonText));
+
+                var months = ActiveJob.OnCallRecalcMonths;
+                var updated = await _onCallRecalcService.RebuildOnCallSnapshotsAsync(ActiveJob.Id, months);
+
+                _recalcButtonOverrideText = string.Format(
+                    Resources.Resx.Resources.OnCallSettings_RecalcDoneWithCount, updated); // ex: "Klart ✓ ({0})"
+                OnPropertyChanged(nameof(RecalcButtonText));
+
+                await Task.Delay(900);
+
+                _recalcButtonOverrideText = null;
+                OnPropertyChanged(nameof(RecalcButtonText));
+            }
+            finally
+            {
+                IsRecalcRunning = false;
+            }
         });
 
         // ---- Summary ----
@@ -881,11 +938,6 @@ namespace MyWorkSalary.ViewModels
             OnCallRecalcOptions.Add(new Option<int> { Value = 2, Text = Resources.Resx.Resources.Recalc_2Months });
             OnCallRecalcOptions.Add(new Option<int> { Value = 3, Text = Resources.Resx.Resources.Recalc_3Months });
 
-            // tvinga omval
-            _selectedOnCallStandbyPayType = null;
-            _selectedOnCallActivePayMode = null;
-            _selectedOnCallRecalcOption = null;
-
             OnPropertyChanged(nameof(OnCallStandbyPayTypes));
             OnPropertyChanged(nameof(OnCallActivePayModes));
             OnPropertyChanged(nameof(OnCallRecalcOptions));
@@ -895,7 +947,24 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(SelectedOnCallRecalcOption));
         }
 
+        private void NotifyOnCallBindings()
+        {
+            OnPropertyChanged(nameof(OnCallEnabled));
+            OnPropertyChanged(nameof(ShowOnCallSettings));
+            OnPropertyChanged(nameof(OnCallSettingsSummaryText));
 
+            OnPropertyChanged(nameof(ShowOnCallStandbyAmount));
+            OnPropertyChanged(nameof(ShowOnCallActiveCustomRate));
+            OnPropertyChanged(nameof(OnCallStandbyAmountLabelText));
+            OnPropertyChanged(nameof(OnCallStandbyAmountText));
+            OnPropertyChanged(nameof(OnCallActiveCustomRateText));
+            OnPropertyChanged(nameof(SelectedOnCallStandbyPayType));
+            OnPropertyChanged(nameof(SelectedOnCallActivePayMode));
+            OnPropertyChanged(nameof(CanRecalcOnCall));
+
+            OnPropertyChanged(nameof(RecalcButtonText));
+            OnPropertyChanged(nameof(RecalcButtonIsEnabled));
+        }
         #endregion
 
         #region Theme Methods
@@ -1009,13 +1078,6 @@ namespace MyWorkSalary.ViewModels
         }
         #endregion
 
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 
     public class LanguageOption

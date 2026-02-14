@@ -3738,6 +3738,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done ✓ ({0}).
+        /// </summary>
+        internal static string OnCallSettings_RecalcDoneWithCount {
+            get {
+                return ResourceManager.GetString("OnCallSettings_RecalcDoneWithCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recalculate last months.
         /// </summary>
         internal static string OnCallSettings_RecalcMonths {
@@ -3756,11 +3765,29 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recalculate now.
+        ///   Looks up a localized string similar to Recalculating.
         /// </summary>
         internal static string OnCallSettings_RecalcNow {
             get {
                 return ResourceManager.GetString("OnCallSettings_RecalcNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select 1–3 months first..
+        /// </summary>
+        internal static string OnCallSettings_RecalcPickMonthsFirst {
+            get {
+                return ResourceManager.GetString("OnCallSettings_RecalcPickMonthsFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recalculating….
+        /// </summary>
+        internal static string OnCallSettings_RecalcRunning {
+            get {
+                return ResourceManager.GetString("OnCallSettings_RecalcRunning", resourceCulture);
             }
         }
         
@@ -4323,6 +4350,78 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string Salary_OnCall_Active {
+            get {
+                return ResourceManager.GetString("Salary_OnCall_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active time.
+        /// </summary>
+        internal static string Salary_OnCall_CalloutsTitle {
+            get {
+                return ResourceManager.GetString("Salary_OnCall_CalloutsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💡 Standby compensation is shown here. Premium pay for active time is shown separately..
+        /// </summary>
+        internal static string Salary_OnCall_Hint {
+            get {
+                return ResourceManager.GetString("Salary_OnCall_Hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No active time registered..
+        /// </summary>
+        internal static string Salary_OnCall_NoCalloutsForDay {
+            get {
+                return ResourceManager.GetString("Salary_OnCall_NoCalloutsForDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No on-call entries this period..
+        /// </summary>
+        internal static string Salary_OnCall_NoItems {
+            get {
+                return ResourceManager.GetString("Salary_OnCall_NoItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standby.
+        /// </summary>
+        internal static string Salary_OnCall_Standby {
+            get {
+                return ResourceManager.GetString("Salary_OnCall_Standby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On-call.
+        /// </summary>
+        internal static string Salary_OnCall_Title {
+            get {
+                return ResourceManager.GetString("Salary_OnCall_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        internal static string Salary_OnCall_Total {
+            get {
+                return ResourceManager.GetString("Salary_OnCall_Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Monthly Salary Report.
         /// </summary>
         internal static string Salary_PageTitle {
@@ -4373,6 +4472,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Salary_Summary_OB {
             get {
                 return ResourceManager.GetString("Salary_Summary_OB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On-call.
+        /// </summary>
+        internal static string Salary_Summary_OnCall {
+            get {
+                return ResourceManager.GetString("Salary_Summary_OnCall", resourceCulture);
             }
         }
         

@@ -13,20 +13,24 @@ namespace MyWorkSalary.Services.Handlers
     public class SalaryStatsHandler
     {
         #region Fields
-
         private readonly ISalaryRepository _salaryRepository;
         private readonly IOBEventRepository _obEventRepository;
-
+        private readonly IOnCallRepository _onCallRepository;
+        private readonly IOnCallCalloutRepository _onCallCalloutRepository;
         #endregion
 
         #region Constructor
-
-        public SalaryStatsHandler(ISalaryRepository salaryRepository, IOBEventRepository obEventRepository)
+        public SalaryStatsHandler(
+            ISalaryRepository salaryRepository, 
+            IOBEventRepository obEventRepository,
+            IOnCallRepository onCallRepository,
+            IOnCallCalloutRepository onCallCalloutRepository)
         {
             _salaryRepository = salaryRepository ?? throw new ArgumentNullException(nameof(salaryRepository));
             _obEventRepository = obEventRepository ?? throw new ArgumentNullException(nameof(obEventRepository));
+            _onCallRepository = onCallRepository ?? throw new ArgumentNullException(nameof(onCallRepository));
+            _onCallCalloutRepository = onCallCalloutRepository ?? throw new ArgumentNullException(nameof(onCallCalloutRepository));
         }
-
         #endregion
 
         #region Monthly Salary
@@ -51,7 +55,7 @@ namespace MyWorkSalary.Services.Handlers
 
         #region Salary Stats
         /// <summary>
-        /// Sammanställer enkel statistik för en månad (utan OB/VAB/jour än).
+        /// Sammanställer enkel statistik för en månad
         /// </summary>
         public SalaryStats CalculateMonthlyStats(int jobId, DateTime month)
         {
@@ -63,16 +67,15 @@ namespace MyWorkSalary.Services.Handlers
 
             // month = utbetalningsmånad
             var payMonth = new DateTime(month.Year, month.Month, 1);
+            // workMonth = arbetsmånad
             var workMonth = payMonth.AddMonths(-1);
 
-            var (payStart, payEnd) = GetCalendarMonth(payMonth);
+            //var (payStart, payEnd) = GetCalendarMonth(payMonth);
             var (workStart, workEnd) = GetCalendarMonth(workMonth);
 
-            // Hämta pass beroende på anställningstyp
-            IEnumerable<WorkShift> shifts =
-                profile.EmploymentType == EmploymentType.Permanent
-                    ? (_salaryRepository.GetShiftsForPeriod(jobId, payStart, payEnd) ?? Enumerable.Empty<WorkShift>())
-                    : (_salaryRepository.GetShiftsForPeriod(jobId, workStart, workEnd) ?? Enumerable.Empty<WorkShift>());
+            // Alla pass som ligger till grund för lönen som betalas ut i payMonth
+            // (jour, OB, aktiv tid, extra pass, timlön – allt)
+            var workShifts = _salaryRepository.GetShiftsForPeriod(jobId, workStart, workEnd) ?? Enumerable.Empty<WorkShift>();
 
             // Nollställ innan beräkning
             stats.TotalHours = 0;
@@ -88,9 +91,9 @@ namespace MyWorkSalary.Services.Handlers
             stats.OvertimePay = 0;
             stats.ExtraPay = 0;
 
-            // Arbetade timmar (klippt inom vald period)
-            var hoursStart = profile.EmploymentType == EmploymentType.Permanent ? payStart : workStart;
-            var hoursEnd = profile.EmploymentType == EmploymentType.Permanent ? payEnd : workEnd;
+            // Klipp ALLA timmar mot arbetsmånaden (det som betalas ut)
+            var hoursStart = workStart;
+            var hoursEnd = workEnd;
 
             stats.ExtraPay = 0;
             // Extra pass: betalas i payMonth men avser workMonth
@@ -98,12 +101,12 @@ namespace MyWorkSalary.Services.Handlers
 
             if (profile.ExtraShiftEnabled)
             {
-                var extraShifts = (_salaryRepository.GetShiftsForPeriod(jobId, workStart, workEnd) ?? Enumerable.Empty<WorkShift>())
-                .Where(s => s.ShiftType == ShiftType.Regular)
-                .Where(s => s.IsExtraShift)
-                .Where(s => s.ExtraShiftPay > 0)
-                .OrderBy(s => s.ShiftDate)
-                .ToList();
+                var extraShifts = workShifts
+                    .Where(s => s.ShiftType == ShiftType.Regular)
+                    .Where(s => s.IsExtraShift)
+                    .Where(s => s.ExtraShiftPay > 0)
+                    .OrderBy(s => s.ShiftDate)
+                    .ToList();
 
                 foreach (var s in extraShifts)
                 {
@@ -118,18 +121,42 @@ namespace MyWorkSalary.Services.Handlers
                 stats.ExtraPay = Math.Round(extraShifts.Sum(s => s.ExtraShiftPay), 2);
             }
 
-            stats.TotalHours = shifts.Sum(s => ShiftHoursSafe(s, hoursStart, hoursEnd));
+            // ===== GRUNDLÖN =====
+            if (profile.EmploymentType == EmploymentType.Permanent)
+            {
+                // Fast lön: fast belopp som betalas ut i payMonth
+                stats.BaseSalary = profile.MonthlySalary ?? 0m;
+            }
+            else
+            {
+                // Timanställd: betalas för REGULAR-timmar i workMonth
+                var regularHours = workShifts
+                    .Where(s => s.ShiftType == ShiftType.Regular)
+                    .Sum(s => ShiftHoursSafe(s, hoursStart, hoursEnd));
 
-            // Grundlön:
-            // - Fast: payMonth
-            // - Tim: workMonth (det som betalas i payMonth)
-            stats.BaseSalary =
-                profile.EmploymentType == EmploymentType.Permanent
-                    ? (profile.MonthlySalary ?? 0)
-                    : GetMonthlySalary(jobId, workStart, workEnd);
+                stats.BaseSalary = Math.Round(regularHours * (profile.HourlyRate ?? 0m), 2);
+            }
 
-            // OB: alltid via OBEvent för utbetalningsmånad (PayYear/PayMonth == payMonth)
-            CalculateOBFromEvents(jobId, payMonth, shifts, stats);
+            // Totalt arbetade timmar i workMonth
+            // (jour-standby räknas inte som arbetstid)
+            stats.TotalHours = workShifts
+                .Where(s => s.ShiftType != ShiftType.OnCall)
+                .Sum(s => ShiftHoursSafe(s, hoursStart, hoursEnd));
+
+            // ===== OB =====
+            // Räkna OB på vanliga shifts först
+            CalculateOBFromEvents(jobId, payMonth, workShifts, stats);
+
+            // ===== JOUR (OnCall) =====
+            // Nollställ jourfält
+            //stats.OnCallPay = 0m;
+            //stats.OnCallActivePay = 0m;
+            //stats.OnCallStandbyHours = 0m;
+            //stats.OnCallActiveHours = 0m;
+            //stats.OnCallDetails.Clear();
+
+            // Lägg på jour (inkl OB från aktiv tid)
+            ApplyOnCall(jobId, profile, workShifts, hoursStart, hoursEnd, stats);
 
             // Semesterersättning (timanställd)
             if (profile.EmploymentType != EmploymentType.Permanent)
@@ -234,7 +261,16 @@ namespace MyWorkSalary.Services.Handlers
                     .ToDictionary(g => g.Key, g => g.Sum(x => x.Hours));
 
                 foreach (var shift in shifts)
+                {
+                    // Jour ska inte få OBHours på standby → sätt 0 (eller hoppa om du vill)
+                    if (shift.ShiftType == ShiftType.OnCall)
+                    {
+                        shift.OBHours = 0;
+                        continue;
+                    }
+
                     shift.OBHours = obByShift.TryGetValue(shift.Id, out var h) ? h : 0;
+                }
 
                 return;
             }
@@ -258,6 +294,11 @@ namespace MyWorkSalary.Services.Handlers
 
             foreach (var shift in shifts)
             {
+                // Fallback får aldrig räkna OB på jour-standby
+                // Jour-aktiv OB hanteras i ApplyOnCall på callout-intervallen
+                if (shift.ShiftType == ShiftType.OnCall)
+                    continue;
+
                 if (!shift.StartTime.HasValue || !shift.EndTime.HasValue)
                     continue;
 
@@ -323,7 +364,7 @@ namespace MyWorkSalary.Services.Handlers
                 var matchingRate = obRates
                     .Where(rate =>
                         rate.IsActive &&
-                        IsDayMatch(rate, dayOfWeek, shift.IsHoliday, shift.IsBigHoliday) &&
+                        IsDayMatch(rate, GetEffectiveDayForRate(rate, dayOfWeek, timeOfDay), shift.IsHoliday, shift.IsBigHoliday) &&
                         IsTimeInRange(rate.StartTime, rate.EndTime, timeOfDay))
                     .OrderByDescending(r => r.Priority)
                     .FirstOrDefault();
@@ -393,12 +434,262 @@ namespace MyWorkSalary.Services.Handlers
 
         #endregion
 
-        #region Leave
-        // Kommer senare: GetSickDays, GetVacationDays etc.
-        #endregion
-
         #region OnCall / Jour
-        // Kommer senare: GetOnCallHours etc.
+        private void ApplyOnCall(
+             int jobId,
+             JobProfile profile,
+             IEnumerable<WorkShift> shifts,
+             DateTime hoursStart,
+             DateTime hoursEnd,
+             SalaryStats stats)
+        {
+            if (!profile.OnCallEnabled)
+                return;
+
+            var onCallWorkShifts = shifts
+                .Where(s => s.ShiftType == ShiftType.OnCall)
+                .ToList();
+
+            // OB-rates behövs bara om du vill räkna OB på aktiv tid här
+            var obRates = _salaryRepository
+                .GetObShiftsForPeriod(jobId, DateTime.MinValue, DateTime.MaxValue)?
+                .Where(r => r.IsActive)
+                .ToList() ?? new List<OBRate>();
+
+            foreach (var ws in onCallWorkShifts)
+            {
+                if (!ws.StartTime.HasValue || !ws.EndTime.HasValue)
+                    continue;
+
+                var ocs = _onCallRepository.GetByWorkShiftId(ws.Id);
+                if (ocs == null)
+                    continue;
+
+                // ===== Standby =====
+                var standbyHours = Math.Round(ocs.StandbyHours, 2);
+                var standbyPay = Math.Round(
+                    CalcStandbyPay(ocs.StandbyPayTypeSnapshot, ocs.StandbyPayAmountSnapshot, standbyHours),
+                    2);
+
+                stats.OnCallStandbyHours += standbyHours;
+                stats.OnCallPay += standbyPay;
+
+                // ===== Callouts (aktiv tid) =====
+                var callouts = _onCallCalloutRepository.GetByOnCallShiftId(ocs.Id) ?? new List<OnCallCallout>();
+                var calloutDetails = new List<OnCallCalloutDetail>();
+
+                decimal activeHoursInPeriod = 0m;
+                decimal activeBasePay = 0m;
+
+                var standbyStartDT = ws.StartTime.Value;
+
+                foreach (var c in callouts)
+                {
+                    var (cStartDT, cEndDT) = BuildCalloutDateTimes(
+                        ws.ShiftDate,
+                        ocs.StandbyStartTime,
+                        standbyStartDT,
+                        c.StartTime,
+                        c.EndTime);
+
+                    // RÄKNA ENDAST VIA SEGMENT (så både summering och UI blir korrekt)
+                    foreach (var (segFrom, segTo) in SplitByMidnight(cStartDT, cEndDT))
+                    {
+                        var segHours = OverlapHours(segFrom, segTo, hoursStart, hoursEnd);
+                        if (segHours <= 0)
+                            continue;
+
+                        segHours = Math.Round(segHours, 2);
+
+                        // 1) summeringar
+                        activeHoursInPeriod += segHours;
+
+                        var segPay = Math.Round(segHours * ocs.ActiveHourlyRateSnapshot, 2);
+                        activeBasePay += segPay;
+
+                        // 2) UI-rad (riktig split)
+                        calloutDetails.Add(new OnCallCalloutDetail
+                        {
+                            Date = segFrom.Date,              // <--- viktigt för sortering och split
+                            Start = segFrom.TimeOfDay,        // <--- segment start (t.ex 23:30)
+                            End = segTo.TimeOfDay,            // <--- segment end   (t.ex 00:00)
+                            Hours = segHours,                 // <--- segment timmar
+                            Notes = c.Notes,
+                            ActivePay = segPay                // <--- segment pay
+                        });
+
+                        // 3) OB på aktiv tid 
+                        if (obRates.Count > 0)
+                        {
+                            var segDate = segFrom.Date;
+
+                            bool isHoliday = (segDate == ws.ShiftDate.Date) && ws.IsHoliday;
+                            bool isBigHoliday = (segDate == ws.ShiftDate.Date) && ws.IsBigHoliday;
+
+                            var tempShift = new WorkShift
+                            {
+                                ShiftDate = segFrom.Date,   // <--- viktig: segmentets datum
+                                StartTime = segFrom,
+                                EndTime = segTo,
+                                IsHoliday = isHoliday,
+                                IsBigHoliday = isBigHoliday
+                            };
+
+                            var dayType =
+                                tempShift.IsBigHoliday ? OBDayType.BigHoliday :
+                                tempShift.IsHoliday ? OBDayType.Holiday :
+                                (tempShift.ShiftDate.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday) ? OBDayType.Weekend :
+                                OBDayType.Weekday;
+
+                            var obByCategory = CalculateObHoursByCategory(tempShift, obRates);
+
+                            foreach (var (category, obHoursRaw) in obByCategory)
+                            {
+                                var obHours = Math.Round(obHoursRaw, 2);
+                                if (obHours <= 0)
+                                    continue;
+
+                                var rate = obRates.FirstOrDefault(r => r.IsActive && r.Category == category);
+                                if (rate == null)
+                                    continue;
+
+                                var pay = Math.Round(obHours * rate.RatePerHour, 2);
+
+                                stats.TotalObHours += obHours;
+                                stats.ObPay += pay;
+
+                                stats.ObDetails.Add(new ObDetails
+                                {
+                                    Date = tempShift.ShiftDate,
+                                    Hours = obHours,
+                                    RatePerHour = rate.RatePerHour,
+                                    Category = category,
+                                    DayType = dayType,
+                                    Pay = pay
+                                });
+                            }
+                        }
+                    }
+                }
+
+                activeHoursInPeriod = Math.Round(activeHoursInPeriod, 2);
+                activeBasePay = Math.Round(activeBasePay, 2);
+
+                // Aktiv ersättning ska också synas tydligt i jour-summor (kort 2 / jourkort)
+                stats.OnCallActivePay += activeBasePay;
+
+                stats.OnCallActiveHours += activeHoursInPeriod;
+
+                // Aktiv tid räknas som arbetade timmar
+                stats.TotalHours += activeHoursInPeriod;
+
+                // Aktiv lön ska in i BaseSalary (så sammanfattningen stämmer)
+                stats.BaseSalary += activeBasePay;
+
+                // ===== EN detailrad per jourpass =====
+                stats.OnCallDetails.Add(new OnCallDetail
+                {
+                    Date = ws.ShiftDate,
+                    StandbyHours = standbyHours,
+                    ActiveHours = activeHoursInPeriod,
+                    StandbyPayType = ocs.StandbyPayTypeSnapshot,
+                    StandbyPayAmount = ocs.StandbyPayAmountSnapshot,
+                    StandbyPay = standbyPay,
+                    ShiftNote = ocs.Notes,
+                    Callouts = calloutDetails
+                });
+            }
+
+            // Runda totals (stabil output)
+            stats.OnCallPay = Math.Round(stats.OnCallPay, 2);
+            stats.OnCallActivePay = Math.Round(stats.OnCallActivePay, 2);
+            stats.OnCallStandbyHours = Math.Round(stats.OnCallStandbyHours, 2);
+            stats.OnCallActiveHours = Math.Round(stats.OnCallActiveHours, 2);
+
+            stats.TotalObHours = Math.Round(stats.TotalObHours, 2);
+            stats.ObPay = Math.Round(stats.ObPay, 2);
+        }
+
+        private static List<(DateTime From, DateTime To)> SplitByMidnight(DateTime from, DateTime to)
+        {
+            var result = new List<(DateTime From, DateTime To)>();
+            if (to <= from)
+                return result;
+
+            var cursor = from;
+
+            while (cursor.Date < to.Date)
+            {
+                var nextMidnight = cursor.Date.AddDays(1);
+                result.Add((cursor, nextMidnight));
+                cursor = nextMidnight;
+            }
+
+            result.Add((cursor, to));
+            return result;
+        }
+
+        // Helpers
+        private static decimal CalcStandbyPay(OnCallStandbyPayType type, decimal amount, decimal standbyHours)
+        {
+            return type switch
+            {
+                OnCallStandbyPayType.None => 0m,
+                OnCallStandbyPayType.PerHour => Math.Round(standbyHours * amount, 2),
+                OnCallStandbyPayType.PerShift => Math.Round(amount, 2),
+                _ => 0m
+            };
+        }
+
+        // Bygger DateTime för callout inom jourpasset (hanterar över midnatt)
+        private static (DateTime start, DateTime end) BuildCalloutDateTimes(
+            DateTime shiftDate,
+            TimeSpan standbyStart,
+            DateTime standbyStartDT,
+            TimeSpan calloutStart,
+            TimeSpan calloutEnd)
+        {
+            // Start
+            var startDT = shiftDate.Date.Add(calloutStart);
+            if (startDT < standbyStartDT) // callout är efter midnatt
+                startDT = startDT.AddDays(1);
+
+            // End
+            var endDT = shiftDate.Date.Add(calloutEnd);
+            if (endDT <= shiftDate.Date.Add(calloutStart))
+                endDT = endDT.AddDays(1);
+
+            if (endDT < standbyStartDT)
+                endDT = endDT.AddDays(1);
+
+            // Extra säkerhet: om end <= start → bump
+            if (endDT <= startDT)
+                endDT = endDT.AddDays(1);
+
+            return (startDT, endDT);
+        }
+
+        private static decimal OverlapHours(DateTime segStart, DateTime segEnd, DateTime periodStart, DateTime periodEnd)
+        {
+            var from = segStart < periodStart ? periodStart : segStart;
+            var to = segEnd > periodEnd ? periodEnd : segEnd;
+            if (to <= from)
+                return 0m;
+            return (decimal)(to - from).TotalHours;
+        }
+
+        private static DayOfWeek GetEffectiveDayForRate(OBRate rate, DayOfWeek currentDay, TimeSpan time)
+        {
+            // Om regeln går över midnatt (t.ex 22:00–06:00)
+            // och vi är i "efter-midnatt"-delen (t.ex 00:15),
+            // då ska vi matcha mot föregående dag.
+            if (rate.StartTime > rate.EndTime && time < rate.EndTime)
+            {
+                return currentDay == DayOfWeek.Sunday ? DayOfWeek.Saturday : currentDay - 1;
+            }
+
+            return currentDay;
+        }
         #endregion
     }
 }

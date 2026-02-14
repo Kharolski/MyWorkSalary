@@ -264,7 +264,7 @@ namespace MyWorkSalary.ViewModels
                 return FormatMoney(CurrentStats.ObPay);
             }
         }
-        public bool ShowObStatus => CurrentStats != null && (!CurrentStats.HasObRulesConfigured || CurrentStats.UsedObFallback);
+        public bool ShowObStatus => !string.IsNullOrWhiteSpace(ObStatusText);
         public string ObStatusText
         {
             get
@@ -275,7 +275,7 @@ namespace MyWorkSalary.ViewModels
                 if (!CurrentStats.HasObRulesConfigured)
                     return LocalizationHelper.Translate("OB_NotConfigured");
 
-                if (CurrentStats.UsedObFallback)
+                if (CurrentStats.UsedObFallback && CurrentStats.ObPay <= 0)
                     return LocalizationHelper.Translate("OB_UsingFallback");
 
                 return "";
@@ -328,9 +328,6 @@ namespace MyWorkSalary.ViewModels
         public string SickDaysText => CurrentStats == null ? "" : $"{CurrentStats.SickDays}";
 
         public string VacationDaysText => CurrentStats == null ? "" : $"{CurrentStats.VacationDays}";
-
-        // Jour kommer vi lägga till i SalaryStats sen
-        public string JourText => CurrentStats == null ? "" : $"{CurrentStats.JourHours:F1}";
 
         // expand/collapse
         public bool IsObExpanded
@@ -525,6 +522,131 @@ namespace MyWorkSalary.ViewModels
         });
         #endregion
 
+        #region Jour / On Call
+        public string OnCallTotalPayText =>
+                CurrentStats == null ? "" :
+                CurrencyHelper.FormatCurrency(CurrentStats.OnCallTotalPay, ActiveJob.CurrencyCode);
+        public string OnCallStandbyPayText =>
+                CurrentStats == null ? "" :
+                CurrencyHelper.FormatCurrency(CurrentStats.OnCallPay, ActiveJob.CurrencyCode);
+
+        public string ActivePayText => CurrencyHelper.FormatCurrency(ActivePay, ActiveJob.CurrencyCode);
+        public decimal ActivePay { get; set; }
+        public bool ShowOnCall => CurrentStats?.HasOnCall == true;
+
+        // Visning
+        public bool HasOnCall => CurrentStats?.HasOnCall == true;
+
+        // Expander
+        private bool _isOnCallExpanded;
+        public bool IsOnCallExpanded
+        {
+            get => _isOnCallExpanded;
+            set { _isOnCallExpanded = value; OnPropertyChanged(); OnPropertyChanged(nameof(OnCallChevronIcon)); }
+        }
+        public string OnCallChevronIcon => IsOnCallExpanded ? "▼" : "▶";
+
+        // Commands
+        public ICommand ToggleOnCallCardCommand => new Command(() =>
+        {
+            IsOnCallExpanded = !IsOnCallExpanded;
+        });
+        public ICommand ToggleOnCallRowCommand => new Command<OnCallRow>(row =>
+        {
+            if (row == null)
+                return;
+
+            // valfritt: stäng andra rader
+            foreach (var r in _onCallRows)
+                if (!ReferenceEquals(r, row) && r.IsExpanded)
+                    r.IsExpanded = false;
+
+            row.IsExpanded = !row.IsExpanded;
+
+            // Refresh (ibland behövs för CollectionView + chevron)
+            OnPropertyChanged(nameof(OnCallRows));
+        });
+
+        // Rader
+        private List<OnCallRow> _onCallRows = new();
+        public IReadOnlyList<OnCallRow> OnCallRows => _onCallRows;
+        private void RebuildOnCallRows()
+        {
+            _onCallRows = new List<OnCallRow>();
+
+            if (CurrentStats?.OnCallDetails == null || CurrentStats.OnCallDetails.Count == 0)
+            {
+                OnPropertyChanged(nameof(OnCallRows));
+                return;
+            }
+
+            var currency = string.IsNullOrWhiteSpace(ActiveJob?.CurrencyCode) ? "SEK" : ActiveJob.CurrencyCode;
+            var h = LocalizationHelper.Translate("Hours_Abbreviation");
+
+            _onCallRows = CurrentStats.OnCallDetails
+                .OrderBy(x => x.Date)
+                .Select(d =>
+                {
+                    var row = new OnCallRow
+                    {
+                        DateText = d.Date.ToString("dd-MM", AppCulture),
+                        StandbyText = $"{d.StandbyHours:0.##} {h}",
+                        ActiveText = $"{d.ActiveHours:0.##} {h}",
+                        PayText = CurrencyHelper.FormatCurrency(d.StandbyPay, currency),
+                        NoteText = d.ShiftNote,
+                        Callouts = (d.Callouts ?? new List<OnCallCalloutDetail>())
+                            .OrderBy(c => c.Date)
+                            .ThenBy(c => c.Start)
+                            .Select(c => new OnCallCalloutRow
+                            {
+                                TimeRangeText = $"{c.Start:hh\\:mm}–{c.End:hh\\:mm}",
+                                HoursText = $"{c.Hours:0.##} {h}",
+                                ActivePayText = CurrencyHelper.FormatCurrency(c.ActivePay, currency),
+                                Notes = c.Notes
+                            })
+                            .ToList()
+                    };
+
+                    return row;
+                })
+                .ToList();
+
+            OnPropertyChanged(nameof(OnCallRows));
+        }
+
+        public class OnCallRow : BaseViewModel
+        {
+            public string DateText { get; set; } = "";
+            public string StandbyText { get; set; } = "";
+            public string ActiveText { get; set; } = "";
+            public string PayText { get; set; } = "";
+            public string? NoteText { get; set; }
+
+            public bool HasNote => !string.IsNullOrWhiteSpace(NoteText);
+
+            public List<OnCallCalloutRow> Callouts { get; set; } = new();
+            public bool HasCallouts => Callouts?.Count > 0;
+
+            private bool _isExpanded;
+            public bool IsExpanded
+            {
+                get => _isExpanded;
+                set { _isExpanded = value; OnPropertyChanged(nameof(IsExpanded)); OnPropertyChanged(nameof(Chevron)); }
+            }
+
+            public string Chevron => IsExpanded ? "▼" : "▶";
+        }
+
+        public class OnCallCalloutRow
+        {
+            public string TimeRangeText { get; set; } = ""; // "23:10–23:40"
+            public string HoursText { get; set; } = "";     // "0.50 h"
+            public string ActivePayText { get; set; } = ""; // "289,39 kr"
+            public string? Notes { get; set; }
+            public bool HasNotes => !string.IsNullOrWhiteSpace(Notes);
+        }
+        #endregion
+
         #region Formatting
 
         private string JobCurrency => ActiveJob?.CurrencyCode ?? "SEK";
@@ -570,7 +692,6 @@ namespace MyWorkSalary.ViewModels
             SelectedMonth = SelectedMonth.AddMonths(1);
         });
 
-
         #endregion
 
         #region Constructor
@@ -610,11 +731,19 @@ namespace MyWorkSalary.ViewModels
 
             OnPropertyChanged(nameof(TaxText));
 
-            // kort 2 Extra shift
+            // KORT 2 Extra shift
             OnPropertyChanged(nameof(ShowExtraPay));
             OnPropertyChanged(nameof(ExtraPayText));
             OnPropertyChanged(nameof(HasExtraShifts));
             OnPropertyChanged(nameof(TotalExtraHoursText));
+
+            // KORT - Jour
+            OnPropertyChanged(nameof(ActivePayText));
+            OnPropertyChanged(nameof(ShowOnCall));
+            OnPropertyChanged(nameof(OnCallTotalPayText));
+            OnPropertyChanged(nameof(HasOnCall));
+            OnPropertyChanged(nameof(OnCallChevronIcon));
+            RebuildOnCallRows();
 
             // KORT 3 - OB
             OnPropertyChanged(nameof(TotalObHoursText));
@@ -637,12 +766,9 @@ namespace MyWorkSalary.ViewModels
             RebuildObGrouped();
 
             OnPropertyChanged(nameof(SickDaysText));
-            OnPropertyChanged(nameof(VacationDaysText));
-            OnPropertyChanged(nameof(JourText));
-
             OnPropertyChanged(nameof(ShowVacationPay));
             OnPropertyChanged(nameof(VacationPayText));
-
+            OnPropertyChanged(nameof(VacationDaysText));
         }
 
         private void RefreshStats()

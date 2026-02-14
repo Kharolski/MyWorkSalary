@@ -98,9 +98,18 @@ namespace MyWorkSalary.Services.Repositories
                     foreach (var vacation in vacationLeaves)
                         _database.Delete<VacationLeave>(vacation.Id);
 
-                    var onCallShifts = _database.Table<OnCallShift>().Where(x => x.WorkShiftId == shift.Id).ToList();
+                    var onCallShifts = _database.Table<OnCallShift>()
+                        .Where(x => x.WorkShiftId == shift.Id)
+                        .ToList();
+
                     foreach (var onCall in onCallShifts)
+                    {
+                        // Radera callouts först
+                        _database.Execute("DELETE FROM OnCallCallout WHERE OnCallShiftId = ?", onCall.Id);
+
+                        // Radera jourshift
                         _database.Delete<OnCallShift>(onCall.Id);
+                    }
                 }
 
                 // 3. Radera alla WorkShifts

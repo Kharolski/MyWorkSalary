@@ -315,7 +315,7 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Jour / OnCall-inställningar (v2) -->
+            <!-- Jour / OnCall-inställningar -->
             <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
                 <VerticalStackLayout Spacing="10">
 
@@ -415,13 +415,14 @@
                         </Grid>
 
                         <!-- Räkna om-knapp -->
-                        <Button Text="{resx:Translate OnCallSettings_RecalcNow}"
+                        <Button Text="{Binding RecalcButtonText}"
                                 Command="{Binding RecalcOnCallCommand}"
                                 BackgroundColor="{StaticResource EditButtonColor}"
                                 TextColor="{StaticResource White}"
                                 CornerRadius="8"
                                 Padding="0,12"
-                                IsEnabled="{Binding CanRecalcOnCall}" />
+                                IsEnabled="{Binding RecalcButtonIsEnabled}" 
+                                Opacity="{Binding RecalcButtonIsEnabled, Converter={StaticResource BoolToOpacityConverter}}" />
 
                         <!-- Summary -->
                         <Label Text="{Binding OnCallSettingsSummaryText}"

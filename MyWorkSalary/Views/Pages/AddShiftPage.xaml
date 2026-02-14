@@ -78,7 +78,8 @@
                         CornerRadius="8"
                         Padding="0,15"
                         HorizontalOptions="FillAndExpand"
-                        IsEnabled="{Binding CanSave}" />
+                        Opacity="{Binding CanSaveNow, Converter={StaticResource BoolToOpacityConverter}}"
+                        IsEnabled="{Binding CanSaveNow}" />
             </StackLayout>
         </VerticalStackLayout>
     </ScrollView>

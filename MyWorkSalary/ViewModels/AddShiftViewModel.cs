@@ -102,7 +102,7 @@ namespace MyWorkSalary.ViewModels
         public bool ShowGeneralNotes => ShowGeneralForm;
         public bool ShowGeneralCalculation => ShowGeneralForm && RegularShiftVM.ShowCalculation;
         #endregion
-
+        public bool CanSaveNow => CanExecuteSave();
         public JobProfile ActiveJob
         {
             get => _activeJob;
@@ -183,10 +183,11 @@ namespace MyWorkSalary.ViewModels
         #region Commands
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
+        
         #endregion
 
         #region Initialization
-        private void LoadActiveJob()
+        public void LoadActiveJob()
         {
             try
             {
@@ -226,6 +227,7 @@ namespace MyWorkSalary.ViewModels
 
             _canSave = canSaveResult;
             ((Command)SaveCommand).ChangeCanExecute();
+            OnPropertyChanged(nameof(CanSaveNow));
         }
 
         private bool CanExecuteSave()
@@ -446,6 +448,7 @@ namespace MyWorkSalary.ViewModels
                 ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Vacation"));
                 ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_OnCall"));
 
+                // Uppdatera endast texten som visas, utan att trigga Reset-logiken i settern
                 _selectedShiftTypeDisplay = _selectedShiftType switch
                 {
                     ShiftType.Regular => LocalizationHelper.Translate("ShiftType_Add_Regular"),
@@ -456,7 +459,9 @@ namespace MyWorkSalary.ViewModels
                 };
 
                 OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
-                await Task.Delay(50);
+
+                // Se till att Save-knappen uppdateras efter språkbyte
+                ValidateAndUpdateCanSave();
             }
             catch (Exception ex)
             {
@@ -502,6 +507,9 @@ namespace MyWorkSalary.ViewModels
             {
                 VacationVM.UpdateContext(SelectedDate, ActiveJob);
             }
+
+            // Uppdatera Save-knappens CanExecute direkt
+            ValidateAndUpdateCanSave();
         }
 
         /// <summary>
@@ -578,6 +586,26 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        public void OnPageAppearing()
+        {
+            // Viktigt om ActiveJob kan ha ändrats i Settings-tabben
+            LoadActiveJob();
+
+            // Reset alla formulär
+            SickLeaveVM.Reset();
+            OnCallVM.Reset();
+            VacationVM.Reset();
+            RegularShiftVM.Reset();
+
+            // Sätt tillbaka till "vanligt pass" som default
+            SelectedShiftType = ShiftType.Regular;
+            _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Add_Regular");
+            OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
+
+            // Uppdatera UI visibility + Save-knapp
+            OnSelectedShiftTypeChanged();
+            ValidateAndUpdateCanSave();
+        }
         #endregion
     }
 }
