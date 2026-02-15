@@ -3522,6 +3522,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active time must be within the on-call period..
+        /// </summary>
+        internal static string OnCall_Validation_CalloutOutsideStandby {
+            get {
+                return ResourceManager.GetString("OnCall_Validation_CalloutOutsideStandby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A callout interval is too long..
         /// </summary>
         internal static string OnCall_Validation_CalloutTooLong {

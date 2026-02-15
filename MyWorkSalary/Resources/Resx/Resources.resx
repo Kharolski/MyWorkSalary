@@ -2763,4 +2763,7 @@ The work shift has been saved!</value>
   <data name="OnCallSettings_RecalcDoneWithCount" xml:space="preserve">
     <value>Done ✓ ({0})</value>
   </data>
+  <data name="OnCall_Validation_CalloutOutsideStandby" xml:space="preserve">
+    <value>Active time must be within the on-call period.</value>
+  </data>
 </root>

@@ -64,14 +64,24 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         public TimeSpan NewCalloutStart
         {
             get => _newCalloutStart;
-            set { _newCalloutStart = value; OnPropertyChanged(); }
+            set
+            {
+                _newCalloutStart = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CanAddCallout));
+            }
         }
 
         private TimeSpan _newCalloutEnd = new TimeSpan(22, 0, 0);
         public TimeSpan NewCalloutEnd
         {
             get => _newCalloutEnd;
-            set { _newCalloutEnd = value; OnPropertyChanged(); }
+            set
+            {
+                _newCalloutEnd = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CanAddCallout));
+            }
         }
 
         private string? _newCalloutNotes;
@@ -91,6 +101,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
                 NotifyLocalizedProperties();
                 OnPropertyChanged(nameof(OnCallTotalsText));
+                OnPropertyChanged(nameof(CanAddCallout));
 
                 ValidateInput();
                 ValidationChanged?.Invoke();
@@ -106,6 +117,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
 
                 NotifyLocalizedProperties();
                 OnPropertyChanged(nameof(OnCallTotalsText));
+                OnPropertyChanged(nameof(CanAddCallout));
 
                 ValidateInput();
                 ValidationChanged?.Invoke();
@@ -166,6 +178,25 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         }
 
         public bool CanSaveShift => CanSave();
+        public bool CanAddCallout
+        {
+            get
+            {
+                if (_activeJob == null || !_activeJob.OnCallEnabled)
+                    return false;
+
+                // 1) får inte vara 0-längd
+                if (NewCalloutEnd == NewCalloutStart)
+                    return false;
+
+                // 2) måste ligga inom standby-fönstret
+                var (standbyFrom, standbyTo) = GetStandbyWindow();
+                var fakeRow = new CalloutRow { Start = NewCalloutStart, End = NewCalloutEnd };
+                var (calloutFrom, calloutTo) = GetCalloutWindow(fakeRow);
+
+                return calloutFrom >= standbyFrom && calloutTo <= standbyTo;
+            }
+        }
         #endregion
 
         #region Commands
@@ -174,6 +205,13 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             // Basic validation för input-raden
             if (NewCalloutEnd == NewCalloutStart)
             {
+                if (!CanAddCallout)
+                {
+                    ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_CalloutOutsideStandby");
+                    ValidationChanged?.Invoke();
+                    return;
+                }
+
                 ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_CalloutZero");
                 return;
             }
@@ -215,7 +253,6 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         #endregion
 
         #region Public Methods
-
         public void UpdateContext(DateTime selectedDate, JobProfile activeJob)
         {
             _selectedDate = selectedDate;
@@ -358,6 +395,63 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             return (decimal)duration.TotalHours;
         }
 
+        /// <summary>
+        /// Triggar OnPropertyChanged för alla properties som beror på språk/valuta.
+        /// Används när t.ex. språk eller valuta ändras.
+        /// </summary>
+        private void NotifyLocalizedProperties()
+        {
+            OnPropertyChanged(nameof(OnCallExplanationText));
+            OnPropertyChanged(nameof(OnCallTotalsText));
+        }
+
+        private decimal GetCalloutHours(CalloutRow c)
+        {
+            if (c == null)
+                return 0m;
+
+            var s = c.Start;
+            var e = c.End;
+
+            if (e == s)
+                return 0m;
+
+            if (e <= s)
+                e = e.Add(TimeSpan.FromDays(1));
+
+            return (decimal)(e - s).TotalHours;
+        }
+        #endregion
+
+        #region Validation
+        private (DateTime From, DateTime To) GetStandbyWindow()
+        {
+            // Standby-fönster baserat på vald dag
+            var from = _selectedDate.Date.Add(_standbyStartTime);
+            var to = _selectedDate.Date.Add(_standbyEndTime);
+
+            // över midnatt
+            if (to <= from)
+                to = to.AddDays(1);
+
+            return (from, to);
+        }
+        private (DateTime From, DateTime To) GetCalloutWindow(CalloutRow c)
+        {
+            var (standbyFrom, _) = GetStandbyWindow();
+
+            // Basera calloutens "datum" på samma datum som standby startar
+            var baseDate = standbyFrom.Date;
+
+            var from = baseDate.Add(c.Start);
+            var to = baseDate.Add(c.End);
+
+            // callout över midnatt
+            if (to <= from)
+                to = to.AddDays(1);
+
+            return (from, to);
+        }
         private void ValidateInput()
         {
             ValidationMessage = "";
@@ -410,8 +504,19 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             }
 
             // Validera callouts (inkallningar)
+            var (standbyFrom, standbyTo) = GetStandbyWindow();
+
             foreach (var c in Callouts)
             {
+                // callout måste ligga inom standby-fönstret
+                var (calloutFrom, calloutTo) = GetCalloutWindow(c);
+
+                if (calloutFrom < standbyFrom || calloutTo > standbyTo)
+                {
+                    ValidationMessage = LocalizationHelper.Translate("OnCall_Validation_CalloutOutsideStandby");
+                    return;
+                }
+
                 var start = c.Start;
                 var end = c.End;
 
@@ -445,36 +550,6 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             OnPropertyChanged(nameof(CanSaveShift));
             ValidationChanged?.Invoke();
         }
-
-        /// <summary>
-        /// Triggar OnPropertyChanged för alla properties som beror på språk/valuta.
-        /// Används när t.ex. språk eller valuta ändras.
-        /// </summary>
-        private void NotifyLocalizedProperties()
-        {
-            OnPropertyChanged(nameof(OnCallExplanationText));
-            OnPropertyChanged(nameof(OnCallTotalsText));
-        }
-
-        private decimal GetCalloutHours(CalloutRow c)
-        {
-            if (c == null)
-                return 0m;
-
-            var s = c.Start;
-            var e = c.End;
-
-            if (e == s)
-                return 0m;
-
-            if (e <= s)
-                e = e.Add(TimeSpan.FromDays(1));
-
-            return (decimal)(e - s).TotalHours;
-        }
-        #endregion
-
-        #region Validation
 
         #endregion
 

@@ -2301,4 +2301,7 @@ Arbetspasset har sparats!</value>
   <data name="OnCallSettings_RecalcDoneWithCount" xml:space="preserve">
     <value>Klart ✓ ({0})</value>
   </data>
+  <data name="OnCall_Validation_CalloutOutsideStandby" xml:space="preserve">
+    <value>Aktiv tid måste ligga inom jourpasset.</value>
+  </data>
 </root>
