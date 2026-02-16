@@ -4611,7 +4611,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ✅ Overtime rule &apos;{0}&apos; has been saved..
+        ///   Looks up a localized string similar to Overtime rule &apos;{0}&apos; has been saved..
         /// </summary>
         internal static string Save_Success_Message {
             get {
@@ -4692,7 +4692,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ✅ Regular shift registered.
+        ///   Looks up a localized string similar to Regular shift registered.
         /// </summary>
         internal static string SaveSuccess_RegularShift {
             get {
@@ -4701,7 +4701,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ✅ Sick day registered.
+        ///   Looks up a localized string similar to Sick day registered.
         /// </summary>
         internal static string SaveSuccess_SickLeave {
             get {

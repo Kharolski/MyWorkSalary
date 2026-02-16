@@ -1124,11 +1124,11 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveSuccess_RegularShift" xml:space="preserve">
-    <value>✅ Regular shift registered</value>
+    <value>Regular shift registered</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveSuccess_SickLeave" xml:space="preserve">
-    <value>✅ Sick day registered</value>
+    <value>Sick day registered</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="Save_Error_Message" xml:space="preserve">
@@ -1138,7 +1138,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>Error</value>
   </data>
   <data name="Save_Success_Message" xml:space="preserve">
-    <value>✅ Overtime rule '{0}' has been saved.</value>
+    <value>Overtime rule '{0}' has been saved.</value>
   </data>
   <data name="Save_Success_Title" xml:space="preserve">
     <value>✅ Saved!</value>

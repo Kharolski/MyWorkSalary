@@ -586,24 +586,45 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        private bool _hasInitialized;
         public void OnPageAppearing()
         {
-            // Viktigt om ActiveJob kan ha ändrats i Settings-tabben
-            LoadActiveJob();
+            RefreshActiveJobFromDb();
 
-            // Reset alla formulär
-            SickLeaveVM.Reset();
-            OnCallVM.Reset();
-            VacationVM.Reset();
-            RegularShiftVM.Reset();
+            // resetta bara första gången sidan öppnas (inte när du kommer tillbaka från Settings)
+            if (!_hasInitialized)
+            {
+                _hasInitialized = true;
 
-            // Sätt tillbaka till "vanligt pass" som default
-            SelectedShiftType = ShiftType.Regular;
-            _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Add_Regular");
-            OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
+                SickLeaveVM.Reset();
+                OnCallVM.Reset();
+                VacationVM.Reset();
+                RegularShiftVM.Reset();
 
-            // Uppdatera UI visibility + Save-knapp
+                SelectedShiftType = ShiftType.Regular;
+                _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Add_Regular");
+                OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
+            }
+
             OnSelectedShiftTypeChanged();
+            ValidateAndUpdateCanSave();
+        }
+        public void RefreshActiveJobFromDb()
+        {
+            var fresh = _jobProfileRepository.GetActiveJob();
+            if (fresh == null)
+                return;
+
+            // Tvinga uppdatering även om ID är samma (för att settings kan ha ändrats)
+            ActiveJob = fresh;
+
+            // Uppdatera context för child VMs
+            // Men vi kör extra säkerhet:
+            SickLeaveVM.UpdateContext(SelectedDate, ActiveJob);
+            OnCallVM.UpdateContext(SelectedDate, ActiveJob);
+            VacationVM.UpdateContext(SelectedDate, ActiveJob);
+            RegularShiftVM.ActiveJob = ActiveJob;
+
             ValidateAndUpdateCanSave();
         }
         #endregion

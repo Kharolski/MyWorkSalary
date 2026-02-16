@@ -1004,10 +1004,10 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Jourpass registrerat</value>
   </data>
   <data name="SaveSuccess_RegularShift" xml:space="preserve">
-    <value>✅ Vanligt pass registrerat</value>
+    <value>Vanligt pass registrerat</value>
   </data>
   <data name="SaveSuccess_SickLeave" xml:space="preserve">
-    <value>✅ Sjukdag registrerad</value>
+    <value>Sjukdag registrerad</value>
   </data>
   <data name="Save_Error_Message" xml:space="preserve">
     <value>Kunde inte spara OB-regel: {0}</value>
@@ -1016,7 +1016,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Fel</value>
   </data>
   <data name="Save_Success_Message" xml:space="preserve">
-    <value>✅ OB-regel '{0}' har sparats.</value>
+    <value>OB-regel '{0}' har sparats.</value>
   </data>
   <data name="Save_Success_Title" xml:space="preserve">
     <value>✅ Sparat!</value>
