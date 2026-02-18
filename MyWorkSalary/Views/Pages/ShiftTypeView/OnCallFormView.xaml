@@ -163,6 +163,15 @@
             </VerticalStackLayout>
         </Frame>
 
+        <!-- ⚠️ Validation -->
+        <ContentView IsVisible="{Binding HasValidationMessage}">
+            <Label Text="{Binding ValidationMessage}"
+                   FontSize="14"
+                   TextColor="{StaticResource Error}"
+                   FontAttributes="Bold"
+                   Margin="0,0,0,10" />
+        </ContentView>
+
         <!-- ✅ Jour – Totals (timmar) -->
         <Frame Style="{StaticResource InfoFrame}">
             <VerticalStackLayout Spacing="6">
@@ -183,15 +192,6 @@
                                                    Dark={StaticResource TextSecondaryDark}}" />
             </VerticalStackLayout>
         </Frame>
-
-        <!-- ⚠️ Validation -->
-        <ContentView IsVisible="{Binding HasValidationMessage}">
-            <Label Text="{Binding ValidationMessage}"
-                   FontSize="14"
-                   TextColor="{StaticResource Error}"
-                   FontAttributes="Bold"
-                   Margin="0,0,0,10" />
-        </ContentView>
 
         <!-- 📝 Anteckningar -->
         <VerticalStackLayout Spacing="5">

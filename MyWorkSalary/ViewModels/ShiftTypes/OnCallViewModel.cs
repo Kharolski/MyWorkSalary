@@ -271,6 +271,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             OnPropertyChanged(nameof(HasNoCallouts));
             OnPropertyChanged(nameof(ShowActiveHoursInfo));
 
+            // Knappar
+            OnPropertyChanged(nameof(CanAddCallout));
+            OnPropertyChanged(nameof(CanSaveShift));
+
             // Uppdatera övriga properties
             ValidateInput();
         }
@@ -324,6 +328,9 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             _standbyStartTime = new TimeSpan(18, 0, 0);  // 18:00 standard
             _standbyEndTime = new TimeSpan(8, 0, 0);     // 08:00 standard
             _notes = "";
+            NewCalloutStart = new TimeSpan(21, 0, 0);
+            NewCalloutEnd = new TimeSpan(22, 0, 0);
+            NewCalloutNotes = null;
             _validationMessage = "";
 
             // Trigger UI updates
@@ -332,6 +339,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             OnPropertyChanged(nameof(Notes));
             OnPropertyChanged(nameof(ValidationMessage));
             OnPropertyChanged(nameof(HasValidationMessage));
+
+            // Knappar
+            OnPropertyChanged(nameof(CanAddCallout));
+            OnPropertyChanged(nameof(CanSaveShift));
 
             // Lokala språkberoende properties
             NotifyLocalizedProperties();

@@ -703,15 +703,6 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Common_Date {
-            get {
-                return ResourceManager.GetString("Common_Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Hours.
         /// </summary>
         internal static string Common_Hours {

@@ -523,6 +523,7 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Jour / On Call
+        #region Properties
         public string OnCallTotalPayText =>
                 CurrentStats == null ? "" :
                 CurrencyHelper.FormatCurrency(CurrentStats.OnCallTotalPay, ActiveJob.CurrencyCode);
@@ -536,6 +537,9 @@ namespace MyWorkSalary.ViewModels
 
         // Visning
         public bool HasOnCall => CurrentStats?.HasOnCall == true;
+        public string ShiftNote => CurrentStats?.OnCallDetails?.FirstOrDefault()?.ShiftNote ?? "";
+        public bool HasShiftNote => !string.IsNullOrWhiteSpace(ShiftNote);
+
 
         // Expander
         private bool _isOnCallExpanded;
@@ -546,105 +550,169 @@ namespace MyWorkSalary.ViewModels
         }
         public string OnCallChevronIcon => IsOnCallExpanded ? "▼" : "▶";
 
-        // Commands
+        #endregion
+
+        #region Commands
         public ICommand ToggleOnCallCardCommand => new Command(() =>
         {
             IsOnCallExpanded = !IsOnCallExpanded;
         });
-        public ICommand ToggleOnCallRowCommand => new Command<OnCallRow>(row =>
+        public ICommand ToggleOnCallGroupCommand => new Command<OnCallDayGroup>(group =>
         {
-            if (row == null)
+            if (group == null)
                 return;
 
-            // valfritt: stäng andra rader
-            foreach (var r in _onCallRows)
-                if (!ReferenceEquals(r, row) && r.IsExpanded)
-                    r.IsExpanded = false;
+            // Stäng andra grupper
+            foreach (var g in _onCallGrouped)
+                if (!ReferenceEquals(g, group) && g.IsExpanded)
+                    g.IsExpanded = false;
 
-            row.IsExpanded = !row.IsExpanded;
+            group.IsExpanded = !group.IsExpanded;
 
-            // Refresh (ibland behövs för CollectionView + chevron)
-            OnPropertyChanged(nameof(OnCallRows));
+            OnPropertyChanged(nameof(OnCallGrouped));
         });
 
-        // Rader
-        private List<OnCallRow> _onCallRows = new();
-        public IReadOnlyList<OnCallRow> OnCallRows => _onCallRows;
-        private void RebuildOnCallRows()
+        #endregion
+
+        private List<OnCallDayGroup> _onCallGrouped = new(); 
+        public IReadOnlyList<OnCallDayGroup> OnCallGrouped => _onCallGrouped;
+        private void RebuildOnCallGrouped()
         {
-            _onCallRows = new List<OnCallRow>();
+            _onCallGrouped = new List<OnCallDayGroup>();
 
             if (CurrentStats?.OnCallDetails == null || CurrentStats.OnCallDetails.Count == 0)
             {
-                OnPropertyChanged(nameof(OnCallRows));
+                OnPropertyChanged(nameof(OnCallGrouped));
                 return;
             }
 
-            var currency = string.IsNullOrWhiteSpace(ActiveJob?.CurrencyCode) ? "SEK" : ActiveJob.CurrencyCode;
-            var h = LocalizationHelper.Translate("Hours_Abbreviation");
+            var currency = string.IsNullOrWhiteSpace(ActiveJob?.CurrencyCode)
+                ? "SEK"
+                : ActiveJob.CurrencyCode;
 
-            _onCallRows = CurrentStats.OnCallDetails
-                .OrderBy(x => x.Date)
+            // === Loopar per jourpass ===
+            _onCallGrouped = CurrentStats.OnCallDetails
+                .OrderBy(d => d.Date)
                 .Select(d =>
                 {
-                    var row = new OnCallRow
+                    // Bygg riktiga start/slut för jourpasset
+                    var start = d.Date.Date.Add(d.Date.TimeOfDay); // d.Date innehåller redan starttid
+                    var end = d.Date.Date.Add(d.Date.TimeOfDay).AddHours((double)d.StandbyHours + (double)d.ActiveHours);
+
+                    // Om du har separat Start/End i OnCallShift, använd dem istället
+
+                    var group = new OnCallDayGroup
                     {
-                        DateText = d.Date.ToString("dd-MM", AppCulture),
-                        StandbyText = $"{d.StandbyHours:0.##} {h}",
-                        ActiveText = $"{d.ActiveHours:0.##} {h}",
-                        PayText = CurrencyHelper.FormatCurrency(d.StandbyPay, currency),
-                        NoteText = d.ShiftNote,
-                        Callouts = (d.Callouts ?? new List<OnCallCalloutDetail>())
+                        Start = start,
+                        End = end,
+                        CurrencyCode = currency,
+
+                        // Standby
+                        StandbyHours = d.StandbyHours,
+                        StandbyPay = d.StandbyPay,
+
+                        // Aktiv
+                        ActiveHours = d.ActiveHours,
+                        ActivePay = d.Callouts.Sum(c => c.ActivePay),
+
+                        // Notes
+                        ShiftNote = d.ShiftNote,
+
+                        // Callouts
+                        Details = d.Callouts
                             .OrderBy(c => c.Date)
                             .ThenBy(c => c.Start)
-                            .Select(c => new OnCallCalloutRow
+                            .Select(c =>
                             {
-                                TimeRangeText = $"{c.Start:hh\\:mm}–{c.End:hh\\:mm}",
-                                HoursText = $"{c.Hours:0.##} {h}",
-                                ActivePayText = CurrencyHelper.FormatCurrency(c.ActivePay, currency),
-                                Notes = c.Notes
+                                var cStart = c.Date.Date.Add(c.Start);
+                                var cEnd = c.Date.Date.Add(c.End);
+
+                                if (cEnd <= cStart)
+                                    cEnd = cEnd.AddDays(1);
+
+                                return new OnCallDetailRow
+                                {
+                                    Start = cStart,
+                                    End = cEnd,
+                                    Hours = c.Hours,
+                                    Pay = c.ActivePay,
+                                    Notes = c.Notes,
+                                    CurrencyCode = currency
+                                };
                             })
                             .ToList()
                     };
 
-                    return row;
+                    return group;
                 })
                 .ToList();
 
-            OnPropertyChanged(nameof(OnCallRows));
+            OnPropertyChanged(nameof(OnCallGrouped));
         }
 
-        public class OnCallRow : BaseViewModel
+        // domänmodeller för visning av jour/OnCall
+        public class OnCallDayGroup : BaseViewModel
         {
-            public string DateText { get; set; } = "";
-            public string StandbyText { get; set; } = "";
-            public string ActiveText { get; set; } = "";
-            public string PayText { get; set; } = "";
-            public string? NoteText { get; set; }
+            // === Datumspann för jourpasset ===
+            public DateTime Start { get; set; }
+            public DateTime End { get; set; }
+            public string DateSpanText => $"{Start:dd/MM} – {End:dd/MM}";
 
-            public bool HasNote => !string.IsNullOrWhiteSpace(NoteText);
+            // === Standby ===
+            public decimal StandbyHours { get; set; }
+            public string StandbyHoursText => $"{StandbyHours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}";
 
-            public List<OnCallCalloutRow> Callouts { get; set; } = new();
-            public bool HasCallouts => Callouts?.Count > 0;
+            public decimal StandbyPay { get; set; }
+            public string StandbyPayText => CurrencyHelper.FormatCurrency(StandbyPay, CurrencyCode);
 
+            // === Aktiv tid ===
+            public decimal ActiveHours { get; set; }
+            public string ActiveHoursText => $"{ActiveHours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}";
+
+            public decimal ActivePay { get; set; }
+            public string ActivePayText => CurrencyHelper.FormatCurrency(ActivePay, CurrencyCode);
+
+            // === Callouts ===
+            public List<OnCallDetailRow> Details { get; set; } = new();
+            public string CurrencyCode { get; set; }
+
+            // === Notes för jourpasset ===
+            public string? ShiftNote { get; set; }
+            public bool HasShiftNote => !string.IsNullOrWhiteSpace(ShiftNote);
+
+            // === Expand/Collapse ===
             private bool _isExpanded;
             public bool IsExpanded
             {
                 get => _isExpanded;
-                set { _isExpanded = value; OnPropertyChanged(nameof(IsExpanded)); OnPropertyChanged(nameof(Chevron)); }
+                set
+                {
+                    _isExpanded = value;
+                    OnPropertyChanged(nameof(IsExpanded));
+                    OnPropertyChanged(nameof(Chevron));
+                }
             }
 
             public string Chevron => IsExpanded ? "▼" : "▶";
         }
 
-        public class OnCallCalloutRow
+        public class OnCallDetailRow
         {
-            public string TimeRangeText { get; set; } = ""; // "23:10–23:40"
-            public string HoursText { get; set; } = "";     // "0.50 h"
-            public string ActivePayText { get; set; } = ""; // "289,39 kr"
+            public DateTime Start { get; set; }
+            public DateTime End { get; set; }
+
+            public string TimeRangeText => $"{Start:HH:mm}–{End:HH:mm}";
+
+            public decimal Hours { get; set; }
+            public string HoursText => $"{Hours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}";
+            public decimal Pay { get; set; }
+            public string CurrencyCode { get; set; }
+            public string PayText => CurrencyHelper.FormatCurrency(Pay, CurrencyCode);
+
             public string? Notes { get; set; }
             public bool HasNotes => !string.IsNullOrWhiteSpace(Notes);
         }
+
         #endregion
 
         #region Formatting
@@ -743,7 +811,7 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(OnCallTotalPayText));
             OnPropertyChanged(nameof(HasOnCall));
             OnPropertyChanged(nameof(OnCallChevronIcon));
-            RebuildOnCallRows();
+            RebuildOnCallGrouped();
 
             // KORT 3 - OB
             OnPropertyChanged(nameof(TotalObHoursText));
