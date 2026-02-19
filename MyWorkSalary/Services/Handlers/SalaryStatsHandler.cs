@@ -418,6 +418,21 @@ namespace MyWorkSalary.Services.Handlers
             // över midnatt (t.ex 22:00–06:00)
             return time >= start || time < end;
         }
+
+        private OBDayType GetObDayType(DateTime date, bool isHoliday, bool isBigHoliday)
+        {
+            if (isBigHoliday)
+                return OBDayType.BigHoliday;
+
+            if (isHoliday)
+                return OBDayType.Holiday;
+
+            if (date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
+                return OBDayType.Weekend;
+
+            return OBDayType.Weekday;
+        }
+
         #endregion
 
         #region Tax / Net Salary
@@ -493,6 +508,9 @@ namespace MyWorkSalary.Services.Handlers
                 decimal activeBasePay = 0m;
 
                 var standbyStartDT = ws.StartTime.Value;
+                var standbyEndDT = ws.EndTime.Value;
+                if (standbyEndDT <= standbyStartDT)
+                    standbyEndDT = standbyEndDT.AddDays(1);
 
                 foreach (var c in callouts)
                 {
@@ -532,28 +550,22 @@ namespace MyWorkSalary.Services.Handlers
                         // 3) OB på aktiv tid (valfritt)
                         if (obRates.Count > 0)
                         {
-                            // Om ditt ws.IsHoliday/IsBigHoliday bara gäller ws.ShiftDate,
-                            // då ska segment på "nästa dag" INTE ärva röd-dag flaggan.
                             var segDate = segFrom.Date;
 
-                            bool isHoliday = (segDate == ws.ShiftDate.Date) && ws.IsHoliday;
-                            bool isBigHoliday = (segDate == ws.ShiftDate.Date) && ws.IsBigHoliday;
+                            // 1) Bestäm OB-dagtyp baserat på segmentets datum + användarens markeringar
+                            var dayType = GetObDayType(segDate, ws.IsHoliday, ws.IsBigHoliday);
 
+                            // 2) Skapa temporärt shift för OB-beräkning
                             var tempShift = new WorkShift
                             {
                                 ShiftDate = segDate,
                                 StartTime = segFrom,
                                 EndTime = segTo,
-                                IsHoliday = isHoliday,
-                                IsBigHoliday = isBigHoliday
+                                IsHoliday = dayType == OBDayType.Holiday,
+                                IsBigHoliday = dayType == OBDayType.BigHoliday
                             };
 
-                            var dayType =
-                                tempShift.IsBigHoliday ? OBDayType.BigHoliday :
-                                tempShift.IsHoliday ? OBDayType.Holiday :
-                                (tempShift.ShiftDate.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday) ? OBDayType.Weekend :
-                                OBDayType.Weekday;
-
+                            // 3) Räkna OB per kategori
                             var obByCategory = CalculateObHoursByCategory(tempShift, obRates);
 
                             foreach (var (category, obHoursRaw) in obByCategory)
@@ -602,6 +614,8 @@ namespace MyWorkSalary.Services.Handlers
                 stats.OnCallDetails.Add(new OnCallDetail
                 {
                     Date = ws.ShiftDate,
+                    StandbyStart = standbyStartDT,
+                    StandbyEnd = standbyEndDT,
                     StandbyHours = standbyHours,
                     ActiveHours = activeHoursInPeriod,
                     StandbyPayType = ocs.StandbyPayTypeSnapshot,

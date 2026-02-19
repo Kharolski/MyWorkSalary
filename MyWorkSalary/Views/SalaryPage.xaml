@@ -131,7 +131,7 @@
                         </Grid>
 
                         <!-- Rad 3: OB-ersättning -->
-                        <Grid ColumnDefinitions="*,Auto">
+                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowObCard}">
                             <Label Text="{resx:Translate Salary_Summary_OB}" />
                             <Label Text="{Binding ObPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
                         </Grid>
@@ -170,10 +170,15 @@
                 </VerticalStackLayout>
             </Frame>
 
+            <VerticalStackLayout Margin="0,20,0,10">
+                <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#CCCCCC, Dark=#444444}" />
+                <Label Text="📄 Detaljerad översikt" FontSize="16" FontAttributes="Bold" Opacity="0.7"  Margin="0,4,0,0" />
+            </VerticalStackLayout>
+
             <!-- ===================== -->
             <!-- 🌙 KORT 3: OB-DETALJER (EXPANDERBAR) -->
             <!-- ===================== -->
-            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
+            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding ShowObCard}">
                 <VerticalStackLayout Spacing="10">
 
                     <!-- Header (klickbar) -->
@@ -442,14 +447,6 @@
                                HorizontalOptions="Center"
                                TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                            Dark={StaticResource TextSecondaryDark}}" />
-
-                        <!-- Header för listan -->
-                        <!--<Grid ColumnDefinitions="65,Auto,*,*, 40" ColumnSpacing="10">
-                            <Label Text="{resx:Translate Common_Date}" FontSize="12" TextColor="Gray" />
-                            <Label Text="{resx:Translate Salary_OnCall_Standby}" Grid.Column="1" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
-                            <Label Text="{resx:Translate Salary_OnCall_Active}" Grid.Column="2" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
-                            <Label Text="{resx:Translate Common_Amount}" Grid.Column="3" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
-                        </Grid>-->
 
                         <!-- Rader -->
                         <CollectionView ItemsSource="{Binding OnCallGrouped}" SelectionMode="None">

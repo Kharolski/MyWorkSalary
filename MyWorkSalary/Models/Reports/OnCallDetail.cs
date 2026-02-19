@@ -6,6 +6,8 @@ namespace MyWorkSalary.Models.Reports
     {
         public DateTime Date { get; set; }
 
+        public DateTime StandbyStart { get; set; }
+        public DateTime StandbyEnd { get; set; }
         public decimal StandbyHours { get; set; }
         public decimal ActiveHours { get; set; }
 

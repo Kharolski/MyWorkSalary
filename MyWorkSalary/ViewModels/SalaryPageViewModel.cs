@@ -294,6 +294,19 @@ namespace MyWorkSalary.ViewModels
                 return Color.FromArgb("#43A047"); // grön
             }
         }
+        public bool ShowObCard
+        {
+            get
+            {
+                if (CurrentStats == null)
+                    return false;
+
+                // Visa bara om OB finns eller OB-regler är aktiva
+                return CurrentStats.TotalObHours > 0
+                       || CurrentStats.ObPay > 0;
+            }
+        }
+
 
         // Kort 4
         public bool IsPermanent => ActiveJob?.EmploymentType == EmploymentType.Permanent;
@@ -596,10 +609,8 @@ namespace MyWorkSalary.ViewModels
                 .Select(d =>
                 {
                     // Bygg riktiga start/slut för jourpasset
-                    var start = d.Date.Date.Add(d.Date.TimeOfDay); // d.Date innehåller redan starttid
-                    var end = d.Date.Date.Add(d.Date.TimeOfDay).AddHours((double)d.StandbyHours + (double)d.ActiveHours);
-
-                    // Om du har separat Start/End i OnCallShift, använd dem istället
+                    var start = d.StandbyStart; 
+                    var end = d.StandbyEnd;
 
                     var group = new OnCallDayGroup
                     {
@@ -656,7 +667,7 @@ namespace MyWorkSalary.ViewModels
             // === Datumspann för jourpasset ===
             public DateTime Start { get; set; }
             public DateTime End { get; set; }
-            public string DateSpanText => $"{Start:dd/MM} – {End:dd/MM}";
+            public string DateSpanText => $"{Start:dd'/'MM} – {End:dd'/'MM}";
 
             // === Standby ===
             public decimal StandbyHours { get; set; }
@@ -822,6 +833,7 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(ObPeriodHintText));
             OnPropertyChanged(nameof(ObStatusText));
             OnPropertyChanged(nameof(ObStatusColor));
+            OnPropertyChanged(nameof(ShowObCard));
 
             // KORT 4 
             OnPropertyChanged(nameof(IsPermanent));
@@ -855,6 +867,12 @@ namespace MyWorkSalary.ViewModels
             // bygg grupperna direkt efter att CurrentStats är klar
             RebuildObGrouped();
         }
+        public void ResetToCurrentMonth()
+        {
+            var now = DateTime.Now;
+            SelectedMonth = new DateTime(now.Year, now.Month, 1);
+        }
+
         #endregion
     }
 }

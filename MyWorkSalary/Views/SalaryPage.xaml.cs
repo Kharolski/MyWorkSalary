@@ -17,6 +17,7 @@ namespace MyWorkSalary.Views
 
             if (BindingContext is SalaryPageViewModel vm)
             {
+                vm.ResetToCurrentMonth(); 
                 await vm.LoadData(); // Hämtar ActiveJob + beräknar CurrentStats
             }
         }

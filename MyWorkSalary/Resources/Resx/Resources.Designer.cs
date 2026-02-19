@@ -703,6 +703,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string Common_Date {
+            get {
+                return ResourceManager.GetString("Common_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hours.
         /// </summary>
         internal static string Common_Hours {
@@ -2721,7 +2730,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Big holiday.
+        ///   Looks up a localized string similar to Big Holiday OB.
         /// </summary>
         internal static string OBRule_BigHoliday_Name {
             get {
@@ -2946,7 +2955,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weekday evening.
+        ///   Looks up a localized string similar to Weekday Evening OB.
         /// </summary>
         internal static string OBRule_WeekdayEvening_Name {
             get {
@@ -2955,7 +2964,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weekday night.
+        ///   Looks up a localized string similar to Weekday Night OB.
         /// </summary>
         internal static string OBRule_WeekdayNight_Name {
             get {
@@ -2964,11 +2973,20 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weekend (Saturday).
+        ///   Looks up a localized string similar to Saturday Day OB.
         /// </summary>
         internal static string OBRule_Weekend_Name {
             get {
                 return ResourceManager.GetString("OBRule_Weekend_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sunday Day OB.
+        /// </summary>
+        internal static string OBRule_WeekendDayExtra_Name {
+            get {
+                return ResourceManager.GetString("OBRule_WeekendDayExtra_Name", resourceCulture);
             }
         }
         
@@ -2978,6 +2996,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OBRule_WeekendExtra_Name {
             get {
                 return ResourceManager.GetString("OBRule_WeekendExtra_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend Night OB.
+        /// </summary>
+        internal static string OBRule_WeekendNight_Name {
+            get {
+                return ResourceManager.GetString("OBRule_WeekendNight_Name", resourceCulture);
             }
         }
         
@@ -3054,7 +3081,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Standard municipality (healthcare).
+        ///   Looks up a localized string similar to Standard municipality .
         /// </summary>
         internal static string OBTemplate_Standard_Title {
             get {

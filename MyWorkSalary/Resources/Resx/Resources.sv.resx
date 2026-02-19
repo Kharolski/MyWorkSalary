@@ -1843,25 +1843,25 @@ Arbetspasset har sparats!</value>
     <value>📌 Beloppen i mallarna är exempel. När du har lagt till en mall kan du ändra beloppen i Inställningar → OB-Inställningar.</value>
   </data>
   <data name="OBTemplate_Standard_Title" xml:space="preserve">
-    <value>Standard kommun (vård/omsorg)</value>
+    <value>Standard kommun </value>
   </data>
   <data name="OBTemplate_Standard_Desc" xml:space="preserve">
     <value>Vanliga OB-regler för kommunal vård/omsorg (ändringsbara)</value>
   </data>
   <data name="OBRule_WeekdayEvening_Name" xml:space="preserve">
-    <value>Vardag kväll</value>
+    <value>OB Kväll (Vardag)</value>
   </data>
   <data name="OBRule_WeekdayNight_Name" xml:space="preserve">
-    <value>Vardag natt</value>
+    <value>OB Natt (Vardag)</value>
   </data>
   <data name="OBRule_Weekend_Name" xml:space="preserve">
-    <value>Veckoslut (lördag)</value>
+    <value>OB Dag (Lördag)</value>
   </data>
   <data name="OBRule_WeekendExtra_Name" xml:space="preserve">
     <value>Veckoslut extra (söndag)</value>
   </data>
   <data name="OBRule_BigHoliday_Name" xml:space="preserve">
-    <value>Storhelg</value>
+    <value>OB Storhelg</value>
   </data>
   <data name="OBTemplate_EveningOnly_Title" xml:space="preserve">
     <value>Endast kväll</value>
@@ -2303,5 +2303,11 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="OnCall_Validation_CalloutOutsideStandby" xml:space="preserve">
     <value>Aktiv tid måste ligga inom jourpasset.</value>
+  </data>
+  <data name="OBRule_WeekendNight_Name" xml:space="preserve">
+    <value>OB Natt (Helg)</value>
+  </data>
+  <data name="OBRule_WeekendDayExtra_Name" xml:space="preserve">
+    <value>OB Dag (Söndag)</value>
   </data>
 </root>

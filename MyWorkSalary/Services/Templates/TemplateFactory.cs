@@ -26,6 +26,7 @@ namespace MyWorkSalary.Services.Templates
                         Thursday = true, Friday = true,
                         Category = OBCategory.Evening
                     },
+
                     new OBRateTemplateRule
                     {
                         Name = LocalizationHelper.Translate("OBRule_WeekdayNight_Name"),
@@ -40,7 +41,7 @@ namespace MyWorkSalary.Services.Templates
 
                     new OBRateTemplateRule
                     {
-                        Name = LocalizationHelper.Translate("OBRule_Weekend_Name"),
+                        Name = LocalizationHelper.Translate("OBRule_WeekendDay_Name"),
                         StartTime = new TimeSpan(6,0,0),
                         EndTime = new TimeSpan(21,0,0),
                         RatePerHour = 66.10m,
@@ -51,13 +52,26 @@ namespace MyWorkSalary.Services.Templates
 
                     new OBRateTemplateRule
                     {
-                        Name = LocalizationHelper.Translate("OBRule_WeekendExtra_Name"),
+                        Name = LocalizationHelper.Translate("OBRule_WeekendDayExtra_Name"),
                         StartTime = new TimeSpan(6,0,0),
                         EndTime = new TimeSpan(21,0,0),
                         RatePerHour = 76.00m,
                         Priority = 30,
                         Sunday = true,
                         Category = OBCategory.Day
+                    },
+
+                    // ⭐ NY REGEL — HELG‑NATT (den du saknade!)
+                    new OBRateTemplateRule
+                    {
+                        Name = LocalizationHelper.Translate("OBRule_WeekendNight_Name"),
+                        StartTime = new TimeSpan(21,0,0),
+                        EndTime = new TimeSpan(6,0,0),
+                        RatePerHour = 76.00m, // välj nivå du vill ha
+                        Priority = 35,
+                        Saturday = true,
+                        Sunday = true,
+                        Category = OBCategory.Night
                     },
 
                     new OBRateTemplateRule
@@ -70,6 +84,7 @@ namespace MyWorkSalary.Services.Templates
                         BigHolidays = true,
                         Category = OBCategory.Day
                     }
+
                 }
             };
         }

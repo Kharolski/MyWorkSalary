@@ -454,6 +454,10 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             // Basera calloutens "datum" på samma datum som standby startar
             var baseDate = standbyFrom.Date;
 
+            // Om callout-tiden är "före" standby-starttiden → den hör till nästa dag
+            if (c.Start < _standbyStartTime) 
+                baseDate = baseDate.AddDays(1);
+
             var from = baseDate.Add(c.Start);
             var to = baseDate.Add(c.End);
 
