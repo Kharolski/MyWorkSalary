@@ -1843,10 +1843,10 @@ Arbetspasset har sparats!</value>
     <value>📌 Beloppen i mallarna är exempel. När du har lagt till en mall kan du ändra beloppen i Inställningar → OB-Inställningar.</value>
   </data>
   <data name="OBTemplate_Standard_Title" xml:space="preserve">
-    <value>Standard kommun </value>
+    <value>Kommunal – Standard </value>
   </data>
   <data name="OBTemplate_Standard_Desc" xml:space="preserve">
-    <value>Vanliga OB-regler för kommunal vård/omsorg (ändringsbara)</value>
+    <value>Standard OB‑mall för kommunal sektor med kväll, natt, helg och storhelg. (ändringsbara)</value>
   </data>
   <data name="OBRule_WeekdayEvening_Name" xml:space="preserve">
     <value>OB Kväll (Vardag)</value>
@@ -2309,5 +2309,89 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="OBRule_WeekendDayExtra_Name" xml:space="preserve">
     <value>OB Dag (Söndag)</value>
+  </data>
+  <data name="OBRule_VF_Evening_Name" xml:space="preserve">
+    <value>OB Kväll (Vårdförbundet)</value>
+  </data>
+  <data name="OBRule_VF_Night_Name" xml:space="preserve">
+    <value>OB Natt (Vårdförbundet)</value>
+  </data>
+  <data name="OBRule_VF_Weekend_Name" xml:space="preserve">
+    <value>OB Helg (Vårdförbundet)</value>
+  </data>
+  <data name="OBRule_VF_BigHoliday_Name" xml:space="preserve">
+    <value>OB Storhelg (Vårdförbundet)</value>
+  </data>
+  <data name="OBRule_WeekendDay_Name" xml:space="preserve">
+    <value>OB Dag (Lördag)</value>
+  </data>
+  <data name="OBRule_VF_Holiday_Name" xml:space="preserve">
+    <value>OB Helgdag (Vårdförbundet)</value>
+  </data>
+  <data name="OBTemplate_VF_Title" xml:space="preserve">
+    <value>Vårdförbundet </value>
+  </data>
+  <data name="OBTemplate_VF_Desc" xml:space="preserve">
+    <value>OB‑mall för Vårdförbundet med kväll, natt, helg, helgdag och storhelg.</value>
+  </data>
+  <data name="OBTemplate_HRF_Title" xml:space="preserve">
+    <value>Hotell &amp; Restaurang </value>
+  </data>
+  <data name="OBTemplate_HRF_Desc" xml:space="preserve">
+    <value>OB‑mall för Hotell &amp; Restaurang med kväll, natt, helg, helgdag och storhelg.</value>
+  </data>
+  <data name="OBRule_HRF_Evening_Name" xml:space="preserve">
+    <value>OB Kväll (HRF)</value>
+  </data>
+  <data name="OBRule_HRF_Night_Name" xml:space="preserve">
+    <value>OB Natt (HRF)</value>
+  </data>
+  <data name="OBRule_HRF_Weekend_Name" xml:space="preserve">
+    <value>OB Helg (HRF)</value>
+  </data>
+  <data name="OBRule_HRF_Holiday_Name" xml:space="preserve">
+    <value>OB Helgdag (HRF)</value>
+  </data>
+  <data name="OBRule_HRF_BigHoliday_Name" xml:space="preserve">
+    <value>OB Storhelg (HRF)</value>
+  </data>
+  <data name="OBTemplate_Handels_Title" xml:space="preserve">
+    <value>Handels</value>
+  </data>
+  <data name="OBTemplate_Handels_Desc" xml:space="preserve">
+    <value>OB‑mall för Handels med kväll, natt, helg, helgdag och storhelg.</value>
+  </data>
+  <data name="OBRule_Handels_Evening_Name" xml:space="preserve">
+    <value>OB Kväll (Handels)</value>
+  </data>
+  <data name="OBRule_Handels_Night_Name" xml:space="preserve">
+    <value>OB Natt (Handels)</value>
+  </data>
+  <data name="OBRule_Handels_Weekend_Name" xml:space="preserve">
+    <value>OB Helg (Handels)</value>
+  </data>
+  <data name="OBRule_Handels_Holiday_Name" xml:space="preserve">
+    <value>OB Helgdag (Handels)</value>
+  </data>
+  <data name="OBRule_Handels_BigHoliday_Name" xml:space="preserve">
+    <value>OB Storhelg (Handels)</value>
+  </data>
+  <data name="OBRule_Handels_WeekendNight_Name" xml:space="preserve">
+    <value>OB Natt (Helg) (Handels)</value>
+  </data>
+  <data name="OBRule_VF_WeekendNight_Name" xml:space="preserve">
+    <value>OB Natt (Helg) (Vårdförbundet)</value>
+  </data>
+  <data name="OBRule_HRF_WeekendNight_Name" xml:space="preserve">
+    <value>OB Natt (Helg) (HRF)</value>
+  </data>
+  <data name="OBRule_Holiday_Name" xml:space="preserve">
+    <value>OB Helgdag</value>
+  </data>
+  <data name="OBTemplates_FullTemplates" xml:space="preserve">
+    <value>Fullständiga mallar</value>
+  </data>
+  <data name="OBTemplates_SimpleTemplates" xml:space="preserve">
+    <value>Enkla mallar</value>
   </data>
 </root>

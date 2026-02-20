@@ -22,7 +22,7 @@ namespace MyWorkSalary.ViewModels.Templates
         #endregion
 
         #region Properties
-        public ObservableCollection<OBRateTemplate> Templates { get; } = new();
+        public ObservableCollection<OBTemplateGroup> TemplateGroups { get; } = new();
         public IEnumerable<OBRateTemplateRule> PreviewRules => SelectedTemplate?.Rules ?? Enumerable.Empty<OBRateTemplateRule>();
 
         private OBRateTemplate? _selectedTemplate;
@@ -87,13 +87,34 @@ namespace MyWorkSalary.ViewModels.Templates
         #region Template logic
         private void LoadTemplates()
         {
-            Templates.Clear();
+            TemplateGroups.Clear();
 
-            Templates.Add(TemplateFactory.CreateStandardMunicipalityTemplate());
-            Templates.Add(TemplateFactory.CreateEveningOnlyTemplate());
-            Templates.Add(TemplateFactory.CreateNightOnlyTemplate());
-            Templates.Add(TemplateFactory.CreateWeekendOnlyTemplate());
+            // Fullständiga mallar
+            var fullTemplates = new List<OBRateTemplate>
+            {
+                TemplateFactory.CreateKommunalTemplate(),
+                TemplateFactory.CreateVardforbundetTemplate(),
+                TemplateFactory.CreateHandelsTemplate(),
+                TemplateFactory.CreateHRFTemplate()
+            };
+
+            // Enkla mallar
+            var simpleTemplates = new List<OBRateTemplate>
+            {
+                TemplateFactory.CreateEveningOnlyTemplate(),
+                TemplateFactory.CreateNightOnlyTemplate(),
+                TemplateFactory.CreateWeekendOnlyTemplate()
+            };
+
+            TemplateGroups.Add(new OBTemplateGroup(
+                LocalizationHelper.Translate("OBTemplates_FullTemplates"),
+                fullTemplates));
+
+            TemplateGroups.Add(new OBTemplateGroup(
+                LocalizationHelper.Translate("OBTemplates_SimpleTemplates"),
+                simpleTemplates));
         }
+
         #endregion
 
         #region Actions
@@ -140,17 +161,19 @@ namespace MyWorkSalary.ViewModels.Templates
             var job = _databaseService.JobProfiles.GetJobProfile(jobProfileId);
             var currency = job?.CurrencyCode ?? "SEK";
 
-            foreach (var template in Templates)
+            foreach (var group in TemplateGroups)
             {
-                foreach (var rule in template.Rules)
+                foreach (var template in group)
                 {
-                    rule.CurrencyCode = currency;
+                    foreach (var rule in template.Rules)
+                    {
+                        rule.CurrencyCode = currency;
+                    }
                 }
             }
 
             OnPropertyChanged(nameof(PreviewRules));
         }
-
         #endregion
 
         #region Helpers

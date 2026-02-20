@@ -2186,11 +2186,11 @@ The work shift has been saved!</value>
     <comment>OBTemplatesPage</comment>
   </data>
   <data name="OBTemplate_Standard_Title" xml:space="preserve">
-    <value>Standard municipality </value>
+    <value>Municipal – Standard </value>
     <comment>TemplateFactory.cs</comment>
   </data>
   <data name="OBTemplate_Standard_Desc" xml:space="preserve">
-    <value>Common Unsocial Hour rules for municipal healthcare (editable)</value>
+    <value>Standard OB template for municipal sector with evening, night, weekend and big holidays. (editable)</value>
     <comment>TemplateFactory.cs</comment>
   </data>
   <data name="OBRule_WeekdayEvening_Name" xml:space="preserve">
@@ -2771,5 +2771,89 @@ The work shift has been saved!</value>
   </data>
   <data name="OBRule_WeekendDayExtra_Name" xml:space="preserve">
     <value>Sunday Day OB</value>
+  </data>
+  <data name="OBRule_VF_Evening_Name" xml:space="preserve">
+    <value>Evening OB (Nurses Union)</value>
+  </data>
+  <data name="OBRule_VF_Night_Name" xml:space="preserve">
+    <value>Night OB (Nurses Union)</value>
+  </data>
+  <data name="OBRule_VF_Weekend_Name" xml:space="preserve">
+    <value>Weekend OB (Nurses Union)</value>
+  </data>
+  <data name="OBRule_VF_BigHoliday_Name" xml:space="preserve">
+    <value>Big Holiday OB (Nurses Union)</value>
+  </data>
+  <data name="OBRule_WeekendDay_Name" xml:space="preserve">
+    <value>Saturday Day OB</value>
+  </data>
+  <data name="OBRule_VF_Holiday_Name" xml:space="preserve">
+    <value>Public Holiday OB (Nurses Union)</value>
+  </data>
+  <data name="OBTemplate_VF_Title" xml:space="preserve">
+    <value>Nurses Union </value>
+  </data>
+  <data name="OBTemplate_VF_Desc" xml:space="preserve">
+    <value>OB template for the Nurses Union with evening, night, weekend, holidays and big holidays.</value>
+  </data>
+  <data name="OBTemplate_HRF_Title" xml:space="preserve">
+    <value>Hotel &amp; Restaurant Union</value>
+  </data>
+  <data name="OBTemplate_HRF_Desc" xml:space="preserve">
+    <value>OB template for the Hotel &amp; Restaurant Union with evening, night, weekend, holidays and big holidays.</value>
+  </data>
+  <data name="OBRule_HRF_Evening_Name" xml:space="preserve">
+    <value>Evening OB (HRF)</value>
+  </data>
+  <data name="OBRule_HRF_Night_Name" xml:space="preserve">
+    <value>Night OB (HRF)</value>
+  </data>
+  <data name="OBRule_HRF_Weekend_Name" xml:space="preserve">
+    <value>Weekend OB (HRF)</value>
+  </data>
+  <data name="OBRule_HRF_Holiday_Name" xml:space="preserve">
+    <value>Holiday OB (HRF)</value>
+  </data>
+  <data name="OBRule_HRF_BigHoliday_Name" xml:space="preserve">
+    <value>Big Holiday OB (HRF)</value>
+  </data>
+  <data name="OBTemplate_Handels_Title" xml:space="preserve">
+    <value>Retail Union </value>
+  </data>
+  <data name="OBTemplate_Handels_Desc" xml:space="preserve">
+    <value>OB template for the Retail Union with evening, night, weekend, holidays and big holidays.</value>
+  </data>
+  <data name="OBRule_Handels_Evening_Name" xml:space="preserve">
+    <value>Evening OB (Retail Union)</value>
+  </data>
+  <data name="OBRule_Handels_Night_Name" xml:space="preserve">
+    <value>Night OB (Retail Union)</value>
+  </data>
+  <data name="OBRule_Handels_Weekend_Name" xml:space="preserve">
+    <value>Weekend OB (Retail Union)</value>
+  </data>
+  <data name="OBRule_Handels_Holiday_Name" xml:space="preserve">
+    <value>Holiday OB (Retail Union)</value>
+  </data>
+  <data name="OBRule_Handels_BigHoliday_Name" xml:space="preserve">
+    <value>Big Holiday OB (Retail Union)</value>
+  </data>
+  <data name="OBRule_Handels_WeekendNight_Name" xml:space="preserve">
+    <value>Weekend Night OB (Retail Union)</value>
+  </data>
+  <data name="OBRule_VF_WeekendNight_Name" xml:space="preserve">
+    <value>Weekend Night OB (Nurses Union)</value>
+  </data>
+  <data name="OBRule_HRF_WeekendNight_Name" xml:space="preserve">
+    <value>Weekend Night OB (HRF)</value>
+  </data>
+  <data name="OBRule_Holiday_Name" xml:space="preserve">
+    <value>Holiday OB</value>
+  </data>
+  <data name="OBTemplates_FullTemplates" xml:space="preserve">
+    <value>Complete templates</value>
+  </data>
+  <data name="OBTemplates_SimpleTemplates" xml:space="preserve">
+    <value>Simple templates</value>
   </data>
 </root>

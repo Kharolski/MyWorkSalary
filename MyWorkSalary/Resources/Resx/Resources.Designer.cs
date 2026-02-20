@@ -2784,11 +2784,128 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Big Holiday OB (Retail Union).
+        /// </summary>
+        internal static string OBRule_Handels_BigHoliday_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Handels_BigHoliday_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening OB (Retail Union).
+        /// </summary>
+        internal static string OBRule_Handels_Evening_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Handels_Evening_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holiday OB (Retail Union).
+        /// </summary>
+        internal static string OBRule_Handels_Holiday_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Handels_Holiday_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Night OB (Retail Union).
+        /// </summary>
+        internal static string OBRule_Handels_Night_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Handels_Night_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend OB (Retail Union).
+        /// </summary>
+        internal static string OBRule_Handels_Weekend_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Handels_Weekend_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend Night OB (Retail Union).
+        /// </summary>
+        internal static string OBRule_Handels_WeekendNight_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Handels_WeekendNight_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holiday OB.
+        /// </summary>
+        internal static string OBRule_Holiday_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Holiday_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Holidays.
         /// </summary>
         internal static string OBRule_Holidays {
             get {
                 return ResourceManager.GetString("OBRule_Holidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Big Holiday OB (HRF).
+        /// </summary>
+        internal static string OBRule_HRF_BigHoliday_Name {
+            get {
+                return ResourceManager.GetString("OBRule_HRF_BigHoliday_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening OB (HRF).
+        /// </summary>
+        internal static string OBRule_HRF_Evening_Name {
+            get {
+                return ResourceManager.GetString("OBRule_HRF_Evening_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holiday OB (HRF).
+        /// </summary>
+        internal static string OBRule_HRF_Holiday_Name {
+            get {
+                return ResourceManager.GetString("OBRule_HRF_Holiday_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Night OB (HRF).
+        /// </summary>
+        internal static string OBRule_HRF_Night_Name {
+            get {
+                return ResourceManager.GetString("OBRule_HRF_Night_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend OB (HRF).
+        /// </summary>
+        internal static string OBRule_HRF_Weekend_Name {
+            get {
+                return ResourceManager.GetString("OBRule_HRF_Weekend_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend Night OB (HRF).
+        /// </summary>
+        internal static string OBRule_HRF_WeekendNight_Name {
+            get {
+                return ResourceManager.GetString("OBRule_HRF_WeekendNight_Name", resourceCulture);
             }
         }
         
@@ -2946,6 +3063,60 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Big Holiday OB (Nurses Union).
+        /// </summary>
+        internal static string OBRule_VF_BigHoliday_Name {
+            get {
+                return ResourceManager.GetString("OBRule_VF_BigHoliday_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening OB (Nurses Union).
+        /// </summary>
+        internal static string OBRule_VF_Evening_Name {
+            get {
+                return ResourceManager.GetString("OBRule_VF_Evening_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public Holiday OB (Nurses Union).
+        /// </summary>
+        internal static string OBRule_VF_Holiday_Name {
+            get {
+                return ResourceManager.GetString("OBRule_VF_Holiday_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Night OB (Nurses Union).
+        /// </summary>
+        internal static string OBRule_VF_Night_Name {
+            get {
+                return ResourceManager.GetString("OBRule_VF_Night_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend OB (Nurses Union).
+        /// </summary>
+        internal static string OBRule_VF_Weekend_Name {
+            get {
+                return ResourceManager.GetString("OBRule_VF_Weekend_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend Night OB (Nurses Union).
+        /// </summary>
+        internal static string OBRule_VF_WeekendNight_Name {
+            get {
+                return ResourceManager.GetString("OBRule_VF_WeekendNight_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wednesday.
         /// </summary>
         internal static string OBRule_Wednesday {
@@ -2978,6 +3149,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OBRule_Weekend_Name {
             get {
                 return ResourceManager.GetString("OBRule_Weekend_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saturday Day OB.
+        /// </summary>
+        internal static string OBRule_WeekendDay_Name {
+            get {
+                return ResourceManager.GetString("OBRule_WeekendDay_Name", resourceCulture);
             }
         }
         
@@ -3054,6 +3234,42 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OB template for the Retail Union with evening, night, weekend, holidays and big holidays..
+        /// </summary>
+        internal static string OBTemplate_Handels_Desc {
+            get {
+                return ResourceManager.GetString("OBTemplate_Handels_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retail Union .
+        /// </summary>
+        internal static string OBTemplate_Handels_Title {
+            get {
+                return ResourceManager.GetString("OBTemplate_Handels_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OB template for the Hotel &amp; Restaurant Union with evening, night, weekend, holidays and big holidays..
+        /// </summary>
+        internal static string OBTemplate_HRF_Desc {
+            get {
+                return ResourceManager.GetString("OBTemplate_HRF_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hotel &amp; Restaurant Union.
+        /// </summary>
+        internal static string OBTemplate_HRF_Title {
+            get {
+                return ResourceManager.GetString("OBTemplate_HRF_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Weekday Night Unsocial hour (editable).
         /// </summary>
         internal static string OBTemplate_NightOnly_Desc {
@@ -3072,7 +3288,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Common Unsocial Hour rules for municipal healthcare (editable).
+        ///   Looks up a localized string similar to Standard OB template for municipal sector with evening, night, weekend and big holidays. (editable).
         /// </summary>
         internal static string OBTemplate_Standard_Desc {
             get {
@@ -3081,11 +3297,29 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Standard municipality .
+        ///   Looks up a localized string similar to Municipal – Standard .
         /// </summary>
         internal static string OBTemplate_Standard_Title {
             get {
                 return ResourceManager.GetString("OBTemplate_Standard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OB template for the Nurses Union with evening, night, weekend, holidays and big holidays..
+        /// </summary>
+        internal static string OBTemplate_VF_Desc {
+            get {
+                return ResourceManager.GetString("OBTemplate_VF_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nurses Union .
+        /// </summary>
+        internal static string OBTemplate_VF_Title {
+            get {
+                return ResourceManager.GetString("OBTemplate_VF_Title", resourceCulture);
             }
         }
         
@@ -3131,6 +3365,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OBTemplates_ChooseTemplate {
             get {
                 return ResourceManager.GetString("OBTemplates_ChooseTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete templates.
+        /// </summary>
+        internal static string OBTemplates_FullTemplates {
+            get {
+                return ResourceManager.GetString("OBTemplates_FullTemplates", resourceCulture);
             }
         }
         
@@ -3194,6 +3437,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OBTemplates_SelectToPreview {
             get {
                 return ResourceManager.GetString("OBTemplates_SelectToPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simple templates.
+        /// </summary>
+        internal static string OBTemplates_SimpleTemplates {
+            get {
+                return ResourceManager.GetString("OBTemplates_SimpleTemplates", resourceCulture);
             }
         }
         
