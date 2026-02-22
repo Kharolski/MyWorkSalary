@@ -223,7 +223,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Lägg till pass</value>
   </data>
   <data name="AppSettings" xml:space="preserve">
-    <value>🔧 App-inställningar</value>
+    <value>⚙️ App-inställningar</value>
   </data>
   <data name="BasicInfo_SectionTitle" xml:space="preserve">
     <value>📋 Grundläggande information</value>
@@ -557,7 +557,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Kom igång genom att skapa ditt första jobb</value>
   </data>
   <data name="HomeTitle" xml:space="preserve">
-    <value>Hem</value>
+    <value>🏠 Hem</value>
   </data>
   <data name="HourlyRate" xml:space="preserve">
     <value>{0}/h</value>
@@ -1028,7 +1028,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Inställningar</value>
   </data>
   <data name="ShiftPageTitle" xml:space="preserve">
-    <value>Arbetspass</value>
+    <value>🗓️ Arbetspass</value>
   </data>
   <data name="Shifts" xml:space="preserve">
     <value>Pass</value>
@@ -1972,7 +1972,7 @@ Arbetspasset har sparats!</value>
     <value>Ingen lönerapport än – skapa ett jobb först.</value>
   </data>
   <data name="Salary_PageTitle" xml:space="preserve">
-    <value>Månads lönerapport</value>
+    <value>💰 Månads lönerapport</value>
   </data>
   <data name="Salary_Summary_Title" xml:space="preserve">
     <value>📊 Sammanfattning</value>
@@ -2395,7 +2395,7 @@ Arbetspasset har sparats!</value>
     <value>Enkla mallar</value>
   </data>
   <data name="JobSettings_Title" xml:space="preserve">
-    <value>Jobbinställningar</value>
+    <value>🧰 Jobbinställningar</value>
   </data>
   <data name="Salary_Details_SectionTitle" xml:space="preserve">
     <value>📄 Detaljerad översikt</value>

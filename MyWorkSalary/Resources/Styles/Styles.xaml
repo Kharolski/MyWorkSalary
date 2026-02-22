@@ -55,6 +55,13 @@
         
         <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
 
+        <Setter Property="Shell.DisabledColor" 
+                Value="{AppThemeBinding Light={StaticResource TextHint}, 
+                                        Dark={StaticResource TextHintDark}}" />
+        <Setter Property="Shell.UnselectedColor" 
+                Value="{AppThemeBinding Light={StaticResource SalaryTabUnselected}, 
+                                        Dark={StaticResource SalaryTabUnselectedDark}}" />
+
         <!-- Shell Tabbar Styles - Bottom -->
         <Setter Property="Shell.TabBarBackgroundColor" 
                 Value="{AppThemeBinding Light={StaticResource BackgroundTab}, 

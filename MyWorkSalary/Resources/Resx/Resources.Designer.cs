@@ -496,7 +496,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🔧 App Settings.
+        ///   Looks up a localized string similar to ⚙️ App Settings.
         /// </summary>
         internal static string AppSettings {
             get {
@@ -2064,7 +2064,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Home.
+        ///   Looks up a localized string similar to 🏠 Home.
         /// </summary>
         internal static string HomeTitle {
             get {
@@ -2289,7 +2289,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Job settings.
+        ///   Looks up a localized string similar to 🧰 Job settings.
         /// </summary>
         internal static string JobSettings_Title {
             get {
@@ -4809,7 +4809,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Monthly Salary Report.
+        ///   Looks up a localized string similar to 💰 Monthly Salary Report.
         /// </summary>
         internal static string Salary_PageTitle {
             get {
@@ -5313,7 +5313,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Work Shifts.
+        ///   Looks up a localized string similar to 🗓️ Work Shifts.
         /// </summary>
         internal static string ShiftPageTitle {
             get {

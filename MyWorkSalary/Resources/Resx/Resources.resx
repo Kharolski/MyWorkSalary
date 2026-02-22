@@ -248,7 +248,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>Add Shift</value>
   </data>
   <data name="AppSettings" xml:space="preserve">
-    <value>🔧 App Settings</value>
+    <value>⚙️ App Settings</value>
   </data>
   <data name="BasicInfo_SectionTitle" xml:space="preserve">
     <value>📋 Basic information</value>
@@ -601,7 +601,7 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Prompt when no job is set up</comment>
   </data>
   <data name="HomeTitle" xml:space="preserve">
-    <value>Home</value>
+    <value>🏠 Home</value>
     <comment>Page title </comment>
   </data>
   <data name="HourlyRate" xml:space="preserve">
@@ -1151,7 +1151,7 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Button text</comment>
   </data>
   <data name="ShiftPageTitle" xml:space="preserve">
-    <value>Work Shifts</value>
+    <value>🗓️ Work Shifts</value>
   </data>
   <data name="Shifts" xml:space="preserve">
     <value>Shifts</value>
@@ -2354,7 +2354,7 @@ The work shift has been saved!</value>
     <comment>SalaryPage.xaml</comment>
   </data>
   <data name="Salary_PageTitle" xml:space="preserve">
-    <value>Monthly Salary Report</value>
+    <value>💰 Monthly Salary Report</value>
     <comment>SalaryPage.xaml</comment>
   </data>
   <data name="Salary_Summary_Title" xml:space="preserve">
@@ -2857,7 +2857,7 @@ The work shift has been saved!</value>
     <value>Simple templates</value>
   </data>
   <data name="JobSettings_Title" xml:space="preserve">
-    <value>Job settings</value>
+    <value>🧰 Job settings</value>
   </data>
   <data name="Salary_Details_SectionTitle" xml:space="preserve">
     <value>📄 Detailed overview</value>
