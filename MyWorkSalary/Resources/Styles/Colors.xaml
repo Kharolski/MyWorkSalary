@@ -16,6 +16,7 @@
     <!-- ===== SPECIALFÄRGER ===== -->
     <Color x:Key="OverlayColor">#80000000</Color>
     <Color x:Key="ShadowColor">#1A000000</Color>
+    <Color x:Key="LoadingOverlayColor">#CC000000</Color>
 
     <!-- ===== HUVUDFÄRGER ===== -->
     <Color x:Key="SalaryPrimary">#2E7D32</Color>

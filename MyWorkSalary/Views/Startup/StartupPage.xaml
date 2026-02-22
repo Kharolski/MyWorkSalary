@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyWorkSalary.Views.Startup.StartupPage"
+             NavigationPage.HasNavigationBar="False"
+             Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <!-- Bakgrundsbild -->
+        <Image Source="mysalary.png"
+           Aspect="AspectFill"
+           HorizontalOptions="Fill"
+           VerticalOptions="Fill" />
+
+        <!-- Gradient overlay -->
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#162D59" Offset="0.0" />
+                    <GradientStop Color="#203E78" Offset="1.0" />
+                </LinearGradientBrush>
+            </Grid.Background>
+        </Grid>
+
+        <!-- Innehåll -->
+        <VerticalStackLayout Spacing="25"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center">
+
+            <!-- Cirkeln + loggan -->
+            <Grid WidthRequest="194"
+              HeightRequest="194"
+              HorizontalOptions="Center"
+              VerticalOptions="Center">
+
+                <Ellipse Fill="#162D59"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" />
+
+                <Image Source="startup_logo.png"
+                       HeightRequest="194"
+                       WidthRequest="194"
+                       x:Name="Logo"
+                       Opacity="0"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center">
+                    <Image.Clip>
+                        <EllipseGeometry Center="97,97" RadiusX="97" RadiusY="97" />
+                    </Image.Clip>
+                </Image>
+            </Grid>
+
+            <!-- App-namn -->
+            <Label Text="Salary Check"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               x:Name="TitleLabel"
+               Opacity="0"
+               TextColor="White" />
+
+            <!-- Laddningstext -->
+            <Label Text="Laddar din app..."
+               FontSize="14"
+               HorizontalOptions="Center"
+               x:Name="LoadingText"
+               Opacity="0"
+               TextColor="#E0FFFFFF" />
+
+            <!-- Laddningsindikator -->
+            <ActivityIndicator IsRunning="True"
+                           IsVisible="True"
+                           x:Name="Loader"
+                           Opacity="0"
+                           Color="White" />
+
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>

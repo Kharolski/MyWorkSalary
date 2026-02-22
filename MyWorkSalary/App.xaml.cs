@@ -9,7 +9,8 @@ namespace MyWorkSalary
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            // Sätt MainPage till startup-sida direkt, inte AppShell
+            MainPage = new NavigationPage(new MyWorkSalary.Views.Startup.StartupPage());
         }
 
         protected override void OnStart()

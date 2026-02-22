@@ -1,3 +1,4 @@
+using MyWorkSalary.Helpers;
 using MyWorkSalary.ViewModels;
 
 namespace MyWorkSalary.Views.Pages
@@ -29,6 +30,9 @@ namespace MyWorkSalary.Views.Pages
             {
                 _viewModel.LoadJob(_jobId);
             }
+
+            // Fixar ett känt MAUI/Shell-problem där sidan som navigeras tillbaka till
+            NavigationHelper.UseNoAnimationBackButton(this);
         }
     }
 }

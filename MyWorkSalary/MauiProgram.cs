@@ -15,6 +15,7 @@ using MyWorkSalary.ViewModels.Templates;
 using MyWorkSalary.Views;
 using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views.Pages.Templates;
+using MyWorkSalary.Views.Settings;
 
 namespace MyWorkSalary
 {
@@ -104,6 +105,8 @@ namespace MyWorkSalary
             // Registrera Views
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<SettingsPage>();
+            builder.Services.AddTransient<JobSettingsPage>();
+            builder.Services.AddTransient<AboutAppPage>();
             builder.Services.AddTransient<AddJobPage>();
             builder.Services.AddTransient<EditJobPage>();
             builder.Services.AddTransient<ShiftPage>();
@@ -111,6 +114,7 @@ namespace MyWorkSalary
             builder.Services.AddTransient<AddOBRatePage>();
             builder.Services.AddTransient<SalaryPage>();
             builder.Services.AddTransient<OBTemplatesPage>();
+            builder.Services.AddTransient<MyWorkSalary.Views.Startup.StartupPage>();
 
 
 #if DEBUG

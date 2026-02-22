@@ -77,6 +77,28 @@
         <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
     </Style>
 
+    <!-- Loading Overlay Styles -->
+    <Style x:Key="LoadingOverlay" TargetType="Grid">
+        <Setter Property="BackgroundColor" Value="{StaticResource LoadingOverlayColor}" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="VerticalOptions" Value="Fill" />
+        <Setter Property="ZIndex" Value="1000" />
+    </Style>
+
+    <Style x:Key="LoadingIndicator" TargetType="ActivityIndicator">
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="LoadingText" TargetType="Label">
+        <Setter Property="Text" Value="Laddar..." />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="Margin" Value="0,60,0,0" />
+    </Style>
+
     <!-- Shift Page Styles -->
     <Style TargetType="Frame" x:Key="ActiveJobFrame">
         <Setter Property="BackgroundColor" 
