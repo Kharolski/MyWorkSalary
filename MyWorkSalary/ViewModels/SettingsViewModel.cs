@@ -3,6 +3,7 @@ using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Premium;
 using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views.Settings;
 using System.Collections.ObjectModel;
@@ -20,17 +21,26 @@ namespace MyWorkSalary.ViewModels
         private AppSettings _appSettings;
         private readonly IOBEventService _obEventService;
         private readonly IOnCallRecalcService _onCallRecalcService;
+        private readonly IFeatureLockService _featureLockService;
+        private readonly IPremiumService _premiumService;
 
         private bool _isDarkTheme;
         private LanguageOption _selectedLanguage;
         #endregion
 
         #region Constructor
-        public SettingsViewModel(DatabaseService databaseService, IOBEventService obEventService, IOnCallRecalcService onCallRecalcService)
+        public SettingsViewModel(
+            DatabaseService databaseService, 
+            IOBEventService obEventService, 
+            IOnCallRecalcService onCallRecalcService,
+            IFeatureLockService featureLockService,
+            IPremiumService premiumService)
         {
             _databaseService = databaseService;
             _obEventService = obEventService;
             _onCallRecalcService = onCallRecalcService;
+            _featureLockService = featureLockService;
+            _premiumService = premiumService;
 
             TranslationManager.Instance.CultureChanged += OnCultureChanged;
 
@@ -281,6 +291,21 @@ namespace MyWorkSalary.ViewModels
 
         private async void OnAddJob()
         {
+            // Hämta antal jobb
+            int currentJobs = AllJobs?.Count ?? 0;
+
+            // Fråga FeatureLockService
+            if (!_featureLockService.CanAddMoreJobs(currentJobs))
+            {
+                await Shell.Current.DisplayAlert(
+                    LocalizationHelper.Translate("PremiumRequiredTitle"),
+                    LocalizationHelper.Translate("PremiumRequiredAddJobMessage"),
+                    LocalizationHelper.Translate("OK"));
+
+                return;
+            }
+
+            // Tillåt navigering
             await Shell.Current.GoToAsync(nameof(AddJobPage));
         }
 

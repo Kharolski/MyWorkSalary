@@ -22,6 +22,9 @@ namespace MyWorkSalary
             Routing.RegisterRoute(nameof(JobSettingsPage), typeof(JobSettingsPage));
             Routing.RegisterRoute(nameof(AboutAppPage), typeof(AboutAppPage));
 
+            // Premium
+            Routing.RegisterRoute(nameof(PremiumInfoPage), typeof(PremiumInfoPage));
+
             // OB Templates Page
             Routing.RegisterRoute(nameof(OBTemplatesPage), typeof(OBTemplatesPage));
         }

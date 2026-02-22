@@ -2433,4 +2433,19 @@ Arbetspasset har sparats!</value>
   <data name="Startup_loading" xml:space="preserve">
     <value>Loading your app...</value>
   </data>
+  <data name="PremiumRequiredTitle" xml:space="preserve">
+    <value>🔒 Upgradering krävs</value>
+  </data>
+  <data name="PremiumRequiredAddJobMessage" xml:space="preserve">
+    <value>Gratisanvändare kan bara ha ett jobb. Uppgradera till Premium eller Prenumeration för att lägga till fler.</value>
+  </data>
+  <data name="ViewUpgradeOptions" xml:space="preserve">
+    <value>Visa uppgraderingsalternativ</value>
+  </data>
+  <data name="OnCallLocked_Description" xml:space="preserve">
+    <value>Uppgradera för att aktivera jourpass och få tillgång till alla jourinställningar.</value>
+  </data>
+  <data name="OnCallLocked_Title" xml:space="preserve">
+    <value>🔒 Jour är en premiumfunktion</value>
+  </data>
 </root>

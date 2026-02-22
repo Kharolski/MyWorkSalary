@@ -1,5 +1,6 @@
 ﻿using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Enums;
+using MyWorkSalary.Views.Settings;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
@@ -296,6 +297,19 @@ namespace MyWorkSalary.ViewModels
             {
                 IsRecalcRunning = false;
             }
+        });
+
+        #endregion
+
+        #region Premium Service
+        
+
+        public bool IsPremiumOrSubscriber => _premiumService.IsPremium || _premiumService.IsSubscriber;
+        public bool IsFreeUser => !IsPremiumOrSubscriber;
+
+        public ICommand OpenPremiumPageCommand => new Command(async () =>
+        {
+            await Shell.Current.GoToAsync(nameof(PremiumInfoPage));
         });
 
         #endregion

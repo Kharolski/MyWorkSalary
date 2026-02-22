@@ -3963,6 +3963,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upgrade to enable on-call shifts and access all on-call settings..
+        /// </summary>
+        internal static string OnCallLocked_Description {
+            get {
+                return ResourceManager.GetString("OnCallLocked_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔒 On-call is a premium feature.
+        /// </summary>
+        internal static string OnCallLocked_Title {
+            get {
+                return ResourceManager.GetString("OnCallLocked_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to None (0).
         /// </summary>
         internal static string OnCallPayType_None {
@@ -4256,6 +4274,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string PerMonth {
             get {
                 return ResourceManager.GetString("PerMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free users can only have one job. Upgrade to Premium or Subscription to add more..
+        /// </summary>
+        internal static string PremiumRequiredAddJobMessage {
+            get {
+                return ResourceManager.GetString("PremiumRequiredAddJobMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔒 Upgrade required.
+        /// </summary>
+        internal static string PremiumRequiredTitle {
+            get {
+                return ResourceManager.GetString("PremiumRequiredTitle", resourceCulture);
             }
         }
         
@@ -6813,6 +6849,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ViewReports {
             get {
                 return ResourceManager.GetString("ViewReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View upgrade options.
+        /// </summary>
+        internal static string ViewUpgradeOptions {
+            get {
+                return ResourceManager.GetString("ViewUpgradeOptions", resourceCulture);
             }
         }
         

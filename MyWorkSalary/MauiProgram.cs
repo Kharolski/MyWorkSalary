@@ -7,6 +7,7 @@ using MyWorkSalary.Services.Calculations;
 using MyWorkSalary.Services.Conflicts;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Premium;
 using MyWorkSalary.Services.Repositories;
 using MyWorkSalary.Services.Validation;
 using MyWorkSalary.ViewModels;
@@ -79,6 +80,9 @@ namespace MyWorkSalary
             builder.Services.AddTransient<HolidayService>();
             builder.Services.AddTransient<IOBEventService, OBEventService>();
 
+            builder.Services.AddSingleton<IPremiumService, PremiumService>();
+            builder.Services.AddSingleton<IFeatureLockService, FeatureLockService>();
+
             // === HANDLERS ===
             builder.Services.AddTransient<ShiftTypeHandler>();
             builder.Services.AddTransient<SickLeaveHandler>();
@@ -116,6 +120,8 @@ namespace MyWorkSalary
             builder.Services.AddTransient<OBTemplatesPage>();
             builder.Services.AddTransient<MyWorkSalary.Views.Startup.StartupPage>();
 
+            // Premium
+            builder.Services.AddTransient<PremiumInfoPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

@@ -48,6 +48,17 @@
                 </VerticalStackLayout>
             </Border>
 
+            <!-- Developer Tools (endast för utveckling) -->
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="8" Padding="15">
+                    <Label Text="Developer Tools" FontSize="16" FontAttributes="Bold" TextColor="Red" />
+                    <Button Text="Aktivera Premium (test)" Clicked="OnActivatePremiumClicked" />
+                    <Button Text="Aktivera Prenumeration (test)" Clicked="OnActivateSubscriptionClicked" />
+                    <Button Text="Rensa Premium-status" Clicked="OnClearPremiumClicked" />
+                </VerticalStackLayout>
+            </Border>
+
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

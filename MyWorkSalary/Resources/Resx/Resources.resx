@@ -2895,4 +2895,19 @@ The work shift has been saved!</value>
   <data name="Startup_loading" xml:space="preserve">
     <value>Loading your app...</value>
   </data>
+  <data name="PremiumRequiredTitle" xml:space="preserve">
+    <value>🔒 Upgrade required</value>
+  </data>
+  <data name="PremiumRequiredAddJobMessage" xml:space="preserve">
+    <value>Free users can only have one job. Upgrade to Premium or Subscription to add more.</value>
+  </data>
+  <data name="ViewUpgradeOptions" xml:space="preserve">
+    <value>View upgrade options</value>
+  </data>
+  <data name="OnCallLocked_Description" xml:space="preserve">
+    <value>Upgrade to enable on-call shifts and access all on-call settings.</value>
+  </data>
+  <data name="OnCallLocked_Title" xml:space="preserve">
+    <value>🔒 On-call is a premium feature</value>
+  </data>
 </root>

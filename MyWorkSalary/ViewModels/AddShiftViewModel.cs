@@ -3,6 +3,7 @@ using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Premium;
 using MyWorkSalary.ViewModels.ShiftTypes;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ namespace MyWorkSalary.ViewModels
         #region Private Fields
         private readonly IJobProfileRepository _jobProfileRepository;
         private readonly IWorkShiftRepository _workShiftRepository;
+        private readonly IPremiumService _premiumService;
 
         private readonly SickLeaveHandler _sickLeaveHandler;
 
@@ -37,6 +39,7 @@ namespace MyWorkSalary.ViewModels
             IOBEventRepository obEventRepository,
             IOBRateRepository obRateRepository,
             IOBEventService obEventService,
+            IPremiumService premiumService,
             ShiftTypeHandler shiftTypeHandler,
             SickLeaveHandler sickLeaveHandler,
             SickLeaveViewModel sickLeaveViewModel,
@@ -45,6 +48,7 @@ namespace MyWorkSalary.ViewModels
         {
             _jobProfileRepository = jobProfileRepository;
             _workShiftRepository = workShiftRepository;
+            _premiumService = premiumService;
             _sickLeaveHandler = sickLeaveHandler;
             SickLeaveVM = sickLeaveViewModel;
             OnCallVM = onCallViewModel;
@@ -442,9 +446,16 @@ namespace MyWorkSalary.ViewModels
             {
                 ShiftTypeDisplayNames.Clear();
                 ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Add_Regular"));
-                //ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_SickLeave"));
-                //ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Vacation"));
-                ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_OnCall"));
+                
+                if (_premiumService.IsPremium || _premiumService.IsSubscriber)
+                {
+                    ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_OnCall"));
+                    //ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Vacation"));
+                }
+                if(_premiumService.IsSubscriber)
+                {
+                    //ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_SickLeave"));
+                }
 
                 // Uppdatera endast texten som visas, utan att trigga Reset-logiken i settern
                 _selectedShiftTypeDisplay = _selectedShiftType switch
@@ -472,9 +483,12 @@ namespace MyWorkSalary.ViewModels
             return displayName switch
             {
                 _ when displayName == LocalizationHelper.Translate("ShiftType_Add_Regular") => ShiftType.Regular,
-                _ when displayName == LocalizationHelper.Translate("ShiftType_OnCall") => ShiftType.OnCall,
-                _ when displayName == LocalizationHelper.Translate("ShiftType_SickLeave") => ShiftType.SickLeave,
-                _ when displayName == LocalizationHelper.Translate("ShiftType_Vacation") => ShiftType.Vacation,
+                _ when displayName == LocalizationHelper.Translate("ShiftType_OnCall")
+                    && (_premiumService.IsPremium || _premiumService.IsSubscriber) => ShiftType.OnCall,
+                _ when displayName == LocalizationHelper.Translate("ShiftType_SickLeave")
+                    && (_premiumService.IsSubscriber) => ShiftType.SickLeave,
+                _ when displayName == LocalizationHelper.Translate("ShiftType_Vacation")
+                    && (_premiumService.IsPremium || _premiumService.IsSubscriber) => ShiftType.Vacation,
                 _ => ShiftType.Regular
             };
         }
@@ -492,13 +506,24 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(ShowVacationForm));
             OnPropertyChanged(nameof(CalculationSummary));
 
-            // SickLeave och Vacation är avstängda tills vidare
+            // SickLeave och Vacation är AVSTÄNGDA tills vidare
             if (SelectedShiftType == ShiftType.SickLeave || SelectedShiftType == ShiftType.Vacation)
             {
                 SelectedShiftType = ShiftType.Regular;
                 _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Add_Regular");
                 OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
             }
+
+            // OnCall är premium, så tvinga tillbaka
+            if (SelectedShiftType == ShiftType.OnCall && !(_premiumService.IsPremium || _premiumService.IsSubscriber))
+            {
+                // Tvinga tillbaka till Regular
+                SelectedShiftType = ShiftType.Regular;
+                _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Add_Regular");
+                OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
+                return;
+            }
+
 
             // Uppdatera context för child ViewModels
             if (SelectedShiftType == ShiftType.SickLeave)
