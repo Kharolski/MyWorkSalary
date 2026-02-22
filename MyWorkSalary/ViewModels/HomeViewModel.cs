@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
-    public class HomeViewModel : INotifyPropertyChanged
+    public class HomeViewModel : BaseViewModel
     {
         #region Private Fields
         private readonly DatabaseService _databaseService;
@@ -125,7 +125,24 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        // OB som betalas denna månad (från föregående månad)
+        private decimal _obHoursPaidThisMonth;
+        public decimal ObHoursPaidThisMonth
+        {
+            get => _obHoursPaidThisMonth;
+            set
+            {
+                _obHoursPaidThisMonth = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ObHoursPaidThisMonthText));
+            }
+        }
+
+        public string ObHoursPaidThisMonthText => ObHoursPaidThisMonth.ToString("F1");
+
+        // OB arbetade denna månad (du har redan MonthlyObHours)
         public string MonthlyObHoursText => MonthlyObHours.ToString("F1");
+
         public decimal MonthlyObHours
         {
             get => _monthlyObHours;
@@ -335,6 +352,9 @@ namespace MyWorkSalary.ViewModels
             WorkDaysThisMonth = stats.WorkDays;
             ExpectedHoursThisMonth = stats.ExpectedHours;
 
+            // OB som betalas denna månad
+            ObHoursPaidThisMonth = _dashboardService.GetPreviousMonthObHours(ActiveJob.Id);
+
             // Uppdatera flex när shifts ändras
             if (HasFlexTime)
             {
@@ -414,14 +434,6 @@ namespace MyWorkSalary.ViewModels
         private async void OnViewReports()
         {
             await Shell.Current.GoToAsync("//SalaryPage");
-        }
-        #endregion
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

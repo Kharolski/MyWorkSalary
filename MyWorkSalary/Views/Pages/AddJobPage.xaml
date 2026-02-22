@@ -9,7 +9,7 @@
         <VerticalStackLayout Spacing="15" Padding="20">
 
             <!-- Grundläggande info -->
-            <Frame Style="{StaticResource CardFrame}">
+            <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="{x:Static resx:Resources.AddJobPage_BasicInfo}"
                            Style="{StaticResource SectionTitleLabel}" />
@@ -51,10 +51,10 @@
                     <Label Text="{x:Static resx:Resources.AddJobPage_CountryTip}"
                            Style="{StaticResource TipsLabel}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <!-- Lön -->
-            <Frame Style="{StaticResource CardFrame}">
+            <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="{x:Static resx:Resources.AddJobPage_SalarySection}"
                         Style="{StaticResource SectionTitleLabel}" />
@@ -137,10 +137,10 @@
                Placeholder="160"
                Style="{StaticResource ThemedEntry}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <!-- Timbank (endast för fast anställda) -->
-            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding IsPermanentEmployment}">
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsPermanentEmployment}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Timbank" Style="{StaticResource SectionTitleLabel}" />
                     <Label Text="Nuvarande timbankssaldo" Style="{StaticResource SecondaryLabel}" />
@@ -151,10 +151,10 @@
                     <Label Text="Positivt värde = sparad övertid, negativt värde = skuld"
                         Style="{StaticResource TipsLabel}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <!-- Semester -->
-            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding IsPermanentEmployment}">
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsPermanentEmployment}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="{x:Static resx:Resources.AddJobPage_VacationSection}"
                            Style="{StaticResource SectionTitleLabel}" />
@@ -188,10 +188,10 @@
                                LineBreakMode="WordWrap" />
                     </StackLayout>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <!-- Skatt -->
-            <Frame Style="{StaticResource CardFrame}">
+            <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="{x:Static resx:Resources.AddJobPage_TaxSection}"
                            Style="{StaticResource SectionTitleLabel}" />
@@ -206,7 +206,7 @@
                     <Label Text="{x:Static resx:Resources.AddJobPage_TaxTip}"
                            Style="{StaticResource TipsLabel}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <!-- Knappar -->
             <StackLayout Orientation="Horizontal"

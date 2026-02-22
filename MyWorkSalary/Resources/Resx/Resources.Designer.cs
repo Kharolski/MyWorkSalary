@@ -61,6 +61,60 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About the app.
+        /// </summary>
+        internal static string AboutApp {
+            get {
+                return ResourceManager.GetString("AboutApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A modern salary app that helps you track hours, OB, flex and pay..
+        /// </summary>
+        internal static string AboutAppDescription {
+            get {
+                return ResourceManager.GetString("AboutAppDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact: support@myworksalary.com.
+        /// </summary>
+        internal static string AboutContact {
+            get {
+                return ResourceManager.GetString("AboutContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Developed by Aleh..
+        /// </summary>
+        internal static string AboutDeveloper {
+            get {
+                return ResourceManager.GetString("AboutDeveloper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privacy Policy.
+        /// </summary>
+        internal static string AboutPrivacyPolicy {
+            get {
+                return ResourceManager.GetString("AboutPrivacyPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Learn more about how we handle your data..
+        /// </summary>
+        internal static string AboutPrivacyPolicyDescription {
+            get {
+                return ResourceManager.GetString("AboutPrivacyPolicyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No, cancel.
         /// </summary>
         internal static string Action_Cancel {
@@ -2235,6 +2289,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job settings.
+        /// </summary>
+        internal static string JobSettings_Title {
+            get {
+                return ResourceManager.GetString("JobSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job title *.
         /// </summary>
         internal static string JobTitle_Label {
@@ -2636,6 +2699,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OB_UsingFallback {
             get {
                 return ResourceManager.GetString("OB_UsingFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OB prev month.
+        /// </summary>
+        internal static string ObBeforeMonth {
+            get {
+                return ResourceManager.GetString("ObBeforeMonth", resourceCulture);
             }
         }
         
@@ -3378,7 +3450,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Templates are examples. Adjust times and amounts to match your agreement..
+        ///   Looks up a localized string similar to ℹ️ Templates are examples. Adjust times and amounts to match your agreement..
         /// </summary>
         internal static string OBTemplates_InfoText {
             get {
@@ -3455,6 +3527,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OBTemplates_Title {
             get {
                 return ResourceManager.GetString("OBTemplates_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OB this month.
+        /// </summary>
+        internal static string ObThisMonth {
+            get {
+                return ResourceManager.GetString("ObThisMonth", resourceCulture);
             }
         }
         
@@ -3995,6 +4076,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OnCallSettings_Enable {
             get {
                 return ResourceManager.GetString("OnCallSettings_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /hour.
+        /// </summary>
+        internal static string OnCallSettings_PerHourSuffix {
+            get {
+                return ResourceManager.GetString("OnCallSettings_PerHourSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /shift.
+        /// </summary>
+        internal static string OnCallSettings_PerShiftSuffix {
+            get {
+                return ResourceManager.GetString("OnCallSettings_PerShiftSuffix", resourceCulture);
             }
         }
         
@@ -4544,6 +4643,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Salary_BaseSalary_NotSet {
             get {
                 return ResourceManager.GetString("Salary_BaseSalary_NotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📄 Detailed overview.
+        /// </summary>
+        internal static string Salary_Details_SectionTitle {
+            get {
+                return ResourceManager.GetString("Salary_Details_SectionTitle", resourceCulture);
             }
         }
         

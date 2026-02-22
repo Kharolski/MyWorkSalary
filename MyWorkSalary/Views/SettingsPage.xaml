@@ -10,7 +10,7 @@
         <VerticalStackLayout Spacing="20" Padding="20">
 
             <!-- Kombinerad Jobb Sektion -->
-            <Frame Style="{StaticResource CardFrame}">
+            <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Spacing="15">
                     <!-- EN rubrik för allt -->
                     <Label Text="{resx:Translate MyJobs}" Style="{StaticResource SectionTitleLabel}"/>
@@ -48,11 +48,12 @@
                                     </SwipeView.RightItems>
 
                                     <!-- Enhetligt job-kort design -->
-                                    <Frame Padding="0"
-                                           Margin="0,2"
-                                           CornerRadius="8"
-                                           HasShadow="False"
-                                           BackgroundColor="{Binding IsActive, Converter={StaticResource BoolToJobBackgroundConverter}}">
+                                    <Border Padding="0"
+                                            Margin="0,2"
+                                            BackgroundColor="{Binding IsActive, Converter={StaticResource BoolToJobBackgroundConverter}}">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
                                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Padding="12,10">
                                             <!-- Klickbar BARA om det finns flera jobb -->
                                             <Grid.GestureRecognizers>
@@ -101,7 +102,7 @@
                                                        VerticalOptions="Center" />
                                             </Border>
                                         </Grid>
-                                    </Frame>
+                                    </Border>
                                 </SwipeView>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -136,306 +137,29 @@
                            IsVisible="{Binding HasActiveJob}"
                            Margin="0,5,0,0" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <!-- OB-Inställningar -->
-            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
-                <VerticalStackLayout Spacing="15">
+            <!-- Jobbinställningar-knapp -->
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob}">
+                <Grid ColumnDefinitions="*,Auto" Padding="12">
+                    <Label Text="{resx:Translate JobSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
 
-                    <Label Text="{resx:Translate OBSettings}"
-                           Style="{StaticResource SectionTitleLabel}" />
+                    <!-- Pil-ikon -->
+                    <Label Grid.Column="1"
+                           Text="▶" FontSize="22" Margin="0,-3,0,0" FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                      Dark={StaticResource TextPrimaryDark}}" />
+                    <!-- Klick -->
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenJobSettingsCommand}" />
+                    </Grid.GestureRecognizers>
 
-                    <!-- Hjälptext / Tips -->
-                    <Label Text="{resx:Translate OBTips}" Style="{StaticResource TipsLabel}" LineBreakMode="WordWrap" FontSize="12" />
-
-                    <!-- Tomt-state när inga OB-regler finns -->
-                    <StackLayout IsVisible="{Binding HasNoOBRates}"
-                                 Spacing="8"
-                                 Margin="10,0"
-                                 HorizontalOptions="Center"
-                                 VerticalOptions="Center">
-
-                        <Label Text="⏱️" FontSize="40" HorizontalOptions="Center" />
-                        <Label Text="{resx:Translate NoOBRulesTitle}"
-                               FontAttributes="Bold"
-                               FontSize="16"
-                               HorizontalOptions="Center"
-                               HorizontalTextAlignment="Center" />
-                        <Label Text="{resx:Translate NoOBRulesText}"
-                               HorizontalOptions="Center"
-                               HorizontalTextAlignment="Center"
-                               Style="{StaticResource NoItemsLabel}" />
-                    </StackLayout>
-
-                    <!-- Visa befintliga OB-regler med SwipeView -->
-                    <CollectionView ItemsSource="{Binding OBRates}" IsVisible="{Binding HasOBRates}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <SwipeView>
-                                    <!-- Swipe från vänster för att ändra -->
-                                    <SwipeView.LeftItems>
-                                        <SwipeItems>
-                                            <SwipeItem Text="{resx:Translate Edit}"
-                                                       BackgroundColor="{StaticResource EditButtonColor}"
-                                                       Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.EditOBRateCommand}"
-                                                       CommandParameter="{Binding .}" />
-                                        </SwipeItems>
-                                    </SwipeView.LeftItems>
-                                    <!-- Swipe från höger för att radera -->
-                                    <SwipeView.RightItems>
-                                        <SwipeItems>
-                                            <SwipeItem Text="{resx:Translate Delete}"
-                                                       BackgroundColor="{StaticResource ButtonCancel}"
-                                                       Command="{Binding Source={x:Reference SettingsPageRef}, Path=BindingContext.DeleteOBRateCommand}"
-                                                       CommandParameter="{Binding .}" />
-                                        </SwipeItems>
-                                    </SwipeView.RightItems>
-
-                                    <!-- Huvudinnehållet -->
-                                    <Frame Style="{StaticResource OBRuleFrame}">
-                                        <Grid ColumnDefinitions="*,Auto">
-                                            <StackLayout Grid.Column="0" Spacing="2">
-                                                <Label Text="{Binding Name}"
-                                                       FontAttributes="Bold"
-                                                       FontSize="14"
-                                                       Style="{StaticResource OBHeaderLabel}" />
-                                                <Label Text="{Binding ., Converter={StaticResource OBTimeRangeConverter}}"
-                                                       FontSize="12"
-                                                       Style="{StaticResource OBInfoLabel}" />
-                                            </StackLayout>
-                                            <Label Grid.Column="1"
-                                                   Text="{Binding RateDisplayText}"
-                                                   FontAttributes="Bold"
-                                                   VerticalOptions="Center"
-                                                   Style="{StaticResource OBHeaderLabel}" />
-                                        </Grid>
-                                    </Frame>
-                                </SwipeView>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-
-                    <!-- Knappar för OB -->
-                    <VerticalStackLayout Spacing="8" Margin="0,10,0,0">
-
-                        <!-- Rad 1: Lägg till regel + Mall -->
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                            <Button Grid.Column="0"
-                                    Text="{resx:Translate AddOBRule}"
-                                    Command="{Binding AddOBRateCommand}"
-                                    BackgroundColor="{StaticResource ButtonPrimary}"
-                                    TextColor="{StaticResource White}"
-                                    CornerRadius="8"
-                                    Padding="0,12" />
-
-                            <Button Grid.Column="1"
-                                    Text="{resx:Translate AddOBTemplate}"
-                                    Command="{Binding AddOBTemplateCommand}"
-                                    Style="{StaticResource EditButton}" />
-                        </Grid>
-
-                        <!-- Rad 2: Byt/ersätt -->
-                        <Button Text="{resx:Translate ReplaceWithTemplate}"
-                                Command="{Binding ReplaceWithTemplateCommand}"
-                                BackgroundColor="{StaticResource ButtonCancel}"
-                                TextColor="{StaticResource White}"
-                                CornerRadius="8"
-                                Padding="0,12"
-                                IsVisible="{Binding HasOBRates}" />
-                    </VerticalStackLayout>
-
-                    <!--  HJÄLPTEXT visas när det FINNS OB-regler -->
-                    <Label Text="{resx:Translate SwipeDeleteOBHint}"
-                           FontSize="12"
-                           Style="{StaticResource TipsLabel}"
-                           HorizontalOptions="Center"
-                           IsVisible="{Binding HasOBRates}" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Extra pass / Beordringsersättning -->
-            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
-                <VerticalStackLayout Spacing="8">
-                    <Label Text="{resx:Translate ExtraShiftSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
-                    <Label Text="{resx:Translate ExtraShiftSettings_Tip}" Style="{StaticResource TipsLabel}" FontSize="12" />
-
-                    <!-- Aktivera -->
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                        <Label Text="{resx:Translate ExtraShiftSettings_Enable}" VerticalOptions="Center"
-                               FontSize="16" FontAttributes="Bold"
-                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, 
-                                                           Dark={StaticResource TextPrimaryDark}}"/>
-                        
-                        <!-- Custom Switch med synlig track -->
-                        <Frame Grid.Column="1" BackgroundColor="{AppThemeBinding Light={StaticResource SwitchTrackOff}, 
-                                                                                Dark={StaticResource SwitchTrackOffDark}}"
-       
-                            CornerRadius="15"
-                            Padding="2" Margin="0,5,5,5"
-                            HeightRequest="30"
-                            WidthRequest="50"
-                            VerticalOptions="Center">
-                            <Switch IsToggled="{Binding ExtraShiftEnabled}"
-                                    OnColor="{StaticResource ButtonPrimary}"
-                                    ThumbColor="{AppThemeBinding Light={StaticResource SwitchThumbLight}, 
-                                                                Dark={StaticResource White}}"
-                                    BackgroundColor="Transparent"
-                                    Scale="0.8" />
-                        </Frame>
-                    </Grid>
-
-                    <VerticalStackLayout IsVisible="{Binding ShowExtraShiftSettings}" Spacing="8">
-                        <!-- Typ -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <Label Text="{resx:Translate ExtraShiftSettings_Type}" FontAttributes="Bold" VerticalOptions="Center"/>
-                            <Picker ItemsSource="{Binding ExtraShiftTypes}" Grid.Column="1"
-                                    ItemDisplayBinding="{Binding Text}" 
-                                    HorizontalOptions="End"
-                                    SelectedItem="{Binding SelectedExtraShiftType}"
-                                    WidthRequest="150" MinimumWidthRequest="110"
-                                    Style="{StaticResource ThemedPicker}"/>
-                        </Grid>
-                        
-                        <!-- Belopp -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <Label Text="{Binding ExtraShiftAmountLabelText}" FontAttributes="Bold" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
-                            <Entry Text="{Binding ExtraShiftAmountText}" Grid.Column="1"
-                                   Keyboard="Numeric" 
-                                   Style="{StaticResource ThemedEntry}"
-                                   WidthRequest="150" MinimumWidthRequest="110"
-                                   HorizontalTextAlignment="End" />
-                        </Grid>
-                        
-                        <!-- Inline-hint -->
-                        <Label Text="{Binding ExtraShiftSummaryText}" FontSize="12"
-                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                           Dark={StaticResource TextSecondaryDark}}" />
-                    </VerticalStackLayout>
-
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Jour / OnCall-inställningar -->
-            <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding HasActiveJob}">
-                <VerticalStackLayout Spacing="10">
-
-                    <Label Text="{resx:Translate OnCallSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
-
-                    <Label Text="{resx:Translate OnCallSettings_Tip}" Style="{StaticResource TipsLabel}" FontSize="12" />
-
-                    <!-- Aktivera jour -->
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                        <Label Text="{resx:Translate OnCallSettings_Enable}"
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               VerticalOptions="Center" />
-
-                        <Frame Grid.Column="1"
-                               BackgroundColor="{AppThemeBinding Light={StaticResource SwitchTrackOff},
-                                                                 Dark={StaticResource SwitchTrackOffDark}}"
-                               CornerRadius="15"
-                               Padding="2"
-                               HeightRequest="30"
-                               WidthRequest="50"
-                               VerticalOptions="Center">
-                            <Switch IsToggled="{Binding OnCallEnabled}"
-                                    OnColor="{StaticResource ButtonPrimary}"
-                                    ThumbColor="{AppThemeBinding Light={StaticResource SwitchThumbLight},
-                                                                Dark={StaticResource White}}"
-                                    BackgroundColor="Transparent"
-                                    Scale="0.8" />
-                        </Frame>
-                    </Grid>
-
-                    <!-- Innehåll visas bara om jour är aktivt -->
-                    <VerticalStackLayout IsVisible="{Binding ShowOnCallSettings}" Spacing="10">
-
-                        <!-- Standby: typ -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <Label Text="{resx:Translate OnCallSettings_StandbyPayType}"
-                                   FontAttributes="Bold"
-                                   VerticalOptions="Center" />
-                            <Picker ItemsSource="{Binding OnCallStandbyPayTypes}"
-                                    ItemDisplayBinding="{Binding Text}"
-                                    SelectedItem="{Binding SelectedOnCallStandbyPayType}"
-                                    Grid.Column="1"
-                                    WidthRequest="170"
-                                    MinimumWidthRequest="130"
-                                    Style="{StaticResource ThemedPicker}" />
-                        </Grid>
-
-                        <!-- Standby: belopp (visas om typ != None) -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" IsVisible="{Binding ShowOnCallStandbyAmount}">
-                            <Label Text="{Binding OnCallStandbyAmountLabelText}" FontAttributes="Bold" VerticalOptions="Center" />
-                            <Entry Text="{Binding OnCallStandbyAmountText}"
-                                   Grid.Column="1"
-                                   Keyboard="Numeric"
-                                   Style="{StaticResource ThemedEntry}"
-                                   WidthRequest="170"
-                                   MinimumWidthRequest="130"
-                                   HorizontalTextAlignment="End" />
-                        </Grid>
-
-                        <!-- Aktiv tid: mode -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <Label Text="{resx:Translate OnCallSettings_ActivePayMode}" FontAttributes="Bold" VerticalOptions="Center" />
-                            <Picker ItemsSource="{Binding OnCallActivePayModes}"
-                                    ItemDisplayBinding="{Binding Text}"
-                                    SelectedItem="{Binding SelectedOnCallActivePayMode}"
-                                    Grid.Column="1"
-                                    WidthRequest="170"
-                                    MinimumWidthRequest="130"
-                                    Style="{StaticResource ThemedPicker}" />
-                        </Grid>
-
-                        <!-- Aktiv tid: custom rate (visas bara om Custom) -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" IsVisible="{Binding ShowOnCallActiveCustomRate}">
-                            <Label Text="{resx:Translate OnCallSettings_ActiveCustomRate}"
-                                   FontAttributes="Bold"
-                                   VerticalOptions="Center" />
-                            <Entry Text="{Binding OnCallActiveCustomRateText}"
-                                   Grid.Column="1"
-                                   Keyboard="Numeric"
-                                   Style="{StaticResource ThemedEntry}"
-                                   WidthRequest="170"
-                                   MinimumWidthRequest="130"
-                                   HorizontalTextAlignment="End" />
-                        </Grid>
-
-                        <!-- Recalc månader -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <Label Text="{resx:Translate OnCallSettings_RecalcMonths}" FontAttributes="Bold" VerticalOptions="Center" />
-                            <Picker ItemsSource="{Binding OnCallRecalcOptions}"
-                                    ItemDisplayBinding="{Binding Text}"
-                                    SelectedItem="{Binding SelectedOnCallRecalcOption}"
-                                    Grid.Column="1"
-                                    WidthRequest="170"
-                                    MinimumWidthRequest="130"
-                                    Style="{StaticResource ThemedPicker}" />
-                        </Grid>
-
-                        <!-- Räkna om-knapp -->
-                        <Button Text="{Binding RecalcButtonText}"
-                                Command="{Binding RecalcOnCallCommand}"
-                                BackgroundColor="{StaticResource EditButtonColor}"
-                                TextColor="{StaticResource White}"
-                                CornerRadius="8"
-                                Padding="0,12"
-                                IsEnabled="{Binding RecalcButtonIsEnabled}" 
-                                Opacity="{Binding RecalcButtonIsEnabled, Converter={StaticResource BoolToOpacityConverter}}" />
-
-                        <!-- Summary -->
-                        <Label Text="{Binding OnCallSettingsSummaryText}"
-                               FontSize="12"
-                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                           Dark={StaticResource TextSecondaryDark}}" />
-                    </VerticalStackLayout>
-
-                </VerticalStackLayout>
-            </Frame>
+                </Grid>
+            </Border>
 
             <!-- App Inställningar -->
-            <Frame Style="{StaticResource CardFrame}">
+            <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Spacing="15">
 
                     <Label Text="{resx:Translate AppSettings}"
@@ -469,22 +193,23 @@
                         </StackLayout>
 
                         <!-- Custom Switch med synlig track -->
-                        <Frame Grid.Column="2"
+                        <Border Grid.Column="2"
                             BackgroundColor="{AppThemeBinding Light={StaticResource SwitchTrackOff}, 
                                                             Dark={StaticResource SwitchTrackOffDark}}"
-                               
-                            CornerRadius="15"
                             Padding="2"
                             HeightRequest="30"
                             WidthRequest="50"
                             VerticalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="15" />
+                            </Border.StrokeShape>
                             <Switch IsToggled="{Binding IsDarkTheme}"
                                     OnColor="{StaticResource ButtonPrimary}"
                                     ThumbColor="{AppThemeBinding Light={StaticResource SwitchThumbLight}, 
                                                                 Dark={StaticResource White}}"
                                     BackgroundColor="Transparent"
                                     Scale="0.8" />
-                        </Frame>
+                        </Border>
                     </Grid>
 
                     <!-- Språk-växlare -->
@@ -499,7 +224,7 @@
 
                         <!-- Dropdown för språk -->
                         <Picker Grid.Column="1"
-                                Title="{resx:Translate ChooseLanguage}"
+                                Title="{resx:Translate ChooseLanguage}" 
                                 ItemsSource="{Binding AvailableLanguages}"
                                 ItemDisplayBinding="{Binding DisplayName}"
                                 SelectedItem="{Binding SelectedLanguage}"
@@ -508,7 +233,37 @@
                                                                Dark={StaticResource TextPrimaryDark}}" />
                     </Grid>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
+
+            <!-- Om appen-knapp -->
+            <Border Style="{StaticResource CardBorder}">
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="12" ColumnSpacing="12">
+
+                    <!-- Ikon -->
+                    <Label Grid.Column="0"
+                           Text="ℹ️"
+                           FontSize="22"
+                           VerticalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                      Dark={StaticResource TextPrimaryDark}}" />
+                    <!-- Titel -->
+                    <Label Grid.Column="1" Text="{resx:Translate AboutApp}" Style="{StaticResource SectionTitleLabel}" />
+
+                    <!-- Pil -->
+                    <Label Grid.Column="2"
+                           Text="▶"
+                           FontSize="22"
+                           Margin="0,-3,0,0"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                      Dark={StaticResource TextPrimaryDark}}" />
+                    <!-- Klick -->
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenAboutAppCommand}" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Border>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

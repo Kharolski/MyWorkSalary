@@ -2138,7 +2138,7 @@ The work shift has been saved!</value>
     <comment>OBTemplatesPage</comment>
   </data>
   <data name="OBTemplates_InfoText" xml:space="preserve">
-    <value>Templates are examples. Adjust times and amounts to match your agreement.</value>
+    <value>ℹ️ Templates are examples. Adjust times and amounts to match your agreement.</value>
     <comment>OBTemplatesPage</comment>
   </data>
   <data name="OBTemplates_ChooseTemplate" xml:space="preserve">
@@ -2855,5 +2855,41 @@ The work shift has been saved!</value>
   </data>
   <data name="OBTemplates_SimpleTemplates" xml:space="preserve">
     <value>Simple templates</value>
+  </data>
+  <data name="JobSettings_Title" xml:space="preserve">
+    <value>Job settings</value>
+  </data>
+  <data name="Salary_Details_SectionTitle" xml:space="preserve">
+    <value>📄 Detailed overview</value>
+  </data>
+  <data name="OnCallSettings_PerHourSuffix" xml:space="preserve">
+    <value>/hour</value>
+  </data>
+  <data name="OnCallSettings_PerShiftSuffix" xml:space="preserve">
+    <value>/shift</value>
+  </data>
+  <data name="ObBeforeMonth" xml:space="preserve">
+    <value>OB prev month</value>
+  </data>
+  <data name="ObThisMonth" xml:space="preserve">
+    <value>OB this month</value>
+  </data>
+  <data name="AboutApp" xml:space="preserve">
+    <value>About the app</value>
+  </data>
+  <data name="AboutAppDescription" xml:space="preserve">
+    <value>A modern salary app that helps you track hours, OB, flex and pay.</value>
+  </data>
+  <data name="AboutDeveloper" xml:space="preserve">
+    <value>Developed by Aleh.</value>
+  </data>
+  <data name="AboutContact" xml:space="preserve">
+    <value>Contact: support@myworksalary.com</value>
+  </data>
+  <data name="AboutPrivacyPolicy" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="AboutPrivacyPolicyDescription" xml:space="preserve">
+    <value>Learn more about how we handle your data.</value>
   </data>
 </root>

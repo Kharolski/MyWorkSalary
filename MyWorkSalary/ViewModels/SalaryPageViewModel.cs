@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
 {
-    public class SalaryPageViewModel : BaseViewModel
+    public partial class SalaryPageViewModel : BaseViewModel
     {
         #region Private Fields
         private readonly IDashboardService _dashboardService;
@@ -307,7 +307,6 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
-
         // Kort 4
         public bool IsPermanent => ActiveJob?.EmploymentType == EmploymentType.Permanent;
         public bool ShowTimeBank => IsPermanent;
@@ -337,8 +336,6 @@ namespace MyWorkSalary.ViewModels
             }
         }
         public bool ShowBalanceSeparator => ShowTimeBank || IsPermanent;
-
-        public string SickDaysText => CurrentStats == null ? "" : $"{CurrentStats.SickDays}";
 
         public string VacationDaysText => CurrentStats == null ? "" : $"{CurrentStats.VacationDays}";
 
@@ -377,353 +374,15 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region OB Grouped UI
-
-        private List<ObCategoryGroupRow> _obGrouped = new();
-        public IReadOnlyList<ObCategoryGroupRow> ObGrouped => _obGrouped;
-
-        private void RebuildObGrouped()
-        {
-            _obGrouped = new List<ObCategoryGroupRow>();
-
-            if (CurrentStats == null || !CurrentStats.HasObRulesConfigured)
-            {
-                OnPropertyChanged(nameof(ObGrouped));
-                return;
-            }
-
-            // viktig: använd ActiveJobs valuta
-            var currency = string.IsNullOrWhiteSpace(ActiveJob.CurrencyCode) ? "SEK" : ActiveJob.CurrencyCode;
-
-            var rows = CurrentStats.ObDetails ?? new List<ObDetails>();
-
-            _obGrouped = rows
-                .Where(x => x.Hours > 0)
-                .GroupBy(x => new { x.Category, x.DayType })
-                .OrderByDescending(g => g.Sum(x => x.Pay))
-                .Select(g => new ObCategoryGroupRow
-                {
-                    Category = g.Key.Category,
-                    DayType = g.Key.DayType,
-
-                    DisplayName = BuildObDisplayName(g.Key.Category, g.Key.DayType),
-
-                    CurrencyCode = currency,    // viktigt för TotalPayText
-
-                    TotalHours = Math.Round(g.Sum(x => x.Hours), 2),
-                    TotalPay = Math.Round(g.Sum(x => x.Pay), 2),
-
-                    Details = g
-                        .OrderBy(x => x.Date)
-                        .Select(d => new ObCategoryDetailRow
-                        {
-                            DateText = d.Date.ToString("dd-MM", AppCulture),
-                            HoursText = $"{d.Hours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}",
-                            PayText = CurrencyHelper.FormatCurrency(d.Pay, currency)
-                        })
-                        .ToList()
-                })
-                .ToList();
-
-            OnPropertyChanged(nameof(ObGrouped));
-        }
-        public ICommand ToggleObGroupCommand => new Command<ObCategoryGroupRow>(row =>
-        {
-            if (row == null)
-                return;
-
-            foreach (var r in _obGrouped)
-            {
-                if (!ReferenceEquals(r, row) && r.IsExpanded)
-                    r.IsExpanded = false;
-            }
-
-            row.IsExpanded = !row.IsExpanded;
-
-            // Trigga refresh för Chevron/IsVisible
-            OnPropertyChanged(nameof(ObGrouped));
-        });
-
+        // Flyttad till partial-fil: ViewModels/Salary/SalaryPageViewModel.OB.cs
         #endregion
 
-        #region OB Display Helpers
-        private string BuildObDisplayName(OBCategory cat, OBDayType dayType)
-        {
-            var tDay = LocalizationHelper.Translate("OBTime_Day");
-            var tEvening = LocalizationHelper.Translate("OBTime_Evening");
-            var tNight = LocalizationHelper.Translate("OBTime_Night");
-
-            var dWeekday = LocalizationHelper.Translate("OBDay_Weekday");
-            var dWeekend = LocalizationHelper.Translate("OBDay_Weekend");
-            var dHoliday = LocalizationHelper.Translate("OBDay_Holiday");
-            var dBigHoliday = LocalizationHelper.Translate("OBDay_BigHoliday");
-
-            var dayText = dayType switch
-            {
-                OBDayType.BigHoliday => dBigHoliday,
-                OBDayType.Holiday => dHoliday,
-                OBDayType.Weekend => dWeekend,
-                _ => dWeekday
-            };
-
-            // Visa bara tid när det är Evening/Night Ex: "Natt • Storhelg"
-            return cat switch
-            {
-                OBCategory.Evening => $"{tEvening} • {dayText}",
-                OBCategory.Night => $"{tNight} • {dayText}",
-                _ => dayText    // visar bara: “Helgdag” (utan “Dag • …”)
-            };
-            
-        }
+        #region Extra Shift (Salary UI)
+        // Flyttad till partial-fil: ViewModels/Salary/SalaryPageViewModel.ExtraShift.cs
         #endregion
 
-        #region Extra Shift
-        public bool ShowExtraPay => CurrentStats?.ExtraPay > 0;
-        public string ExtraPayText => CurrentStats == null ? "–" : FormatMoney(CurrentStats.ExtraPay);
-        public bool HasExtraShifts => CurrentStats?.HasExtraShifts == true;
-
-        private bool _isExtraExpanded;
-        public bool IsExtraExpanded
-        {
-            get => _isExtraExpanded;
-            set
-            {
-                if (_isExtraExpanded == value)
-                    return;
-                _isExtraExpanded = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(ExtraChevronIcon));
-            }
-        }
-        public string ExtraChevronIcon => IsExtraExpanded ? "▼" : "▶";
-        public string TotalExtraHoursText => CurrentStats == null ? "" : $"{CurrentStats.TotalExtraShiftHours:0.0}";
-
-        public class ExtraShiftRow
-        {
-            public string DateText { get; set; } = "";
-            public string HoursText { get; set; } = "";
-            public string PayText { get; set; } = "";
-        }
-
-        private List<ExtraShiftRow> _extraShiftRows = new();
-        public IReadOnlyList<ExtraShiftRow> ExtraShiftRows => _extraShiftRows;
-
-        private void RebuildExtraShiftRows()
-        {
-            _extraShiftRows = new List<ExtraShiftRow>();
-
-            if (CurrentStats?.ExtraShiftDetails == null || !CurrentStats.ExtraShiftDetails.Any())
-            {
-                OnPropertyChanged(nameof(ExtraShiftRows));
-                return;
-            }
-
-            _extraShiftRows = CurrentStats.ExtraShiftDetails
-                .OrderBy(x => x.Date)
-                .Select(x => new ExtraShiftRow
-                {
-                    DateText = x.Date.ToString("dd-MM", AppCulture),
-                    HoursText = $"{x.Hours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}",
-                    PayText = FormatMoney(x.ExtraPay)
-                })
-                .ToList();
-
-            OnPropertyChanged(nameof(ExtraShiftRows));
-        }
-        public ICommand ToggleExtraCardCommand => new Command(() =>
-        {
-            IsExtraExpanded = !IsExtraExpanded;
-        });
-        #endregion
-
-        #region Jour / On Call
-        #region Properties
-        public string OnCallTotalPayText =>
-                CurrentStats == null ? "" :
-                CurrencyHelper.FormatCurrency(CurrentStats.OnCallTotalPay, ActiveJob.CurrencyCode);
-        public string OnCallStandbyPayText =>
-                CurrentStats == null ? "" :
-                CurrencyHelper.FormatCurrency(CurrentStats.OnCallPay, ActiveJob.CurrencyCode);
-
-        public string ActivePayText => CurrencyHelper.FormatCurrency(ActivePay, ActiveJob.CurrencyCode);
-        public decimal ActivePay { get; set; }
-        public bool ShowOnCall => CurrentStats?.HasOnCall == true;
-
-        // Visning
-        public bool HasOnCall => CurrentStats?.HasOnCall == true;
-        public string ShiftNote => CurrentStats?.OnCallDetails?.FirstOrDefault()?.ShiftNote ?? "";
-        public bool HasShiftNote => !string.IsNullOrWhiteSpace(ShiftNote);
-
-
-        // Expander
-        private bool _isOnCallExpanded;
-        public bool IsOnCallExpanded
-        {
-            get => _isOnCallExpanded;
-            set { _isOnCallExpanded = value; OnPropertyChanged(); OnPropertyChanged(nameof(OnCallChevronIcon)); }
-        }
-        public string OnCallChevronIcon => IsOnCallExpanded ? "▼" : "▶";
-
-        #endregion
-
-        #region Commands
-        public ICommand ToggleOnCallCardCommand => new Command(() =>
-        {
-            IsOnCallExpanded = !IsOnCallExpanded;
-        });
-        public ICommand ToggleOnCallGroupCommand => new Command<OnCallDayGroup>(group =>
-        {
-            if (group == null)
-                return;
-
-            // Stäng andra grupper
-            foreach (var g in _onCallGrouped)
-                if (!ReferenceEquals(g, group) && g.IsExpanded)
-                    g.IsExpanded = false;
-
-            group.IsExpanded = !group.IsExpanded;
-
-            OnPropertyChanged(nameof(OnCallGrouped));
-        });
-
-        #endregion
-
-        private List<OnCallDayGroup> _onCallGrouped = new(); 
-        public IReadOnlyList<OnCallDayGroup> OnCallGrouped => _onCallGrouped;
-        private void RebuildOnCallGrouped()
-        {
-            _onCallGrouped = new List<OnCallDayGroup>();
-
-            if (CurrentStats?.OnCallDetails == null || CurrentStats.OnCallDetails.Count == 0)
-            {
-                OnPropertyChanged(nameof(OnCallGrouped));
-                return;
-            }
-
-            var currency = string.IsNullOrWhiteSpace(ActiveJob?.CurrencyCode)
-                ? "SEK"
-                : ActiveJob.CurrencyCode;
-
-            // === Loopar per jourpass ===
-            _onCallGrouped = CurrentStats.OnCallDetails
-                .OrderBy(d => d.Date)
-                .Select(d =>
-                {
-                    // Bygg riktiga start/slut för jourpasset
-                    var start = d.StandbyStart; 
-                    var end = d.StandbyEnd;
-
-                    var group = new OnCallDayGroup
-                    {
-                        Start = start,
-                        End = end,
-                        CurrencyCode = currency,
-
-                        // Standby
-                        StandbyHours = d.StandbyHours,
-                        StandbyPay = d.StandbyPay,
-
-                        // Aktiv
-                        ActiveHours = d.ActiveHours,
-                        ActivePay = d.Callouts.Sum(c => c.ActivePay),
-
-                        // Notes
-                        ShiftNote = d.ShiftNote,
-
-                        // Callouts
-                        Details = d.Callouts
-                            .OrderBy(c => c.Date)
-                            .ThenBy(c => c.Start)
-                            .Select(c =>
-                            {
-                                var cStart = c.Date.Date.Add(c.Start);
-                                var cEnd = c.Date.Date.Add(c.End);
-
-                                if (cEnd <= cStart)
-                                    cEnd = cEnd.AddDays(1);
-
-                                return new OnCallDetailRow
-                                {
-                                    Start = cStart,
-                                    End = cEnd,
-                                    Hours = c.Hours,
-                                    Pay = c.ActivePay,
-                                    Notes = c.Notes,
-                                    CurrencyCode = currency
-                                };
-                            })
-                            .ToList()
-                    };
-
-                    return group;
-                })
-                .ToList();
-
-            OnPropertyChanged(nameof(OnCallGrouped));
-        }
-
-        // domänmodeller för visning av jour/OnCall
-        public class OnCallDayGroup : BaseViewModel
-        {
-            // === Datumspann för jourpasset ===
-            public DateTime Start { get; set; }
-            public DateTime End { get; set; }
-            public string DateSpanText => $"{Start:dd'/'MM} – {End:dd'/'MM}";
-
-            // === Standby ===
-            public decimal StandbyHours { get; set; }
-            public string StandbyHoursText => $"{StandbyHours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}";
-
-            public decimal StandbyPay { get; set; }
-            public string StandbyPayText => CurrencyHelper.FormatCurrency(StandbyPay, CurrencyCode);
-
-            // === Aktiv tid ===
-            public decimal ActiveHours { get; set; }
-            public string ActiveHoursText => $"{ActiveHours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}";
-
-            public decimal ActivePay { get; set; }
-            public string ActivePayText => CurrencyHelper.FormatCurrency(ActivePay, CurrencyCode);
-
-            // === Callouts ===
-            public List<OnCallDetailRow> Details { get; set; } = new();
-            public string CurrencyCode { get; set; }
-
-            // === Notes för jourpasset ===
-            public string? ShiftNote { get; set; }
-            public bool HasShiftNote => !string.IsNullOrWhiteSpace(ShiftNote);
-
-            // === Expand/Collapse ===
-            private bool _isExpanded;
-            public bool IsExpanded
-            {
-                get => _isExpanded;
-                set
-                {
-                    _isExpanded = value;
-                    OnPropertyChanged(nameof(IsExpanded));
-                    OnPropertyChanged(nameof(Chevron));
-                }
-            }
-
-            public string Chevron => IsExpanded ? "▼" : "▶";
-        }
-
-        public class OnCallDetailRow
-        {
-            public DateTime Start { get; set; }
-            public DateTime End { get; set; }
-
-            public string TimeRangeText => $"{Start:HH:mm}–{End:HH:mm}";
-
-            public decimal Hours { get; set; }
-            public string HoursText => $"{Hours:0.##} {LocalizationHelper.Translate("Hours_Abbreviation")}";
-            public decimal Pay { get; set; }
-            public string CurrencyCode { get; set; }
-            public string PayText => CurrencyHelper.FormatCurrency(Pay, CurrencyCode);
-
-            public string? Notes { get; set; }
-            public bool HasNotes => !string.IsNullOrWhiteSpace(Notes);
-        }
-
+        #region Jour / OnCall
+        // Flyttad till partial-fil: ViewModels/Salary/SalaryPageViewModel.OnCall.cs
         #endregion
 
         #region Formatting
@@ -845,7 +504,6 @@ namespace MyWorkSalary.ViewModels
 
             RebuildObGrouped();
 
-            OnPropertyChanged(nameof(SickDaysText));
             OnPropertyChanged(nameof(ShowVacationPay));
             OnPropertyChanged(nameof(VacationPayText));
             OnPropertyChanged(nameof(VacationDaysText));

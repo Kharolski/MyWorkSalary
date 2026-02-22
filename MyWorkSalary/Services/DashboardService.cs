@@ -149,6 +149,29 @@ namespace MyWorkSalary.Services
 
             return Math.Round(obHours, 2);
         }
+
+        public decimal GetPreviousMonthObHours(int jobProfileId)
+        {
+            var now = DateTime.Now;
+            var previousMonth = now.AddMonths(-1);
+
+            var monthStart = new DateTime(previousMonth.Year, previousMonth.Month, 1);
+            var monthEnd = monthStart.AddMonths(1).AddDays(-1);
+
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId)
+                .Where(s => s.ShiftDate >= monthStart && s.ShiftDate <= monthEnd)
+                .ToList();
+
+            decimal obHours = 0;
+
+            foreach (var shift in shifts)
+            {
+                if (shift.ShiftType == ShiftType.Regular)
+                    obHours += CalculateObHoursForShift(shift);
+            }
+
+            return Math.Round(obHours, 1);
+        }
         #endregion
 
         #region Recent Activities

@@ -49,6 +49,8 @@ namespace MyWorkSalary.Services.Interfaces
         /// <param name="jobProfileId">ID för jobbprofil</param>
         /// <returns>Snabb översikt</returns>
         DashboardSummary GetDashboardSummary(int jobProfileId);
+
+        public decimal GetPreviousMonthObHours(int jobProfileId);
         #endregion
 
         #region FlexTime Methods

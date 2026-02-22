@@ -33,7 +33,7 @@
         </VerticalStackLayout>
 
         <!-- Helgdag / Storhelg / Inbeordring -->
-        <Frame Style="{StaticResource CardFrame}">
+        <Border Style="{StaticResource CardBorder}">
             <VerticalStackLayout Spacing="10">
                 <Label Text="{resx:Translate RegularShift_DayType}" Style="{StaticResource FieldLabel}" />
 
@@ -72,7 +72,7 @@
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                    Dark={StaticResource TextSecondaryDark}}" />
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- Anteckningar -->
         <VerticalStackLayout Spacing="5">
@@ -81,7 +81,7 @@
         </VerticalStackLayout>
 
         <!-- Beräknad information -->
-        <Frame Style="{StaticResource CalculationFrame}"
+        <Border Style="{StaticResource CalculationBorder}"
                 IsVisible="{Binding ShowCalculation}">
             <VerticalStackLayout Spacing="5">
                 <Label Text="{resx:Translate RegularShift_Calculation}"
@@ -98,7 +98,7 @@
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                 Dark={StaticResource TextSecondaryDark}}" /> 
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
     </VerticalStackLayout>
 </ContentView>

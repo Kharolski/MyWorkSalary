@@ -8,8 +8,8 @@
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
 
-            <!--Välkomst-kort--> 
-            <Frame Style="{StaticResource CardFrame}">
+            <!--Välkomst-kort-->
+            <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="{Binding WelcomeText}"
                            Style="{StaticResource ActiveJob}" 
@@ -39,60 +39,71 @@
                                HorizontalOptions="Center" />
                     </StackLayout>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
              <!--Dashboard innehåll (bara när jobb finns)--> 
             <StackLayout IsVisible="{Binding ShowDashboard}" Spacing="20">
 
-                <!--Månadens statistik--> 
-                <Frame Style="{StaticResource CardFrame}">
+                <!--Månadens statistik-->
+                <Border Style="{StaticResource CardBorder}">
                     <VerticalStackLayout Spacing="15">
                         <Label Text="{Binding CurrentMonthYear}" Style="{StaticResource SectionTitleLabel}" />
-                        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10">
-                             <!--Timmar--> 
-                            <StackLayout Grid.Column="0">
-                                <Label Text="⏰" FontSize="24" HorizontalOptions="Center" />
-                                <Label Text="{Binding MonthlyHoursText}"
-                                       FontAttributes="Bold"
-                                       FontSize="18"
-                                       HorizontalOptions="Center" />
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="25" RowSpacing="20">
+
+                            <!-- Timmar -->
+                            <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="4" HorizontalOptions="Center">
+                                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center">
+                                    <Label Text="⏰" FontSize="20" />
+                                    <Label Text="{Binding MonthlyHoursText}" FontAttributes="Bold" FontSize="18" />
+                                </HorizontalStackLayout>
                                 <Label Text="{resx:Translate HoursText}"
                                        Style="{StaticResource SecondaryLabel}"
                                        FontSize="12"
                                        HorizontalOptions="Center" />
-                            </StackLayout>
+                            </VerticalStackLayout>
 
-                            <!--OB-timmar-->
-                            <StackLayout Grid.Column="1">
-                                <Label Text="🌙" FontSize="24" HorizontalOptions="Center" />
-                                <Label Text="{Binding MonthlyObHoursText}"
-                                       FontAttributes="Bold"
-                                       FontSize="18"
-                                       HorizontalOptions="Center" />
-                                <Label Text="{resx:Translate ObHoursText}"
-                                       Style="{StaticResource SecondaryLabel}"
-                                       FontSize="12"
-                                       HorizontalOptions="Center" />
-                            </StackLayout>
-
-                            <!--Arbetsdagar--> 
-                            <StackLayout Grid.Column="2">
-                                <Label Text="📅" FontSize="24" HorizontalOptions="Center" />
-                                <Label Text="{Binding WorkDaysThisMonth}"
-                                       FontAttributes="Bold"
-                                       FontSize="18"
-                                       HorizontalOptions="Center" />
+                            <!-- Arbetsdagar -->
+                            <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="4" HorizontalOptions="Center">
+                                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center">
+                                    <Label Text="📅" FontSize="20" />
+                                    <Label Text="{Binding WorkDaysThisMonth}" FontAttributes="Bold" FontSize="18" />
+                                </HorizontalStackLayout>
                                 <Label Text="{resx:Translate WorkDays}"
                                        Style="{StaticResource SecondaryLabel}"
                                        FontSize="12"
                                        HorizontalOptions="Center" />
-                            </StackLayout>
+                            </VerticalStackLayout>
+
+                            <!-- OB före mån -->
+                            <VerticalStackLayout Grid.Column="0" Grid.Row="1" Spacing="4" HorizontalOptions="Center">
+                                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center">
+                                    <Label Text="🌙" FontSize="20" />
+                                    <Label Text="{Binding ObHoursPaidThisMonthText}" FontAttributes="Bold" FontSize="18" />
+                                </HorizontalStackLayout>
+                                <Label Text="{resx:Translate ObBeforeMonth}"
+                                       Style="{StaticResource SecondaryLabel}"
+                                       FontSize="12"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+
+                            <!-- OB denna mån -->
+                            <VerticalStackLayout Grid.Column="1" Grid.Row="1" Spacing="4" HorizontalOptions="Center">
+                                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center">
+                                    <Label Text="🌙" FontSize="20" />
+                                    <Label Text="{Binding MonthlyObHoursText}" FontAttributes="Bold" FontSize="18" />
+                                </HorizontalStackLayout>
+                                <Label Text="{resx:Translate ObThisMonth}"
+                                       Style="{StaticResource SecondaryLabel}"
+                                       FontSize="12"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+
                         </Grid>
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
-                <!--Flex-tid sektion (bara för månadslön)--> 
-                <Frame Style="{StaticResource CardFrame}" IsVisible="{Binding ShowFlexSection}">
+                <!--Flex-tid sektion (bara för månadslön)-->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding ShowFlexSection}">
                     <VerticalStackLayout Spacing="15">
                         <Label Text="{resx:Translate FlexTime}" Style="{StaticResource SectionTitleLabel}" />
 
@@ -110,10 +121,10 @@
                         </HorizontalStackLayout>
 
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
-                <!--Snabbknappar--> 
-                <Frame Style="{StaticResource CardFrame}">
+                <!--Snabbknappar-->
+                <Border Style="{StaticResource CardBorder}">
                     <VerticalStackLayout Spacing="15">
                         <Label Text="{resx:Translate QuickActions}" Style="{StaticResource SectionTitleLabel}" />
                         <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
@@ -135,10 +146,10 @@
                                                            Dark={StaticResource TextSecondaryDark}}"
                                HorizontalOptions="Center" />
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
-                <!--Senaste aktiviteter--> 
-                <Frame Style="{StaticResource CardFrame}">
+                <!--Senaste aktiviteter-->
+                <Border Style="{StaticResource CardBorder}">
                     <VerticalStackLayout Spacing="15">
                         <Label Text="{resx:Translate RecentActivities}" Style="{StaticResource SectionTitleLabel}" />
 
@@ -190,7 +201,7 @@
                             </CollectionView.EmptyView>
                         </CollectionView>
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
                  <!--Dagens datum (längst ner)--> 
                 <Label Text="{Binding TodayDate}"

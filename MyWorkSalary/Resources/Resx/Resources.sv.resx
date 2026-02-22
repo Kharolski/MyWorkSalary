@@ -1807,7 +1807,7 @@ Arbetspasset har sparats!</value>
     <value>Välj en mall</value>
   </data>
   <data name="OBTemplates_InfoText" xml:space="preserve">
-    <value>Mallarna är exempel. Anpassa tider och belopp efter ditt avtal.</value>
+    <value>ℹ️ Mallarna är exempel. Anpassa tider och belopp efter ditt avtal.</value>
   </data>
   <data name="OBTemplates_ChooseTemplate" xml:space="preserve">
     <value>Mallar</value>
@@ -2393,5 +2393,41 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="OBTemplates_SimpleTemplates" xml:space="preserve">
     <value>Enkla mallar</value>
+  </data>
+  <data name="JobSettings_Title" xml:space="preserve">
+    <value>Jobbinställningar</value>
+  </data>
+  <data name="Salary_Details_SectionTitle" xml:space="preserve">
+    <value>📄 Detaljerad översikt</value>
+  </data>
+  <data name="OnCallSettings_PerHourSuffix" xml:space="preserve">
+    <value>/tim</value>
+  </data>
+  <data name="OnCallSettings_PerShiftSuffix" xml:space="preserve">
+    <value>/pass</value>
+  </data>
+  <data name="ObBeforeMonth" xml:space="preserve">
+    <value>OB före mån</value>
+  </data>
+  <data name="ObThisMonth" xml:space="preserve">
+    <value>OB denna mån</value>
+  </data>
+  <data name="AboutApp" xml:space="preserve">
+    <value>Om appen</value>
+  </data>
+  <data name="AboutAppDescription" xml:space="preserve">
+    <value>En modern löneapp som hjälper dig hålla koll på arbetstid, OB, flex och lön.</value>
+  </data>
+  <data name="AboutDeveloper" xml:space="preserve">
+    <value>Utvecklad av Aleh.</value>
+  </data>
+  <data name="AboutContact" xml:space="preserve">
+    <value>Kontakt: support@myworksalary.com</value>
+  </data>
+  <data name="AboutPrivacyPolicy" xml:space="preserve">
+    <value>Integritetspolicy</value>
+  </data>
+  <data name="AboutPrivacyPolicyDescription" xml:space="preserve">
+    <value>Läs mer om hur vi hanterar dina uppgifter.</value>
   </data>
 </root>

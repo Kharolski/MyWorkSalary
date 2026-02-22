@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyWorkSalary.Views.Settings.AboutAppPage"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             Title="{resx:Translate AboutApp}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="25" Padding="20">
+
+            <!-- App Icon -->
+            <Image Source="appicon.png"
+                   HeightRequest="100"
+                   WidthRequest="100"
+                   HorizontalOptions="Center" />
+
+            <!-- App Name -->
+            <Label Text="My Work Salary"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <!-- Version -->
+            <Label Text="{Binding AppVersion}"
+                   FontSize="14"
+                   HorizontalOptions="Center"
+                   TextColor="{StaticResource SecondaryTextColor}" />
+
+            <!-- Description -->
+            <Label Text="{resx:Translate AboutAppDescription}"
+                   FontSize="15"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource SecondaryTextColor}" />
+
+            <!-- Developer -->
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="8" Padding="15">
+                    <Label Text="{resx:Translate AboutDeveloper}" FontSize="16" />
+                    <Label Text="{resx:Translate AboutContact}" FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Privacy Policy -->
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="8" Padding="15">
+                    <Label Text="{resx:Translate AboutPrivacyPolicy}" FontSize="16" />
+                    <Label Text="{resx:Translate AboutPrivacyPolicyDescription}" FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

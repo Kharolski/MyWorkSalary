@@ -93,6 +93,38 @@
         <Setter Property="Padding" Value="20" />
         <Setter Property="CornerRadius" Value="10" />
     </Style>
+    
+    <Style TargetType="Border" x:Key="ActiveJobBorder">
+        <Setter Property="Background">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource ActiveJobBackground}"
+                             Dark="{StaticResource ActiveJobBackgroundDark}" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="15" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="10" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border" x:Key="EmptyStateBorder">
+        <Setter Property="Background">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource EmptyStateBackground}"
+                             Dark="{StaticResource EmptyStateBackgroundDark}" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="10" />
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style TargetType="Label" x:Key="ActiveJobTitleLabel">
         <Setter Property="TextColor" 
@@ -136,6 +168,30 @@
         <Setter Property="Padding" Value="15" />
         <Setter Property="CornerRadius" Value="10" />
     </Style>
+
+    <Style TargetType="Border" x:Key="CalculationBorder">
+        <!-- Background -->
+        <Setter Property="Background">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource CalculationBackground}"
+                             Dark="{StaticResource CalculationBackgroundDark}" />
+            </Setter.Value>
+        </Setter>
+
+        <!-- Padding -->
+        <Setter Property="Padding" Value="15" />
+
+        <!-- No border stroke -->
+        <Setter Property="StrokeThickness" Value="0" />
+
+        <!-- Rounded corners -->
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="10" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
     <Style TargetType="DatePicker" x:Key="ThemedDatePicker">
         <Setter Property="BackgroundColor" 
@@ -191,6 +247,26 @@
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="Margin" Value="0,2" />
     </Style>
+    <Style TargetType="Border" x:Key="OBRuleBorder">
+        <Setter Property="Background">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource OBRuleBackground}"
+                             Dark="{StaticResource OBRuleBackgroundDark}" />
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="Margin" Value="0,2" />
+
+        <Setter Property="StrokeThickness" Value="0" />
+
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="8" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
     <Style TargetType="Button" x:Key="EditButton">
         <Setter Property="BackgroundColor" Value="{StaticResource EditButtonColor}" />
@@ -417,6 +493,21 @@
         <Setter Property="Padding" Value="16" />
         <Setter Property="HasShadow" Value="True" />
     </Style>
+    <Style TargetType="Border" x:Key="CardBorder">
+        <Setter Property="Background" 
+            Value="{AppThemeBinding Light={StaticResource SalaryCardBackground}, 
+                                   Dark={StaticResource SalaryCardBackgroundDark}}" />
+        <Setter Property="Stroke" 
+            Value="{AppThemeBinding Light={StaticResource BorderColor}, 
+                                   Dark={StaticResource BorderColorDark}}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="12" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="16" />
+    </Style>
 
     <Style TargetType="Label" x:Key="CardTitleLabel">
         <Setter Property="TextColor" 
@@ -438,6 +529,38 @@
             Value="{AppThemeBinding Light={StaticResource BorderColor},
                                    Dark={StaticResource BorderColorDark}}" />
     </Style>
+
+    <Style TargetType="Border" x:Key="InfoBorder">
+        <!-- Background -->
+        <Setter Property="Background">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource InfoFrameBackground}"
+                             Dark="{StaticResource InfoFrameBackgroundDark}" />
+            </Setter.Value>
+        </Setter>
+
+        <!-- Padding -->
+        <Setter Property="Padding" Value="15" />
+
+        <!-- Border color -->
+        <Setter Property="Stroke">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource BorderColor}"
+                             Dark="{StaticResource BorderColorDark}" />
+            </Setter.Value>
+        </Setter>
+
+        <!-- Border thickness -->
+        <Setter Property="StrokeThickness" Value="1" />
+
+        <!-- Rounded corners -->
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="10" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
     <!-- ThemedSlider Style -->
     <Style TargetType="Slider" x:Key="ThemedSlider">

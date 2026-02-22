@@ -8,7 +8,7 @@
     <VerticalStackLayout Spacing="20">
 
         <!-- 📞 Förklaring -->
-        <Frame Style="{StaticResource ActiveJobFrame}">
+        <Border Style="{StaticResource ActiveJobBorder}">
             <VerticalStackLayout Spacing="5">
                 <Label Text="{resx:Translate OnCall_InfoTitle}"
                        Style="{StaticResource ActiveJobTitleLabel}"
@@ -18,7 +18,7 @@
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
                                                    Dark={StaticResource White}}" />
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- 🕐 Standby-tid -->
         <VerticalStackLayout Spacing="5">
@@ -107,7 +107,7 @@
         </VerticalStackLayout>
 
         <!-- 📌 Tillagda aktiva tider -->
-        <Frame Style="{StaticResource CardFrame}">
+        <Border Style="{StaticResource CardBorder}">
             <VerticalStackLayout Spacing="10">
                 <Label Text="{resx:Translate OnCall_ActiveTimesListTitle}" Style="{StaticResource SectionTitleLabel}" />
 
@@ -127,7 +127,7 @@
                 <CollectionView ItemsSource="{Binding Callouts}" IsVisible="{Binding HasCallouts}" SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame Style="{StaticResource OBRuleFrame}">
+                            <Border Style="{StaticResource OBRuleBorder}">
                                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
 
                                     <VerticalStackLayout Grid.Column="0" Spacing="3">
@@ -155,13 +155,13 @@
                                             Padding="8"
                                             VerticalOptions="Center" />
                                 </Grid>
-                            </Frame>
+                            </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- ⚠️ Validation -->
         <ContentView IsVisible="{Binding HasValidationMessage}">
@@ -173,7 +173,7 @@
         </ContentView>
 
         <!-- ✅ Jour – Totals (timmar) -->
-        <Frame Style="{StaticResource InfoFrame}">
+        <Border Style="{StaticResource InfoBorder}">
             <VerticalStackLayout Spacing="6">
                 <Label Text="{resx:Translate OnCall_TotalsTitle}"
                        FontSize="14"
@@ -191,7 +191,7 @@
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
                                                    Dark={StaticResource TextSecondaryDark}}" />
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- 📝 Anteckningar -->
         <VerticalStackLayout Spacing="5">

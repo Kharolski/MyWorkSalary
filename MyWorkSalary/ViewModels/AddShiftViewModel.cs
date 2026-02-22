@@ -1,12 +1,10 @@
 ﻿using MyWorkSalary.Helpers.Localization;
-using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.ViewModels.ShiftTypes;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
@@ -444,8 +442,8 @@ namespace MyWorkSalary.ViewModels
             {
                 ShiftTypeDisplayNames.Clear();
                 ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Add_Regular"));
-                ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_SickLeave"));
-                ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Vacation"));
+                //ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_SickLeave"));
+                //ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_Vacation"));
                 ShiftTypeDisplayNames.Add(LocalizationHelper.Translate("ShiftType_OnCall"));
 
                 // Uppdatera endast texten som visas, utan att trigga Reset-logiken i settern
@@ -493,6 +491,14 @@ namespace MyWorkSalary.ViewModels
             OnPropertyChanged(nameof(ShowOnCallForm));
             OnPropertyChanged(nameof(ShowVacationForm));
             OnPropertyChanged(nameof(CalculationSummary));
+
+            // SickLeave och Vacation är avstängda tills vidare
+            if (SelectedShiftType == ShiftType.SickLeave || SelectedShiftType == ShiftType.Vacation)
+            {
+                SelectedShiftType = ShiftType.Regular;
+                _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Add_Regular");
+                OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
+            }
 
             // Uppdatera context för child ViewModels
             if (SelectedShiftType == ShiftType.SickLeave)

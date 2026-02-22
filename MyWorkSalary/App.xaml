@@ -31,7 +31,6 @@
             <converters:ShiftToHoursDisplayConverter x:Key="ShiftToHoursDisplayConverter" />
             <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
             
-            <converters:OBTimeRangeConverter x:Key="OBTimeRangeConverter" />
             <converters:ThemeToIconConverter x:Key="ThemeToIconConverter" />
 
             <!-- Lönestatistik Converters -->
