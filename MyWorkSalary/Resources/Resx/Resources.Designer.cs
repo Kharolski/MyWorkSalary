@@ -6141,6 +6141,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading your app....
+        /// </summary>
+        internal static string Startup_loading {
+            get {
+                return ResourceManager.GetString("Startup_loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ✅ Success.
         /// </summary>
         internal static string Success {

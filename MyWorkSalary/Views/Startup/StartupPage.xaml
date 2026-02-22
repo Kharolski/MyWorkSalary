@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MyWorkSalary.Views.Startup.StartupPage"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
              NavigationPage.HasNavigationBar="False"
              Shell.NavBarIsVisible="False">
 
@@ -60,7 +61,7 @@
                TextColor="White" />
 
             <!-- Laddningstext -->
-            <Label Text="Laddar din app..."
+            <Label Text="{resx:Translate Startup_loading}"
                FontSize="14"
                HorizontalOptions="Center"
                x:Name="LoadingText"

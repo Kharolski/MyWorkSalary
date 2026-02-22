@@ -2892,4 +2892,7 @@ The work shift has been saved!</value>
   <data name="AboutPrivacyPolicyDescription" xml:space="preserve">
     <value>Learn more about how we handle your data.</value>
   </data>
+  <data name="Startup_loading" xml:space="preserve">
+    <value>Loading your app...</value>
+  </data>
 </root>

@@ -2430,4 +2430,7 @@ Arbetspasset har sparats!</value>
   <data name="AboutPrivacyPolicyDescription" xml:space="preserve">
     <value>Läs mer om hur vi hanterar dina uppgifter.</value>
   </data>
+  <data name="Startup_loading" xml:space="preserve">
+    <value>Loading your app...</value>
+  </data>
 </root>
