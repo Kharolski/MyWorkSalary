@@ -13,18 +13,18 @@ public interface IPremiumService
     bool IsSubscriber { get; }
     bool IsFreeUser { get; }
 
-    /// <summary>
-    /// Sätter Premium-status (engångsköp).
-    /// </summary>
+    DateTime? SubscriptionStartDate { get; }
+    DateTime? SubscriptionEndDate { get; }
+
+    // Sätter Premium-status (engångsköp).
     void SetPremium(bool value);
 
-    /// <summary>
-    /// Sätter prenumerationsstatus.
-    /// </summary>
+    // Sätter prenumerationsstatus.
     void SetSubscription(bool value);
+    void SetSubscriptionStart(DateTime date); 
+    void SetSubscriptionEnd(DateTime date); 
+    void ConvertSubscriptionToPremiumIfEligible();
 
-    /// <summary>
-    /// Rensar alla premium-flaggor (användbart vid debugging).
-    /// </summary>
+    // Rensar alla premium-flaggor (användbart vid debugging).
     void ClearAll();
 }

@@ -4278,6 +4278,258 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buy Premium.
+        /// </summary>
+        internal static string Premium_BuyButton {
+            get {
+                return ResourceManager.GetString("Premium_BuyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View upgrade options.
+        /// </summary>
+        internal static string Premium_Card_Button {
+            get {
+                return ResourceManager.GetString("Premium_Card_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to See what’s included and upgrade your experience..
+        /// </summary>
+        internal static string Premium_Card_Description {
+            get {
+                return ResourceManager.GetString("Premium_Card_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💎 Premium &amp; Subscription.
+        /// </summary>
+        internal static string Premium_Card_Title {
+            get {
+                return ResourceManager.GetString("Premium_Card_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • All Premium features.
+        /// </summary>
+        internal static string Premium_Feature_AllPremium {
+            get {
+                return ResourceManager.GetString("Premium_Feature_AllPremium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Backup and restore (export/import).
+        /// </summary>
+        internal static string Premium_Feature_Backup {
+            get {
+                return ResourceManager.GetString("Premium_Feature_Backup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Export salary data (PDF/CSV).
+        /// </summary>
+        internal static string Premium_Feature_Export {
+            get {
+                return ResourceManager.GetString("Premium_Feature_Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Upcoming features like Sick Leave and Vacation.
+        /// </summary>
+        internal static string Premium_Feature_FutureFeatures {
+            get {
+                return ResourceManager.GetString("Premium_Feature_FutureFeatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Extra shift and extra compensation.
+        /// </summary>
+        internal static string Premium_Feature_Inbeordring {
+            get {
+                return ResourceManager.GetString("Premium_Feature_Inbeordring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • More OB options.
+        /// </summary>
+        internal static string Premium_Feature_OBTemplates {
+            get {
+                return ResourceManager.GetString("Premium_Feature_OBTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • On‑call shifts and settings.
+        /// </summary>
+        internal static string Premium_Feature_OnCall {
+            get {
+                return ResourceManager.GetString("Premium_Feature_OnCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Exclusive themes and colors.
+        /// </summary>
+        internal static string Premium_Feature_Themes {
+            get {
+                return ResourceManager.GetString("Premium_Feature_Themes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Unlimited jobs.
+        /// </summary>
+        internal static string Premium_Feature_UnlimitedJobs {
+            get {
+                return ResourceManager.GetString("Premium_Feature_UnlimitedJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access on-call, more OB options and unlimited jobs..
+        /// </summary>
+        internal static string Premium_HeaderSubtitle {
+            get {
+                return ResourceManager.GetString("Premium_HeaderSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⭐ Unlock more features.
+        /// </summary>
+        internal static string Premium_HeaderTitle {
+            get {
+                return ResourceManager.GetString("Premium_HeaderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A single purchase that unlocks essential app features..
+        /// </summary>
+        internal static string Premium_OneTime_Description {
+            get {
+                return ResourceManager.GetString("Premium_OneTime_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💎 Premium (one‑time purchase).
+        /// </summary>
+        internal static string Premium_OneTime_Title {
+            get {
+                return ResourceManager.GetString("Premium_OneTime_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⭐ You have Premium (converted from subscription).
+        /// </summary>
+        internal static string Premium_Status_ConvertedPremium {
+            get {
+                return ResourceManager.GetString("Premium_Status_ConvertedPremium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have already unlocked all Premium features..
+        /// </summary>
+        internal static string Premium_Status_PremiumDescription {
+            get {
+                return ResourceManager.GetString("Premium_Status_PremiumDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⭐ You have Premium.
+        /// </summary>
+        internal static string Premium_Status_PremiumTitle {
+            get {
+                return ResourceManager.GetString("Premium_Status_PremiumTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All features are unlocked..
+        /// </summary>
+        internal static string Premium_Status_SubscriptionDescription {
+            get {
+                return ResourceManager.GetString("Premium_Status_SubscriptionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔔 You have an active subscription.
+        /// </summary>
+        internal static string Premium_Status_SubscriptionTitle {
+            get {
+                return ResourceManager.GetString("Premium_Status_SubscriptionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start subscription.
+        /// </summary>
+        internal static string Premium_SubscribeButton {
+            get {
+                return ResourceManager.GetString("Premium_SubscribeButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For users who want everything in Premium – plus upcoming features..
+        /// </summary>
+        internal static string Premium_Subscription_Description {
+            get {
+                return ResourceManager.GetString("Premium_Subscription_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ended: {0}.
+        /// </summary>
+        internal static string Premium_Subscription_EndDate {
+            get {
+                return ResourceManager.GetString("Premium_Subscription_EndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date: {0}.
+        /// </summary>
+        internal static string Premium_Subscription_StartDate {
+            get {
+                return ResourceManager.GetString("Premium_Subscription_StartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔔 Subscription.
+        /// </summary>
+        internal static string Premium_Subscription_Title {
+            get {
+                return ResourceManager.GetString("Premium_Subscription_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔓 Upgrade.
+        /// </summary>
+        internal static string Premium_Title {
+            get {
+                return ResourceManager.GetString("Premium_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free users can only have one job. Upgrade to Premium or Subscription to add more..
         /// </summary>
         internal static string PremiumRequiredAddJobMessage {

@@ -2,12 +2,113 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MyWorkSalary.Views.Settings.PremiumInfoPage"
-             Title="Premium">
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             Title="{resx:Translate Premium_Title}">
 
-    <VerticalStackLayout Padding="20">
-        <Label Text="Premium Info Page (placeholder)"
-               FontSize="20"
-               HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
 
+            <!-- Header -->
+            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                <Label Text="💎"
+                       FontSize="48"
+                       HorizontalOptions="Center" />
+
+                <Label Text="{resx:Translate Premium_HeaderTitle}"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+
+                <Label Text="{resx:Translate Premium_HeaderSubtitle}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                               Dark={StaticResource TextSecondaryDark}}" />
+            </VerticalStackLayout>
+
+            <!-- Premium (engångsköp) -->
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsFreeUser}">
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="{resx:Translate Premium_OneTime_Title}"
+                           Style="{StaticResource SectionTitleLabel}" />
+
+                    <Label Text="{resx:Translate Premium_OneTime_Description}"
+                           Style="{StaticResource TipsLabel}" />
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="{resx:Translate Premium_Feature_UnlimitedJobs}" />
+                        <Label Text="{resx:Translate Premium_Feature_OnCall}" />
+                        <Label Text="{resx:Translate Premium_Feature_OBTemplates}" />
+                        <Label Text="{resx:Translate Premium_Feature_Export}" />
+                        <Label Text="{resx:Translate Premium_Feature_Inbeordring}" />
+                    </VerticalStackLayout>
+
+                    <Button Text="{resx:Translate Premium_BuyButton}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="0,12" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Har Premium (engångsköp) -->
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasPremium}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{resx:Translate Premium_Status_PremiumTitle}" FontSize="18" FontAttributes="Bold" />
+                    <Label Text="{resx:Translate Premium_Status_PremiumDescription}" Style="{StaticResource TipsLabel}" />
+
+                    <Label Text="{resx:Translate Premium_Status_ConvertedPremium}"
+                           Style="{StaticResource TipsLabel}"
+                           IsVisible="{Binding IsConvertedPremium}" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Subscription -->
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding ShowSubscription}">
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="{resx:Translate Premium_Subscription_Title}"
+                           Style="{StaticResource SectionTitleLabel}" />
+
+                    <Label Text="{resx:Translate Premium_Subscription_Description}"
+                           Style="{StaticResource TipsLabel}" />
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="{resx:Translate Premium_Feature_AllPremium}" />
+                        <Label Text="{resx:Translate Premium_Feature_Backup}" />
+                        <Label Text="{resx:Translate Premium_Feature_FutureFeatures}" />
+                        <Label Text="{resx:Translate Premium_Feature_Themes}" />
+                    </VerticalStackLayout>
+
+                    <Button Text="{resx:Translate Premium_SubscribeButton}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="0,12" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Har Subscription -->
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasSubscription}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{resx:Translate Premium_Status_SubscriptionTitle}" FontSize="18" FontAttributes="Bold" />
+                    <Label Text="{resx:Translate Premium_Status_SubscriptionDescription}" Style="{StaticResource TipsLabel}" />
+
+                    <!-- Startdatum -->
+                    <Label Text="{Binding SubscriptionStartFormatted}"
+                           Style="{StaticResource TipsLabel}"
+                           IsVisible="{Binding HasSubscription}" />
+
+                    <!-- Slutdatum (om avslutad) -->
+                    <Label Text="{Binding SubscriptionEndFormatted}"
+                           Style="{StaticResource TipsLabel}"
+                           IsVisible="{Binding SubscriptionEndText}" />
+
+                </VerticalStackLayout>
+            </Border>
+            
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

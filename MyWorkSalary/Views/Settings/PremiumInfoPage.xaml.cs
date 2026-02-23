@@ -1,13 +1,16 @@
 using MyWorkSalary.Helpers;
+using MyWorkSalary.ViewModels.Settings;
 
 namespace MyWorkSalary.Views.Settings;
 
 public partial class PremiumInfoPage : ContentPage
 {
-	public PremiumInfoPage()
-	{
-		InitializeComponent();
-	}
+    public PremiumInfoPage(PremiumInfoViewModel vm)
+    {
+        InitializeComponent();
+        BindingContext = vm;
+    }
+
 
     protected override void OnAppearing()
     {

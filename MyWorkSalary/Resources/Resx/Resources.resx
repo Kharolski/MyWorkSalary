@@ -2910,4 +2910,88 @@ The work shift has been saved!</value>
   <data name="OnCallLocked_Title" xml:space="preserve">
     <value>🔒 On-call is a premium feature</value>
   </data>
+  <data name="Premium_Title" xml:space="preserve">
+    <value>🔓 Upgrade</value>
+  </data>
+  <data name="Premium_HeaderTitle" xml:space="preserve">
+    <value>⭐ Unlock more features</value>
+  </data>
+  <data name="Premium_HeaderSubtitle" xml:space="preserve">
+    <value>Access on-call, more OB options and unlimited jobs.</value>
+  </data>
+  <data name="Premium_OneTime_Title" xml:space="preserve">
+    <value>💎 Premium (one‑time purchase)</value>
+  </data>
+  <data name="Premium_OneTime_Description" xml:space="preserve">
+    <value>A single purchase that unlocks essential app features.</value>
+  </data>
+  <data name="Premium_Feature_UnlimitedJobs" xml:space="preserve">
+    <value>• Unlimited jobs</value>
+  </data>
+  <data name="Premium_Feature_OnCall" xml:space="preserve">
+    <value>• On‑call shifts and settings</value>
+  </data>
+  <data name="Premium_Feature_OBTemplates" xml:space="preserve">
+    <value>• More OB options</value>
+  </data>
+  <data name="Premium_Feature_Export" xml:space="preserve">
+    <value>• Export salary data (PDF/CSV)</value>
+  </data>
+  <data name="Premium_Feature_Inbeordring" xml:space="preserve">
+    <value>• Extra shift and extra compensation</value>
+  </data>
+  <data name="Premium_BuyButton" xml:space="preserve">
+    <value>Buy Premium</value>
+  </data>
+  <data name="Premium_Subscription_Title" xml:space="preserve">
+    <value>🔔 Subscription</value>
+  </data>
+  <data name="Premium_Subscription_Description" xml:space="preserve">
+    <value>For users who want everything in Premium – plus upcoming features.</value>
+  </data>
+  <data name="Premium_Feature_AllPremium" xml:space="preserve">
+    <value>• All Premium features</value>
+  </data>
+  <data name="Premium_Feature_Backup" xml:space="preserve">
+    <value>• Backup and restore (export/import)</value>
+  </data>
+  <data name="Premium_Feature_FutureFeatures" xml:space="preserve">
+    <value>• Upcoming features like Sick Leave and Vacation</value>
+  </data>
+  <data name="Premium_Feature_Themes" xml:space="preserve">
+    <value>• Exclusive themes and colors</value>
+  </data>
+  <data name="Premium_SubscribeButton" xml:space="preserve">
+    <value>Start subscription</value>
+  </data>
+  <data name="Premium_Card_Title" xml:space="preserve">
+    <value>💎 Premium &amp; Subscription</value>
+  </data>
+  <data name="Premium_Card_Description" xml:space="preserve">
+    <value>See what’s included and upgrade your experience.</value>
+  </data>
+  <data name="Premium_Card_Button" xml:space="preserve">
+    <value>View upgrade options</value>
+  </data>
+  <data name="Premium_Status_PremiumTitle" xml:space="preserve">
+    <value>⭐ You have Premium</value>
+  </data>
+  <data name="Premium_Status_PremiumDescription" xml:space="preserve">
+    <value>You have already unlocked all Premium features.</value>
+  </data>
+  <data name="Premium_Status_SubscriptionTitle" xml:space="preserve">
+    <value>🔔 You have an active subscription</value>
+  </data>
+  <data name="Premium_Status_SubscriptionDescription" xml:space="preserve">
+    <value>All features are unlocked.</value>
+  </data>
+  <data name="Premium_Status_ConvertedPremium" xml:space="preserve">
+    <value>⭐ You have Premium (converted from subscription)</value>
+  </data>
+  <data name="Premium_Subscription_StartDate" xml:space="preserve">
+    <value>Start date: {0}</value>
+  </data>
+  <data name="Premium_Subscription_EndDate" xml:space="preserve">
+    <value>Ended: {0}</value>
+  </data>
 </root>

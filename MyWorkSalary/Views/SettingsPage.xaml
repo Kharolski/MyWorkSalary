@@ -235,6 +235,22 @@
                 </VerticalStackLayout>
             </Border>
 
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{resx:Translate Premium_Card_Title}"
+               Style="{StaticResource SectionTitleLabel}" />
+
+                    <Label Text="{resx:Translate Premium_Card_Description}"
+               Style="{StaticResource TipsLabel}" />
+
+                    <Button Text="{resx:Translate Premium_Card_Button}"
+                Command="{Binding OpenPremiumPageCommand}"
+                BackgroundColor="{StaticResource ButtonPrimary}"
+                TextColor="White"
+                CornerRadius="8" />
+                </VerticalStackLayout>
+            </Border>
+
             <!-- Om appen-knapp -->
             <Border Style="{StaticResource CardBorder}">
                 <Grid ColumnDefinitions="Auto,*,Auto" Padding="12" ColumnSpacing="12">

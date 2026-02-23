@@ -11,6 +11,7 @@ using MyWorkSalary.Services.Premium;
 using MyWorkSalary.Services.Repositories;
 using MyWorkSalary.Services.Validation;
 using MyWorkSalary.ViewModels;
+using MyWorkSalary.ViewModels.Settings;
 using MyWorkSalary.ViewModels.ShiftTypes;
 using MyWorkSalary.ViewModels.Templates;
 using MyWorkSalary.Views;
@@ -103,8 +104,10 @@ namespace MyWorkSalary
             builder.Services.AddTransient<VacationViewModel>();
             builder.Services.AddTransient<AddOBRateViewModel>();
             builder.Services.AddTransient<OBTemplatesViewModel>();
-
             builder.Services.AddTransient<SalaryPageViewModel>();
+
+            builder.Services.AddTransient<AboutAppViewModel>();
+            builder.Services.AddTransient<PremiumInfoViewModel>();
 
             // Registrera Views
             builder.Services.AddTransient<HomePage>();

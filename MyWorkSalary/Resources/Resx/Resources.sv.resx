@@ -2448,4 +2448,88 @@ Arbetspasset har sparats!</value>
   <data name="OnCallLocked_Title" xml:space="preserve">
     <value>🔒 Jour är en premiumfunktion</value>
   </data>
+  <data name="Premium_Title" xml:space="preserve">
+    <value>🔓 Uppgradera</value>
+  </data>
+  <data name="Premium_HeaderTitle" xml:space="preserve">
+    <value>⭐ Lås upp fler funktioner</value>
+  </data>
+  <data name="Premium_HeaderSubtitle" xml:space="preserve">
+    <value>Få tillgång till jour, fler OB‑möjligheter och obegränsade jobb.</value>
+  </data>
+  <data name="Premium_OneTime_Title" xml:space="preserve">
+    <value>💎 Premium (engångsköp)</value>
+  </data>
+  <data name="Premium_OneTime_Description" xml:space="preserve">
+    <value>Ett engångsköp som låser upp viktiga funktioner i appen.</value>
+  </data>
+  <data name="Premium_Feature_UnlimitedJobs" xml:space="preserve">
+    <value>• Obegränsat antal jobb</value>
+  </data>
+  <data name="Premium_Feature_OnCall" xml:space="preserve">
+    <value>• Jourpass och jourinställningar</value>
+  </data>
+  <data name="Premium_Feature_OBTemplates" xml:space="preserve">
+    <value>• Mer OB‑möjligheter</value>
+  </data>
+  <data name="Premium_Feature_Export" xml:space="preserve">
+    <value>• Exportera löneuppgifter (PDF/CSV)</value>
+  </data>
+  <data name="Premium_Feature_Inbeordring" xml:space="preserve">
+    <value>• Inbeordring och extra ersättningar</value>
+  </data>
+  <data name="Premium_BuyButton" xml:space="preserve">
+    <value>Köp Premium</value>
+  </data>
+  <data name="Premium_Subscription_Title" xml:space="preserve">
+    <value>🔔 Prenumeration</value>
+  </data>
+  <data name="Premium_Subscription_Description" xml:space="preserve">
+    <value>För dig som vill ha allt i Premium – plus kommande funktioner.</value>
+  </data>
+  <data name="Premium_Feature_AllPremium" xml:space="preserve">
+    <value>• Alla Premium‑funktioner</value>
+  </data>
+  <data name="Premium_Feature_Backup" xml:space="preserve">
+    <value>• Backup och återställning (export/import)</value>
+  </data>
+  <data name="Premium_Feature_FutureFeatures" xml:space="preserve">
+    <value>• Kommande funktioner som Sjukskrivning och Semester</value>
+  </data>
+  <data name="Premium_Feature_Themes" xml:space="preserve">
+    <value>• Exklusiva teman och färger</value>
+  </data>
+  <data name="Premium_SubscribeButton" xml:space="preserve">
+    <value>Starta prenumeration</value>
+  </data>
+  <data name="Premium_Card_Title" xml:space="preserve">
+    <value>💎 Premium &amp; Prenumeration</value>
+  </data>
+  <data name="Premium_Card_Description" xml:space="preserve">
+    <value>Se vad som ingår och uppgradera din upplevelse.</value>
+  </data>
+  <data name="Premium_Card_Button" xml:space="preserve">
+    <value>Visa premiumalternativ</value>
+  </data>
+  <data name="Premium_Status_PremiumTitle" xml:space="preserve">
+    <value>⭐ Du har Premium</value>
+  </data>
+  <data name="Premium_Status_PremiumDescription" xml:space="preserve">
+    <value>Du har redan låst upp alla Premium‑funktioner.</value>
+  </data>
+  <data name="Premium_Status_SubscriptionTitle" xml:space="preserve">
+    <value>🔔 Du har en aktiv prenumeration</value>
+  </data>
+  <data name="Premium_Status_SubscriptionDescription" xml:space="preserve">
+    <value>Alla funktioner är upplåsta.</value>
+  </data>
+  <data name="Premium_Status_ConvertedPremium" xml:space="preserve">
+    <value>⭐ Du har Premium (tidigare prenumeration)</value>
+  </data>
+  <data name="Premium_Subscription_StartDate" xml:space="preserve">
+    <value>Startdatum: {0}</value>
+  </data>
+  <data name="Premium_Subscription_EndDate" xml:space="preserve">
+    <value>Avslutad: {0}</value>
+  </data>
 </root>
