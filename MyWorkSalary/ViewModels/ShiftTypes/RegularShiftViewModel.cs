@@ -2,6 +2,8 @@
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Premium;
+using MyWorkSalary.Views.Settings;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels.ShiftTypes
@@ -14,6 +16,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         private readonly IOBEventRepository _obEventRepository;
         private readonly IOBRateRepository _obRateRepository;
         private readonly IOBEventService _obEventService;
+
+        private readonly IPremiumService _premiumService;
 
         private JobProfile _activeJob;
         private DateTime _selectedDate = DateTime.Today;
@@ -33,13 +37,17 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             IWorkShiftRepository workShiftRepository,
             IShiftCalculationService calculationService,
             IOBEventRepository obEventRepository,
-            IOBRateRepository obRateRepository, IOBEventService oBEventService)
+            IOBRateRepository obRateRepository, 
+            IOBEventService oBEventService,
+            IPremiumService premiumService)
         {
             _workShiftRepository = workShiftRepository;
             _calculationService = calculationService;
             _obEventRepository = obEventRepository;
             _obRateRepository = obRateRepository;
             _obEventService = oBEventService;
+
+            _premiumService = premiumService;
 
             SaveCommand = new Command(async () => await SaveRegularShift(), () => CanSave);
             CalculateHours();
@@ -393,5 +401,20 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
         }
         #endregion
 
+        #region Premium Service
+        public bool IsPremiumOrSubscriber => _premiumService.IsPremium || _premiumService.IsSubscriber;
+        public bool IsFreeUser => !IsPremiumOrSubscriber;
+
+        public ICommand OpenPremiumPageCommand => new Command(async () =>
+        {
+            await Shell.Current.GoToAsync(nameof(PremiumInfoPage));
+        });
+
+        public void RefreshPremiumState()
+        {
+            OnPropertyChanged(nameof(IsPremiumOrSubscriber));
+            OnPropertyChanged(nameof(IsFreeUser));
+        }
+        #endregion
     }
 }

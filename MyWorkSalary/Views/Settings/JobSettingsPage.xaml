@@ -122,7 +122,7 @@
             </Border>
 
             <!-- Extra pass / Beordringsersättning -->
-            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob}">
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsPremiumOrSubscriber}">
                 <VerticalStackLayout Spacing="8">
                     <Label Text="{resx:Translate ExtraShiftSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
                     <Label Text="{resx:Translate ExtraShiftSettings_Tip}" Style="{StaticResource TipsLabel}" FontSize="12" />
@@ -184,6 +184,23 @@
 
                 </VerticalStackLayout>
             </Border>
+
+            <!-- Extra Shift – Låst för gratisanvändare -->
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsFreeUser}">
+                <VerticalStackLayout Spacing="10" Padding="15">
+                    <Label Text="{resx:Translate ExtraShift_Locked_Title}" FontSize="16" FontAttributes="Bold" />
+                    <Label Text="{resx:Translate ExtraShift_Locked_Description}" FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                           Dark={StaticResource TextSecondaryDark}}" />
+
+                    <Button Text="{resx:Translate ViewUpgradeOptions}"
+                            Command="{Binding OpenPremiumPageCommand}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
+                            TextColor="White"
+                            CornerRadius="8" />
+                </VerticalStackLayout>
+            </Border>
+
 
             <!-- Jour / OnCall-inställningar -->
             <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsPremiumOrSubscriber}">
@@ -303,11 +320,13 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Låst innehåll för gratisanvändare -->
+            <!-- Jour - låst innehåll för gratisanvändare -->
             <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsFreeUser}">
                 <VerticalStackLayout Spacing="10" Padding="15">
                     <Label Text="{resx:Translate OnCallLocked_Title}" FontSize="16" FontAttributes="Bold" />
-                    <Label Text="{resx:Translate OnCallLocked_Description}" FontSize="14" TextColor="{StaticResource SecondaryTextColor}" />
+                    <Label Text="{resx:Translate OnCallLocked_Description}" FontSize="14" 
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}" />
 
                     <Button Text="{resx:Translate ViewUpgradeOptions}"
                             Command="{Binding OpenPremiumPageCommand}"

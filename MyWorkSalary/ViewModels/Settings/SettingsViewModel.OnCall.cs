@@ -301,19 +301,6 @@ namespace MyWorkSalary.ViewModels
 
         #endregion
 
-        #region Premium Service
-        
-
-        public bool IsPremiumOrSubscriber => _premiumService.IsPremium || _premiumService.IsSubscriber;
-        public bool IsFreeUser => !IsPremiumOrSubscriber;
-
-        public ICommand OpenPremiumPageCommand => new Command(async () =>
-        {
-            await Shell.Current.GoToAsync(nameof(PremiumInfoPage));
-        });
-
-        #endregion
-
         #region Summary
 
         public string OnCallSettingsSummaryText

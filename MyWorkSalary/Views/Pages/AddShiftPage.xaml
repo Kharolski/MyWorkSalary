@@ -56,7 +56,9 @@
 
             <!-- REGULAR SHIFT FORM -->
             <ContentView IsVisible="{Binding ShowGeneralForm}">
-                <shifttypes:RegularShiftFormView BindingContext="{Binding RegularShiftVM}" />
+                <shifttypes:RegularShiftFormView 
+                    x:Name="RegularShiftForm" 
+                    BindingContext="{Binding RegularShiftVM}" />
             </ContentView>
 
             <!-- Knappar -->

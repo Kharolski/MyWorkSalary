@@ -2994,4 +2994,10 @@ The work shift has been saved!</value>
   <data name="Premium_Subscription_EndDate" xml:space="preserve">
     <value>Ended: {0}</value>
   </data>
+  <data name="ExtraShift_Locked_Title" xml:space="preserve">
+    <value>🔒 Extra shift is a premium feature</value>
+  </data>
+  <data name="ExtraShift_Locked_Description" xml:space="preserve">
+    <value>Unlock Extra Shift to enable and configure compensation settings.</value>
+  </data>
 </root>

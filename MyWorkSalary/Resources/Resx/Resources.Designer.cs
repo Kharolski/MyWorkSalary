@@ -1884,6 +1884,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unlock Extra Shift to enable and configure compensation settings..
+        /// </summary>
+        internal static string ExtraShift_Locked_Description {
+            get {
+                return ResourceManager.GetString("ExtraShift_Locked_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔒 Extra shift is a premium feature.
+        /// </summary>
+        internal static string ExtraShift_Locked_Title {
+            get {
+                return ResourceManager.GetString("ExtraShift_Locked_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extra shift (mandated).
         /// </summary>
         internal static string ExtraShift_Status_Active {

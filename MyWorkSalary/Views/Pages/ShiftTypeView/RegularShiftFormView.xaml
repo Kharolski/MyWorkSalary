@@ -38,13 +38,27 @@
                 <Label Text="{resx:Translate RegularShift_DayType}" Style="{StaticResource FieldLabel}" />
 
                 <!-- Extra pass -->
-                <HorizontalStackLayout Spacing="10">
-                    <CheckBox IsChecked="{Binding IsExtraShift}" />
+                <HorizontalStackLayout Spacing="10" IsEnabled="{Binding IsPremiumOrSubscriber}">
+                    <CheckBox IsChecked="{Binding IsExtraShift}" IsEnabled="{Binding IsPremiumOrSubscriber}" />
                     <Label Text="{resx:Translate RegularShift_ExtraShift}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
 
+                <!-- Extra Shift låst för gratisanvändare -->
+                <VerticalStackLayout IsVisible="{Binding IsFreeUser}" Margin="0,0,0,0" Spacing="6">
+                    <Label Text="{resx:Translate ExtraShift_Locked_Description}" FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                       Dark={StaticResource TextSecondaryDark}}" />
+
+                    <Button Text="{resx:Translate ViewUpgradeOptions}"
+                            Command="{Binding OpenPremiumPageCommand}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="0,8" />
+                </VerticalStackLayout>
+
                 <!-- hjälptext  -->
-                <Label Text="{resx:Translate RegularShift_ExtraShiftHint}"
+                <Label Text="{resx:Translate RegularShift_ExtraShiftHint}" IsVisible="{Binding IsPremiumOrSubscriber}"
                        FontSize="12"
                        Margin="34,0,0,0"
                        TextColor="{AppThemeBinding Light={StaticResource TextSecondary},

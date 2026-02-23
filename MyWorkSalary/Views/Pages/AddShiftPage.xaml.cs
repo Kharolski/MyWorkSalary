@@ -19,7 +19,12 @@ namespace MyWorkSalary.Views.Pages
             if (BindingContext is AddShiftViewModel vm)
                 vm.OnPageAppearing();
 
-            // Fixar ett känt MAUI/Shell-problem där sidan som navigeras tillbaka till
+            if (RegularShiftForm.BindingContext is RegularShiftViewModel shiftVm)
+            {
+                shiftVm.RefreshPremiumState();
+                shiftVm.Reset();
+            }
+
             NavigationHelper.UseNoAnimationBackButton(this);
         }
     }

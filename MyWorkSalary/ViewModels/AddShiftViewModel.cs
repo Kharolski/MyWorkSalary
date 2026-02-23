@@ -15,6 +15,7 @@ namespace MyWorkSalary.ViewModels
         #region Private Fields
         private readonly IJobProfileRepository _jobProfileRepository;
         private readonly IWorkShiftRepository _workShiftRepository;
+
         private readonly IPremiumService _premiumService;
 
         private readonly SickLeaveHandler _sickLeaveHandler;
@@ -54,7 +55,13 @@ namespace MyWorkSalary.ViewModels
             OnCallVM = onCallViewModel;
             VacationVM = vacationViewModel;
 
-            RegularShiftVM = new RegularShiftViewModel(workShiftRepository, calculationService, obEventRepository, obRateRepository, obEventService);
+            RegularShiftVM = new RegularShiftViewModel(
+                workShiftRepository, 
+                calculationService, 
+                obEventRepository, 
+                obRateRepository, 
+                obEventService,
+                premiumService);
 
             // Lyssna på CanSave från RegularShiftVM
             RegularShiftVM.PropertyChanged += (s, e) =>

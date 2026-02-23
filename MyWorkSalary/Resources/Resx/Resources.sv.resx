@@ -2532,4 +2532,10 @@ Arbetspasset har sparats!</value>
   <data name="Premium_Subscription_EndDate" xml:space="preserve">
     <value>Avslutad: {0}</value>
   </data>
+  <data name="ExtraShift_Locked_Title" xml:space="preserve">
+    <value>🔒 Extra pass är en premiumfunktion</value>
+  </data>
+  <data name="ExtraShift_Locked_Description" xml:space="preserve">
+    <value>Lås upp Extra pass för att kunna aktivera och konfigurera beordringsersättning.</value>
+  </data>
 </root>

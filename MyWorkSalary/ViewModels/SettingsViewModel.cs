@@ -401,6 +401,18 @@ namespace MyWorkSalary.ViewModels
         #region Language Methods
         // Flyttad till partial-fil: ViewModels/Settings/SettingsViewModel.Language.cs
         #endregion
+
+        #region Premium Service
+
+        public bool IsPremiumOrSubscriber => _premiumService.IsPremium || _premiumService.IsSubscriber;
+        public bool IsFreeUser => !IsPremiumOrSubscriber;
+
+        public ICommand OpenPremiumPageCommand => new Command(async () =>
+        {
+            await Shell.Current.GoToAsync(nameof(PremiumInfoPage));
+        });
+
+        #endregion
     }
 
     public class LanguageOption
