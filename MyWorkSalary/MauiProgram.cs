@@ -99,6 +99,7 @@ namespace MyWorkSalary
             
             builder.Services.AddTransient<ShiftPageViewModel>();
             builder.Services.AddTransient<AddShiftViewModel>();
+            builder.Services.AddTransient<RegularShiftViewModel>();
             builder.Services.AddTransient<SickLeaveViewModel>();
             builder.Services.AddTransient<OnCallViewModel>();
             builder.Services.AddTransient<VacationViewModel>();

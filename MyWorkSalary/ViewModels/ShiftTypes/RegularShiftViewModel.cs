@@ -1,6 +1,7 @@
 ﻿using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
+using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Services.Premium;
 using MyWorkSalary.Views.Settings;
@@ -11,6 +12,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
     public class RegularShiftViewModel : BaseViewModel
     {
         #region Private Fields
+        private readonly HolidayService _holidayService;
+
         private readonly IWorkShiftRepository _workShiftRepository;
         private readonly IShiftCalculationService _calculationService;
         private readonly IOBEventRepository _obEventRepository;
@@ -39,7 +42,8 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             IOBEventRepository obEventRepository,
             IOBRateRepository obRateRepository, 
             IOBEventService oBEventService,
-            IPremiumService premiumService)
+            IPremiumService premiumService,
+            HolidayService holidayService)
         {
             _workShiftRepository = workShiftRepository;
             _calculationService = calculationService;
@@ -48,6 +52,7 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             _obEventService = oBEventService;
 
             _premiumService = premiumService;
+            _holidayService = holidayService;
 
             SaveCommand = new Command(async () => await SaveRegularShift(), () => CanSave);
             CalculateHours();
@@ -260,15 +265,48 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             OnPropertyChanged(nameof(CalculationSummary));
             UpdateBreakSuggestion();
 
+            // Automatisk identifiering av helgdagar
+            UpdateHolidayStatus();
+
             ShowCalculation = result.TotalHours > 0;
             CanSave = ValidateRegularShift();
+        }
 
+        /// <summary>
+        /// Uppdaterar automatiskt IsHoliday och IsBigHoliday baserat på HolidayService
+        /// </summary>
+        private void UpdateHolidayStatus()
+        {
+            if (ActiveJob == null || _holidayService == null)
+                return;
+
+            try
+            {
+                var (isRedDay, isBigHoliday) = _holidayService.GetHolidayStatus(SelectedDate.Date, ActiveJob);
+
+                // Uppdatera bara om värdena har ändrats för att undvika oändliga loopar
+                if (_isHoliday != isRedDay)
+                {
+                    _isHoliday = isRedDay;
+                    OnPropertyChanged(nameof(IsHoliday));
+                }
+
+                if (_isBigHoliday != isBigHoliday)
+                {
+                    _isBigHoliday = isBigHoliday;
+                    OnPropertyChanged(nameof(IsBigHoliday));
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Fel vid uppdatering av helgdagsstatus: {ex.Message}");
+            }
         }
 
         private bool ValidateRegularShift()
         {
             var totalHours = CalculatedHours + (BreakMinutes / 60m);
-            return CalculatedHours > 0 && 
+            return CalculatedHours > 0 &&
                    _calculationService.ValidateHours(CalculatedHours) &&
                    _calculationService.ValidateBreakMinutes(BreakMinutes, totalHours);
         }
@@ -415,6 +453,11 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
             OnPropertyChanged(nameof(IsPremiumOrSubscriber));
             OnPropertyChanged(nameof(IsFreeUser));
         }
+        #endregion
+
+        #region Debug Property
+        // Ändra till true för att visa debug-checkboxar i UI (t.ex. för att testa helgdagar)
+        public bool ShowDebugCheckboxes { get; set; } = false;
         #endregion
     }
 }

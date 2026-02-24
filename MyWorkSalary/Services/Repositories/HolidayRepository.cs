@@ -34,6 +34,15 @@ namespace MyWorkSalary.Services.Repositories
             return _db.Find<Holiday>(key);
         }
 
+        /// <summary>
+        /// Hämtar ett specifikt helgdagsobjekt baserat på datum och land
+        /// </summary>
+        public Holiday GetHoliday(DateTime date, string countryCode)
+        {
+            var key = $"{date:yyyyMMdd}_{countryCode}";
+            return _db.Find<Holiday>(key);
+        }
+
         public bool IsHoliday(DateTime date, string countryCode)
         {
             var key = $"{date:yyyyMMdd}_{countryCode}";

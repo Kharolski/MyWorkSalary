@@ -45,7 +45,8 @@ namespace MyWorkSalary.ViewModels
             SickLeaveHandler sickLeaveHandler,
             SickLeaveViewModel sickLeaveViewModel,
             OnCallViewModel onCallViewModel, 
-            VacationViewModel vacationViewModel)
+            VacationViewModel vacationViewModel,
+            HolidayService holidayService)
         {
             _jobProfileRepository = jobProfileRepository;
             _workShiftRepository = workShiftRepository;
@@ -61,7 +62,8 @@ namespace MyWorkSalary.ViewModels
                 obEventRepository, 
                 obRateRepository, 
                 obEventService,
-                premiumService);
+                premiumService,
+                holidayService);
 
             // Lyssna på CanSave från RegularShiftVM
             RegularShiftVM.PropertyChanged += (s, e) =>
