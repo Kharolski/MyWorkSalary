@@ -33,45 +33,17 @@
         </VerticalStackLayout>
 
         <!-- Automatisk helgdagsvisning -->
-        <VerticalStackLayout Spacing="8">
-            <Label Text="{resx:Translate RegularShift_DayType}" FontSize="14" FontAttributes="Bold" />
-
-            <!-- Röd dag indikator -->
-            <HorizontalStackLayout Spacing="10">
-                <Border BackgroundColor="{Binding IsHoliday, Converter={StaticResource BoolToColorConverter}}"
-                StrokeShape="RoundRectangle" StrokeThickness="0"
-                Padding="8,4">
-                    <Label Text="{resx:Translate RegularShift_Holiday}" TextColor="White" FontSize="12" FontAttributes="Bold" />
-                </Border>
-                <Label Text="Automatiskt identifierad" 
-               VerticalOptions="Center" FontSize="11" 
-               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                         Dark={StaticResource TextSecondaryDark}}" 
-               IsVisible="{Binding IsHoliday}" />
+        <Border Style="{StaticResource HolidayBorder}" IsVisible="{Binding DisplayIsHoliday}">
+            <HorizontalStackLayout Spacing="12">
+                <Label Text="📅" FontSize="18" VerticalOptions="Center" />
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="{Binding HolidayDisplayText}" Style="{StaticResource HolidayTitle}" FontAttributes="Bold"/>
+                    <Label Text="{resx:Translate Holiday_AutoDetected}" Style="{StaticResource HolidayAutoDetected}" />
+                </VerticalStackLayout>
             </HorizontalStackLayout>
+        </Border>
 
-            <!-- Storhelg indikator -->
-            <HorizontalStackLayout Spacing="10" Margin="20,0,0,0" IsVisible="{Binding IsHoliday}">
-                <Border BackgroundColor="{Binding IsBigHoliday, Converter={StaticResource BoolToColorConverter}}"
-                StrokeShape="RoundRectangle" StrokeThickness="0"
-                Padding="8,4">
-                    <Label Text="{resx:Translate RegularShift_BigHoliday}" TextColor="White" FontSize="12" FontAttributes="Bold" />
-                </Border>
-                <Label Text="Storhelg" 
-               VerticalOptions="Center" FontSize="11" 
-               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                         Dark={StaticResource TextSecondaryDark}}" 
-               IsVisible="{Binding IsBigHoliday}" />
-            </HorizontalStackLayout>
-
-            <!-- Hjälptext -->
-            <Label Text="Helgdagar identifieras automatiskt baserat på jobbets land"
-           FontSize="11" Margin="0,4,0,0"
-           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                       Dark={StaticResource TextSecondaryDark}}" />
-        </VerticalStackLayout>
-
-        <!-- Helgdag / Storhelg / Inbeordring -->
+        <!-- Inbeordring -->
         <Border Style="{StaticResource CardBorder}">
             
             <VerticalStackLayout Spacing="10">
@@ -136,8 +108,7 @@
         </VerticalStackLayout>
 
         <!-- Beräknad information -->
-        <Border Style="{StaticResource CalculationBorder}"
-                IsVisible="{Binding ShowCalculation}">
+        <Border Style="{StaticResource CalculationBorder}" IsVisible="{Binding ShowCalculation}">
             <VerticalStackLayout Spacing="5">
                 <Label Text="{resx:Translate RegularShift_Calculation}"
                        FontSize="16"

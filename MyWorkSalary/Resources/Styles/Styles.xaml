@@ -175,20 +175,62 @@
             </Setter.Value>
         </Setter>
 
+        <!-- Stroke (mörkare grön) -->
+        <Setter Property="Stroke">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource HolidayStroke}"
+                         Dark="{StaticResource HolidayStrokeDark}" />
+            </Setter.Value>
+        </Setter>
+
         <!-- Padding -->
         <Setter Property="Padding" Value="15" />
 
-        <!-- No border stroke -->
-        <Setter Property="StrokeThickness" Value="0" />
+        <!-- Border stroke thickness -->
+        <Setter Property="StrokeThickness" Value="1" />
 
         <!-- Rounded corners -->
         <Setter Property="StrokeShape">
             <Setter.Value>
-                <RoundRectangle CornerRadius="10" />
+                <RoundRectangle CornerRadius="8" />
             </Setter.Value>
         </Setter>
     </Style>
 
+    <!-- Style för helgdagsborder -->
+    <Style TargetType="Border" x:Key="HolidayBorder">
+        <!-- Background -->
+        <Setter Property="Background">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource HolidayBackground}"
+                                 Dark="{StaticResource HolidayBackgroundDark}" />
+            </Setter.Value>
+        </Setter>
+
+        <!-- Stroke (mörkare grön) -->
+        <Setter Property="Stroke">
+            <Setter.Value>
+                <AppThemeBinding Light="{StaticResource HolidayStroke}"
+                                 Dark="{StaticResource HolidayStrokeDark}" />
+            </Setter.Value>
+        </Setter>
+
+        <!-- Padding -->
+        <Setter Property="Padding" Value="12,8" />
+
+        <!-- Border stroke thickness -->
+        <Setter Property="StrokeThickness" Value="1" />
+
+        <!-- Rounded corners -->
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="8" />
+            </Setter.Value>
+        </Setter>
+
+        <!-- Margin -->
+        <Setter Property="Margin" Value="0,8,0,0" />
+    </Style>
 
     <Style TargetType="DatePicker" x:Key="ThemedDatePicker">
         <Setter Property="BackgroundColor" 
@@ -424,6 +466,18 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Error}, Dark={StaticResource Error}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <!-- Holiday visning -->
+    <Style TargetType="Label" x:Key="HolidayAutoDetected">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}" />
+    </Style>
+    <Style TargetType="Label" x:Key="HolidayTitle">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" 
+        Value="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
     </Style>
 
     <!-- Entry Styles -->

@@ -2538,4 +2538,7 @@ Arbetspasset har sparats!</value>
   <data name="ExtraShift_Locked_Description" xml:space="preserve">
     <value>Lås upp Extra pass för att kunna aktivera och konfigurera beordringsersättning.</value>
   </data>
+  <data name="Holiday_AutoDetected" xml:space="preserve">
+    <value>Automatiskt identifierad</value>
+  </data>
 </root>

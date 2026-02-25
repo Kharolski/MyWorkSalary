@@ -3000,4 +3000,7 @@ The work shift has been saved!</value>
   <data name="ExtraShift_Locked_Description" xml:space="preserve">
     <value>Unlock Extra Shift to enable and configure compensation settings.</value>
   </data>
+  <data name="Holiday_AutoDetected" xml:space="preserve">
+    <value>Automatically detected</value>
+  </data>
 </root>

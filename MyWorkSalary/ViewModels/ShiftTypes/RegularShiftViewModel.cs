@@ -178,6 +178,22 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 }
             }
         }
+        /// <summary>
+        /// Display-only property för helgdagsstatus (används av UI)
+        /// </summary>
+        public bool DisplayIsHoliday => _isHoliday;
+
+        /// <summary>
+        /// Display-only property för storhelg-status (används av UI)
+        /// </summary>
+        public bool DisplayIsBigHoliday => _isBigHoliday;
+
+        /// <summary>
+        /// Display-only text för helgdag/storhelg
+        /// </summary>
+        public string HolidayDisplayText => DisplayIsBigHoliday ?
+            Resources.Resx.Resources.RegularShift_BigHoliday :
+            Resources.Resx.Resources.RegularShift_Holiday;
         public bool IsExtraShift
         {
             get => _isExtraShift;
@@ -289,12 +305,15 @@ namespace MyWorkSalary.ViewModels.ShiftTypes
                 {
                     _isHoliday = isRedDay;
                     OnPropertyChanged(nameof(IsHoliday));
+                    OnPropertyChanged(nameof(DisplayIsHoliday));
                 }
 
                 if (_isBigHoliday != isBigHoliday)
                 {
                     _isBigHoliday = isBigHoliday;
                     OnPropertyChanged(nameof(IsBigHoliday));
+                    OnPropertyChanged(nameof(DisplayIsBigHoliday));
+                    OnPropertyChanged(nameof(HolidayDisplayText));
                 }
             }
             catch (Exception ex)

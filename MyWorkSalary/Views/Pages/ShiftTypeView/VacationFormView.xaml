@@ -43,7 +43,7 @@
         </VerticalStackLayout>
 
         <!-- 📝 Information -->
-        <Frame Style="{StaticResource ActiveJobFrame}">
+        <Border Style="{StaticResource ActiveJobBorder}">
             <VerticalStackLayout Spacing="8">
                 <Label Text="{resx:Translate Vacation_Info_Title}" 
                        Style="{StaticResource ActiveJobTitleLabel}" 
@@ -73,10 +73,10 @@
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
                             Dark={StaticResource White}}" />
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- 🏠 Obetald ledighet info -->
-        <Frame Style="{StaticResource InfoFrame}" 
+        <Border Style="{StaticResource InfoBorder}" 
                IsVisible="{Binding ShowUnpaidVacationFields}">
             <VerticalStackLayout Spacing="5">
                 <Label Text="{resx:Translate Vacation_Unpaid_Title}" 
@@ -85,7 +85,7 @@
                 <Label Text="{resx:Translate Vacation_Unpaid_Info}"
                        FontSize="13" />
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- ⚠️ Validation -->
         <ContentView IsVisible="{Binding HasValidationMessage}">

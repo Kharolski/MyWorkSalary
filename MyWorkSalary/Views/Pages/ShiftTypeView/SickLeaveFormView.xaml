@@ -17,7 +17,7 @@
         </VerticalStackLayout>
 
         <!-- 📝 Förklaring av vald sjuktyp -->
-        <Frame Style="{StaticResource ActiveJobFrame}">
+        <Border Style="{StaticResource ActiveJobBorder}">
             <VerticalStackLayout Spacing="5">
                 <Label Text="{resx:Translate Sick_Header}"
                        Style="{StaticResource ActiveJobTitleLabel}"
@@ -27,7 +27,7 @@
                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
                                                    Dark={StaticResource White}}" />
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- ⏰ Arbetstider (bara för delvis sjuk) -->
         <VerticalStackLayout Spacing="15" IsVisible="{Binding ShowPartialTimeFields}">

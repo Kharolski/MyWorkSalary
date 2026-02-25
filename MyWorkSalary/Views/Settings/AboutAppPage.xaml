@@ -9,7 +9,7 @@
         <VerticalStackLayout Spacing="25" Padding="20">
 
             <!-- App Icon -->
-            <Image Source="appicon.png"
+            <Image Source="startup_logo.png"
                    HeightRequest="100"
                    WidthRequest="100"
                    HorizontalOptions="Center" />
@@ -24,13 +24,15 @@
             <Label Text="{Binding AppVersion}"
                    FontSize="14"
                    HorizontalOptions="Center"
-                   TextColor="{StaticResource SecondaryTextColor}" />
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                               Dark={StaticResource TextSecondaryDark}}" />
 
             <!-- Description -->
             <Label Text="{resx:Translate AboutAppDescription}"
                    FontSize="15"
                    HorizontalTextAlignment="Center"
-                   TextColor="{StaticResource SecondaryTextColor}" />
+                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                               Dark={StaticResource TextSecondaryDark}}"/>
 
             <!-- Developer -->
             <Border Style="{StaticResource CardBorder}">

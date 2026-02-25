@@ -2082,6 +2082,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically detected.
+        /// </summary>
+        internal static string Holiday_AutoDetected {
+            get {
+                return ResourceManager.GetString("Holiday_AutoDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🏠 Home.
         /// </summary>
         internal static string HomeTitle {

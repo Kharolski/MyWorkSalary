@@ -116,4 +116,10 @@
     <Color x:Key="SwitchTrackOffDark">#616161</Color>
     <Color x:Key="SwitchThumbDark">#FFFFFF</Color>
 
+    <!-- ===== HELGDAG FÄRGER (MÖRKARE STROKE) ===== -->
+    <Color x:Key="HolidayBackground">#E8F5E8</Color>        <!-- Samma som CalculationBackground -->
+    <Color x:Key="HolidayBackgroundDark">#5A8A5A</Color>    <!-- Samma som CalculationBackgroundDark -->
+    <Color x:Key="HolidayStroke">#4CAF50</Color>            <!-- Mörkare grön stroke -->
+    <Color x:Key="HolidayStrokeDark">#388E3C</Color>        <!-- Mörkare grön stroke (dark mode) -->
+
 </ResourceDictionary>

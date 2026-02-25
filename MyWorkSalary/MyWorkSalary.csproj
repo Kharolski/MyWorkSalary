@@ -117,10 +117,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\salarycheck.png" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Resources\Resx\Resources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>

@@ -81,7 +81,7 @@ namespace MyWorkSalary
             builder.Services.AddTransient<HolidayService>();
             builder.Services.AddTransient<IOBEventService, OBEventService>();
 
-            builder.Services.AddSingleton<IPremiumService, PremiumService>();
+            builder.Services.AddTransient<IPremiumService, PremiumService>();
             builder.Services.AddSingleton<IFeatureLockService, FeatureLockService>();
 
             // === HANDLERS ===
