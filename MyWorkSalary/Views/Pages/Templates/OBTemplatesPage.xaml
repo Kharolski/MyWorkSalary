@@ -44,20 +44,24 @@
                         <!-- Mall-item -->
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame Padding="12" Margin="0,4" CornerRadius="10" HasShadow="False">
-                                    <Frame.BackgroundColor>
+                                <Border Padding="12" Margin="0,4" StrokeThickness="0" StrokeShape="RoundRectangle 10">
+
+                                    <!-- Background with MultiBinding -->
+                                    <Border.Background>
                                         <MultiBinding Converter="{StaticResource SelectedTemplateBackgroundConverter}">
                                             <Binding Path="." />
                                             <Binding Path="BindingContext.SelectedTemplate" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
                                         </MultiBinding>
-                                    </Frame.BackgroundColor>
+                                    </Border.Background>
 
-                                    <Frame.GestureRecognizers>
+                                    <!-- Tap gesture -->
+                                    <Border.GestureRecognizers>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectTemplateCommand}"
                                             CommandParameter="{Binding .}" />
-                                    </Frame.GestureRecognizers>
+                                    </Border.GestureRecognizers>
 
+                                    <!-- Content -->
                                     <VerticalStackLayout Spacing="4">
                                         <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="14">
                                             <Label.TextColor>
@@ -67,11 +71,14 @@
                                                 </MultiBinding>
                                             </Label.TextColor>
                                         </Label>
+
                                         <Label Text="{Binding Description}" Style="{StaticResource OBInfoLabel}" />
                                     </VerticalStackLayout>
-                                </Frame>
+
+                                </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
+
                     </CollectionView>
                 </VerticalStackLayout>
             </Border>
@@ -90,7 +97,7 @@
                                     EmptyView="{resx:Translate OBTemplates_SelectToPreview}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame Style="{StaticResource OBRuleFrame}">
+                                <Border Style="{StaticResource OBRuleBorder}">
                                     <Grid ColumnDefinitions="*,Auto">
                                         <StackLayout Grid.Column="0" Spacing="2">
                                             <Label Text="{Binding Name}"
@@ -105,7 +112,7 @@
                                                FontAttributes="Bold"
                                                VerticalOptions="Center" />
                                     </Grid>
-                                </Frame>
+                                </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

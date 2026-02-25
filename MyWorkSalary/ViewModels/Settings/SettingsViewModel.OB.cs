@@ -27,11 +27,13 @@ namespace MyWorkSalary.ViewModels
 
                 ((Command)ReplaceWithTemplateCommand).ChangeCanExecute();
                 OnPropertyChanged(nameof(HasOBRates));
+                OnPropertyChanged(nameof(FreeOBTemplateButtonText));
             }
             else
             {
                 OBRates.Clear();
                 OnPropertyChanged(nameof(HasOBRates));
+                OnPropertyChanged(nameof(FreeOBTemplateButtonText));
             }
         }
 

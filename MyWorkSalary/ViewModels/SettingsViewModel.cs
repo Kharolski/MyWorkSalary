@@ -4,6 +4,7 @@ using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Services.Premium;
+using MyWorkSalary.Services.Templates;
 using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views.Settings;
 using System.Collections.ObjectModel;
@@ -55,6 +56,8 @@ namespace MyWorkSalary.ViewModels
             DeleteOBRateCommand = new Command<OBRate>(OnDeleteOBRate);
             AddOBTemplateCommand = new Command(async () => await OnOpenOBTemplates(false), () => HasActiveJob);
             ReplaceWithTemplateCommand = new Command(async () => await OnOpenOBTemplates(true), () => HasActiveJob && HasOBRates);
+
+            AddFreeOBTemplateCommand = new Command(async () => await OnAddFreeOBTemplate());
 
             LoadJobs();
             LoadOBRates();
@@ -403,15 +406,90 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Premium Service
-
+        // Properties
         public bool IsPremiumOrSubscriber => _premiumService.IsPremium || _premiumService.IsSubscriber;
         public bool IsFreeUser => !IsPremiumOrSubscriber;
+        public string FreeOBTemplateButtonText => HasOBRates
+            ? Resources.Resx.Resources.ReplaceFreeTemplate  // "Ersätt mall"
+            : Resources.Resx.Resources.AddFreeOBTemplate;   // "Lägg till gratis mall"
 
+        // Commands
         public ICommand OpenPremiumPageCommand => new Command(async () =>
         {
             await Shell.Current.GoToAsync(nameof(PremiumInfoPage));
         });
+        public ICommand AddFreeOBTemplateCommand { get; }
 
+        // Methods
+        private async Task OnAddFreeOBTemplate()
+        {
+            if (ActiveJob == null)
+                return;
+
+            try
+            {
+                // 0. Radera befintliga regler OM det är "ersätt"
+                if (HasOBRates)
+                {
+                    foreach (var existingRate in OBRates.ToList())
+                    {
+                        _databaseService.OBRates.DeleteOBRate(existingRate.Id);
+                    }
+                }
+
+                // 1. Hämta gratis mallen
+                var template = TemplateFactory.CreateFreeOBTemplate();
+
+                // 2. Konvertera och spara reglerna
+                var obRates = new List<OBRate>();
+                foreach (var rule in template.Rules)
+                {
+                    obRates.Add(new OBRate
+                    {
+                        JobProfileId = ActiveJob.Id,
+                        Name = rule.Name,
+                        StartTime = rule.StartTime,
+                        EndTime = rule.EndTime,
+                        RatePerHour = rule.RatePerHour,
+                        Priority = rule.Priority,
+                        Category = rule.Category,
+                        Monday = rule.Monday,
+                        Tuesday = rule.Tuesday,
+                        Wednesday = rule.Wednesday,
+                        Thursday = rule.Thursday,
+                        Friday = rule.Friday,
+                        Saturday = rule.Saturday,
+                        Sunday = rule.Sunday,
+                        IsActive = true
+                    });
+                }
+
+                // 3. Spara alla regler
+                foreach (var obRate in obRates)
+                {
+                    _databaseService.OBRates.SaveOBRate(obRate);
+                }
+
+                // 4. Uppdatera beräkningar
+                await _obEventService.RebuildForJobLastMonths(ActiveJob.Id, 4);
+
+                // 5. Ladda om UI
+                LoadOBRates();
+
+                // 6. Visa bekräftelse
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.SuccessTitle,
+                    Resources.Resx.Resources.FreeOBTemplateAddedMessage,
+                    Resources.Resx.Resources.Ok);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert(
+                    Resources.Resx.Resources.ErrorTitle,
+                    Resources.Resx.Resources.FreeOBTemplateFailedMessage,
+                    Resources.Resx.Resources.Ok);
+            }
+        }
         #endregion
     }
 

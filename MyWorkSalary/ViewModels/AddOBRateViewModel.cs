@@ -3,6 +3,8 @@ using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Premium;
+using MyWorkSalary.Views.Settings;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
@@ -15,6 +17,7 @@ namespace MyWorkSalary.ViewModels
         #region Fields
         private readonly DatabaseService _databaseService;
         private readonly JobProfile _activeJob;
+        private readonly IPremiumService _premiumService;
         private readonly IOBEventService _obEventService;
         private int _editingOBRateId = 0;
 
@@ -38,11 +41,12 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Constructor
-        public AddOBRateViewModel(DatabaseService databaseService, IOBEventService obEventService)
+        public AddOBRateViewModel(DatabaseService databaseService, IOBEventService obEventService, IPremiumService premiumService)
         {
             _databaseService = databaseService;
             _activeJob = _databaseService.JobProfiles.GetActiveJob();
             _obEventService = obEventService;
+            _premiumService = premiumService;
 
             // Initiera commands
             SaveCommand = new Command(OnSave);
@@ -532,6 +536,19 @@ namespace MyWorkSalary.ViewModels
 
             return sb.ToString();
         }
+        #endregion
+
+        #region Premium Service
+        // Properties
+        public bool IsPremiumOrSubscriber => _premiumService.IsPremium || _premiumService.IsSubscriber;
+        public bool IsFreeUser => !IsPremiumOrSubscriber;
+
+        // Commands
+        public ICommand OpenPremiumPageCommand => new Command(async () =>
+        {
+            await Shell.Current.GoToAsync(nameof(PremiumInfoPage));
+        });
+        
         #endregion
     }
 }

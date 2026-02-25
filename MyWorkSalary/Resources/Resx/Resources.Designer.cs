@@ -214,6 +214,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Free Template.
+        /// </summary>
+        internal static string AddFreeOBTemplate {
+            get {
+                return ResourceManager.GetString("AddFreeOBTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ✚  Add.
         /// </summary>
         internal static string AddJob {
@@ -1352,7 +1361,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to ❌ Error.
         /// </summary>
         internal static string DeleteError {
             get {
@@ -1506,7 +1515,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to ❌ Error.
         /// </summary>
         internal static string Dialog_ErrorTitle {
             get {
@@ -1641,7 +1650,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to ❌ Error.
         /// </summary>
         internal static string EditJob_ErrorTitle {
             get {
@@ -1758,7 +1767,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error validating date.
+        ///   Looks up a localized string similar to ⚠️ Error validating date.
         /// </summary>
         internal static string Error_DateValidationFailed {
             get {
@@ -1794,7 +1803,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while saving: {0}.
+        ///   Looks up a localized string similar to ⚠️ Error while saving: {0}.
         /// </summary>
         internal static string Error_SaveFailed {
             get {
@@ -1803,7 +1812,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Validation error: {0}.
+        ///   Looks up a localized string similar to ⚠️ Validation error: {0}.
         /// </summary>
         internal static string Error_ValidationFailed {
             get {
@@ -1812,7 +1821,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error creating OB events.
+        ///   Looks up a localized string similar to ❌ Error creating OB events.
         /// </summary>
         internal static string ErrorCreatingOBEvents {
             get {
@@ -1821,7 +1830,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to ❌ Error.
         /// </summary>
         internal static string ErrorTitle {
             get {
@@ -2064,6 +2073,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free OB template has been added. You can now change times and rates for each rule..
+        /// </summary>
+        internal static string FreeOBTemplateAddedMessage {
+            get {
+                return ResourceManager.GetString("FreeOBTemplateAddedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not add OB template. Please try again..
+        /// </summary>
+        internal static string FreeOBTemplateFailedMessage {
+            get {
+                return ResourceManager.GetString("FreeOBTemplateFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From.
         /// </summary>
         internal static string From {
@@ -2172,7 +2199,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to ❌ Error.
         /// </summary>
         internal static string HoursDisplay_Error {
             get {
@@ -2802,6 +2829,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upgrade to premium to choose which days OB rules should apply to..
+        /// </summary>
+        internal static string OBDaysLocked_Description {
+            get {
+                return ResourceManager.GetString("OBDaysLocked_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔒 Day Settings Locked.
+        /// </summary>
+        internal static string OBDaysLocked_Title {
+            get {
+                return ResourceManager.GetString("OBDaysLocked_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unsocial Hours.
         /// </summary>
         internal static string ObHoursText {
@@ -2825,6 +2870,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ObInfo_NoRulesConfigured {
             get {
                 return ResourceManager.GetString("ObInfo_NoRulesConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upgrade to premium to access advanced OB features like red days, big holidays and union templates..
+        /// </summary>
+        internal static string OBLocked_Description {
+            get {
+                return ResourceManager.GetString("OBLocked_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔒 OB Settings Locked.
+        /// </summary>
+        internal static string OBLocked_Title {
+            get {
+                return ResourceManager.GetString("OBLocked_Title", resourceCulture);
             }
         }
         
@@ -2861,6 +2924,42 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OBRule_Days_Label {
             get {
                 return ResourceManager.GetString("OBRule_Days_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evening OB.
+        /// </summary>
+        internal static string OBRule_Free_Evening_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Free_Evening_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekday Night.
+        /// </summary>
+        internal static string OBRule_Free_WeekdayNight_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Free_WeekdayNight_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend Day.
+        /// </summary>
+        internal static string OBRule_Free_WeekendDay_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Free_WeekendDay_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekend Night.
+        /// </summary>
+        internal static string OBRule_Free_WeekendNight_Name {
+            get {
+                return ResourceManager.GetString("OBRule_Free_WeekendNight_Name", resourceCulture);
             }
         }
         
@@ -3329,6 +3428,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string OBTemplate_EveningOnly_Title {
             get {
                 return ResourceManager.GetString("OBTemplate_EveningOnly_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic OB supplements for evening, night and weekend.
+        /// </summary>
+        internal static string OBTemplate_Free_Desc {
+            get {
+                return ResourceManager.GetString("OBTemplate_Free_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free OB Template.
+        /// </summary>
+        internal static string OBTemplate_Free_Title {
+            get {
+                return ResourceManager.GetString("OBTemplate_Free_Title", resourceCulture);
             }
         }
         
@@ -3846,7 +3963,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while saving: {0}.
+        ///   Looks up a localized string similar to ⚠️ Error while saving: {0}.
         /// </summary>
         internal static string OnCall_Save_Exception {
             get {
@@ -4719,7 +4836,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error saving shift: {0}.
+        ///   Looks up a localized string similar to ⚠️ Error saving shift: {0}.
         /// </summary>
         internal static string RegularShift_Error_Saving {
             get {
@@ -4845,6 +4962,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Replace Template.
+        /// </summary>
+        internal static string ReplaceFreeTemplate {
+            get {
+                return ResourceManager.GetString("ReplaceFreeTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes, replace.
         /// </summary>
         internal static string ReplaceShift_Confirm {
@@ -4859,6 +4985,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string ReplaceShift_Title {
             get {
                 return ResourceManager.GetString("ReplaceShift_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace with Free Template.
+        /// </summary>
+        internal static string ReplaceWithFreeTemplate {
+            get {
+                return ResourceManager.GetString("ReplaceWithFreeTemplate", resourceCulture);
             }
         }
         
@@ -5295,7 +5430,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to ❌ Error.
         /// </summary>
         internal static string Save_Error_Title {
             get {
@@ -5547,7 +5682,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error registering sick day: {0}.
+        ///   Looks up a localized string similar to ⚠️ Error registering sick day: {0}.
         /// </summary>
         internal static string Shift_SickDayError {
             get {
@@ -5997,7 +6132,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error during calculation: {0}.
+        ///   Looks up a localized string similar to ⚠️ Error during calculation: {0}.
         /// </summary>
         internal static string Sick_ErrorCalculation {
             get {
@@ -6168,7 +6303,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calculation error occurred.
+        ///   Looks up a localized string similar to ⚠️ Calculation error occurred.
         /// </summary>
         internal static string SickLeave_CalcError {
             get {
@@ -6470,6 +6605,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ✅ Done!.
+        /// </summary>
+        internal static string SuccessTitle {
+            get {
+                return ResourceManager.GetString("SuccessTitle", resourceCulture);
             }
         }
         
@@ -6853,7 +6997,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while saving: {0}.
+        ///   Looks up a localized string similar to ⚠️ Error while saving: {0}.
         /// </summary>
         internal static string Vacation_Save_ErrorPrefix {
             get {
@@ -6889,7 +7033,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected error occurred.
+        ///   Looks up a localized string similar to ❌ Unexpected error occurred.
         /// </summary>
         internal static string Vacation_Save_UnexpectedErrorMessage {
             get {
@@ -7249,7 +7393,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while saving: {0}.
+        ///   Looks up a localized string similar to ❌ Error while saving: {0}.
         /// </summary>
         internal static string WorkShift_SaveFailed {
             get {

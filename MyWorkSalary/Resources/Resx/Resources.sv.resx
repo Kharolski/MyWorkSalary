@@ -385,7 +385,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Semestern har raderats</value>
   </data>
   <data name="DeleteError" xml:space="preserve">
-    <value>Fel</value>
+    <value>❌ Fel</value>
   </data>
   <data name="DeleteErrorMessage" xml:space="preserve">
     <value>Kunde inte radera passet: {0}</value>
@@ -437,7 +437,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Är du säker på att du vill radera denna semesterdag från {0}?</value>
   </data>
   <data name="Dialog_ErrorTitle" xml:space="preserve">
-    <value>Fel</value>
+    <value>❌ Fel</value>
   </data>
   <data name="Dialog_JobSavedMessage" xml:space="preserve">
     <value>Jobbet har sparats!</value>
@@ -476,7 +476,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Kunde inte uppdatera jobbet: {0}</value>
   </data>
   <data name="EditJob_ErrorTitle" xml:space="preserve">
-    <value>Fel</value>
+    <value>❌ Fel</value>
   </data>
   <data name="EditJob_Header" xml:space="preserve">
     <value> ✏️  Redigera jobb</value>
@@ -512,7 +512,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>❌ Fel</value>
   </data>
   <data name="ErrorTitle" xml:space="preserve">
-    <value>Fel</value>
+    <value>❌ Fel</value>
   </data>
   <data name="Error_CheckConflicts" xml:space="preserve">
     <value>Kunde inte kontrollera konflikter: {0}</value>
@@ -581,7 +581,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>timmar kompledighet</value>
   </data>
   <data name="HoursDisplay_Error" xml:space="preserve">
-    <value>Fel</value>
+    <value>❌ Fel</value>
   </data>
   <data name="HoursDisplay_Loading" xml:space="preserve">
     <value>...	</value>
@@ -872,7 +872,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Kontrollera att alla obligatoriska fält är ifyllda</value>
   </data>
   <data name="OnCall_Save_Exception" xml:space="preserve">
-    <value>Fel vid sparande: {0}</value>
+    <value>⚠️ Fel vid sparande: {0}</value>
   </data>
   <data name="OnCall_StandbyLabel" xml:space="preserve">
     <value>Jour</value>
@@ -923,7 +923,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Totalt: {0:F1} timmar</value>
   </data>
   <data name="RegularShift_Error_Saving" xml:space="preserve">
-    <value>Fel vid sparande av pass: {0}</value>
+    <value>⚠️ Fel vid sparande av pass: {0}</value>
   </data>
   <data name="RegularShift_ExtraShift" xml:space="preserve">
     <value>Extra pass</value>
@@ -1013,7 +1013,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Kunde inte spara OB-regel: {0}</value>
   </data>
   <data name="Save_Error_Title" xml:space="preserve">
-    <value>Fel</value>
+    <value>❌ Fel</value>
   </data>
   <data name="Save_Success_Message" xml:space="preserve">
     <value>OB-regel '{0}' har sparats.</value>
@@ -1163,7 +1163,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>📊 Kunde inte ladda semesterinfo</value>
   </data>
   <data name="Vacation_Save_ErrorPrefix" xml:space="preserve">
-    <value>Fel vid sparande: {0}</value>
+    <value>⚠️ Fel vid sparande: {0}</value>
   </data>
   <data name="Vacation_Save_ErrorTitle" xml:space="preserve">
     <value>❌ Kan inte spara</value>
@@ -1175,7 +1175,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>❌ Fel</value>
   </data>
   <data name="Vacation_Save_UnexpectedErrorMessage" xml:space="preserve">
-    <value>Oväntat fel inträffade</value>
+    <value>❌ Oväntat fel inträffade</value>
   </data>
   <data name="Vacation_SectionTitle" xml:space="preserve">
     <value>🏖️ Semesterinformation</value>
@@ -1355,7 +1355,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>✅ Ingen karensavdrag</value>
   </data>
   <data name="SickLeave_CalcError" xml:space="preserve">
-    <value>Fel vid beräkning</value>
+    <value>⚠️ Fel vid beräkning</value>
   </data>
   <data name="SickLeave_Save_SuccessTitle" xml:space="preserve">
     <value>✅ Sparat!</value>
@@ -1421,7 +1421,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Ingen rätt till sjuklön för denna dag</value>
   </data>
   <data name="Sick_ErrorCalculation" xml:space="preserve">
-    <value>Fel vid beräkning: {0}</value>
+    <value>⚠️ Fel vid beräkning: {0}</value>
   </data>
   <data name="Sick_PartialNotes" xml:space="preserve">
     <value>Delvis sjuk - Jobbat {0:F1}t, sjuk {1:F1}t</value>
@@ -1484,7 +1484,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Sjukdag registrerad</value>
   </data>
   <data name="Shift_SickDayError" xml:space="preserve">
-    <value>Fel vid registrering av sjukdag: {0}</value>
+    <value>⚠️ Fel vid registrering av sjukdag: {0}</value>
   </data>
   <data name="Conflict_WorkDuringLeave_Title" xml:space="preserve">
     <value>Du har ett arbetspass under din {0}:</value>
@@ -1547,13 +1547,13 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Inget jobb angivet</value>
   </data>
   <data name="Error_SaveFailed" xml:space="preserve">
-    <value>Fel vid sparande: {0}</value>
+    <value>⚠️ Fel vid sparande: {0}</value>
   </data>
   <data name="Error_ValidationFailed" xml:space="preserve">
-    <value>Fel vid validering: {0}</value>
+    <value>⚠️ Fel vid validering: {0}</value>
   </data>
   <data name="Error_DateValidationFailed" xml:space="preserve">
-    <value>Fel vid validering av datum</value>
+    <value>⚠️ Fel vid validering av datum</value>
   </data>
   <data name="Vacation_NotAllowed_Temporary" xml:space="preserve">
     <value>Timanställd kan inte ha betald semester</value>
@@ -1735,7 +1735,7 @@ Arbetspasset har sparats!</value>
     <value>✅ Semester på {0} dagar har sparats!</value>
   </data>
   <data name="WorkShift_SaveFailed" xml:space="preserve">
-    <value>Fel vid sparande: {0}</value>
+    <value>❌ Fel vid sparande: {0}</value>
   </data>
   <data name="SickLeave_Hours_Zero" xml:space="preserve">
     <value>0t</value>
@@ -1777,7 +1777,7 @@ Arbetspasset har sparats!</value>
     <value>NattOB för {0}</value>
   </data>
   <data name="ErrorCreatingOBEvents" xml:space="preserve">
-    <value>Fel vid skapande av OB-händelser</value>
+    <value>❌ Fel vid skapande av OB-händelser</value>
   </data>
   <data name="DayStart" xml:space="preserve">
     <value>☀️ Dag pass startas</value>
@@ -2540,5 +2540,53 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="Holiday_AutoDetected" xml:space="preserve">
     <value>Automatiskt identifierad</value>
+  </data>
+  <data name="OBTemplate_Free_Title" xml:space="preserve">
+    <value>Gratis OB-mall</value>
+  </data>
+  <data name="OBTemplate_Free_Desc" xml:space="preserve">
+    <value>Grundläggande OB-tillägg för kväll, natt och helg</value>
+  </data>
+  <data name="OBRule_Free_Evening_Name" xml:space="preserve">
+    <value>Kvälls-OB</value>
+  </data>
+  <data name="OBRule_Free_WeekdayNight_Name" xml:space="preserve">
+    <value>Vardags-natt</value>
+  </data>
+  <data name="OBRule_Free_WeekendDay_Name" xml:space="preserve">
+    <value>Helg-dag</value>
+  </data>
+  <data name="OBRule_Free_WeekendNight_Name" xml:space="preserve">
+    <value>Helg-natt</value>
+  </data>
+  <data name="SuccessTitle" xml:space="preserve">
+    <value>✅ Klart!</value>
+  </data>
+  <data name="FreeOBTemplateAddedMessage" xml:space="preserve">
+    <value>Gratis OB-mall har lagts till. Du kan nu ändra tider och taxa för varje regel.</value>
+  </data>
+  <data name="FreeOBTemplateFailedMessage" xml:space="preserve">
+    <value>Kunde inte lägga till OB-mallen. Försök igen.</value>
+  </data>
+  <data name="AddFreeOBTemplate" xml:space="preserve">
+    <value>Lägg till gratis mall</value>
+  </data>
+  <data name="ReplaceWithFreeTemplate" xml:space="preserve">
+    <value>Ersätt med gratis mall</value>
+  </data>
+  <data name="ReplaceFreeTemplate" xml:space="preserve">
+    <value>Ersätt mall</value>
+  </data>
+  <data name="OBLocked_Title" xml:space="preserve">
+    <value>🔒 OB-inställningar låsta</value>
+  </data>
+  <data name="OBLocked_Description" xml:space="preserve">
+    <value>Uppgradera till premium för att få tillgång till avancerade OB-funktioner som röda dagar, storhelgar och fackliga mallar.</value>
+  </data>
+  <data name="OBDaysLocked_Title" xml:space="preserve">
+    <value>🔒 Dag-inställningar låsta</value>
+  </data>
+  <data name="OBDaysLocked_Description" xml:space="preserve">
+    <value>Uppgradera till premium för att välja vilka dagar OB-regeln ska gälla för.</value>
   </data>
 </root>

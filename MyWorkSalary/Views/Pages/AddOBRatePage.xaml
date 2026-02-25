@@ -81,7 +81,7 @@
             </Border>
 
             <!-- Veckodagar -->
-            <Border Style="{StaticResource CardBorder}">
+            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsPremiumOrSubscriber}">
                 <VerticalStackLayout Spacing="15">
                     <Label Text="{x:Static resx:Resources.OBRule_Days_Label}"
                            Style="{StaticResource FieldTitleLabel}" />
@@ -184,6 +184,25 @@
 
                     <Label Text="{Binding DaysError}" TextColor="Red" FontSize="12"
                             IsVisible="{Binding DaysError, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Dag-sektion låst för gratisanvändare -->
+            <Border Style="{StaticResource InfoBorder}" IsVisible="{Binding IsFreeUser}">
+                <VerticalStackLayout Padding="15" Spacing="10">
+                    <Label Text="{x:Static resx:Resources.OBDaysLocked_Title}" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" />
+                    <Label Text="{x:Static resx:Resources.OBDaysLocked_Description}"
+                           FontSize="14" 
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}"
+                           HorizontalTextAlignment="Center" />
+
+                    <Button Text="{x:Static resx:Resources.ViewUpgradeOptions}"
+                            Command="{Binding OpenPremiumPageCommand}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Border>
 

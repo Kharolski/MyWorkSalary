@@ -6,6 +6,69 @@ namespace MyWorkSalary.Services.Templates
 {
     public static class TemplateFactory
     {
+        #region Free Template
+        public static OBRateTemplate CreateFreeOBTemplate()
+        {
+            return new OBRateTemplate
+            {
+                Title = LocalizationHelper.Translate("OBTemplate_Free_Title"),
+                Description = LocalizationHelper.Translate("OBTemplate_Free_Desc"),
+                Rules = new()
+        {
+            // Kvälls-OB (vardagar)
+            new OBRateTemplateRule
+            {
+                Name = LocalizationHelper.Translate("OBRule_Free_Evening_Name"),
+                StartTime = new TimeSpan(19, 0, 0),
+                EndTime = new TimeSpan(23, 0, 0),
+                RatePerHour = 40.00m,
+                Priority = 5,
+                Monday = true, Tuesday = true, Wednesday = true,
+                Thursday = true, Friday = true,
+                Category = OBCategory.Evening
+            },
+
+            // Vardags-natt OB
+            new OBRateTemplateRule
+            {
+                Name = LocalizationHelper.Translate("OBRule_Free_WeekdayNight_Name"),
+                StartTime = new TimeSpan(23, 0, 0),
+                EndTime = new TimeSpan(6, 0, 0),
+                RatePerHour = 70.00m,
+                Priority = 10,
+                Monday = true, Tuesday = true, Wednesday = true,
+                Thursday = true, Friday = true,
+                Category = OBCategory.Night
+            },
+
+            // Helg-dag OB
+            new OBRateTemplateRule
+            {
+                Name = LocalizationHelper.Translate("OBRule_Free_WeekendDay_Name"),
+                StartTime = new TimeSpan(6, 0, 0),
+                EndTime = new TimeSpan(22, 0, 0),
+                RatePerHour = 100.00m,
+                Priority = 15,
+                Saturday = true, Sunday = true,
+                Category = OBCategory.Day
+            },
+
+            // Helg-natt OB
+            new OBRateTemplateRule
+            {
+                Name = LocalizationHelper.Translate("OBRule_Free_WeekendNight_Name"),
+                StartTime = new TimeSpan(22, 0, 0),
+                EndTime = new TimeSpan(6, 0, 0),
+                RatePerHour = 70.00m,
+                Priority = 20,
+                Saturday = true, Sunday = true,
+                Category = OBCategory.Night
+            }
+        }
+            };
+        }
+        #endregion
+
         #region Standard Municipality
         public static OBRateTemplate CreateKommunalTemplate()
         {
