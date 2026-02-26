@@ -4,7 +4,8 @@ using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Reports;
 using MyWorkSalary.Services.Handlers;
 using MyWorkSalary.Services.Interfaces;
- using System.Globalization;
+using MyWorkSalary.Services.Premium;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
@@ -15,6 +16,7 @@ namespace MyWorkSalary.ViewModels
         private readonly IDashboardService _dashboardService;
         private readonly IJobProfileRepository _jobProfileRepository;
         private readonly SalaryStatsHandler _salaryHandler;
+        private readonly AdService _adService;
 
         private JobProfile _activeJob;
         private SalaryStats _currentStats;
@@ -435,11 +437,13 @@ namespace MyWorkSalary.ViewModels
         #region Constructor
         public SalaryPageViewModel(IDashboardService dashboardService,
             IJobProfileRepository jobProfileRepository,
-            SalaryStatsHandler salaryStatsHandler)
+            SalaryStatsHandler salaryStatsHandler,
+            AdService adService)
         {
             _dashboardService = dashboardService;
             _jobProfileRepository = jobProfileRepository;
             _salaryHandler = salaryStatsHandler;
+            _adService = adService;
 
             _selectedMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
@@ -455,7 +459,9 @@ namespace MyWorkSalary.ViewModels
                 return;
 
             RefreshStats();
-
+            
+            // 🎯 Visa banner när data laddas
+            _adService.ShowBanner();
         }
 
         private void NotifyStatsBindingsChanged()

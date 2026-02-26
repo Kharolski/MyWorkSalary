@@ -24,6 +24,7 @@ namespace MyWorkSalary.ViewModels
         private readonly IOnCallRecalcService _onCallRecalcService;
         private readonly IFeatureLockService _featureLockService;
         private readonly IPremiumService _premiumService;
+        private readonly AdService _adService;
 
         private bool _isDarkTheme;
         private LanguageOption _selectedLanguage;
@@ -35,13 +36,15 @@ namespace MyWorkSalary.ViewModels
             IOBEventService obEventService, 
             IOnCallRecalcService onCallRecalcService,
             IFeatureLockService featureLockService,
-            IPremiumService premiumService)
+            IPremiumService premiumService,
+            AdService adService)
         {
             _databaseService = databaseService;
             _obEventService = obEventService;
             _onCallRecalcService = onCallRecalcService;
             _featureLockService = featureLockService;
             _premiumService = premiumService;
+            _adService = adService;
 
             TranslationManager.Instance.CultureChanged += OnCultureChanged;
 
@@ -62,6 +65,9 @@ namespace MyWorkSalary.ViewModels
             LoadJobs();
             LoadOBRates();
             LoadAppSettings();
+            
+            // Visa banner när settings laddas
+            _adService.ShowBanner();
         }
         #endregion
 
@@ -237,6 +243,9 @@ namespace MyWorkSalary.ViewModels
         public void RefreshActiveJob()
         {
             LoadJobs();
+            
+            // Visa banner när settings uppdateras (AdService hanterar premium-kontroll)
+            _adService.ShowBanner();
         }
 
         private async void OnChangeActiveJob(JobProfile selectedJob)

@@ -83,6 +83,8 @@ namespace MyWorkSalary
 
             builder.Services.AddTransient<IPremiumService, PremiumService>();
             builder.Services.AddSingleton<IFeatureLockService, FeatureLockService>();
+            builder.Services.AddSingleton<Services.Premium.AdService>(provider => 
+                new Services.Premium.AdService(provider.GetRequiredService<IPremiumService>()));
 
             // === HANDLERS ===
             builder.Services.AddTransient<ShiftTypeHandler>();
@@ -92,8 +94,20 @@ namespace MyWorkSalary
             builder.Services.AddTransient<SalaryStatsHandler>();
 
             // === VIEWMODELS ===
-            builder.Services.AddTransient<HomeViewModel>();
-            builder.Services.AddTransient<SettingsViewModel>();
+            builder.Services.AddTransient<HomeViewModel>(provider => 
+                new HomeViewModel(
+                    provider.GetRequiredService<DatabaseService>(),
+                    provider.GetRequiredService<IDashboardService>(),
+                    provider.GetRequiredService<Services.Premium.AdService>(),
+                    provider.GetRequiredService<IPremiumService>()));
+            builder.Services.AddTransient<SettingsViewModel>(provider =>
+                new SettingsViewModel(
+                    provider.GetRequiredService<DatabaseService>(),
+                    provider.GetRequiredService<IOBEventService>(),
+                    provider.GetRequiredService<IOnCallRecalcService>(),
+                    provider.GetRequiredService<IFeatureLockService>(),
+                    provider.GetRequiredService<IPremiumService>(),
+                    provider.GetRequiredService<Services.Premium.AdService>()));
             builder.Services.AddTransient<AddJobViewModel>();
             builder.Services.AddTransient<EditJobViewModel>();
             

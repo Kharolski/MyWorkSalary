@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
+using MyWorkSalary.Services.Premium;
 
 namespace MyWorkSalary.ViewModels
 {
@@ -16,6 +17,8 @@ namespace MyWorkSalary.ViewModels
         #region Private Fields
         private readonly DatabaseService _databaseService;
         private readonly IDashboardService _dashboardService;
+        private readonly AdService _adService;
+        private readonly IPremiumService _premiumService;
         private JobProfile _activeJob;
         private bool _hasActiveJob;
         private decimal _monthlyHours;
@@ -33,7 +36,7 @@ namespace MyWorkSalary.ViewModels
         #endregion
 
         #region Constructor
-        public HomeViewModel(DatabaseService databaseService, IDashboardService dashboardService)
+        public HomeViewModel(DatabaseService databaseService, IDashboardService dashboardService, AdService adService, IPremiumService premiumService)
         {
             _databaseService = databaseService;
             _dashboardService = dashboardService;
@@ -50,6 +53,8 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged(nameof(RecentActivitiesHeight));
             };
 
+            _adService = adService;
+            _premiumService = premiumService;
         }
         #endregion
 
@@ -417,6 +422,7 @@ namespace MyWorkSalary.ViewModels
         public void RefreshData()
         {
             LoadDashboardData();
+            _adService.ShowBanner();  // 🎯 Visa banner när data laddas
         }
 
         // Command handlers

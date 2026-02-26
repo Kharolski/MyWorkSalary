@@ -4,6 +4,7 @@ using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Premium;
 using MyWorkSalary.Views.Pages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -26,6 +27,7 @@ namespace MyWorkSalary.ViewModels
         private readonly ISickLeaveRepository _sickLeaveRepository;
         private readonly IOnCallRepository _onCallRepository;
         private readonly IOBEventRepository _obEventRepository;
+        private readonly AdService _adService;
 
         private JobProfile _activeJob;
         private ObservableCollection<WorkShift> _workShifts;
@@ -38,7 +40,8 @@ namespace MyWorkSalary.ViewModels
             IVacationLeaveRepository vacationLeaveRepository,
             ISickLeaveRepository sickLeaveRepository,
             IOnCallRepository onCallRepository,
-            IOBEventRepository obEventRepository)
+            IOBEventRepository obEventRepository,
+            AdService adService)
         {
             _jobProfileRepository = jobProfileRepository;
             _workShiftRepository = workShiftRepository;
@@ -46,6 +49,7 @@ namespace MyWorkSalary.ViewModels
             _sickLeaveRepository = sickLeaveRepository;
             _onCallRepository = onCallRepository;
             _obEventRepository = obEventRepository;
+            _adService = adService;
 
             // Commands
             AddShiftCommand = new Command(OnAddShift);
@@ -152,6 +156,9 @@ namespace MyWorkSalary.ViewModels
             {
                 GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>();
             }
+            
+            // 🎯 Visa banner när data laddas
+            _adService.ShowBanner();
         }
 
         private async void OnAddShift()

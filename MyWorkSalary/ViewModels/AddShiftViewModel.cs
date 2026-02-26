@@ -17,6 +17,7 @@ namespace MyWorkSalary.ViewModels
         private readonly IWorkShiftRepository _workShiftRepository;
 
         private readonly IPremiumService _premiumService;
+        private readonly AdService _adService;
 
         private readonly SickLeaveHandler _sickLeaveHandler;
 
@@ -41,6 +42,7 @@ namespace MyWorkSalary.ViewModels
             IOBRateRepository obRateRepository,
             IOBEventService obEventService,
             IPremiumService premiumService,
+            AdService adService,
             ShiftTypeHandler shiftTypeHandler,
             SickLeaveHandler sickLeaveHandler,
             SickLeaveViewModel sickLeaveViewModel,
@@ -51,6 +53,7 @@ namespace MyWorkSalary.ViewModels
             _jobProfileRepository = jobProfileRepository;
             _workShiftRepository = workShiftRepository;
             _premiumService = premiumService;
+            _adService = adService;
             _sickLeaveHandler = sickLeaveHandler;
             SickLeaveVM = sickLeaveViewModel;
             OnCallVM = onCallViewModel;
@@ -648,6 +651,9 @@ namespace MyWorkSalary.ViewModels
 
             OnSelectedShiftTypeChanged();
             ValidateAndUpdateCanSave();
+            
+            // 🎯 Visa banner när sidan öppnas
+            _adService.ShowBanner();
         }
         public void RefreshActiveJobFromDb()
         {

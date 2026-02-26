@@ -7,6 +7,9 @@
         android:label="Salary Check"
         android:debuggable="true"
     >
+        <!-- AdMob App ID -->
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7524471800705106~7674089111"/>
     </application>
     
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

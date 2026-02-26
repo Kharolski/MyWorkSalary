@@ -17,8 +17,8 @@ public class PremiumService : IPremiumService
     #endregion
 
     #region Properties
-    public bool IsPremium => Preferences.Get(PremiumKey, false);
-    public bool IsSubscriber => Preferences.Get(SubscriptionKey, false);
+    public bool IsPremium => Preferences.Get(PremiumKey, false); // 🎯 Ändra till true för att testa premium
+    public bool IsSubscriber => Preferences.Get(SubscriptionKey, false); // 🎯 Ändra till true för att testa prenumeration
     public bool IsFreeUser => !IsPremium && !IsSubscriber;
 
     public DateTime? SubscriptionStartDate => Preferences.ContainsKey(SubscriptionStartKey) 
