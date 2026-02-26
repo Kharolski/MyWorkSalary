@@ -422,7 +422,7 @@ namespace MyWorkSalary.ViewModels
         public void RefreshData()
         {
             LoadDashboardData();
-            _adService.ShowBanner();  // 🎯 Visa banner när data laddas
+            _adService.ShowBanner();  // Visa banner när data laddas
         }
 
         // Command handlers

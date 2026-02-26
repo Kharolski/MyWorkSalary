@@ -18,6 +18,8 @@ using MyWorkSalary.Views;
 using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views.Pages.Templates;
 using MyWorkSalary.Views.Settings;
+using MyWorkSalary.Services.Handlers.Ads;
+using MyWorkSalary.Platforms.Android.Handlers.Ads;
 
 namespace MyWorkSalary
 {
@@ -140,6 +142,13 @@ namespace MyWorkSalary
 
             // Premium
             builder.Services.AddTransient<PremiumInfoPage>();
+
+#if ANDROID
+builder.ConfigureMauiHandlers(handlers =>
+{
+    handlers.AddHandler(typeof(AdBannerView), typeof(AdBannerViewHandler));
+});
+#endif
 
 #if DEBUG
             builder.Logging.AddDebug();

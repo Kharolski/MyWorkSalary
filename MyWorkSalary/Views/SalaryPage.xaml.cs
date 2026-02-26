@@ -4,6 +4,8 @@ namespace MyWorkSalary.Views
 {
     public partial class SalaryPage : ContentPage
     {
+        private bool _isInitialized = false;
+
         public SalaryPage(SalaryPageViewModel viewModel)
         {
             InitializeComponent();
@@ -20,6 +22,8 @@ namespace MyWorkSalary.Views
                 vm.ResetToCurrentMonth(); 
                 await vm.LoadData(); // Hämtar ActiveJob + beräknar CurrentStats
             }
+
+            _isInitialized = true;
         }
 
         private async Task SlideMonthAsync(int direction)
@@ -91,5 +95,10 @@ namespace MyWorkSalary.Views
             PrevMonthTapped(sender, EventArgs.Empty);
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            _isInitialized = false;
+        }
     }
 }
