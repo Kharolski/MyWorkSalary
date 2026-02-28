@@ -2,10 +2,12 @@
              x:Name="SettingsPageRef"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             xmlns:components="clr-namespace:MyWorkSalary.Views.Components"
              x:Class="MyWorkSalary.Views.Settings.JobSettingsPage"
              Title="{resx:Translate JobSettings_Title}">
-
-    <ScrollView>
+    
+    <Grid>
+        <ScrollView IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
         <VerticalStackLayout Spacing="20" Padding="20">
 
             <!-- OB-Inställningar -->
@@ -367,4 +369,21 @@
         </VerticalStackLayout>
     </ScrollView>
 
+        <!-- Loading Overlay (under ad banner) -->
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1A1A1A}">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
+                
+                <!-- Skeleton cards for immediate feedback -->
+                <components:SkeletonCard />
+                <components:SkeletonCard />
+                <components:SkeletonCard />
+                
+                <!-- Loading indicator at bottom -->
+                <components:LoadingIndicator />
+            </VerticalStackLayout>
+        </Grid>
+        
+        <!-- Ad Banner Layer (överst, alltid synlig) -->
+        <Grid x:Name="AdBannerContainer" VerticalOptions="Start" HorizontalOptions="Fill" HeightRequest="50" />
+    </Grid>
 </ContentPage>

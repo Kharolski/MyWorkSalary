@@ -12,19 +12,30 @@ namespace MyWorkSalary.Views.Pages
             BindingContext = viewModel;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            if (BindingContext is AddShiftViewModel vm)
-                vm.OnPageAppearing();
-
-            if (RegularShiftForm.BindingContext is RegularShiftViewModel shiftVm)
+            try
             {
-                shiftVm.RefreshPremiumState();
-                shiftVm.Reset();
+                if (BindingContext is AddShiftViewModel viewModel)
+                {
+                    await viewModel.LoadDataAsync();
+                }
+
+                if (RegularShiftForm.BindingContext is RegularShiftViewModel shiftVm)
+                {
+                    shiftVm.RefreshPremiumState();
+                    shiftVm.Reset();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Fallback - visa error message
+                await DisplayAlert("Fel", "Kunde inte ladda skift-formulär. Försök igen.", "OK");
             }
 
+            // Fixar ett känt MAUI/Shell-problem där sidan som navigeras tillbaka till
             NavigationHelper.UseNoAnimationBackButton(this);
         }
     }

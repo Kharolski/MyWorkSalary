@@ -3,50 +3,53 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             xmlns:components="clr-namespace:MyWorkSalary.Views.Components"
              x:Class="MyWorkSalary.Views.ShiftPage"
              Title="{resx:Translate ShiftPageTitle}">
     
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20">
+    <Grid>
+        <!-- Main Content -->
+        <ScrollView IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+            <VerticalStackLayout Spacing="20" Padding="20">
 
-            <!-- Header med aktivt jobb -->
-            <Border Style="{StaticResource CardBorder}">
-                <VerticalStackLayout Spacing="5">
-                    <Grid ColumnDefinitions="Auto,*">
-                        <Label Grid.Column="0" 
-                               Text="{resx:Translate ActiveJobLabel}"
-                               Style="{StaticResource ActiveJobTitleLabel}"
+                <!-- Header med aktivt jobb -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="5">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Label Grid.Column="0" 
+                                   Text="{resx:Translate ActiveJobLabel}"
+                                   Style="{StaticResource ActiveJobTitleLabel}"
+                                   TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
+                                                Dark={StaticResource ActiveJobDark}}"/>
+                            <Label Grid.Column="1" 
+                                   Text="{Binding ActiveJobTitle}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
+                                                               Dark={StaticResource ActiveJobDark}}" />
+                        </Grid>
+
+                        <!-- Företag och lön under i separata rader -->
+                        <Label Text="{Binding Workplace}" FontSize="14" 
+                               Style="{StaticResource SecondaryLabel}" Padding="23,0,0,0"
                                TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
-                                            Dark={StaticResource ActiveJobDark}}"/>
-                        <Label Grid.Column="1" 
-                               Text="{Binding ActiveJobTitle}"
-                               FontSize="18"
-                               FontAttributes="Bold"
-                               TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
-                                                           Dark={StaticResource ActiveJobDark}}" />
-                    </Grid>
+                                Dark={StaticResource ActiveJobDark}}"/>
 
-                    <!-- Företag och lön under i separata rader -->
-                    <Label Text="{Binding Workplace}" FontSize="14" 
-                           Style="{StaticResource SecondaryLabel}" Padding="23,0,0,0"
-                           TextColor="{AppThemeBinding Light={StaticResource ActiveJobLight},
-                            Dark={StaticResource ActiveJobDark}}"/>
+                        <Label Text="{Binding SalaryDisplayText}" Padding="23,0,0,0" FontSize="12" Style="{StaticResource SecondaryLabel}" />
+                    </VerticalStackLayout>
+                </Border>
 
-                    <Label Text="{Binding SalaryDisplayText}" Padding="23,0,0,0" FontSize="12" Style="{StaticResource SecondaryLabel}" />
-                </VerticalStackLayout>
-            </Border>
+                <!-- Lägg till pass knapp -->
+                <Button Text="{resx:Translate AddShiftButton}"
+                        Command="{Binding AddShiftCommand}"
+                        Style="{StaticResource ButtonAdd}"
+                        Padding="0,15"
+                        FontSize="16" />
 
-            <!-- Lägg till pass knapp -->
-            <Button Text="{resx:Translate AddShiftButton}"
-                    Command="{Binding AddShiftCommand}"
-                    Style="{StaticResource ButtonAdd}"
-                    Padding="0,15"
-                    FontSize="16" />
-
-            <!-- Lista med pass -->
-            <Label Text="{resx:Translate MyShiftsHeader}"
-                   Style="{StaticResource SectionHeaderLabel}"
-                   Margin="0,10,0,0" />
+                <!-- Lista med pass -->
+                <Label Text="{resx:Translate MyShiftsHeader}"
+                       Style="{StaticResource SectionHeaderLabel}"
+                       Margin="0,10,0,0" />
 
             <!-- Meddelande när inga pass finns -->
             <Border Style="{StaticResource EmptyStateBorder}"
@@ -174,4 +177,24 @@
             </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
+
+        <!-- Loading Overlay (under ad banner) -->
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1A1A1A}">
+            <Grid HorizontalOptions="Center" VerticalOptions="Center">
+
+                <!-- Skeleton cards -->
+                <VerticalStackLayout Spacing="20">
+                    <components:SkeletonCard />
+                    <components:SkeletonCard />
+                    <components:SkeletonCard />
+                </VerticalStackLayout>
+
+                <!-- Loading indicator centered -->
+                <components:LoadingIndicator HorizontalOptions="Center" VerticalOptions="Center" />
+            </Grid>
+        </Grid>
+
+        <!-- Ad Banner Layer (överst, alltid synlig) -->
+        <Grid x:Name="AdBannerContainer" VerticalOptions="Start" HorizontalOptions="Fill" HeightRequest="50" />
+    </Grid>
 </ContentPage>

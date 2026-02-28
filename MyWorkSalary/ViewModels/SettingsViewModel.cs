@@ -8,6 +8,7 @@ using MyWorkSalary.Services.Templates;
 using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views.Settings;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
@@ -201,7 +202,19 @@ namespace MyWorkSalary.ViewModels
 
         public ICommand OpenJobSettingsCommand => new Command(async () =>
         {
-            await Shell.Current.GoToAsync(nameof(JobSettingsPage));
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(JobSettingsPage));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 Navigate to JobSettingsPage Error: {ex}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         });
         public ICommand OpenAboutAppCommand => new Command(async () =>
         {
@@ -238,6 +251,61 @@ namespace MyWorkSalary.ViewModels
                 return;
 
             _databaseService.JobProfiles.SaveJobProfile(ActiveJob);
+        }
+
+        public async Task LoadDataAsync()
+        {
+            try
+            {
+                IsBusy = true;
+
+                // Ladda data i bakgrunden för snabbare UI
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        // Ladda jobb
+                        var jobs = _databaseService.JobProfiles.GetJobProfiles();
+                        var activeJob = jobs.FirstOrDefault(j => j.IsActive);
+
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            AllJobs = new ObservableCollection<JobProfile>(jobs);
+                            ActiveJob = activeJob;
+                        });
+
+                        // Ladda andra inställningar
+                        LoadOBRates();
+                        LoadAppSettings();
+                    }
+                    catch (Exception dataEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"🚨 SettingsPage data loading error: {dataEx}");
+                        throw; // Kasta vidare för att hanteras i yttre catch
+                    }
+                });
+
+                // Visa banner efter att data har laddats (om inte premium)
+                try
+                {
+                    _adService.ShowBanner();
+                }
+                catch (Exception adEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"🚨 SettingsPage ad service error: {adEx}");
+                    // Fortsätt även om banner misslyckas
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 SettingsPage LoadDataAsync Error: {ex}");
+                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
+                throw; // Kasta vidare för att hanteras i SettingsPage
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public void RefreshActiveJob()

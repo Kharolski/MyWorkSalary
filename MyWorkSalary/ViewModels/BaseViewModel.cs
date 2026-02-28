@@ -6,6 +6,13 @@ namespace MyWorkSalary.ViewModels
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
+        private bool _isBusy;
+        public bool IsBusy 
+        { 
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         // Datum UK/EU format

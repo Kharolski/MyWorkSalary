@@ -3,12 +3,13 @@ using MyWorkSalary.Models;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Services;
 using MyWorkSalary.Services.Interfaces;
+using MyWorkSalary.Services.Premium;
+using MyWorkSalary.Views;
 using MyWorkSalary.Views.Pages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
-using MyWorkSalary.Services.Premium;
 
 namespace MyWorkSalary.ViewModels
 {
@@ -55,6 +56,7 @@ namespace MyWorkSalary.ViewModels
 
             _adService = adService;
             _premiumService = premiumService;
+
         }
         #endregion
 
@@ -419,10 +421,58 @@ namespace MyWorkSalary.ViewModels
             }
         }
 
+        public async Task RefreshDataAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                
+                // Ladda data i bakgrunden för snabbare UI
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        LoadActiveJob();
+                        if (HasActiveJob)
+                        {
+                            LoadMonthlyStats();
+                            LoadRecentActivities();
+                            LoadFlexTimeData();
+                        }
+                    }
+                    catch (Exception dataEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"🚨 Data loading error: {dataEx}");
+                        throw; // Kasta vidare för att hanteras i yttre catch
+                    }
+                });
+                
+                // Visa banner efter att data har laddats (om inte premium)
+                try
+                {
+                    _adService.ShowBanner();
+                }
+                catch (Exception adEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"🚨 Ad service error: {adEx}");
+                    // Fortsätt även om banner misslyckas
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 RefreshDataAsync Error: {ex}");
+                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
+                throw; // Kasta vidare för att hanteras i HomePage
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         public void RefreshData()
         {
-            LoadDashboardData();
-            _adService.ShowBanner();  // Visa banner när data laddas
+            _ = RefreshDataAsync(); // Fire and forget för bakåtkompatibilitet
         }
 
         // Command handlers
@@ -434,7 +484,20 @@ namespace MyWorkSalary.ViewModels
 
         private async void OnAddShift()
         {
-            await Shell.Current.GoToAsync(nameof(AddShiftPage));
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(AddShiftPage));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 Navigate to AddShiftPage Error: {ex}");
+                // Fortsätt även om navigering misslyckas
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private async void OnViewReports()

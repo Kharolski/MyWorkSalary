@@ -59,6 +59,8 @@ namespace MyWorkSalary.ViewModels
             ShiftToHoursDisplayConverter.SickLeaveDataUpdated += OnSickLeaveDataUpdated;
             ShiftToTimeStringConverter.SickLeaveDescriptionUpdated += OnSickLeaveDescriptionUpdated;
 
+            IsBusy = true;
+
             // Ladda data
             LoadData();
         }
@@ -122,43 +124,92 @@ namespace MyWorkSalary.ViewModels
 
         #region Methods
 
+        public async Task LoadDataAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                
+                // Ladda data i bakgrunden för snabbare UI
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        // Ladda aktivt jobb - ANVÄNDER REPOSITORY METOD
+                        _activeJob = _jobProfileRepository.GetActiveJob();
+                        ActiveJobProvider.Current = _activeJob;
+
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            OnPropertyChanged(nameof(ActiveJobTitle));
+                            OnPropertyChanged(nameof(Workplace));
+                            OnPropertyChanged(nameof(SalaryDisplayText));
+                        });
+
+                        // Ladda pass för aktivt jobb
+                        if (_activeJob != null)
+                        {
+                            // ANVÄNDER REPOSITORY METOD
+                            var shifts = _workShiftRepository.GetWorkShifts(_activeJob.Id)
+                                                           .OrderByDescending(s => s.ShiftDate);
+
+                            // Gruppering med expand/collapse
+                            var grouped = shifts.GroupBy(s => GetMonthYearKey(s))
+                                               .Select(g => new GroupedWorkShift(g.Key, g))
+                                               .ToList();
+
+                            // första månaden Expanded
+                            for (int i = 0; i < grouped.Count; i++)
+                            {
+                                grouped[i].IsExpanded = (i == 0);
+                            }
+
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>(grouped);
+                            });
+                        }
+                        else
+                        {
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>();
+                            });
+                        }
+                    }
+                    catch (Exception dataEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"🚨 ShiftPage data loading error: {dataEx}");
+                        throw; // Kasta vidare för att hanteras i yttre catch
+                    }
+                });
+                
+                // Visa banner efter att data har laddats (om inte premium)
+                try
+                {
+                    _adService.ShowBanner();
+                }
+                catch (Exception adEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"🚨 ShiftPage ad service error: {adEx}");
+                    // Fortsätt även om banner misslyckas
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 ShiftPage LoadDataAsync Error: {ex}");
+                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
+                throw; // Kasta vidare för att hanteras i ShiftPage
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         public void LoadData()
         {
-            // Ladda aktivt jobb - ANVÄNDER REPOSITORY METOD
-            _activeJob = _jobProfileRepository.GetActiveJob();
-            ActiveJobProvider.Current = _activeJob;
-
-            OnPropertyChanged(nameof(ActiveJobTitle));
-            OnPropertyChanged(nameof(Workplace));
-            OnPropertyChanged(nameof(SalaryDisplayText));
-
-            // Ladda pass för aktivt jobb
-            if (_activeJob != null)
-            {
-                // ANVÄNDER REPOSITORY METOD
-                var shifts = _workShiftRepository.GetWorkShifts(_activeJob.Id)
-                                               .OrderByDescending(s => s.ShiftDate);
-
-                // Gruppering med expand/collapse
-                var grouped = shifts.GroupBy(s => GetMonthYearKey(s))
-                                   .Select(g => new GroupedWorkShift(g.Key, g))
-                                   .ToList();
-
-                // första månaden Expanded
-                for (int i = 0; i < grouped.Count; i++)
-                {
-                    grouped[i].IsExpanded = (i == 0);
-                }
-
-                GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>(grouped);
-            }
-            else
-            {
-                GroupedWorkShifts = new ObservableCollection<GroupedWorkShift>();
-            }
-            
-            // 🎯 Visa banner när data laddas
-            _adService.ShowBanner();
+            _ = LoadDataAsync(); // Fire and forget för bakåtkompatibilitet
         }
 
         private async void OnAddShift()
@@ -172,7 +223,20 @@ namespace MyWorkSalary.ViewModels
                 return;
             }
 
-            await Shell.Current.GoToAsync(nameof(AddShiftPage));
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(AddShiftPage));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 Navigate to AddShiftPage Error: {ex}");
+                // Fortsätt även om navigering misslyckas
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         // Hantera radering av alla passtyper

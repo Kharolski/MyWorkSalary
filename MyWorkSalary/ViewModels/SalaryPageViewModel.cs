@@ -447,21 +447,71 @@ namespace MyWorkSalary.ViewModels
 
             _selectedMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
+            IsBusy = true;
+
             _ = LoadData();
         }
         #endregion
 
         #region Private Methods
+        public async Task LoadDataAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                
+                // Ladda data i bakgrunden för snabbare UI
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        // Ladda aktivt jobb
+                        var activeJob = _jobProfileRepository.GetActiveJob();
+                        
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            ActiveJob = activeJob;
+                        });
+
+                        if (!HasActiveJob)
+                            return;
+
+                        // Ladda statistik
+                        RefreshStats();
+                    }
+                    catch (Exception dataEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"🚨 SalaryPage data loading error: {dataEx}");
+                        throw; // Kasta vidare för att hanteras i yttre catch
+                    }
+                });
+                
+                // Visa banner efter att data har laddats (om inte premium)
+                try
+                {
+                    _adService.ShowBanner();
+                }
+                catch (Exception adEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"🚨 SalaryPage ad service error: {adEx}");
+                    // Fortsätt även om banner misslyckas
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 SalaryPage LoadDataAsync Error: {ex}");
+                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
+                throw; // Kasta vidare för att hanteras i SalaryPage
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         public async Task LoadData()
         {
-            ActiveJob = _jobProfileRepository.GetActiveJob();
-            if (!HasActiveJob)
-                return;
-
-            RefreshStats();
-            
-            // 🎯 Visa banner när data laddas
-            _adService.ShowBanner();
+            await LoadDataAsync();
         }
 
         private void NotifyStatsBindingsChanged()

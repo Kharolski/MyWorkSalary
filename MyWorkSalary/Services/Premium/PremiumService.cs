@@ -16,6 +16,11 @@ public class PremiumService : IPremiumService
     private const string SubscriptionEndKey = "SubscriptionEndDate";
     #endregion
 
+    #region Events
+    public event EventHandler<bool> PremiumStatusChanged;
+    public event EventHandler<bool> SubscriptionStatusChanged;
+    #endregion
+
     #region Properties
     public bool IsPremium => Preferences.Get(PremiumKey, false); // 🎯 Ändra till true för att testa premium
     public bool IsSubscriber => Preferences.Get(SubscriptionKey, false); // 🎯 Ändra till true för att testa prenumeration
@@ -33,14 +38,24 @@ public class PremiumService : IPremiumService
     #region Public API
     public void SetPremium(bool value)
     {
+        var oldValue = Preferences.Get(PremiumKey, false);
         Preferences.Set(PremiumKey, value);
 
         // Premium ska aldrig försvinna
         if (value)
             Preferences.Set(SubscriptionKey, false);
+
+        // Trigga event om status ändrades
+        if (oldValue != value)
+        {
+            System.Diagnostics.Debug.WriteLine($"🎯 Premium status changed: {oldValue} -> {value}");
+            PremiumStatusChanged?.Invoke(this, value);
+        }
     }
+    
     public void SetSubscription(bool value)
     {
+        var oldValue = Preferences.Get(SubscriptionKey, false);
         Preferences.Set(SubscriptionKey, value);
 
         if (value){ 
@@ -52,6 +67,13 @@ public class PremiumService : IPremiumService
             // Avsluta prenumeration
             SetSubscriptionEnd(DateTime.UtcNow); 
             ConvertSubscriptionToPremiumIfEligible(); 
+        }
+
+        // Trigga event om status ändrades
+        if (oldValue != value)
+        {
+            System.Diagnostics.Debug.WriteLine($"🎯 Subscription status changed: {oldValue} -> {value}");
+            SubscriptionStatusChanged?.Invoke(this, value);
         }
     }
 

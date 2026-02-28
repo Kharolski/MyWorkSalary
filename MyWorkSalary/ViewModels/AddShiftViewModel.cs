@@ -6,6 +6,7 @@ using MyWorkSalary.Services.Interfaces;
 using MyWorkSalary.Services.Premium;
 using MyWorkSalary.ViewModels.ShiftTypes;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MyWorkSalary.ViewModels
@@ -626,6 +627,84 @@ namespace MyWorkSalary.ViewModels
                     string.Format(LocalizationHelper.Translate("Error_DeleteShift"), ex.Message),
                     LocalizationHelper.Translate("OK"));
                 throw; // Re-throw så att sparandet avbryts
+            }
+        }
+
+        public async Task LoadDataAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                
+                // Ladda data i bakgrunden för snabbare UI
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        // Ladda aktivt jobb
+                        var fresh = _jobProfileRepository.GetActiveJob();
+                        
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            if (fresh == null)
+                                return;
+
+                            // Tvinga uppdatering även om ID är samma (för att settings kan ha ändrats)
+                            ActiveJob = fresh;
+                            OnPropertyChanged(nameof(ActiveJobTitle));
+                        });
+
+                        // Resetta bara första gången sidan öppnas (inte när du kommer tillbaka från Settings)
+                        if (!_hasInitialized)
+                        {
+                            _hasInitialized = true;
+
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                SickLeaveVM.Reset();
+                                OnCallVM.Reset();
+                                VacationVM.Reset();
+                                RegularShiftVM.Reset();
+
+                                SelectedShiftType = ShiftType.Regular;
+                                _selectedShiftTypeDisplay = LocalizationHelper.Translate("ShiftType_Add_Regular");
+                                OnPropertyChanged(nameof(SelectedShiftTypeDisplay));
+                            });
+                        }
+
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            OnSelectedShiftTypeChanged();
+                            ValidateAndUpdateCanSave();
+                        });
+                    }
+                    catch (Exception dataEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"🚨 AddShiftPage data loading error: {dataEx}");
+                        throw; // Kasta vidare för att hanteras i yttre catch
+                    }
+                });
+                
+                // Visa banner efter att data har laddats (om inte premium)
+                try
+                {
+                    _adService.ShowBanner();
+                }
+                catch (Exception adEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"🚨 AddShiftPage ad service error: {adEx}");
+                    // Fortsätt även om banner misslyckas
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 AddShiftPage LoadDataAsync Error: {ex}");
+                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
+                throw; // Kasta vidare för att hanteras i AddShiftPage
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

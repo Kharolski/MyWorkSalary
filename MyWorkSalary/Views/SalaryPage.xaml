@@ -3,628 +3,653 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             xmlns:components="clr-namespace:MyWorkSalary.Views.Components"
              Title="{resx:Translate Salary_PageTitle}">
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20,10">
 
-            <!-- ===================== -->
-            <!-- 🚫 INGET AKTIVT JOBB -->
-            <!-- ===================== -->
-            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob, Converter={StaticResource InvertedBoolConverter}}">
-                <Label Text="{resx:Translate Salary_NoReport_CreateJob}"
-                    Style="{StaticResource SecondaryLabel}"
-                    HorizontalOptions="Center" />
-            </Border>
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="20,10">
 
-            <!-- ===================== -->
-            <!-- 🟦 KORT 1: RESULTAT -->
-            <!-- ===================== -->
-            <Border x:Name="MonthCardFrame" Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob}">
+                <!-- ===================== -->
+                <!-- 🚫 INGET AKTIVT JOBB -->
+                <!-- ===================== -->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob, Converter={StaticResource InvertedBoolConverter}}">
+                    <Label Text="{resx:Translate Salary_NoReport_CreateJob}"
+                Style="{StaticResource SecondaryLabel}"
+                HorizontalOptions="Center" />
+                </Border>
 
-                <!-- Swipe på hela kortet -->
-                <Border.GestureRecognizers>
-                    <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight" />
-                    <SwipeGestureRecognizer Direction="Left"  Swiped="OnSwipedLeft" />
-                </Border.GestureRecognizers>
+                <!-- ===================== -->
+                <!-- 🟦 KORT 1: RESULTAT -->
+                <!-- ===================== -->
+                <Border x:Name="MonthCardFrame" Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob}">
 
-                <Grid ColumnDefinitions="60,*,60" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                    <!-- Swipe på hela kortet -->
+                    <Border.GestureRecognizers>
+                        <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight" />
+                        <SwipeGestureRecognizer Direction="Left"  Swiped="OnSwipedLeft" />
+                    </Border.GestureRecognizers>
 
-                    <!-- Vänster TOUCH-ZON -->
-                    <Grid Grid.Column="0" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Transparent">
+                    <Grid ColumnDefinitions="60,*,60" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
 
-                        <Label Text="◀"
-                               FontSize="22"
+                        <!-- Vänster TOUCH-ZON -->
+                        <Grid Grid.Column="0" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Transparent">
+
+                            <Label Text="◀"
+                           FontSize="22"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Start"
+                           IsEnabled="{Binding CanGoPrevMonth}"
+                           Opacity="{Binding CanGoPrevMonth, Converter={StaticResource BoolToOpacityConverter}}" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="PrevMonthTapped" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <!-- Innehåll i mitten -->
+                        <VerticalStackLayout Grid.Column="1"
+                         Spacing="8"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center">
+
+                            <Label Text="💰" FontSize="28" HorizontalOptions="Center" />
+
+                            <Label Text="{Binding MonthlySalaryText}"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="{StaticResource ActiveJobBlue}" />
+
+                            <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+
+                                <!-- Månad & år -->
+                                <Label Grid.Column="0"
+                               Text="{Binding CurrentMonthYearText}"
+                               FontSize="14"
+                               FontAttributes="Italic"
+                               Opacity="0.7"
                                VerticalOptions="Center"
-                               HorizontalOptions="Start"
-                               IsEnabled="{Binding CanGoPrevMonth}"
-                               Opacity="{Binding CanGoPrevMonth, Converter={StaticResource BoolToOpacityConverter}}" />
+                               TextColor="{AppThemeBinding Light={StaticResource SalaryNeutralLight},
+                                                          Dark={StaticResource SalaryNeutralDark}}" />
 
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="PrevMonthTapped" />
-                        </Grid.GestureRecognizers>
-                    </Grid>
+                                <!-- Badge "NU" -->
+                                <Border Grid.Column="1"
+                                Padding="8,2"
+                                StrokeShape="RoundRectangle 10"
+                                BackgroundColor="{StaticResource ActiveJobBlue}"
+                                IsVisible="{Binding ShowCurrentMonthBadge}">
+                                    <Label Text="{Binding CurrentMonthBadgeText}"
+                                   FontSize="11"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   VerticalOptions="Center" />
+                                </Border>
+                            </Grid>
 
-                    <!-- Innehåll i mitten -->
-                    <VerticalStackLayout Grid.Column="1"
-                             Spacing="8"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Center">
-
-                        <Label Text="💰" FontSize="28" HorizontalOptions="Center" />
-
-                        <Label Text="{Binding MonthlySalaryText}"
-                               FontSize="28"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               TextColor="{StaticResource ActiveJobBlue}" />
-
-                        <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="8" HorizontalOptions="Center" VerticalOptions="Center">
-
-                            <!-- Månad & år -->
-                            <Label Grid.Column="0"
-                                   Text="{Binding CurrentMonthYearText}"
-                                   FontSize="14"
-                                   FontAttributes="Italic"
-                                   Opacity="0.7"
-                                   VerticalOptions="Center"
-                                   TextColor="{AppThemeBinding Light={StaticResource SalaryNeutralLight},
-                                                              Dark={StaticResource SalaryNeutralDark}}" />
-
-                            <!-- Badge "NU" -->
-                            <Border Grid.Column="1"
-                                    Padding="8,2"
-                                    StrokeShape="RoundRectangle 10"
-                                    BackgroundColor="{StaticResource ActiveJobBlue}"
-                                    IsVisible="{Binding ShowCurrentMonthBadge}">
-                                <Label Text="{Binding CurrentMonthBadgeText}"
-                                       FontSize="11"
-                                       FontAttributes="Bold"
-                                       TextColor="White"
-                                       VerticalOptions="Center" />
-                            </Border>
-                        </Grid>
-
-                        <Label Text="{Binding HoursSummaryText}"
-                               FontSize="15"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               Margin="0,4,0,0"
-                               TextColor="{Binding HoursSummaryColor, Converter={StaticResource AmountToColorConverter}}" />
-                    </VerticalStackLayout>
-
-                    <!-- Höger TOUCH-ZON -->
-                    <Grid Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Transparent">
-
-                        <Label Text="▶"
-                               FontSize="22"
-                               VerticalOptions="Center"
-                               HorizontalOptions="End"
-                               IsEnabled="{Binding CanGoNextMonth}"
-                               Opacity="{Binding CanGoNextMonth, Converter={StaticResource BoolToOpacityConverter}}" />
-
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="NextMonthTapped" />
-                        </Grid.GestureRecognizers>
-                    </Grid>
-
-                </Grid>
-            </Border>
-
-            <!-- ===================== -->
-            <!-- 🟩 KORT 2: SAMMANFATTNING -->
-            <!-- ===================== -->
-            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob}">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="{resx:Translate Salary_Summary_Title}" Style="{StaticResource SectionTitleLabel}" />
-
-                    <VerticalStackLayout Spacing="8">
-                        <!-- Rad 1: Lön -->
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Label Text="{resx:Translate Salary_Summary_BaseSalary}" />
-                            <Label Text="{Binding BaseSalaryText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
-                        </Grid>
-
-                        <!-- Rad 2: Arbetade timmar -->
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Label Text="{resx:Translate Salary_Summary_HoursWorked}" />
-                            <Label Text="{Binding TotalHoursText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}"/>
-                        </Grid>
-
-                        <!-- Rad 3: OB-ersättning -->
-                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowObCard}">
-                            <Label Text="{resx:Translate Salary_Summary_OB}" />
-                            <Label Text="{Binding ObPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
-                        </Grid>
-
-                        <!-- Rad 4: Extra pass -->
-                        <Grid  ColumnDefinitions="*,Auto" IsVisible="{Binding ShowExtraPay}">
-                            <Label Text="{resx:Translate Salary_Summary_ExtraShift}"/>
-                            <Label Text="{Binding ExtraPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
-                        </Grid>
-
-                        <!-- Rad 5: Jour/On Call -->
-                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowOnCall}">
-                            <Label Text="{resx:Translate Salary_Summary_OnCall}" />
-                            <Label Text="{Binding OnCallTotalPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
-                        </Grid>
-
-                        <!-- Rad 6: Semesterersättning (Timanställd) -->
-                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowVacationPay}">
-                            <Label Text="{resx:Translate Salary_Summary_VacationPay}" />
-                            <Label Text="{Binding VacationPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}"/>
-                        </Grid>
-                        
-                        <!-- Rad 7: Skatt -->
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Label Text="{resx:Translate Salary_Summary_Tax}" />
-                            <Label Text="{Binding TaxText}" Grid.Column="1" Style="{StaticResource SalaryNegativeText}" />
-                        </Grid>
-                    </VerticalStackLayout>
-
-                    <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="{resx:Translate Salary_Summary_TotalPaid}" FontAttributes="Bold" />
-                        <Label Text="{Binding MonthlySalaryText}" Grid.Column="1" FontAttributes="Bold" Style="{StaticResource SalaryPositiveText}" />
-                    </Grid>
-
-                </VerticalStackLayout>
-            </Border>
-
-            <Grid ColumnDefinitions="*,Auto,*" Margin="0,10,0,0" VerticalOptions="Center">
-                <BoxView Grid.Column="0" HeightRequest="1" VerticalOptions="Center"
-                         Color="{AppThemeBinding Light=#E0E0E0, Dark=#444444}" />
-
-                <Label Grid.Column="1"
-                       Text="{resx:Translate Salary_Details_SectionTitle}"
-                       FontSize="16"
-                       FontAttributes="Bold"
-                       Margin="12,0"
-                       Opacity="0.7" />
-
-                <BoxView Grid.Column="2" HeightRequest="1" VerticalOptions="Center"
-                         Color="{AppThemeBinding Light=#E0E0E0, Dark=#444444}" />
-            </Grid>
-
-            <!-- ===================== -->
-            <!-- 🌙 KORT 3: OB-DETALJER (EXPANDERBAR) -->
-            <!-- ===================== -->
-            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding ShowObCard}">
-                <VerticalStackLayout Spacing="10">
-
-                    <!-- Header (klickbar) -->
-                    <Grid ColumnDefinitions="40,*,Auto,25" Padding="5">
-                        <Label Text="🌙" FontSize="20" VerticalOptions="Center" />
-
-                        <Label Text="{resx:Translate Salary_OB_Title}"
-                               Grid.Column="1"
-                               Style="{StaticResource SectionTitleLabel}"
-                               VerticalOptions="Center"
-                               LineBreakMode="TailTruncation" />
-
-                        <VerticalStackLayout Grid.Column="2" Spacing="0" HorizontalOptions="End" VerticalOptions="Center">
-                            <Label Text="{Binding ObPayText}" Style="{StaticResource SalaryPositiveText}" HorizontalTextAlignment="End" />
+                            <Label Text="{Binding HoursSummaryText}"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           Margin="0,4,0,0"
+                           TextColor="{Binding HoursSummaryColor, Converter={StaticResource AmountToColorConverter}}" />
                         </VerticalStackLayout>
 
-                        <!-- Chevron för hela kortet -->
-                        <Label Grid.Column="3" Text="{Binding ObCardChevronIcon}" FontSize="18" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                        <!-- Höger TOUCH-ZON -->
+                        <Grid Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Transparent">
 
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToggleObCardCommand}" />
-                        </Grid.GestureRecognizers>
+                            <Label Text="▶"
+                           FontSize="22"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           IsEnabled="{Binding CanGoNextMonth}"
+                           Opacity="{Binding CanGoNextMonth, Converter={StaticResource BoolToOpacityConverter}}" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="NextMonthTapped" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
                     </Grid>
+                </Border>
 
-                    <!-- Expand -->
-                    <VerticalStackLayout IsVisible="{Binding IsObExpanded}" Spacing="8" Padding="0,0,0,2">
-                        <!-- Periodhint -->
-                        <Label Text="{Binding ObPeriodHintText}"
-                               FontSize="12"
-                               FontAttributes="Italic"
-                               HorizontalOptions="Center"
-                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                           Dark={StaticResource TextSecondaryDark}}" />
+                <!-- ===================== -->
+                <!-- 🟩 KORT 2: SAMMANFATTNING -->
+                <!-- ===================== -->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="{resx:Translate Salary_Summary_Title}" Style="{StaticResource SectionTitleLabel}" />
 
-                        <!-- Statusrad (röd/orange när det behövs) -->
-                        <Label Text="{Binding ObStatusText}"
-                               IsVisible="{Binding ShowObStatus}"
-                               FontSize="12"
-                               FontAttributes="Italic"
-                               HorizontalOptions="Center"
-                               TextColor="{Binding ObStatusColor}" />
-                        <!-- EmptyView om inga rader -->
-                        <CollectionView ItemsSource="{Binding ObGrouped}" SelectionMode="None">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource OBRuleBorder}" Padding="10" Margin="0,4">
-                                        <VerticalStackLayout Spacing="6">
+                        <VerticalStackLayout Spacing="8">
+                            <!-- Rad 1: Lön -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="{resx:Translate Salary_Summary_BaseSalary}" />
+                                <Label Text="{Binding BaseSalaryText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
+                            </Grid>
 
-                                            <!-- Summary-rad -->
-                                            <Grid ColumnDefinitions="*,Auto,90,15" ColumnSpacing="10">
+                            <!-- Rad 2: Arbetade timmar -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="{resx:Translate Salary_Summary_HoursWorked}" />
+                                <Label Text="{Binding TotalHoursText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}"/>
+                            </Grid>
 
-                                                <!-- Typ -->
-                                                <Label Text="{Binding DisplayName}" LineBreakMode="TailTruncation" />
+                            <!-- Rad 3: OB-ersättning -->
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowObCard}">
+                                <Label Text="{resx:Translate Salary_Summary_OB}" />
+                                <Label Text="{Binding ObPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
+                            </Grid>
 
-                                                <!-- Timmar -->
-                                                <Label Text="{Binding HoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
+                            <!-- Rad 4: Extra pass -->
+                            <Grid  ColumnDefinitions="*,Auto" IsVisible="{Binding ShowExtraPay}">
+                                <Label Text="{resx:Translate Salary_Summary_ExtraShift}"/>
+                                <Label Text="{Binding ExtraPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
+                            </Grid>
 
-                                                <!-- Belopp -->
-                                                <Label Text="{Binding TotalPayText}"
-                                                       Grid.Column="2"
-                                                       HorizontalTextAlignment="End"
-                                                       Style="{StaticResource SalaryPositiveText}" />
+                            <!-- Rad 5: Jour/On Call -->
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowOnCall}">
+                                <Label Text="{resx:Translate Salary_Summary_OnCall}" />
+                                <Label Text="{Binding OnCallTotalPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}" />
+                            </Grid>
 
-                                                <!-- Chevron -->
-                                                <Label Text="{Binding Chevron}"
-                                                       Grid.Column="3"
-                                                       FontSize="16"
-                                                       HorizontalTextAlignment="End"
-                                                       VerticalOptions="Center" />
+                            <!-- Rad 6: Semesterersättning (Timanställd) -->
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowVacationPay}">
+                                <Label Text="{resx:Translate Salary_Summary_VacationPay}" />
+                                <Label Text="{Binding VacationPayText}" Grid.Column="1" Style="{StaticResource SalaryPositiveText}"/>
+                            </Grid>
 
-                                                <!-- Klick på hela summary-raden -->
-                                                <Grid.GestureRecognizers>
-                                                    <TapGestureRecognizer
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleObGroupCommand}"
-                                                        CommandParameter="{Binding .}" />
-                                                </Grid.GestureRecognizers>
-                                            </Grid>
+                            <!-- Rad 7: Skatt -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="{resx:Translate Salary_Summary_Tax}" />
+                                <Label Text="{Binding TaxText}" Grid.Column="1" Style="{StaticResource SalaryNegativeText}" />
+                            </Grid>
+                        </VerticalStackLayout>
 
-                                            <!-- Expand: detaljer -->
-                                            <VerticalStackLayout IsVisible="{Binding IsExpanded}" Spacing="4" Padding="0,2,0,0">
+                        <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="{resx:Translate Salary_Summary_TotalPaid}" FontAttributes="Bold" />
+                            <Label Text="{Binding MonthlySalaryText}" Grid.Column="1" FontAttributes="Bold" Style="{StaticResource SalaryPositiveText}" />
+                        </Grid>
 
-                                                <!-- Detaljheader -->
-                                                <Grid ColumnDefinitions="80,*,90" ColumnSpacing="10">
-                                                    <Label Text="{resx:Translate OB_Table_Date}"
-                                                           FontSize="12"
-                                                           TextColor="Gray" />
-                                                    <Label Text="{resx:Translate OB_Table_Hours}"
-                                                           Grid.Column="1"
-                                                           FontSize="12"
-                                                           TextColor="Gray"
-                                                           HorizontalTextAlignment="End" />
-                                                    <Label Text="{resx:Translate OB_Table_Amount}"
-                                                           Grid.Column="2"
-                                                           FontSize="12"
-                                                           TextColor="Gray"
-                                                           HorizontalTextAlignment="End" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid ColumnDefinitions="*,Auto,*" Margin="0,10,0,0" VerticalOptions="Center">
+                    <BoxView Grid.Column="0" HeightRequest="1" VerticalOptions="Center"
+                     Color="{AppThemeBinding Light=#E0E0E0, Dark=#444444}" />
+
+                    <Label Grid.Column="1"
+                   Text="{resx:Translate Salary_Details_SectionTitle}"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   Margin="12,0"
+                   Opacity="0.7" />
+
+                    <BoxView Grid.Column="2" HeightRequest="1" VerticalOptions="Center"
+                     Color="{AppThemeBinding Light=#E0E0E0, Dark=#444444}" />
+                </Grid>
+
+                <!-- ===================== -->
+                <!-- 🌙 KORT 3: OB-DETALJER (EXPANDERBAR) -->
+                <!-- ===================== -->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding ShowObCard}">
+                    <VerticalStackLayout Spacing="10">
+
+                        <!-- Header (klickbar) -->
+                        <Grid ColumnDefinitions="40,*,Auto,25" Padding="5">
+                            <Label Text="🌙" FontSize="20" VerticalOptions="Center" />
+
+                            <Label Text="{resx:Translate Salary_OB_Title}"
+                           Grid.Column="1"
+                           Style="{StaticResource SectionTitleLabel}"
+                           VerticalOptions="Center"
+                           LineBreakMode="TailTruncation" />
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="0" HorizontalOptions="End" VerticalOptions="Center">
+                                <Label Text="{Binding ObPayText}" Style="{StaticResource SalaryPositiveText}" HorizontalTextAlignment="End" />
+                            </VerticalStackLayout>
+
+                            <!-- Chevron för hela kortet -->
+                            <Label Grid.Column="3" Text="{Binding ObCardChevronIcon}" FontSize="18" VerticalOptions="Center" HorizontalTextAlignment="End" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleObCardCommand}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <!-- Expand -->
+                        <VerticalStackLayout IsVisible="{Binding IsObExpanded}" Spacing="8" Padding="0,0,0,2">
+                            <!-- Periodhint -->
+                            <Label Text="{Binding ObPeriodHintText}"
+                           FontSize="12"
+                           FontAttributes="Italic"
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}" />
+
+                            <!-- Statusrad (röd/orange när det behövs) -->
+                            <Label Text="{Binding ObStatusText}"
+                           IsVisible="{Binding ShowObStatus}"
+                           FontSize="12"
+                           FontAttributes="Italic"
+                           HorizontalOptions="Center"
+                           TextColor="{Binding ObStatusColor}" />
+                            <!-- EmptyView om inga rader -->
+                            <CollectionView ItemsSource="{Binding ObGrouped}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource OBRuleBorder}" Padding="10" Margin="0,4">
+                                            <VerticalStackLayout Spacing="6">
+
+                                                <!-- Summary-rad -->
+                                                <Grid ColumnDefinitions="*,Auto,90,15" ColumnSpacing="10">
+
+                                                    <!-- Typ -->
+                                                    <Label Text="{Binding DisplayName}" LineBreakMode="TailTruncation" />
+
+                                                    <!-- Timmar -->
+                                                    <Label Text="{Binding HoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
+
+                                                    <!-- Belopp -->
+                                                    <Label Text="{Binding TotalPayText}"
+                                                   Grid.Column="2"
+                                                   HorizontalTextAlignment="End"
+                                                   Style="{StaticResource SalaryPositiveText}" />
+
+                                                    <!-- Chevron -->
+                                                    <Label Text="{Binding Chevron}"
+                                                   Grid.Column="3"
+                                                   FontSize="16"
+                                                   HorizontalTextAlignment="End"
+                                                   VerticalOptions="Center" />
+
+                                                    <!-- Klick på hela summary-raden -->
+                                                    <Grid.GestureRecognizers>
+                                                        <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleObGroupCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                                    </Grid.GestureRecognizers>
                                                 </Grid>
 
-                                                <!-- Detaljrader -->
-                                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Details}"
-                                                         Spacing="2">
-                                                    <BindableLayout.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Grid ColumnDefinitions="80,*,100" ColumnSpacing="10">
-                                                                <Label Text="{Binding DateText}" />
-                                                                <Label Text="{Binding HoursText}"
+                                                <!-- Expand: detaljer -->
+                                                <VerticalStackLayout IsVisible="{Binding IsExpanded}" Spacing="4" Padding="0,2,0,0">
+
+                                                    <!-- Detaljheader -->
+                                                    <Grid ColumnDefinitions="80,*,90" ColumnSpacing="10">
+                                                        <Label Text="{resx:Translate OB_Table_Date}"
+                                                       FontSize="12"
+                                                       TextColor="Gray" />
+                                                        <Label Text="{resx:Translate OB_Table_Hours}"
+                                                       Grid.Column="1"
+                                                       FontSize="12"
+                                                       TextColor="Gray"
+                                                       HorizontalTextAlignment="End" />
+                                                        <Label Text="{resx:Translate OB_Table_Amount}"
+                                                       Grid.Column="2"
+                                                       FontSize="12"
+                                                       TextColor="Gray"
+                                                       HorizontalTextAlignment="End" />
+                                                    </Grid>
+
+                                                    <!-- Detaljrader -->
+                                                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Details}"
+                                                     Spacing="2">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid ColumnDefinitions="80,*,100" ColumnSpacing="10">
+                                                                    <Label Text="{Binding DateText}" />
+                                                                    <Label Text="{Binding HoursText}"
+                                                                   Grid.Column="1"
+                                                                   HorizontalTextAlignment="End" />
+                                                                    <Label Text="{Binding PayText}"
+                                                                   Grid.Column="2"
+                                                                   HorizontalTextAlignment="End"
+                                                                   Style="{StaticResource SalaryPositiveText}" />
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </VerticalStackLayout>
+
+                                                </VerticalStackLayout>
+
+                                            </VerticalStackLayout>
+
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- Footer: totalrad -->
+                            <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
+                            <Grid ColumnDefinitions="170,Auto,*" Margin="2,0">
+                                <Label Text="{resx:Translate Salary_OB_Total}" FontAttributes="Bold" />
+                                <Label Text="{Binding TotalObHoursText, StringFormat='{0} h'}" 
+                           Style="{StaticResource SalaryPositiveText}"
+                           Grid.Column="1"
+                           VerticalOptions="Center" />
+                                <Label Text="{Binding ObPayText}"
+                               Grid.Column="2"
+                               FontAttributes="Bold"
+                               Style="{StaticResource SalaryPositiveText}"
+                               HorizontalTextAlignment="End" />
+                            </Grid>
+
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ===================== -->
+                <!-- ⚡ KORT 3.5: EXTRA PASS (EXPANDERBAR) -->
+                <!-- ===================== -->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasExtraShifts}">
+                    <VerticalStackLayout Spacing="10">
+
+                        <!-- Header (klickbar) -->
+                        <Grid ColumnDefinitions="40,*,Auto,25" Padding="5">
+                            <Label Text="⚡" FontSize="20" VerticalOptions="Center" />
+
+                            <Label Text="{resx:Translate Salary_ExtraShift_Title}"
+                           Grid.Column="1"
+                           Style="{StaticResource SectionTitleLabel}"
+                           VerticalOptions="Center"
+                           LineBreakMode="TailTruncation" />
+
+                            <Label Text="{Binding ExtraPayText}"
+                           Grid.Column="2"
+                           Style="{StaticResource SalaryPositiveText}"
+                           HorizontalTextAlignment="End"
+                           VerticalOptions="Center" />
+
+                            <Label Grid.Column="3"
+                           Text="{Binding ExtraChevronIcon}"
+                           FontSize="18"
+                           VerticalOptions="Center"
+                           HorizontalTextAlignment="End" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleExtraCardCommand}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <!-- Expand -->
+                        <VerticalStackLayout IsVisible="{Binding IsExtraExpanded}" Spacing="8" Padding="0,0,0,2">
+
+                            <!-- Detaljheader -->
+                            <Grid ColumnDefinitions="80,*,100" ColumnSpacing="10">
+                                <Label Text="{resx:Translate Common_Date}" FontSize="12" TextColor="Gray" />
+                                <Label Text="{resx:Translate Common_Hours}" Grid.Column="1" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
+                                <Label Text="{resx:Translate Common_Amount}" Grid.Column="2" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
+                            </Grid>
+
+                            <!-- Rader -->
+                            <CollectionView ItemsSource="{Binding ExtraShiftRows}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="80,*,100" ColumnSpacing="10" Padding="0,2">
+                                            <Label Text="{Binding DateText}" />
+                                            <Label Text="{Binding HoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
+                                            <Label Text="{Binding PayText}" Grid.Column="2" HorizontalTextAlignment="End"
+                               Style="{StaticResource SalaryPositiveText}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- Footer -->
+                            <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
+                            <Grid ColumnDefinitions="170,Auto,*" Margin="2,0">
+                                <Label Text="{resx:Translate Salary_ExtraShift_Total}" FontAttributes="Bold" />
+                                <Label Text="{Binding TotalExtraHoursText, StringFormat='{0} h'}"
+                   Grid.Column="1"
+                   Style="{StaticResource SalaryPositiveText}"
+                   VerticalOptions="Center" />
+                                <Label Text="{Binding ExtraPayText}"
+                   Grid.Column="2"
+                   FontAttributes="Bold"
+                   Style="{StaticResource SalaryPositiveText}"
+                   HorizontalTextAlignment="End" />
+                            </Grid>
+
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ===================== -->
+                <!-- 📟 KORT: JOUR (EXPANDERBAR) -->
+                <!-- ===================== -->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasOnCall}">
+                    <VerticalStackLayout Spacing="10">
+
+                        <!-- Header (klickbar) -->
+                        <Grid ColumnDefinitions="40,*,Auto,25" Padding="5">
+                            <Label Text="📟" FontSize="20" VerticalOptions="Center" />
+                            <Label Text="{resx:Translate Salary_OnCall_Title}"
+                           Grid.Column="1"
+                           Style="{StaticResource SectionTitleLabel}"
+                           VerticalOptions="Center"
+                           LineBreakMode="TailTruncation" />
+
+                            <Label Text="{Binding OnCallTotalPayText}"
+                           Grid.Column="2"
+                           Style="{StaticResource SalaryPositiveText}"
+                           HorizontalTextAlignment="End"
+                           VerticalOptions="Center" />
+
+                            <Label Grid.Column="3"
+                           Text="{Binding OnCallChevronIcon}"
+                           FontSize="18"
+                           VerticalOptions="Center"
+                           HorizontalTextAlignment="End" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleOnCallCardCommand}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <Label Text="{Binding ShiftNote}"
+                           IsVisible="{Binding HasShiftNote}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}"
+                           Margin="45,0,0,0" />
+
+                        <!-- Expand -->
+                        <VerticalStackLayout IsVisible="{Binding IsOnCallExpanded}" Spacing="8" Padding="0,0,0,2">
+
+                            <!-- Hint -->
+                            <Label Text="{resx:Translate Salary_OnCall_Hint}"
+                           FontSize="12"
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                       Dark={StaticResource TextSecondaryDark}}" />
+
+                            <!-- Rader -->
+                            <CollectionView ItemsSource="{Binding OnCallGrouped}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource OBRuleBorder}" Padding="10" Margin="0,4">
+                                            <VerticalStackLayout Spacing="6">
+
+                                                <!-- Summary row (klickbar) -->
+                                                <Grid ColumnDefinitions="*,Auto,15" ColumnSpacing="10">
+
+                                                    <!-- Datumspann -->
+                                                    <Label Text="{Binding DateSpanText}" 
+                                                   FontAttributes="Bold"
+                                                   VerticalOptions="Center" />
+
+                                                    <!-- Total belopp -->
+                                                    <Label Text="{Binding ActivePayText}"
+                                                   Grid.Column="1"
+                                                   HorizontalTextAlignment="End"
+                                                   VerticalOptions="Center"
+                                                   Style="{StaticResource SalaryPositiveText}" />
+
+                                                    <!-- Chevron -->
+                                                    <Label Text="{Binding Chevron}"
+                                                   Grid.Column="2"
+                                                   FontSize="16"
+                                                   HorizontalTextAlignment="End"
+                                                   VerticalOptions="Center" />
+
+                                                    <Grid.GestureRecognizers>
+                                                        <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleOnCallGroupCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                                    </Grid.GestureRecognizers>
+                                                </Grid>
+
+                                                <!-- Expanded content -->
+                                                <VerticalStackLayout IsVisible="{Binding IsExpanded}" Spacing="8" Padding="0,4,0,0">
+
+                                                    <!-- Standby -->
+                                                    <Grid ColumnDefinitions="100,*,*" ColumnSpacing="10">
+                                                        <Label Text="{resx:Translate Salary_OnCall_Standby}" />
+                                                        <Label Text="{Binding StandbyHoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
+                                                        <Label Text="{Binding StandbyPayText}" Grid.Column="2" HorizontalTextAlignment="End"
+                                                       Style="{StaticResource SalaryPositiveText}" />
+                                                    </Grid>
+
+                                                    <!-- Aktiv -->
+                                                    <Grid ColumnDefinitions="100,*,*" ColumnSpacing="10">
+                                                        <Label Text="{resx:Translate Salary_OnCall_Active}" />
+                                                        <Label Text="{Binding ActiveHoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
+                                                        <Label Text="{Binding ActivePayText}" Grid.Column="2" HorizontalTextAlignment="End"
+                                                       Style="{StaticResource SalaryPositiveText}" />
+                                                    </Grid>
+
+                                                    <!-- Notes för jourpass -->
+                                                    <Label Text="{Binding ShiftNote}"
+                                                   IsVisible="{Binding HasShiftNote}"
+                                                   FontSize="12"
+                                                   FontAttributes="Italic" Margin="20,0,0,0"
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                                           Dark={StaticResource TextSecondaryDark}}" />
+
+                                                    <!-- Callouts -->
+                                                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Details}" Spacing="6">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <VerticalStackLayout Spacing="2">
+
+                                                                    <!-- Tid + timmar + belopp -->
+                                                                    <Grid ColumnDefinitions="100,*,*" ColumnSpacing="10">
+                                                                        <Label Text="{Binding TimeRangeText}" FontAttributes="Bold" />
+                                                                        <Label Text="{Binding HoursText}"
                                                                        Grid.Column="1"
                                                                        HorizontalTextAlignment="End" />
-                                                                <Label Text="{Binding PayText}"
+                                                                        <Label Text="{Binding PayText}"
                                                                        Grid.Column="2"
                                                                        HorizontalTextAlignment="End"
                                                                        Style="{StaticResource SalaryPositiveText}" />
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </BindableLayout.ItemTemplate>
+                                                                    </Grid>
+
+                                                                    <!-- Notes för callout -->
+                                                                    <Label Text="{Binding Notes}"
+                                                                   IsVisible="{Binding HasNotes}"
+                                                                   FontSize="12"
+                                                                   FontAttributes="Italic" Margin="20,0,0,0"
+                                                                   TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
+                                                                                           Dark={StaticResource TextSecondaryDark}}" />
+
+                                                                </VerticalStackLayout>
+
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </VerticalStackLayout>
+
                                                 </VerticalStackLayout>
 
                                             </VerticalStackLayout>
+                                        </Border>
 
-                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
-                                    </Border>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                            <!-- Footer -->
+                            <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
 
-                        <!-- Footer: totalrad -->
-                        <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
-                        <Grid ColumnDefinitions="170,Auto,*" Margin="2,0">
-                            <Label Text="{resx:Translate Salary_OB_Total}" FontAttributes="Bold" />
-                            <Label Text="{Binding TotalObHoursText, StringFormat='{0} h'}" 
-                               Style="{StaticResource SalaryPositiveText}"
+                            <Grid ColumnDefinitions="*,Auto" Margin="2,0">
+                                <Label Text="{resx:Translate Salary_OnCall_Total}" FontAttributes="Bold" />
+                                <Label Text="{Binding OnCallTotalPayText}"
                                Grid.Column="1"
-                               VerticalOptions="Center" />
-                            <Label Text="{Binding ObPayText}"
-                                   Grid.Column="2"
-                                   FontAttributes="Bold"
-                                   Style="{StaticResource SalaryPositiveText}"
-                                   HorizontalTextAlignment="End" />
-                        </Grid>
-
-                    </VerticalStackLayout>
-                </VerticalStackLayout>
-            </Border>
-
-            <!-- ===================== -->
-            <!-- ⚡ KORT 3.5: EXTRA PASS (EXPANDERBAR) -->
-            <!-- ===================== -->
-            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasExtraShifts}">
-                <VerticalStackLayout Spacing="10">
-
-                    <!-- Header (klickbar) -->
-                    <Grid ColumnDefinitions="40,*,Auto,25" Padding="5">
-                        <Label Text="⚡" FontSize="20" VerticalOptions="Center" />
-
-                        <Label Text="{resx:Translate Salary_ExtraShift_Title}"
-                               Grid.Column="1"
-                               Style="{StaticResource SectionTitleLabel}"
-                               VerticalOptions="Center"
-                               LineBreakMode="TailTruncation" />
-
-                        <Label Text="{Binding ExtraPayText}"
-                               Grid.Column="2"
                                Style="{StaticResource SalaryPositiveText}"
-                               HorizontalTextAlignment="End"
-                               VerticalOptions="Center" />
-
-                        <Label Grid.Column="3"
-                               Text="{Binding ExtraChevronIcon}"
-                               FontSize="18"
-                               VerticalOptions="Center"
+                               FontAttributes="Bold"
                                HorizontalTextAlignment="End" />
+                            </Grid>
 
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToggleExtraCardCommand}" />
-                        </Grid.GestureRecognizers>
-                    </Grid>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
 
-                    <!-- Expand -->
-                    <VerticalStackLayout IsVisible="{Binding IsExtraExpanded}" Spacing="8" Padding="0,0,0,2">
+                <!-- ===================== -->
+                <!-- 👤 KORT 4: FRÅNVARO & BALANS (EXPANDERBAR) -->
+                <!-- ===================== -->
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsPermanent}">
+                    <VerticalStackLayout Spacing="10">
 
-                        <!-- Detaljheader -->
-                        <Grid ColumnDefinitions="80,*,100" ColumnSpacing="10">
-                            <Label Text="{resx:Translate Common_Date}" FontSize="12" TextColor="Gray" />
-                            <Label Text="{resx:Translate Common_Hours}" Grid.Column="1" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
-                            <Label Text="{resx:Translate Common_Amount}" Grid.Column="2" FontSize="12" TextColor="Gray" HorizontalTextAlignment="End" />
+                        <!-- HEADER (klickbar) -->
+                        <Grid ColumnDefinitions="40,*,20" Padding="5">
+                            <!-- Ikon -->
+                            <Label Text="👤" FontSize="20" VerticalOptions="Center" />
+
+                            <!-- Titel + snabb info -->
+                            <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                                <Label Text="{resx:Translate Salary_Balance_Title}" Style="{StaticResource SectionTitleLabel}" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <!-- Chevron -->
+                            <Label Text="{Binding BalanceChevronIcon}"
+                            Grid.Column="2"
+                            FontSize="18"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleBalanceCommand}" />
+                            </Grid.GestureRecognizers>
                         </Grid>
 
-                        <!-- Rader -->
-                        <CollectionView ItemsSource="{Binding ExtraShiftRows}" SelectionMode="None">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid ColumnDefinitions="80,*,100" ColumnSpacing="10" Padding="0,2">
-                                        <Label Text="{Binding DateText}" />
-                                        <Label Text="{Binding HoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
-                                        <Label Text="{Binding PayText}" Grid.Column="2" HorizontalTextAlignment="End"
-                                   Style="{StaticResource SalaryPositiveText}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                        <!-- EXPANDERAT INNEHÅLL -->
+                        <VerticalStackLayout IsVisible="{Binding IsBalanceExpanded}" Spacing="6" Padding="5,5,5,0">
+                            <!-- Timbank -->
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowTimeBank}">
+                                <Label Text="{resx:Translate Salary_Balance_TimeBank}" />
+                                <Label Text="{Binding TimeBankText}" Grid.Column="1"
+                               TextColor="{Binding TimeBankColorValue, Converter={StaticResource AmountToColorConverter}}" />
+                            </Grid>
 
-                        <!-- Footer -->
-                        <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
-                        <Grid ColumnDefinitions="170,Auto,*" Margin="2,0">
-                            <Label Text="{resx:Translate Salary_ExtraShift_Total}" FontAttributes="Bold" />
-                            <Label Text="{Binding TotalExtraHoursText, StringFormat='{0} h'}"
-                       Grid.Column="1"
-                       Style="{StaticResource SalaryPositiveText}"
-                       VerticalOptions="Center" />
-                            <Label Text="{Binding ExtraPayText}"
-                       Grid.Column="2"
-                       FontAttributes="Bold"
-                       Style="{StaticResource SalaryPositiveText}"
-                       HorizontalTextAlignment="End" />
-                        </Grid>
+                            <!-- Förväntade timmar -->
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding IsPermanent}">
+                                <Label Text="{resx:Translate Salary_Balance_ExpectedHours}" />
+                                <Label Text="{Binding ExpectedHoursText}" Grid.Column="1" />
+                            </Grid>
+                        </VerticalStackLayout>
 
                     </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+
+        <!-- Loading Overlay (under ad banner) -->
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1A1A1A}">
+            <Grid HorizontalOptions="Center" VerticalOptions="Center">
+
+                <!-- Skeleton cards -->
+                <VerticalStackLayout Spacing="20">
+                    <components:SkeletonCard />
+                    <components:SkeletonCard />
                 </VerticalStackLayout>
-            </Border>
 
-            <!-- ===================== -->
-            <!-- 📟 KORT: JOUR (EXPANDERBAR) -->
-            <!-- ===================== -->
-            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasOnCall}">
-                <VerticalStackLayout Spacing="10">
+                <!-- Loading indicator centered -->
+                <components:LoadingIndicator HorizontalOptions="Center" VerticalOptions="Center" />
+            </Grid>
+        </Grid>
 
-                    <!-- Header (klickbar) -->
-                    <Grid ColumnDefinitions="40,*,Auto,25" Padding="5">
-                        <Label Text="📟" FontSize="20" VerticalOptions="Center" />
-                        <Label Text="{resx:Translate Salary_OnCall_Title}"
-                               Grid.Column="1"
-                               Style="{StaticResource SectionTitleLabel}"
-                               VerticalOptions="Center"
-                               LineBreakMode="TailTruncation" />
+        <!-- Ad Banner Layer (överst, alltid synlig) -->
+        <Grid x:Name="AdBannerContainer" VerticalOptions="Start" HorizontalOptions="Fill" HeightRequest="50" />
+    </Grid>
 
-                        <Label Text="{Binding OnCallTotalPayText}"
-                               Grid.Column="2"
-                               Style="{StaticResource SalaryPositiveText}"
-                               HorizontalTextAlignment="End"
-                               VerticalOptions="Center" />
 
-                        <Label Grid.Column="3"
-                               Text="{Binding OnCallChevronIcon}"
-                               FontSize="18"
-                               VerticalOptions="Center"
-                               HorizontalTextAlignment="End" />
-                        
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToggleOnCallCardCommand}" />
-                        </Grid.GestureRecognizers>
-                    </Grid>
-
-                    <Label Text="{Binding ShiftNote}"
-                               IsVisible="{Binding HasShiftNote}"
-                               FontSize="12"
-                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary}, Dark={StaticResource TextSecondaryDark}}"
-                               Margin="45,0,0,0" />
-
-                    <!-- Expand -->
-                    <VerticalStackLayout IsVisible="{Binding IsOnCallExpanded}" Spacing="8" Padding="0,0,0,2">
-
-                        <!-- Hint -->
-                        <Label Text="{resx:Translate Salary_OnCall_Hint}"
-                               FontSize="12"
-                               HorizontalOptions="Center"
-                               TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                           Dark={StaticResource TextSecondaryDark}}" />
-
-                        <!-- Rader -->
-                        <CollectionView ItemsSource="{Binding OnCallGrouped}" SelectionMode="None">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource OBRuleBorder}" Padding="10" Margin="0,4">
-                                        <VerticalStackLayout Spacing="6">
-
-                                            <!-- Summary row (klickbar) -->
-                                            <Grid ColumnDefinitions="*,Auto,15" ColumnSpacing="10">
-
-                                                <!-- Datumspann -->
-                                                <Label Text="{Binding DateSpanText}" 
-                                                       FontAttributes="Bold"
-                                                       VerticalOptions="Center" />
-
-                                                <!-- Total belopp -->
-                                                <Label Text="{Binding ActivePayText}"
-                                                       Grid.Column="1"
-                                                       HorizontalTextAlignment="End"
-                                                       VerticalOptions="Center"
-                                                       Style="{StaticResource SalaryPositiveText}" />
-
-                                                <!-- Chevron -->
-                                                <Label Text="{Binding Chevron}"
-                                                       Grid.Column="2"
-                                                       FontSize="16"
-                                                       HorizontalTextAlignment="End"
-                                                       VerticalOptions="Center" />
-
-                                                <Grid.GestureRecognizers>
-                                                    <TapGestureRecognizer
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleOnCallGroupCommand}"
-                                                        CommandParameter="{Binding .}" />
-                                                </Grid.GestureRecognizers>
-                                            </Grid>
-
-                                            <!-- Expanded content -->
-                                            <VerticalStackLayout IsVisible="{Binding IsExpanded}" Spacing="8" Padding="0,4,0,0">
-
-                                                <!-- Standby -->
-                                                <Grid ColumnDefinitions="100,*,*" ColumnSpacing="10">
-                                                    <Label Text="{resx:Translate Salary_OnCall_Standby}" />
-                                                    <Label Text="{Binding StandbyHoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
-                                                    <Label Text="{Binding StandbyPayText}" Grid.Column="2" HorizontalTextAlignment="End"
-                                                           Style="{StaticResource SalaryPositiveText}" />
-                                                </Grid>
-
-                                                <!-- Aktiv -->
-                                                <Grid ColumnDefinitions="100,*,*" ColumnSpacing="10">
-                                                    <Label Text="{resx:Translate Salary_OnCall_Active}" />
-                                                    <Label Text="{Binding ActiveHoursText}" Grid.Column="1" HorizontalTextAlignment="End" />
-                                                    <Label Text="{Binding ActivePayText}" Grid.Column="2" HorizontalTextAlignment="End"
-                                                           Style="{StaticResource SalaryPositiveText}" />
-                                                </Grid>
-
-                                                <!-- Notes för jourpass -->
-                                                <Label Text="{Binding ShiftNote}"
-                                                       IsVisible="{Binding HasShiftNote}"
-                                                       FontSize="12"
-                                                       FontAttributes="Italic" Margin="20,0,0,0"
-                                                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                                               Dark={StaticResource TextSecondaryDark}}" />
-
-                                                <!-- Callouts -->
-                                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Details}" Spacing="6">
-                                                    <BindableLayout.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <VerticalStackLayout Spacing="2">
-
-                                                                <!-- Tid + timmar + belopp -->
-                                                                <Grid ColumnDefinitions="100,*,*" ColumnSpacing="10">
-                                                                    <Label Text="{Binding TimeRangeText}" FontAttributes="Bold" />
-                                                                    <Label Text="{Binding HoursText}"
-                                                                           Grid.Column="1"
-                                                                           HorizontalTextAlignment="End" />
-                                                                    <Label Text="{Binding PayText}"
-                                                                           Grid.Column="2"
-                                                                           HorizontalTextAlignment="End"
-                                                                           Style="{StaticResource SalaryPositiveText}" />
-                                                                </Grid>
-
-                                                                <!-- Notes för callout -->
-                                                                <Label Text="{Binding Notes}"
-                                                                       IsVisible="{Binding HasNotes}"
-                                                                       FontSize="12"
-                                                                       FontAttributes="Italic" Margin="20,0,0,0"
-                                                                       TextColor="{AppThemeBinding Light={StaticResource TextSecondary},
-                                                                                               Dark={StaticResource TextSecondaryDark}}" />
-
-                                                            </VerticalStackLayout>
-
-                                                        </DataTemplate>
-                                                    </BindableLayout.ItemTemplate>
-                                                </VerticalStackLayout>
-
-                                            </VerticalStackLayout>
-
-                                        </VerticalStackLayout>
-                                    </Border>
-
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-
-                        <!-- Footer -->
-                        <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,6" />
-
-                        <Grid ColumnDefinitions="*,Auto" Margin="2,0">
-                            <Label Text="{resx:Translate Salary_OnCall_Total}" FontAttributes="Bold" />
-                            <Label Text="{Binding OnCallTotalPayText}"
-                                   Grid.Column="1"
-                                   Style="{StaticResource SalaryPositiveText}"
-                                   FontAttributes="Bold"
-                                   HorizontalTextAlignment="End" />
-                        </Grid>
-
-                    </VerticalStackLayout>
-                </VerticalStackLayout>
-            </Border>
-
-            <!-- ===================== -->
-            <!-- 👤 KORT 4: FRÅNVARO & BALANS (EXPANDERBAR) -->
-            <!-- ===================== -->
-            <Border Style="{StaticResource CardBorder}" IsVisible="{Binding IsPermanent}"> 
-                <VerticalStackLayout Spacing="10">
-
-                    <!-- HEADER (klickbar) -->
-                    <Grid ColumnDefinitions="40,*,20" Padding="5">
-                        <!-- Ikon -->
-                        <Label Text="👤" FontSize="20" VerticalOptions="Center" />
-
-                        <!-- Titel + snabb info -->
-                        <HorizontalStackLayout Grid.Column="1" Spacing="10">
-                            <Label Text="{resx:Translate Salary_Balance_Title}" Style="{StaticResource SectionTitleLabel}" VerticalOptions="Center" />
-                        </HorizontalStackLayout>
-
-                        <!-- Chevron -->
-                        <Label Text="{Binding BalanceChevronIcon}"
-                                Grid.Column="2"
-                                FontSize="18"
-                                VerticalOptions="Center"
-                                HorizontalOptions="End" />
-
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToggleBalanceCommand}" />
-                        </Grid.GestureRecognizers>
-                    </Grid>
-
-                    <!-- EXPANDERAT INNEHÅLL -->
-                    <VerticalStackLayout IsVisible="{Binding IsBalanceExpanded}" Spacing="6" Padding="5,5,5,0">
-                        <!-- Timbank -->
-                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ShowTimeBank}">
-                            <Label Text="{resx:Translate Salary_Balance_TimeBank}" />
-                            <Label Text="{Binding TimeBankText}" Grid.Column="1"
-                                   TextColor="{Binding TimeBankColorValue, Converter={StaticResource AmountToColorConverter}}" />
-                        </Grid>
-
-                        <!-- Förväntade timmar -->
-                        <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding IsPermanent}">
-                            <Label Text="{resx:Translate Salary_Balance_ExpectedHours}" />
-                            <Label Text="{Binding ExpectedHoursText}" Grid.Column="1" />
-                        </Grid>
-                    </VerticalStackLayout>
-
-                </VerticalStackLayout>
-            </Border>
-
-        </VerticalStackLayout>
-    </ScrollView>
 </ContentPage>

@@ -20,20 +20,14 @@ namespace MyWorkSalary.Views
 
             try
             {
-                // Ladda data säkert med delay
-                await Task.Delay(100); // Kort delay för att säkerställa UI är redo
-
-                await Task.Run(() =>
-                {
-                    Dispatcher.Dispatch(() =>
-                    {
-                        _viewModel.RefreshData();
-                    });
-                });
+                // Visa sidan direkt medan data laddas i bakgrunden
+                await _viewModel.RefreshDataAsync();
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"🚨 HomePage OnAppearing Error: {ex}");
+                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
+                System.Diagnostics.Debug.WriteLine($"🚨 Inner Exception: {ex.InnerException}");
 
                 // Fallback - visa error message
                 await DisplayAlert("Fel", "Kunde inte ladda data. Försök igen.", "OK");

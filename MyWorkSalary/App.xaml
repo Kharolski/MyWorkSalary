@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MyWorkSalary"
              xmlns:converters="clr-namespace:MyWorkSalary.Helpers.Converters"
+             xmlns:viewmodels="clr-namespace:MyWorkSalary.ViewModels"
              x:Class="MyWorkSalary.App">
     
     <Application.Resources>

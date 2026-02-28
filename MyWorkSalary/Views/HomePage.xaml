@@ -3,18 +3,21 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             xmlns:components="clr-namespace:MyWorkSalary.Views.Components"
              Title="{resx:Translate HomeTitle}">
       
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20">
+    <Grid>
+        <!-- Main Content -->
+        <ScrollView IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+            <VerticalStackLayout Spacing="20" Padding="20">
 
-            <!--Välkomst-kort-->
-            <Border Style="{StaticResource CardBorder}">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="{Binding WelcomeText}"
-                           Style="{StaticResource ActiveJob}" 
-                           HorizontalOptions="Center" FontAttributes="Bold"
-                           FontSize="20" />
+                <!--Välkomst-kort-->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="{Binding WelcomeText}"
+                               Style="{StaticResource ActiveJob}" 
+                               HorizontalOptions="Center" FontAttributes="Bold"
+                               FontSize="20" />
 
                      <!--Visa när inget jobb finns--> 
                     <StackLayout IsVisible="{Binding ShowSetupButton}">
@@ -212,5 +215,25 @@
 
             </StackLayout>
         </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+
+        <!-- Loading Overlay (under ad banner) -->
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1A1A1A}">
+            <Grid HorizontalOptions="Center" VerticalOptions="Center">
+
+                <!-- Skeleton cards -->
+                <VerticalStackLayout Spacing="20">
+                    <components:SkeletonCard />
+                    <components:SkeletonCard />
+                    <components:SkeletonCard />
+                </VerticalStackLayout>
+
+                <!-- Loading indicator centered -->
+                <components:LoadingIndicator HorizontalOptions="Center" VerticalOptions="Center" />
+            </Grid>
+        </Grid>
+
+        <!-- Ad Banner Layer (överst, alltid synlig) -->
+        <Grid x:Name="AdBannerContainer" VerticalOptions="Start" HorizontalOptions="Fill" HeightRequest="50" />
+    </Grid>
 </ContentPage>

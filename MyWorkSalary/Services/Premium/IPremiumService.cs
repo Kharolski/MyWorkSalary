@@ -9,6 +9,10 @@
 /// </summary>
 public interface IPremiumService
 {
+    // Events för statusändringar
+    event EventHandler<bool> PremiumStatusChanged;
+    event EventHandler<bool> SubscriptionStatusChanged;
+
     bool IsPremium { get; }
     bool IsSubscriber { get; }
     bool IsFreeUser { get; }
