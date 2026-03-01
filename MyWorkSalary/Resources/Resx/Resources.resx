@@ -3051,4 +3051,13 @@ The work shift has been saved!</value>
   <data name="OBDaysLocked_Description" xml:space="preserve">
     <value>Upgrade to premium to choose which days OB rules should apply to.</value>
   </data>
+  <data name="JobSettings_Description" xml:space="preserve">
+    <value>Configure OB, jour, and other job-related settings</value>
+  </data>
+  <data name="AboutApp_Description" xml:space="preserve">
+    <value>See version, license and other information about the application</value>
+  </data>
+  <data name="Premium_Card_Benefits" xml:space="preserve">
+    <value>Get access to advanced features like OB templates, call handling and much more</value>
+  </data>
 </root>

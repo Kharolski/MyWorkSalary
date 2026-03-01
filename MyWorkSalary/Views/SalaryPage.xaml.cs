@@ -5,7 +5,6 @@ namespace MyWorkSalary.Views
     public partial class SalaryPage : ContentPage
     {
         private readonly SalaryPageViewModel _viewModel;
-        private bool _isInitialized = false;
 
         public SalaryPage(SalaryPageViewModel viewModel)
         {
@@ -18,11 +17,8 @@ namespace MyWorkSalary.Views
         {
             base.OnAppearing();
 
-            if (!_isInitialized)
-            {
-                _viewModel.ResetToCurrentMonth();
-                _isInitialized = true;
-            }
+            // Återställ alltid till nuvarande månad när sidan visas
+            _viewModel.ResetToCurrentMonth();
 
             try
             {

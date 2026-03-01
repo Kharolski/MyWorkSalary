@@ -70,6 +70,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to See version, license and other information about the application.
+        /// </summary>
+        internal static string AboutApp_Description {
+            get {
+                return ResourceManager.GetString("AboutApp_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A modern salary app that helps you track hours, OB, flex and pay..
         /// </summary>
         internal static string AboutAppDescription {
@@ -2343,6 +2352,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configure OB, jour, and other job-related settings.
+        /// </summary>
+        internal static string JobSettings_Description {
+            get {
+                return ResourceManager.GetString("JobSettings_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🧰 Job settings.
         /// </summary>
         internal static string JobSettings_Title {
@@ -4427,6 +4445,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Premium_BuyButton {
             get {
                 return ResourceManager.GetString("Premium_BuyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get access to advanced features like OB templates, call handling and much more.
+        /// </summary>
+        internal static string Premium_Card_Benefits {
+            get {
+                return ResourceManager.GetString("Premium_Card_Benefits", resourceCulture);
             }
         }
         

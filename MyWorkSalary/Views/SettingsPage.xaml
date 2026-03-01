@@ -144,24 +144,28 @@
 
             <!-- Jobbinställningar-knapp -->
             <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob}">
-                <Grid ColumnDefinitions="*,Auto" Padding="12">
-                    <Label Text="{resx:Translate JobSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
-
-                    <!-- Pil-ikon -->
-                    <Label Grid.Column="1"
-                           Text="▶" FontSize="22" Margin="0,-3,0,0" FontAttributes="Bold"
-                           VerticalOptions="Center"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                      Dark={StaticResource TextPrimaryDark}}" />
-                    <!-- Klick -->
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding OpenJobSettingsCommand}" />
-                    </Grid.GestureRecognizers>
-
-                </Grid>
+                <VerticalStackLayout Padding="12" Spacing="8">
+                    <Grid ColumnDefinitions="*,40">
+                        <Label Text="{resx:Translate JobSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
+                        <Label Grid.Column="1"
+                                Text="▶" FontSize="22" Margin="8,0,0,0" FontAttributes="Bold"
+                                VerticalOptions="Center"
+                               HorizontalOptions="End"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                            Dark={StaticResource TextPrimaryDark}}" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenJobSettingsCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <!-- Beskrivning -->
+                    <Label Text="{resx:Translate JobSettings_Description}"
+                            FontSize="12"
+                            Style="{StaticResource TipsLabel}"
+                            Margin="0,4,0,0" />
+                </VerticalStackLayout>
             </Border>
 
-            <!-- App Inställningar -->
+                <!-- App Inställningar -->
             <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Spacing="15">
 
@@ -240,50 +244,55 @@
 
             <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="{resx:Translate Premium_Card_Title}"
-               Style="{StaticResource SectionTitleLabel}" />
-
-                    <Label Text="{resx:Translate Premium_Card_Description}"
-               Style="{StaticResource TipsLabel}" />
-
+                    <Label Text="{resx:Translate Premium_Card_Title}" Style="{StaticResource SectionTitleLabel}" />
+                    <Label Text="{resx:Translate Premium_Card_Description}" Style="{StaticResource TipsLabel}" />
+                    <Label Text="{resx:Translate Premium_Card_Benefits}"
+                            FontSize="12"
+                            Style="{StaticResource TipsLabel}"
+                            Margin="0,4,0,0" />
                     <Button Text="{resx:Translate Premium_Card_Button}"
-                Command="{Binding OpenPremiumPageCommand}"
-                BackgroundColor="{StaticResource ButtonPrimary}"
-                TextColor="White"
-                CornerRadius="8" />
+                            Command="{Binding OpenPremiumPageCommand}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
+                            TextColor="White"
+                            CornerRadius="8" />
                 </VerticalStackLayout>
             </Border>
 
             <!-- Om appen-knapp -->
             <Border Style="{StaticResource CardBorder}">
-                <Grid ColumnDefinitions="Auto,*,Auto" Padding="12" ColumnSpacing="12">
-
-                    <!-- Ikon -->
-                    <Label Grid.Column="0"
-                           Text="ℹ️"
-                           FontSize="22"
-                           VerticalOptions="Center"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                      Dark={StaticResource TextPrimaryDark}}" />
-                    <!-- Titel -->
-                    <Label Grid.Column="1" Text="{resx:Translate AboutApp}" Style="{StaticResource SectionTitleLabel}" />
-
-                    <!-- Pil -->
-                    <Label Grid.Column="2"
-                           Text="▶"
-                           FontSize="22"
-                           Margin="0,-3,0,0"
-                           FontAttributes="Bold"
-                           VerticalOptions="Center"
-                           TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                      Dark={StaticResource TextPrimaryDark}}" />
-                    <!-- Klick -->
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding OpenAboutAppCommand}" />
-                    </Grid.GestureRecognizers>
-                </Grid>
+                <VerticalStackLayout Padding="12" Spacing="8">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <!-- Ikon -->
+                        <Label Grid.Column="0"
+                                Text="ℹ️"
+                                FontSize="22"
+                                VerticalOptions="Center"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                            Dark={StaticResource TextPrimaryDark}}" />
+                        <!-- Titel -->
+                        <Label Grid.Column="1" Text="{resx:Translate AboutApp}" Style="{StaticResource SectionTitleLabel}" />
+                        <!-- Pil -->
+                        <Label Grid.Column="2"
+                                Text="▶"
+                                FontSize="22"
+                                Margin="0,-3,0,0"
+                                FontAttributes="Bold"
+                                VerticalOptions="Center"
+                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                            Dark={StaticResource TextPrimaryDark}}" />
+                        <!-- Klick -->
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenAboutAppCommand}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <!-- Beskrivning -->
+                    <Label Text="{resx:Translate AboutApp_Description}"
+                            FontSize="12"
+                            Style="{StaticResource TipsLabel}"
+                            Margin="0,4,0,0" />
+                </VerticalStackLayout>
             </Border>
-        </VerticalStackLayout>
+            </VerticalStackLayout>
     </ScrollView>
 
         <!-- Loading Overlay (under ad banner) -->

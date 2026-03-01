@@ -2589,4 +2589,13 @@ Arbetspasset har sparats!</value>
   <data name="OBDaysLocked_Description" xml:space="preserve">
     <value>Uppgradera till premium för att välja vilka dagar OB-regeln ska gälla för.</value>
   </data>
+  <data name="JobSettings_Description" xml:space="preserve">
+    <value>Konfigurera OB, jour och andra jobbrelaterade inställningar</value>
+  </data>
+  <data name="AboutApp_Description" xml:space="preserve">
+    <value>Se version, licens och annan information om applikationen</value>
+  </data>
+  <data name="Premium_Card_Benefits" xml:space="preserve">
+    <value>Få tillgång till avancerade funktioner som OB-mallar, jourhantering och mycket mer</value>
+  </data>
 </root>
