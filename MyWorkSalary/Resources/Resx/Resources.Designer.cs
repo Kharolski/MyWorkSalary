@@ -2118,6 +2118,24 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No salary report yet — create a job first..
+        /// </summary>
+        internal static string GetStartedSalaryPrompt {
+            get {
+                return ResourceManager.GetString("GetStartedSalaryPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to create a job before adding shifts.
+        /// </summary>
+        internal static string GetStartedShiftPrompt {
+            get {
+                return ResourceManager.GetString("GetStartedShiftPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically detected.
         /// </summary>
         internal static string Holiday_AutoDetected {
@@ -5174,15 +5192,6 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Salary_Hours_Surplus {
             get {
                 return ResourceManager.GetString("Salary_Hours_Surplus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No salary report yet — create a job first..
-        /// </summary>
-        internal static string Salary_NoReport_CreateJob {
-            get {
-                return ResourceManager.GetString("Salary_NoReport_CreateJob", resourceCulture);
             }
         }
         

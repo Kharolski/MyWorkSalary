@@ -22,8 +22,8 @@ public class PremiumService : IPremiumService
     #endregion
 
     #region Properties
-    public bool IsPremium => Preferences.Get(PremiumKey, false); // 🎯 Ändra till true för att testa premium
-    public bool IsSubscriber => Preferences.Get(SubscriptionKey, false); // 🎯 Ändra till true för att testa prenumeration
+    public bool IsPremium => Preferences.Get(PremiumKey, false);
+    public bool IsSubscriber => Preferences.Get(SubscriptionKey, false);
     public bool IsFreeUser => !IsPremium && !IsSubscriber;
 
     public DateTime? SubscriptionStartDate => Preferences.ContainsKey(SubscriptionStartKey) 
@@ -48,7 +48,6 @@ public class PremiumService : IPremiumService
         // Trigga event om status ändrades
         if (oldValue != value)
         {
-            System.Diagnostics.Debug.WriteLine($"🎯 Premium status changed: {oldValue} -> {value}");
             PremiumStatusChanged?.Invoke(this, value);
         }
     }
@@ -72,7 +71,6 @@ public class PremiumService : IPremiumService
         // Trigga event om status ändrades
         if (oldValue != value)
         {
-            System.Diagnostics.Debug.WriteLine($"🎯 Subscription status changed: {oldValue} -> {value}");
             SubscriptionStatusChanged?.Invoke(this, value);
         }
     }
@@ -118,7 +116,6 @@ public class PremiumService : IPremiumService
 
     #region Future Expansion 
     // Här kommer: 
-    // - Events 
     // - Notify UI 
     // - RestorePurchases 
     // - Sync with BillingService 

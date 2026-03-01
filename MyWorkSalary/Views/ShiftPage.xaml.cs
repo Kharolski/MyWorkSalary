@@ -24,10 +24,6 @@ namespace MyWorkSalary.Views
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"🚨 ShiftPage OnAppearing Error: {ex}");
-                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
-                System.Diagnostics.Debug.WriteLine($"🚨 Inner Exception: {ex.InnerException}");
-
                 // Fallback - visa error message
                 await DisplayAlert("Fel", "Kunde inte ladda data. Försök igen.", "OK");
             }

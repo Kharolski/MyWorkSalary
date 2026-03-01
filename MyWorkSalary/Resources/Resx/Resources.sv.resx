@@ -1968,7 +1968,7 @@ Arbetspasset har sparats!</value>
   <data name="OB_Table_Amount" xml:space="preserve">
     <value>Belopp</value>
   </data>
-  <data name="Salary_NoReport_CreateJob" xml:space="preserve">
+  <data name="GetStartedSalaryPrompt" xml:space="preserve">
     <value>Ingen lönerapport än – skapa ett jobb först.</value>
   </data>
   <data name="Salary_PageTitle" xml:space="preserve">
@@ -2597,5 +2597,8 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="Premium_Card_Benefits" xml:space="preserve">
     <value>Få tillgång till avancerade funktioner som OB-mallar, jourhantering och mycket mer</value>
+  </data>
+  <data name="GetStartedShiftPrompt" xml:space="preserve">
+    <value>Du måste skapa ett jobb innan du lägger till Skift</value>
   </data>
 </root>

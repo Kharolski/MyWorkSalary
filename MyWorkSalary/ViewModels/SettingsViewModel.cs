@@ -209,7 +209,7 @@ namespace MyWorkSalary.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"🚨 Navigate to JobSettingsPage Error: {ex}");
+                System.Diagnostics.Debug.WriteLine($"Navigate to JobSettingsPage Error: {ex}");
             }
             finally
             {
@@ -280,7 +280,6 @@ namespace MyWorkSalary.ViewModels
                     }
                     catch (Exception dataEx)
                     {
-                        System.Diagnostics.Debug.WriteLine($"🚨 SettingsPage data loading error: {dataEx}");
                         throw; // Kasta vidare för att hanteras i yttre catch
                     }
                 });
@@ -292,14 +291,11 @@ namespace MyWorkSalary.ViewModels
                 }
                 catch (Exception adEx)
                 {
-                    System.Diagnostics.Debug.WriteLine($"🚨 SettingsPage ad service error: {adEx}");
                     // Fortsätt även om banner misslyckas
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"🚨 SettingsPage LoadDataAsync Error: {ex}");
-                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
                 throw; // Kasta vidare för att hanteras i SettingsPage
             }
             finally
@@ -337,13 +333,13 @@ namespace MyWorkSalary.ViewModels
                 {
                     if (job.IsActive)
                     {
-                        job.IsActive = false; // 🔥 Triggar PropertyChanged
+                        job.IsActive = false; 
                         _databaseService.JobProfiles.SaveJobProfile(job);
                     }
                 }
 
                 // Aktivera valt jobb (UI uppdateras automatiskt)
-                selectedJob.IsActive = true; // 🔥 Triggar PropertyChanged
+                selectedJob.IsActive = true; 
                 _databaseService.JobProfiles.SaveJobProfile(selectedJob);
 
                 // Uppdatera ActiveJob property

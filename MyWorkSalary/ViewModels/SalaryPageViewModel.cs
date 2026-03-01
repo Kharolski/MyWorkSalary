@@ -56,7 +56,7 @@ namespace MyWorkSalary.ViewModels
         }
 
         public bool HasActiveJob => ActiveJob != null;
-
+        public bool HasNoActiveJob => !HasActiveJob;
         public string WelcomeText => HasActiveJob 
             ? $"{LocalizationHelper.Translate("ActiveJob")} - {ActiveJob.JobTitle}" 
             : LocalizationHelper.Translate("WelcomeMessage");
@@ -431,7 +431,7 @@ namespace MyWorkSalary.ViewModels
 
             SelectedMonth = SelectedMonth.AddMonths(1);
         });
-
+        public ICommand CreateJobCommand { get; }
         #endregion
 
         #region Constructor
@@ -444,6 +444,8 @@ namespace MyWorkSalary.ViewModels
             _jobProfileRepository = jobProfileRepository;
             _salaryHandler = salaryStatsHandler;
             _adService = adService;
+
+            CreateJobCommand = new Command(OnCreateJob);
 
             _selectedMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
@@ -481,7 +483,6 @@ namespace MyWorkSalary.ViewModels
                     }
                     catch (Exception dataEx)
                     {
-                        System.Diagnostics.Debug.WriteLine($"🚨 SalaryPage data loading error: {dataEx}");
                         throw; // Kasta vidare för att hanteras i yttre catch
                     }
                 });
@@ -493,14 +494,14 @@ namespace MyWorkSalary.ViewModels
                 }
                 catch (Exception adEx)
                 {
-                    System.Diagnostics.Debug.WriteLine($"🚨 SalaryPage ad service error: {adEx}");
+                    System.Diagnostics.Debug.WriteLine($"SalaryPage ad service error: {adEx}");
                     // Fortsätt även om banner misslyckas
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"🚨 SalaryPage LoadDataAsync Error: {ex}");
-                System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
+                System.Diagnostics.Debug.WriteLine($"SalaryPage LoadDataAsync Error: {ex}");
+                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
                 throw; // Kasta vidare för att hanteras i SalaryPage
             }
             finally
@@ -586,7 +587,10 @@ namespace MyWorkSalary.ViewModels
             var now = DateTime.Now;
             SelectedMonth = new DateTime(now.Year, now.Month, 1);
         }
-
+        private async void OnCreateJob()
+        {
+            await Shell.Current.GoToAsync("//SettingsPage");
+        }
         #endregion
     }
 }

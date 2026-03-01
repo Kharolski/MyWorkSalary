@@ -2349,7 +2349,7 @@ The work shift has been saved!</value>
     <value>Amount</value>
     <comment>SalaryPage</comment>
   </data>
-  <data name="Salary_NoReport_CreateJob" xml:space="preserve">
+  <data name="GetStartedSalaryPrompt" xml:space="preserve">
     <value>No salary report yet — create a job first.</value>
     <comment>SalaryPage.xaml</comment>
   </data>
@@ -3059,5 +3059,8 @@ The work shift has been saved!</value>
   </data>
   <data name="Premium_Card_Benefits" xml:space="preserve">
     <value>Get access to advanced features like OB templates, call handling and much more</value>
+  </data>
+  <data name="GetStartedShiftPrompt" xml:space="preserve">
+    <value>You need to create a job before adding shifts</value>
   </data>
 </root>

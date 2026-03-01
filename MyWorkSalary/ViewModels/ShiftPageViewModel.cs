@@ -54,6 +54,7 @@ namespace MyWorkSalary.ViewModels
             // Commands
             AddShiftCommand = new Command(OnAddShift);
             DeleteShiftCommand = new Command<WorkShift>(OnDeleteShift);
+            CreateJobCommand = new Command(OnCreateJob);
 
             // Prenumerera på events
             ShiftToHoursDisplayConverter.SickLeaveDataUpdated += OnSickLeaveDataUpdated;
@@ -100,7 +101,6 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged(nameof(NoShiftsVisible));
             }
         }
-
         public ObservableCollection<WorkShift> WorkShifts
         {
             get => _workShifts;
@@ -114,12 +114,15 @@ namespace MyWorkSalary.ViewModels
         }
 
         public bool HasShifts => GroupedWorkShifts?.Any() == true && GroupedWorkShifts.Any(g => g.Any());
-        public bool NoShiftsVisible => !HasShifts;
+        public bool NoShiftsVisible => HasActiveJob && !HasShifts;
+        public bool HasActiveJob => _activeJob != null;
+        public bool HasNoActiveJob => !HasActiveJob;
         #endregion
 
         #region Commands
         public ICommand AddShiftCommand { get; }
         public ICommand DeleteShiftCommand { get; }
+        public ICommand CreateJobCommand { get; }
         #endregion
 
         #region Methods
@@ -393,6 +396,10 @@ namespace MyWorkSalary.ViewModels
             });
         }
 
+        private async void OnCreateJob()
+        {
+            await Shell.Current.GoToAsync("//SettingsPage");
+        }
         #endregion
     }
 

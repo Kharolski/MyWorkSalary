@@ -8,15 +8,27 @@
 
     <Grid>
         <ScrollView>
-            <VerticalStackLayout Spacing="20" Padding="20,10">
+            <VerticalStackLayout Spacing="20" Padding="20">
 
                 <!-- ===================== -->
                 <!-- 🚫 INGET AKTIVT JOBB -->
                 <!-- ===================== -->
-                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob, Converter={StaticResource InvertedBoolConverter}}">
-                    <Label Text="{resx:Translate Salary_NoReport_CreateJob}"
-                Style="{StaticResource SecondaryLabel}"
-                HorizontalOptions="Center" />
+                <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasNoActiveJob}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="💰" FontSize="40" HorizontalOptions="Center" />
+                        <Label Text="{resx:Translate NoActiveJob}"
+                                FontSize="20" FontAttributes="Bold"
+                                HorizontalOptions="Center"
+                                Style="{StaticResource ActiveJob}" />
+                        <Label Text="{resx:Translate GetStartedSalaryPrompt}"
+                                Style="{StaticResource SecondaryLabel}"
+                                HorizontalOptions="Center" />
+                        <Button Text="{resx:Translate CreateFirstJob}"
+                                Command="{Binding CreateJobCommand}"
+                                Style="{StaticResource ButtonAdd}"
+                                Margin="0,10,0,0"
+                                HorizontalOptions="Center" />
+                    </VerticalStackLayout>
                 </Border>
 
                 <!-- ===================== -->
@@ -173,19 +185,19 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Grid ColumnDefinitions="*,Auto,*" Margin="0,10,0,0" VerticalOptions="Center">
+                <Grid ColumnDefinitions="*,Auto,*" Margin="0,10,0,0" VerticalOptions="Center" IsVisible="{Binding HasActiveJob}">
                     <BoxView Grid.Column="0" HeightRequest="1" VerticalOptions="Center"
-                     Color="{AppThemeBinding Light=#E0E0E0, Dark=#444444}" />
+                             Color="{AppThemeBinding Light=#E0E0E0, Dark=#444444}" />
 
                     <Label Grid.Column="1"
-                   Text="{resx:Translate Salary_Details_SectionTitle}"
-                   FontSize="16"
-                   FontAttributes="Bold"
-                   Margin="12,0"
-                   Opacity="0.7" />
+                           Text="{resx:Translate Salary_Details_SectionTitle}"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           Margin="12,0"
+                           Opacity="0.7" />
 
                     <BoxView Grid.Column="2" HeightRequest="1" VerticalOptions="Center"
-                     Color="{AppThemeBinding Light=#E0E0E0, Dark=#444444}" />
+                             Color="{AppThemeBinding Light=#E0E0E0, Dark=#444444}" />
                 </Grid>
 
                 <!-- ===================== -->
@@ -638,6 +650,7 @@
 
                 <!-- Skeleton cards -->
                 <VerticalStackLayout Spacing="20">
+                    <components:SkeletonCard />
                     <components:SkeletonCard />
                     <components:SkeletonCard />
                 </VerticalStackLayout>
