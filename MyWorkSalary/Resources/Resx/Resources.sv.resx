@@ -1370,7 +1370,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Kunde inte spara sjukdag</value>
   </data>
   <data name="SickLeave_Save_Unexpected" xml:space="preserve">
-    <value>Kunde inte spara: {0}</value>
+    <value>❌ Kunde inte spara: {0}</value>
   </data>
   <data name="SickLeave_KarensDeduction" xml:space="preserve">
     <value>⚠️ Karensavdrag: {0:C}</value>
@@ -1385,10 +1385,10 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Arbetade timmar måste vara mindre än planerade</value>
   </data>
   <data name="SickLeave_Save_Message" xml:space="preserve">
-    <value>Sjukdag registrerad</value>
+    <value>✅ Sjukdag registrerad</value>
   </data>
   <data name="SickLeave_Save_Exception" xml:space="preserve">
-    <value>Kunde inte spara: {0}</value>
+    <value>❌ Kunde inte spara: {0}</value>
   </data>
   <data name="Sick_Header" xml:space="preserve">
     <value>ℹ️ Information</value>
@@ -2422,7 +2422,7 @@ Arbetspasset har sparats!</value>
     <value>Utvecklad av Aleh.</value>
   </data>
   <data name="AboutContact" xml:space="preserve">
-    <value>Kontakt: support@myworksalary.com</value>
+    <value>Kontakt: kharo.studio@gmail.com</value>
   </data>
   <data name="AboutPrivacyPolicy" xml:space="preserve">
     <value>Integritetspolicy</value>
@@ -2554,10 +2554,10 @@ Arbetspasset har sparats!</value>
     <value>Vardags-natt</value>
   </data>
   <data name="OBRule_Free_WeekendDay_Name" xml:space="preserve">
-    <value>Helg-dag</value>
+    <value>Helgdag</value>
   </data>
   <data name="OBRule_Free_WeekendNight_Name" xml:space="preserve">
-    <value>Helg-natt</value>
+    <value>Helgnatt</value>
   </data>
   <data name="SuccessTitle" xml:space="preserve">
     <value>✅ Klart!</value>
@@ -2600,5 +2600,35 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="GetStartedShiftPrompt" xml:space="preserve">
     <value>Du måste skapa ett jobb innan du lägger till Skift</value>
+  </data>
+  <data name="LanguageNorwegian" xml:space="preserve">
+    <value>Norsk</value>
+  </data>
+  <data name="ThemeSelection" xml:space="preserve">
+    <value>Temaval</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Ljust tema</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Mörkt tema</value>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Systemtema</value>
+  </data>
+  <data name="VacationDays" xml:space="preserve">
+    <value>Semesterdagar</value>
+  </data>
+  <data name="VacationDaysRemaining" xml:space="preserve">
+    <value>{0} Återstående semesterdagar</value>
+  </data>
+  <data name="VacationDaysUsed" xml:space="preserve">
+    <value>{0} Använda semesterdagar</value>
+  </data>
+  <data name="Vacation_Default" xml:space="preserve">
+    <value>"Semester"</value>
+  </data>
+  <data name="Vacation_Loading" xml:space="preserve">
+    <value>Semester...</value>
   </data>
 </root>

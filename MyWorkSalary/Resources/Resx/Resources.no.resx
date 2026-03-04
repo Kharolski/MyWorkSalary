@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,248 +118,248 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Active" xml:space="preserve">
-    <value>✓  AKTIVE</value>
+    <value>✓  AKTIV</value>
   </data>
   <data name="ActiveJob" xml:space="preserve">
-    <value>Active Work</value>
+    <value>Aktiv jobb</value>
   </data>
   <data name="ActiveJobLabel" xml:space="preserve">
-    <value>📋 Active job - </value>
+    <value>📋 Aktiv jobb - </value>
   </data>
   <data name="AddFirstJobText" xml:space="preserve">
-    <value>Add your first job to start using the app.</value>
+    <value>Legg til din første jobb for å begynne å bruke appen.</value>
   </data>
   <data name="AddJob" xml:space="preserve">
-    <value>✚  Add</value>
+    <value>✚ Legg til</value>
   </data>
   <data name="AddJobPage_BasicInfo" xml:space="preserve">
-    <value>📋 Basic information</value>
+    <value>📋 Grunnleggende informasjon</value>
     <comment>Section header</comment>
   </data>
   <data name="AddJobPage_Country" xml:space="preserve">
-    <value>Country *</value>
+    <value>Land *</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_CountryTip" xml:space="preserve">
-    <value>💡 Select the country where the job is performed…</value>
+    <value>💡 Velg landet der jobben utføres…</value>
     <comment>Tip text</comment>
   </data>
   <data name="AddJobPage_Currency" xml:space="preserve">
-    <value>Currency</value>
+    <value>Valuta</value>
   </data>
   <data name="AddJobPage_CurrencyTip" xml:space="preserve">
-    <value>Select the currency you get paid in.</value>
+    <value>Velg valutaen du får lønn i.</value>
   </data>
   <data name="AddJobPage_EmploymentDate" xml:space="preserve">
-    <value>Employment start date *</value>
+    <value>Ansettelsesdato *</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_EmploymentType" xml:space="preserve">
-    <value>Employment type</value>
+    <value>Ansettelsestype</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_ExpectedHours" xml:space="preserve">
-    <value>Expected hours / month</value>
+    <value>Forventede timer per måned</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_HourlyRate" xml:space="preserve">
-    <value>Hourly rate</value>
+    <value>Timelønn</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_JobTitle" xml:space="preserve">
-    <value>Job title *</value>
+    <value>Jobbtittel *</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_JobTitle_Placeholder" xml:space="preserve">
-    <value>e.g. Nurse</value>
+    <value>f.eks. Sykepleier</value>
     <comment>Placeholder text</comment>
   </data>
   <data name="AddJobPage_MonthlySalary" xml:space="preserve">
-    <value>Monthly salary</value>
+    <value>Månadslønn</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_SalarySection" xml:space="preserve">
-    <value>💰 Salary information</value>
+    <value>💰 Lønnsinformasjon</value>
     <comment>Section header</comment>
   </data>
   <data name="AddJobPage_SalaryType" xml:space="preserve">
-    <value>Salary type</value>
+    <value>Lønnstype</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_SavedVacation" xml:space="preserve">
-    <value>Saved vacation days now</value>
+    <value>Sparrede feriedager nå</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_SavedVacationTip" xml:space="preserve">
-    <value>💡 Enter your saved days…</value>
+    <value>💡 Skriv inn dine sparrede dager…</value>
     <comment>Tip text</comment>
   </data>
   <data name="AddJobPage_TaxRate" xml:space="preserve">
-    <value>Tax rate (%)</value>
+    <value>Skattesats (%)</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_TaxSection" xml:space="preserve">
-    <value>🏛️ Tax information</value>
+    <value>🏛️ Skatteinformasjon</value>
     <comment>Section header</comment>
   </data>
   <data name="AddJobPage_TaxTip" xml:space="preserve">
-    <value>💡 Tip: Check your latest salary spec</value>
+    <value>💡 Tips: Sjekk din siste lønnsslipp</value>
     <comment>Tip text</comment>
   </data>
   <data name="AddJobPage_TemporaryInfo" xml:space="preserve">
-    <value>ℹ️ As a temp employee, you are usually not entitled to paid vacation leave.
-Instead, you receive a vacation allowance that must be at least 12% of your earned salary.
-It is paid either monthly together with your salary or as a lump sum
-when employment ends (no later than one month afterwards).</value>
+    <value>ℹ️ Som vikar har du vanligvis ikke rett til betalt ferie.
+I stedet får du feriepenger som må være minst 12 % av din opptjente lønn.
+Det utbetales enten månedlig sammen med lønnen eller som en engangssum
+når ansettelsen avsluttes (senest en måned etterpå).</value>
     <comment>Info text</comment>
   </data>
   <data name="AddJobPage_Title" xml:space="preserve">
-    <value>Add new job</value>
+    <value>Legg til ny jobb</value>
     <comment>Page title</comment>
   </data>
   <data name="AddJobPage_VacationDays" xml:space="preserve">
-    <value>Vacation days / year</value>
+    <value>Feriedager per år</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_VacationSection" xml:space="preserve">
-    <value>🏖️ Vacation information</value>
+    <value>🏖️ Ferieinformasjon</value>
     <comment>Section header</comment>
   </data>
   <data name="AddJobPage_Workplace" xml:space="preserve">
-    <value>Workplace *</value>
+    <value>Arbeidssted *</value>
     <comment>Field label</comment>
   </data>
   <data name="AddJobPage_Workplace_Placeholder" xml:space="preserve">
-    <value>e.g. Municipality</value>
+    <value>f.eks. Kommune</value>
     <comment>Placeholder text</comment>
   </data>
   <data name="AddOBRule" xml:space="preserve">
-    <value>➕ Add Rule</value>
+    <value>➕ Legg til regel</value>
     <comment>Button text</comment>
   </data>
   <data name="AddShift" xml:space="preserve">
-    <value>➕ Add Shift</value>
+    <value>➕ Legg til vakt</value>
     <comment>Button text</comment>
   </data>
   <data name="AddShiftButton" xml:space="preserve">
-    <value>➕ Add new shift</value>
+    <value>➕ Legg til ny vakt</value>
   </data>
   <data name="AddShift_Title" xml:space="preserve">
-    <value>Add Shift</value>
+    <value>Legg til vakt</value>
   </data>
   <data name="AppSettings" xml:space="preserve">
-    <value>⚙️ App Settings</value>
+    <value>⚙️ App-innstillinger</value>
   </data>
   <data name="BasicInfo_SectionTitle" xml:space="preserve">
-    <value>📋 Basic information</value>
+    <value>📋 Grunnleggende informasjon</value>
   </data>
   <data name="Break_Error_MaxExceeded" xml:space="preserve">
-    <value>Maximum break time is 2 hours</value>
+    <value>Maksimal pausetid er 2 timer</value>
     <comment>Shift calculation service</comment>
   </data>
   <data name="Break_Error_Negative" xml:space="preserve">
-    <value>Break time cannot be negative</value>
+    <value>Pausetiden kan ikke være negativ</value>
     <comment>Shift calculation service</comment>
   </data>
   <data name="Break_Error_TooLong" xml:space="preserve">
-    <value>Break time cannot be longer than work time</value>
+    <value>Pauser kan ikke være lengre enn arbeidstiden</value>
     <comment>Shift calculation service</comment>
   </data>
   <data name="Break_NoBreakSuggested" xml:space="preserve">
-    <value>No break suggested</value>
+    <value>Ingen pause foreslått</value>
     <comment>Shift calculation service</comment>
   </data>
   <data name="Break_SuggestionTemplate" xml:space="preserve">
-    <value>Suggestion: {0} min (you can change)</value>
+    <value>Forslag: {0} min (du kan endre)</value>
     <comment>Shift calculation service</comment>
   </data>
   <data name="Button_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Avbryt</value>
   </data>
   <data name="Button_SaveChanges" xml:space="preserve">
-    <value>💾 Save changes</value>
+    <value>💾 Lagre endringer</value>
   </data>
   <data name="Button_SaveShift" xml:space="preserve">
-    <value>💾 Save Shift</value>
+    <value>💾 Lagre vakt</value>
   </data>
   <data name="CalculateSalary" xml:space="preserve">
-    <value>Calculate Salary</value>
+    <value>Beregn lønn</value>
     <comment>Button text</comment>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Avbryt</value>
   </data>
   <data name="CancelButton" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Avbryt</value>
   </data>
   <data name="CancelDialog_Confirm" xml:space="preserve">
-    <value>Yes, cancel</value>
+    <value>Ja, avbryt</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="CancelDialog_Decline" xml:space="preserve">
-    <value>Continue editing</value>
+    <value>Fortsett redigering</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="CancelDialog_Message" xml:space="preserve">
-    <value>Do you want to cancel without saving?</value>
+    <value>Vil du avbryte uten å lagre?</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="CancelDialog_Title" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Avbryt</value>
   </data>
   <data name="Category_Evening" xml:space="preserve">
-    <value>Evening</value>
+    <value>Kveld</value>
   </data>
   <data name="Category_Holiday" xml:space="preserve">
-    <value>Public Holiday</value>
+    <value>Helligdag</value>
   </data>
   <data name="Category_Night" xml:space="preserve">
-    <value>Night</value>
+    <value>Natt</value>
   </data>
   <data name="Category_Placeholder" xml:space="preserve">
-    <value>Select a category</value>
+    <value>Velg en kategori</value>
   </data>
   <data name="Category_Weekend" xml:space="preserve">
-    <value>Weekend</value>
+    <value>Helg</value>
   </data>
   <data name="Category_WeekendExtra" xml:space="preserve">
-    <value>Weekend Extra</value>
+    <value>Helg Ekstra</value>
   </data>
   <data name="ChangeJobFailedMessageFormat" xml:space="preserve">
-    <value>Could not switch job: {0}</value>
+    <value>Kunne ikke bytte jobb: {0}</value>
   </data>
   <data name="ChooseLanguage" xml:space="preserve">
-    <value>Choose Language</value>
+    <value>Velg språk</value>
   </data>
   <data name="ConfirmDelete" xml:space="preserve">
-    <value>Yes, delete</value>
+    <value>Ja, slett</value>
   </data>
   <data name="Conflict" xml:space="preserve">
-    <value>Conflict</value>
+    <value>Konflikt</value>
   </data>
   <data name="Country_Denmark" xml:space="preserve">
-    <value>Denmark</value>
+    <value>Danmark</value>
   </data>
   <data name="Country_Finland" xml:space="preserve">
     <value>Finland</value>
   </data>
   <data name="Country_France" xml:space="preserve">
-    <value>France</value>
+    <value>Frankrike</value>
   </data>
   <data name="Country_Ireland" xml:space="preserve">
-    <value>Ireland</value>
+    <value>Irland</value>
   </data>
   <data name="Country_Label" xml:space="preserve">
-    <value>Country</value>
+    <value>Land</value>
   </data>
   <data name="Country_Norway" xml:space="preserve">
-    <value>Norway</value>
+    <value>Norge</value>
   </data>
   <data name="Country_Sweden" xml:space="preserve">
-    <value>Sweden</value>
+    <value>Sverige</value>
   </data>
   <data name="CreateFirstJob" xml:space="preserve">
-    <value>Create your first job</value>
+    <value>Opprett din første jobb</value>
     <comment>Button text</comment>
   </data>
   <data name="Currency" xml:space="preserve">
@@ -367,22 +367,22 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Currency format</comment>
   </data>
   <data name="Currency_DKK" xml:space="preserve">
-    <value>Danish krone (DKK)</value>
+    <value>Danske kroner (DKK)</value>
   </data>
   <data name="Currency_EUR" xml:space="preserve">
     <value>Euro (EUR)</value>
   </data>
   <data name="Currency_Label" xml:space="preserve">
-    <value>Currency</value>
+    <value>Valuta</value>
   </data>
   <data name="Currency_NOK" xml:space="preserve">
-    <value>Norwegian krone (NOK)</value>
+    <value>Norske kroner (NOK)</value>
   </data>
   <data name="Currency_PLN" xml:space="preserve">
-    <value>Polish zloty (PLN)</value>
+    <value>Polske zloty (PLN)</value>
   </data>
   <data name="Currency_SEK" xml:space="preserve">
-    <value>Swedish kronor (SEK)</value>
+    <value>Svenske kroner (SEK)</value>
   </data>
   <data name="Currency_USD" xml:space="preserve">
     <value>US Dollar (USD)</value>
@@ -392,831 +392,831 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Month and year format</comment>
   </data>
   <data name="DarkTheme" xml:space="preserve">
-    <value>Dark Theme</value>
+    <value>Mørkt tema</value>
   </data>
   <data name="DarkThemeActive" xml:space="preserve">
-    <value>Dark theme enabled</value>
+    <value>Mørkt utseende aktivert</value>
   </data>
   <data name="Date_Label" xml:space="preserve">
-    <value>📅 Date</value>
+    <value>📅 Dato</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>🗑️ Delete</value>
+    <value>🗑️ Slett</value>
   </data>
   <data name="DeleteActiveJobMessage" xml:space="preserve">
-    <value>You are deleting the active job. Select another job as active first, or delete all jobs.</value>
+    <value>Du sletter den aktive jobben. Velg en annen jobb som aktiv først, eller slett alle jobber.</value>
   </data>
   <data name="DeletedOnCall" xml:space="preserve">
-    <value>On-call shift has been deleted</value>
+    <value>Vakten har blitt slettet</value>
   </data>
   <data name="DeletedShift" xml:space="preserve">
-    <value>Shift has been deleted</value>
+    <value>Vakten har blitt slettet</value>
   </data>
   <data name="DeletedSickLeave" xml:space="preserve">
-    <value>Sick leave has been deleted</value>
+    <value>Sykefraværet har blitt slettet</value>
   </data>
   <data name="DeletedTitle" xml:space="preserve">
-    <value>Deleted</value>
+    <value>Slettet</value>
   </data>
   <data name="DeletedVacation" xml:space="preserve">
-    <value>Vacation has been deleted</value>
+    <value>Ferien har blitt slettet</value>
   </data>
   <data name="DeleteError" xml:space="preserve">
-    <value>❌ Error</value>
+    <value>❌ Feil</value>
   </data>
   <data name="DeleteErrorMessage" xml:space="preserve">
-    <value>Could not delete the shift: {0}</value>
+    <value>Kunne ikke slette vakten: {0}</value>
   </data>
   <data name="DeleteJobFailedMessageFormat" xml:space="preserve">
-    <value>Couldn't delete the job: {0}</value>
+    <value>Kunne ikke slette jobben: {0}</value>
   </data>
   <data name="DeleteJobMessageFormat" xml:space="preserve">
-    <value>Do you want to delete '{0}' from {1}? This will delete all related shifts and data.</value>
+    <value>Vil du slette '{0}' fra {1}? Dette sletter alle relaterte vakter og data.</value>
   </data>
   <data name="DeleteJobTitle" xml:space="preserve">
-    <value>Delete job</value>
+    <value>Slett jobb</value>
   </data>
   <data name="DeleteLastJobMessageFormat" xml:space="preserve">
-    <value>You are deleting your LAST job '{0}'.  You will need to create a new job to use the app. Continue?</value>
+    <value>Du sletter din SISTE jobb '{0}'. Du må opprette en ny jobb for å bruke appen. Fortsette?</value>
   </data>
   <data name="DeleteLastJobTitle" xml:space="preserve">
-    <value>⚠️ Delete last job</value>
+    <value>⚠️ Slett siste jobb</value>
   </data>
   <data name="DeleteOBRateFailedMessage" xml:space="preserve">
-    <value>Could not delete the rule</value>
+    <value>Kunne ikke slette regelen</value>
   </data>
   <data name="DeleteOBRateMessageFormat" xml:space="preserve">
-    <value>Do you want to delete '{0}'?</value>
+    <value>Vil du slette '{0}'?</value>
   </data>
   <data name="DeleteOBRateTitle" xml:space="preserve">
-    <value>Delete rule</value>
+    <value>Slett regel</value>
   </data>
   <data name="DeleteOnCallConfirm" xml:space="preserve">
-    <value>Are you sure you want to delete this on-call shift on {0}?</value>
+    <value>Er du sikker på at du vil slette denne vakten fra {0}?</value>
   </data>
   <data name="DeleteShiftButton" xml:space="preserve">
-    <value>Delete</value>
+    <value>Slett</value>
   </data>
   <data name="DeleteShiftConfirm" xml:space="preserve">
-    <value>Are you sure you want to delete this shift on {0}?</value>
+    <value>Er du sikker på at du vil slette denne vakten fra {0}?</value>
   </data>
   <data name="DeleteShiftTitle" xml:space="preserve">
-    <value>Delete Shift</value>
+    <value>Slett vakt</value>
   </data>
   <data name="DeleteShiftWithTimeConfirm" xml:space="preserve">
-    <value>Delete shift on {0}? 
+    <value>Vil du slette vakten fra {0}? 
 ({1} - {2})</value>
   </data>
   <data name="DeleteSickLeaveConfirm" xml:space="preserve">
-    <value>Are you sure you want to delete this sick leave on {0}?</value>
+    <value>Er du sikker på at du vil slette denne sykedagen fra {0}?</value>
   </data>
   <data name="DeleteVacationConfirm" xml:space="preserve">
-    <value>Are you sure you want to delete this vacation day on {0}?</value>
+    <value>Er du sikker på at du vil slette denne feriedagen fra {0}?</value>
   </data>
   <data name="Dialog_ErrorTitle" xml:space="preserve">
-    <value>❌ Error</value>
+    <value>❌ Feil</value>
   </data>
   <data name="Dialog_JobSavedMessage" xml:space="preserve">
-    <value>The job has been saved!</value>
+    <value>Jobben har blitt lagret!</value>
   </data>
   <data name="Dialog_JobSaveFailedMessageFormat" xml:space="preserve">
-    <value>Could not save the job: {0}</value>
+    <value>Kunne ikke lagre jobben: {0}</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="Dialog_RequiredFieldsMessage" xml:space="preserve">
-    <value>Please fill in all required fields</value>
+    <value>Vennligst fyll ut alle obligatoriske felt</value>
   </data>
   <data name="Dialog_SuccessTitle" xml:space="preserve">
-    <value>✅ Success</value>
+    <value>✅ Suksess</value>
   </data>
   <data name="Earned" xml:space="preserve">
-    <value>Earned</value>
+    <value>Opptjent</value>
     <comment>Statistic label</comment>
   </data>
   <data name="EditJob" xml:space="preserve">
-    <value>✏️  Edit</value>
+    <value>✏️ Rediger</value>
   </data>
   <data name="EditJob_CancelMessage" xml:space="preserve">
-    <value>Are you sure you want to cancel? Changes will not be saved.</value>
+    <value>Er du sikker på at du vil avbryte? Endringer blir ikke lagret.</value>
   </data>
   <data name="EditJob_CancelNo" xml:space="preserve">
-    <value>No, continue</value>
+    <value>Nei, fortsett</value>
   </data>
   <data name="EditJob_CancelTitle" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Avbryt</value>
   </data>
   <data name="EditJob_CancelYes" xml:space="preserve">
-    <value>Yes, cancel</value>
+    <value>Ja, avbryt</value>
   </data>
   <data name="EditJob_ErrorMessage" xml:space="preserve">
-    <value>Could not update the job: {0}</value>
+    <value>Kunne ikke oppdatere jobben: {0}</value>
   </data>
   <data name="EditJob_ErrorTitle" xml:space="preserve">
-    <value>❌ Error</value>
+    <value>❌ Feil</value>
   </data>
   <data name="EditJob_Header" xml:space="preserve">
-    <value>✏️  Edit job</value>
+    <value>✏️ Rediger jobb</value>
   </data>
   <data name="EditJob_Ok" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="EditJob_SuccessMessage" xml:space="preserve">
-    <value>✅ The job has been updated!</value>
+    <value>✅ Jobben har blitt oppdatert!</value>
   </data>
   <data name="EditJob_SuccessTitle" xml:space="preserve">
-    <value>✅ Success</value>
+    <value>✅ Suksess</value>
   </data>
   <data name="EditJob_Title" xml:space="preserve">
-    <value>Edit job</value>
+    <value>Rediger jobb</value>
   </data>
   <data name="EmploymentDate_Label" xml:space="preserve">
-    <value>Employment date *</value>
+    <value>Ansettelsesdato *</value>
   </data>
   <data name="EmploymentType_Default" xml:space="preserve">
-    <value>Employee</value>
+    <value>Ansatt</value>
   </data>
   <data name="EmploymentType_Label" xml:space="preserve">
-    <value>Employment type</value>
+    <value>Ansettelsestype</value>
   </data>
   <data name="EmploymentType_Permanent" xml:space="preserve">
-    <value>Permanent</value>
+    <value>Fast</value>
   </data>
   <data name="EmploymentType_Temporary" xml:space="preserve">
-    <value>Temporary / On-call</value>
+    <value>Vikarie/Timansatt</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>❌ Error</value>
+    <value>❌ Feil</value>
   </data>
   <data name="ErrorTitle" xml:space="preserve">
-    <value>❌ Error</value>
+    <value>❌ Feil</value>
   </data>
   <data name="Error_CheckConflicts" xml:space="preserve">
-    <value>Could not check for conflicts: {0}</value>
+    <value>Kunne ikke sjekke konflikter: {0}</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="Error_DeleteShift" xml:space="preserve">
-    <value>Could not delete existing shift: {0}</value>
+    <value>Kunne ikke slette eksisterende vakt: {0}</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="Error_SalaryRequired" xml:space="preserve">
-    <value>Monthly salary must be specified</value>
+    <value>Månadslønn må være spesifisert</value>
     <comment>Shift calculation service</comment>
   </data>
   <data name="ExactSchedule" xml:space="preserve">
-    <value>Exactly on schedule</value>
+    <value>Nøyaktig ifølge plan</value>
   </data>
   <data name="ExpectedHours_Label" xml:space="preserve">
-    <value>Expected hours per month</value>
+    <value>Forventede timer per måned</value>
   </data>
   <data name="ExpectedHours_Placeholder" xml:space="preserve">
-    <value>e.g. 165</value>
+    <value>f.eks. 165</value>
   </data>
   <data name="FlexBalanced" xml:space="preserve">
-    <value>Balanced</value>
+    <value>Balansert</value>
   </data>
   <data name="FlexNegative" xml:space="preserve">
-    <value>{0} hours debt</value>
+    <value>{0} timer gjeld</value>
   </data>
   <data name="FlexPositive" xml:space="preserve">
-    <value>+{0} hours of availability</value>
+    <value>+{0} timer tilgjengelighet</value>
   </data>
   <data name="FlexTime" xml:space="preserve">
-    <value>Flex time </value>
+    <value>Fleksitid</value>
     <comment>Section header</comment>
   </data>
   <data name="FlexTimeTooltip" xml:space="preserve">
-    <value>💡 Hours remaining/over monthly goal</value>
+    <value>💡 Timer gjenstående/over månedens mål</value>
     <comment>Tooltip for flex time</comment>
   </data>
   <data name="For" xml:space="preserve">
     <value>For</value>
   </data>
   <data name="From" xml:space="preserve">
-    <value>From</value>
+    <value>Fra</value>
   </data>
   <data name="GetStartedPrompt" xml:space="preserve">
-    <value>Get started by creating your first job</value>
+    <value>Kom i gang ved å opprette din første jobb</value>
     <comment>Prompt when no job is set up</comment>
   </data>
   <data name="HomeTitle" xml:space="preserve">
-    <value>🏠 Home</value>
+    <value>🏠 Hjem</value>
     <comment>Page title </comment>
   </data>
   <data name="HourlyRate" xml:space="preserve">
-    <value>{0}/h</value>
+    <value>{0}/t</value>
     <comment>Hourly rate format</comment>
   </data>
   <data name="HourlySalary_Label" xml:space="preserve">
-    <value>Hourly rate </value>
+    <value>Timelønn</value>
   </data>
   <data name="HourlySalary_Placeholder" xml:space="preserve">
-    <value>e.g. 185</value>
+    <value>f.eks. 185</value>
   </data>
   <data name="HourlyWage" xml:space="preserve">
-    <value>Hourly wage</value>
+    <value>Timelønn</value>
   </data>
   <data name="Hours" xml:space="preserve">
-    <value>hours</value>
+    <value>timer</value>
     <comment>Hours unit</comment>
   </data>
   <data name="HoursAbbreviation" xml:space="preserve">
-    <value>h</value>
+    <value>t</value>
     <comment>Abbreviation for hours</comment>
   </data>
   <data name="HoursCredit" xml:space="preserve">
-    <value>hours credit</value>
+    <value>timer fleksitid</value>
     <comment>Shown in flex balance when there are extra hours</comment>
   </data>
   <data name="HoursDisplay_Error" xml:space="preserve">
-    <value>❌ Error</value>
+    <value>❌ Feil</value>
   </data>
   <data name="HoursDisplay_Loading" xml:space="preserve">
     <value>... </value>
   </data>
   <data name="HoursDisplay_OnCall" xml:space="preserve">
-    <value>On-Call</value>
+    <value>Vakt</value>
   </data>
   <data name="HoursDisplay_ZeroHours" xml:space="preserve">
-    <value>0h</value>
+    <value>0t</value>
   </data>
   <data name="HoursOwed" xml:space="preserve">
-    <value>hours owed</value>
+    <value>timer skyldig</value>
     <comment>Shown in flex balance when hours are owed</comment>
   </data>
   <data name="HoursPerMonth" xml:space="preserve">
-    <value>hours/month</value>
+    <value>timer/måned</value>
   </data>
   <data name="HoursText" xml:space="preserve">
-    <value>Hours</value>
+    <value>Timer</value>
     <comment>Label for hours </comment>
   </data>
   <data name="HoursToBank" xml:space="preserve">
-    <value>hours to hour bank</value>
+    <value>timer til timebank</value>
   </data>
   <data name="HoursWorked" xml:space="preserve">
-    <value>Hours Worked</value>
+    <value>Arbeidede timer</value>
     <comment>Statistic label</comment>
   </data>
   <data name="InitialVacation_Label" xml:space="preserve">
-    <value>Saved vacation days right now</value>
+    <value>Sparrede feriedager nå</value>
   </data>
   <data name="InitialVacation_Placeholder" xml:space="preserve">
-    <value>e.g. 12.5</value>
+    <value>f.eks. 12.5</value>
   </data>
   <data name="JobChangedMessageFormat" xml:space="preserve">
-    <value>Changed to: {0}</value>
+    <value>Byttet til: {0}</value>
   </data>
   <data name="JobDeletedSuccessMessage" xml:space="preserve">
-    <value>✅ The job has been deleted.</value>
+    <value>✅ Jobben har blitt slettet.</value>
   </data>
   <data name="JobDeletedTitle" xml:space="preserve">
-    <value>Deleted</value>
+    <value>Slettet</value>
   </data>
   <data name="JobTitle_Label" xml:space="preserve">
-    <value>Job title *</value>
+    <value>Jobbtittel *</value>
   </data>
   <data name="JobTitle_Placeholder" xml:space="preserve">
-    <value>e.g. Nursing assistant</value>
+    <value>f.eks. Sykepleier</value>
   </data>
   <data name="Job_Label" xml:space="preserve">
-    <value>📋 Job</value>
+    <value>📋 Jobb</value>
   </data>
   <data name="Label_Country" xml:space="preserve">
-    <value>Country:</value>
+    <value>Land:</value>
   </data>
   <data name="LanguageEnglish" xml:space="preserve">
-    <value>English</value>
+    <value>Engelsk</value>
   </data>
   <data name="LanguageSwedish" xml:space="preserve">
-    <value>Swedish</value>
+    <value>Svensk</value>
   </data>
   <data name="LastJobDeletedSuccessMessage" xml:space="preserve">
-    <value>✅ Last job deleted. You can create a new job via the 'Add' button.</value>
+    <value>✅ Siste jobb slettet. Du kan opprette en ny jobb via 'Legg til' knappen.</value>
   </data>
   <data name="LightThemeActive" xml:space="preserve">
-    <value>Bright appearance enabled</value>
+    <value>Lyst utseende aktivert</value>
   </data>
   <data name="MonthlyBalanced" xml:space="preserve">
-    <value>Balanced this month</value>
+    <value>Balansert denne måneden</value>
   </data>
   <data name="MonthlyGoalReached" xml:space="preserve">
-    <value>Monthly goal reached!</value>
+    <value>Månedens mål nådd!</value>
     <comment>Shown when monthly hours goal is exactly met</comment>
   </data>
   <data name="MonthlyNegative" xml:space="preserve">
-    <value>{0} hours this month</value>
+    <value>{0} timer denne måneden</value>
   </data>
   <data name="MonthlyPositive" xml:space="preserve">
-    <value>+{0} hours this month</value>
+    <value>+{0} timer denne måneden</value>
   </data>
   <data name="MonthlySalary" xml:space="preserve">
-    <value>Monthly salary</value>
+    <value>Månadslønn</value>
   </data>
   <data name="MonthlySalary_Label" xml:space="preserve">
-    <value>Monthly salary </value>
+    <value>Månadslønn</value>
   </data>
   <data name="MonthlySalary_Placeholder" xml:space="preserve">
-    <value>e.g. 28500</value>
+    <value>f.eks. 28500</value>
   </data>
   <data name="MonthlyStats" xml:space="preserve">
-    <value>Monthly Statistics</value>
+    <value>Månedsstatistikk</value>
     <comment>Section header</comment>
   </data>
   <data name="MyJobs" xml:space="preserve">
-    <value>💼 My Jobs</value>
+    <value>💼 Mine Jobber</value>
   </data>
   <data name="MyShiftsHeader" xml:space="preserve">
-    <value>📅 My work shifts</value>
+    <value>📅 Mine arbeidsvakter</value>
   </data>
   <data name="NoActiveJob" xml:space="preserve">
-    <value>No active job</value>
+    <value>Ingen aktiv jobb</value>
   </data>
   <data name="NoActiveJobFound" xml:space="preserve">
-    <value>No active job found.</value>
+    <value>Ingen aktiv jobb funnet.</value>
   </data>
   <data name="NoActivitiesIcon" xml:space="preserve">
     <value>📝</value>
     <comment>Icon for empty state</comment>
   </data>
   <data name="NoActivitiesMessage" xml:space="preserve">
-    <value>Register your first work shift!</value>
+    <value>Registrer din første arbeidsvakt!</value>
     <comment>Message when no activities</comment>
   </data>
   <data name="NoActivitiesTitle" xml:space="preserve">
-    <value>No activities yet</value>
+    <value>Ingen aktiviteter ennå</value>
     <comment>Title when no activities</comment>
   </data>
   <data name="NoFlexTime" xml:space="preserve">
-    <value>No flex time</value>
+    <value>Ingen fleksitid</value>
   </data>
   <data name="NoJobAlertMessage" xml:space="preserve">
-    <value>You need to create a job first in Settings.</value>
+    <value>Du må opprette en jobb først i Innstillinger.</value>
   </data>
   <data name="NoJobAlertTitle" xml:space="preserve">
-    <value>No Job</value>
+    <value>Ingen jobb</value>
   </data>
   <data name="NoJobSetup" xml:space="preserve">
-    <value>No job configured</value>
+    <value>Ingen jobb konfigurert</value>
     <comment>Message when no job is set up</comment>
   </data>
   <data name="NoJobsRegistered" xml:space="preserve">
-    <value>No jobs registered</value>
+    <value>Ingen jobber registrert</value>
   </data>
   <data name="NoLoss" xml:space="preserve">
-    <value>(No loss)</value>
+    <value>(Ingen tap)</value>
     <comment>Text when no hours are lost</comment>
   </data>
   <data name="NoShiftsIcon" xml:space="preserve">
-    <value> 📝</value>
+    <value>📝</value>
   </data>
   <data name="NoShiftsMessage" xml:space="preserve">
-    <value>Click the button above to add your first shift</value>
+    <value>Trykk på knappen over for å legge til din første vakt</value>
   </data>
   <data name="NoShiftsThisMonth" xml:space="preserve">
-    <value>No shifts recorded this month</value>
+    <value>Ingen vakter registrert denne måneden</value>
     <comment>Message when no shifts for current month</comment>
   </data>
   <data name="NoShiftsTitle" xml:space="preserve">
-    <value>No work shifts registered yet</value>
+    <value>Ingen arbeidsvakter registrert ennå</value>
   </data>
   <data name="OBCategory_Evening" xml:space="preserve">
-    <value>Evening</value>
+    <value>Kveld</value>
     <comment>OB category for evening</comment>
   </data>
   <data name="OBCategory_Night" xml:space="preserve">
-    <value>Night</value>
+    <value>Natt</value>
     <comment>OB category for night</comment>
   </data>
   <data name="OBCategory_Weekend" xml:space="preserve">
-    <value>Weekend</value>
+    <value>Helg</value>
     <comment>OB category for weekend</comment>
   </data>
   <data name="ObHoursText" xml:space="preserve">
-    <value>Unsocial Hours</value>
+    <value>Uegnet timer</value>
     <comment>Label for unsocial hours</comment>
   </data>
   <data name="OBRule_Category_Label" xml:space="preserve">
-    <value>🏷️ Category</value>
+    <value>🏷️ Kategori</value>
   </data>
   <data name="OBRule_Days_Label" xml:space="preserve">
-    <value>📅 Applies on these days</value>
+    <value>📅 Gjelder disse dagene</value>
   </data>
   <data name="OBRule_Friday" xml:space="preserve">
-    <value>Friday</value>
+    <value>Fredag</value>
   </data>
   <data name="OBRule_From_Label" xml:space="preserve">
-    <value>From:</value>
+    <value>Fra:</value>
   </data>
   <data name="OBRule_Holidays" xml:space="preserve">
-    <value>Holidays</value>
+    <value>Helligdager</value>
   </data>
   <data name="OBRule_Monday" xml:space="preserve">
-    <value>Monday</value>
+    <value>Mandag</value>
   </data>
   <data name="OBRule_Name_Label" xml:space="preserve">
-    <value>📝 Unsocial Hours Name</value>
+    <value>📝 Navn på uegnede timer</value>
   </data>
   <data name="OBRule_Name_Placeholder" xml:space="preserve">
-    <value>e.g. “Evening unsocial hours (weekdays)”</value>
+    <value>f.eks. "Kveldstillegg (ukedager)"</value>
   </data>
   <data name="OBRule_Rate_Label" xml:space="preserve">
-    <value>💰 Pay per hour</value>
+    <value>💰 Lønn per time</value>
   </data>
   <data name="OBRule_Rate_Placeholder" xml:space="preserve">
-    <value>e.g. 56.70</value>
+    <value>f.eks. 56.70</value>
   </data>
   <data name="OBRule_Rate_Tip" xml:space="preserve">
-    <value>Enter pay per hour (including base + unsocial hours bonus)</value>
+    <value>Skriv inn lønn per time (inkludert grunnlønn + uegnede timer tillegg)</value>
   </data>
   <data name="OBRule_Saturday" xml:space="preserve">
-    <value>Saturday</value>
+    <value>Lørdag</value>
   </data>
   <data name="OBRule_Save_Button" xml:space="preserve">
-    <value>💾 Save Unsocial Hours Rule</value>
+    <value>💾 Lagre regel for uegnede timer</value>
   </data>
   <data name="OBRule_SelectAll" xml:space="preserve">
-    <value>All</value>
+    <value>Alle</value>
   </data>
   <data name="OBRule_SelectWeekdays" xml:space="preserve">
-    <value>Weekdays</value>
+    <value>Ukedager</value>
   </data>
   <data name="OBRule_SelectWeekends" xml:space="preserve">
-    <value>Weekends</value>
+    <value>Helger</value>
   </data>
   <data name="OBRule_Sunday" xml:space="preserve">
-    <value>Sunday</value>
+    <value>Søndag</value>
   </data>
   <data name="OBRule_Thursday" xml:space="preserve">
-    <value>Thursday</value>
+    <value>Torsdag</value>
   </data>
   <data name="OBRule_TimeSection_Label" xml:space="preserve">
-    <value>⏰ Time Period</value>
+    <value>⏰ Tidsperiode</value>
   </data>
   <data name="OBRule_Title" xml:space="preserve">
-    <value>Add Unsocial Hours Rule</value>
+    <value>Legg til regel for uegnede timer</value>
   </data>
   <data name="OBRule_To_Label" xml:space="preserve">
-    <value>To:</value>
+    <value>Til:</value>
   </data>
   <data name="OBRule_Tuesday" xml:space="preserve">
-    <value>Tuesday</value>
+    <value>Tirsdag</value>
   </data>
   <data name="OBRule_Wednesday" xml:space="preserve">
-    <value>Wednesday</value>
+    <value>Onsdag</value>
   </data>
   <data name="OBSettings" xml:space="preserve">
-    <value>⏰ Unsocial hours settings</value>
+    <value>⏰ OB-innstillinger</value>
   </data>
   <data name="OBTips" xml:space="preserve">
-    <value>💡 Tip: If no rule exists for a specific time, no unsocial hours pay is applied, even if evening or night is active.</value>
+    <value>💡 Tips: Hvis ingen regel finnes for en bestemt tid, blir ingen uegnede timer betalt, selv om kveld eller natt er aktiv.</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="OnCall" xml:space="preserve">
-    <value>On-call</value>
+    <value>Vakt</value>
     <comment>Label for on-call</comment>
   </data>
   <data name="OnCallIcon" xml:space="preserve">
-    <value> 📞</value>
+    <value>📞</value>
     <comment>Icon for on-call</comment>
   </data>
   <data name="OnCallLabel" xml:space="preserve">
-    <value>On-call</value>
+    <value>Vakt</value>
     <comment>Label for on-call (short)</comment>
   </data>
   <data name="OnCall_ActiveHours" xml:space="preserve">
-    <value>⚡ Active Working Hours</value>
+    <value>⚡ Aktiv arbeidstid</value>
     <comment>On-call form</comment>
   </data>
   <data name="OnCall_ActiveHoursInfo" xml:space="preserve">
-    <value>You will receive regular hourly wage + any overtime compensation for this time</value>
+    <value>Du vil motta vanlig timelønn + eventuell overtidskompensasjon for denne tiden</value>
     <comment>On call form</comment>
   </data>
   <data name="OnCall_ActiveHoursRegistered" xml:space="preserve">
-    <value>⚡ Active working time registered</value>
+    <value>⚡ Aktiv arbeidstid registrert</value>
     <comment>On call form</comment>
   </data>
   <data name="OnCall_ActiveHoursTip" xml:space="preserve">
-    <value>💡 Number of hours you were called in and worked actively</value>
+    <value>💡 Antall timer du ble innkalt og jobbet aktivt</value>
     <comment>On call form</comment>
   </data>
   <data name="OnCall_ActiveLabel" xml:space="preserve">
-    <value>Active time</value>
+    <value>Aktiv tid</value>
     <comment>On call viewmodel</comment>
   </data>
   <data name="OnCall_Calculation_Active" xml:space="preserve">
-    <value>Active time: {0:F1}{3} × {1} = {2}</value>
+    <value>Aktiv tid: {0:F1}{3} × {1} = {2}</value>
     <comment>On call viewmodel</comment>
   </data>
   <data name="OnCall_Calculation_Standby" xml:space="preserve">
-    <value>On-call: {0:F1}{3} × {1} = {2}</value>
+    <value>Vakt: {0:F1}{3} × {1} = {2}</value>
     <comment>On call viewmodel</comment>
   </data>
   <data name="OnCall_CheckTimes" xml:space="preserve">
-    <value>Check times</value>
+    <value>Sjekk tider</value>
     <comment>On call viewmodel</comment>
   </data>
   <data name="OnCall_Explanation_Permanent" xml:space="preserve">
-    <value>As permanent employee: On-call compensation according to agreement + regular wage for active working time.</value>
+    <value>Som fast ansatt: Vaktgodtgjørelse ifølge avtale + vanlig lønn for aktiv arbeidstid.</value>
     <comment>On call viewmodel</comment>
   </data>
   <data name="OnCall_Explanation_Temporary" xml:space="preserve">
-    <value>As hourly employee: On-call compensation + hourly wage for active working time must be agreed separately.</value>
+    <value>Som timansatt: Vaktgodtgjørelse + timelønn for aktiv arbeidstid må avtales separat.</value>
     <comment>On call viewmodel</comment>
   </data>
   <data name="OnCall_InfoTitle" xml:space="preserve">
-    <value>📞 On-Call Information</value>
+    <value>📞 Vaktinformasjon</value>
     <comment>On-call form</comment>
   </data>
   <data name="OnCall_Notes" xml:space="preserve">
-    <value>📝 Notes (optional)</value>
+    <value>📝 Notater (valgfritt)</value>
     <comment>On call form</comment>
   </data>
   <data name="OnCall_NotesPlaceholder" xml:space="preserve">
-    <value>E.g., number of call-outs, type of on-call, contact info...</value>
+    <value>F.eks. antall utkallinger, type vakt, kontaktinfo...</value>
     <comment>On call form</comment>
   </data>
   <data name="OnCall_OBNotice" xml:space="preserve">
-    <value>⚠️ Overtime supplements are calculated in the monthly report</value>
+    <value>⚠️ Overtidstillegg beregnes i månedsrapporten</value>
     <comment>On-call form</comment>
   </data>
   <data name="OnCall_Rate" xml:space="preserve">
-    <value>💰 On-Call Compensation (per hour)</value>
+    <value>💰 Vaktgodtgjørelse (per time)</value>
     <comment>On-call form</comment>
   </data>
   <data name="OnCall_RateTip" xml:space="preserve">
-    <value>💡 Typical: 30-50 {0}/hour according to collective agreement</value>
+    <value>💡 Vanligvis: 30-50 {0}/time ifølge tariffavtale</value>
     <comment>On call form</comment>
   </data>
   <data name="OnCall_Save_ErrorMissing" xml:space="preserve">
-    <value>Please check that all required fields are filled</value>
+    <value>Vennligst sjekk at alle obligatoriske felt er fylt ut</value>
     <comment>On call viewmodel</comment>
   </data>
   <data name="OnCall_Save_Exception" xml:space="preserve">
-    <value>⚠️ Error while saving: {0}</value>
+    <value>⚠️ Feil under lagring: {0}</value>
     <comment>On call viewmodel</comment>
   </data>
   <data name="OnCall_StandbyLabel" xml:space="preserve">
-    <value>On-call</value>
+    <value>Vakt</value>
     <comment>On call viewwmodel</comment>
   </data>
   <data name="OnCall_StandbyTime" xml:space="preserve">
-    <value>🕐 Standby Time</value>
+    <value>🕐 Vakttid</value>
     <comment>On-call form</comment>
   </data>
   <data name="OnCall_TotalEstimate" xml:space="preserve">
-    <value>Preliminary total: {0}</value>
+    <value>Preliminært total: {0}</value>
     <comment>On call form</comment>
   </data>
   <data name="OneDay" xml:space="preserve">
-    <value>(1 day)</value>
+    <value>(1 dag)</value>
     <comment>Text for one day duration</comment>
   </data>
   <data name="Overtime" xml:space="preserve">
-    <value>Overtime</value>
+    <value>Overtid</value>
     <comment>Overtime label</comment>
   </data>
   <data name="PerHour" xml:space="preserve">
-    <value>€/hour</value>
+    <value>kr/time</value>
   </data>
   <data name="PerMonth" xml:space="preserve">
-    <value>€/month</value>
+    <value>kr/måned</value>
   </data>
   <data name="QuickActions" xml:space="preserve">
-    <value>Quick Actions</value>
+    <value>Hurtige handlinger</value>
     <comment>Section header</comment>
   </data>
   <data name="QuickActionsTooltip" xml:space="preserve">
-    <value>💡 Register work time or view salary reports</value>
+    <value>💡 Registrer arbeidstid eller vis lønnsrapporter</value>
     <comment>Tooltip for quick actions</comment>
   </data>
   <data name="RecentActivities" xml:space="preserve">
-    <value>Recent Activities </value>
+    <value>Nylige aktiviteter</value>
     <comment>Section header </comment>
   </data>
   <data name="RegularShift_Break" xml:space="preserve">
-    <value>☕ Break (minutes)</value>
+    <value>☕ Pause (minutter)</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_BreakSuggestion" xml:space="preserve">
-    <value>Recommended break: {0} min</value>
+    <value>Anbefalt pause: {0} min</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_Calculation" xml:space="preserve">
-    <value>📊 Calculation</value>
+    <value>📊 Beregning</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_CalculationNote" xml:space="preserve">
-    <value>Salary will be shown in the monthly report. Here you only see the working time for this shift.</value>
+    <value>Lønn vil vises i månedsrapporten. Her ser du kun arbeidstiden for denne vakten.</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_Calculation_WithBreak" xml:space="preserve">
-    <value>Work time: {0:F1}h (after {1} min break)</value>
+    <value>Arbeidstid: {0:F1}t (etter {1} min pause)</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_Calculation_WithoutBreak" xml:space="preserve">
-    <value>Total: {0:F1} hours</value>
+    <value>Totalt: {0:F1} timer</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_Error_Saving" xml:space="preserve">
-    <value>⚠️ Error saving shift: {0}</value>
+    <value>⚠️ Feil ved lagring av vakt: {0}</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_ExtraShift" xml:space="preserve">
-    <value>Extra passes</value>
+    <value>Ekstravakter</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_From" xml:space="preserve">
-    <value>From</value>
+    <value>Fra</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_Notes" xml:space="preserve">
-    <value>📝 Notes (optional)</value>
+    <value>📝 Notater (valgfritt)</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_NotesPlaceholder" xml:space="preserve">
-    <value>E.g., overtime, special circumstances...</value>
+    <value>F.eks. overtid, spesielle omstendigheter...</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_ShiftSaved" xml:space="preserve">
-    <value>✅ Shift saved successfully</value>
+    <value>✅ Vakt lagret</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_To" xml:space="preserve">
-    <value>To</value>
+    <value>Til</value>
     <comment>Regular shift form</comment>
   </data>
   <data name="RegularShift_Validation_NoJobSelected" xml:space="preserve">
-    <value>No job selected</value>
+    <value>Ingen jobb valgt</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_Validation_ShiftTooLong" xml:space="preserve">
-    <value>Shift cannot be longer than 24 hours</value>
+    <value>Vakt kan ikke være lengre enn 24 timer</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_Validation_StartBeforeEnd" xml:space="preserve">
-    <value>Start time must be before end time</value>
+    <value>Starttid må være før sluttid</value>
     <comment>Regular shift viewmodel</comment>
   </data>
   <data name="RegularShift_WorkTime" xml:space="preserve">
-    <value>🕐 Work Time</value>
+    <value>🕐 Arbeidstid</value>
     <comment>Regular shift form </comment>
   </data>
   <data name="ReplaceShift_Confirm" xml:space="preserve">
-    <value>Yes, replace</value>
+    <value>Ja, erstatt</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="ReplaceShift_Title" xml:space="preserve">
-    <value>Replace Shift?</value>
+    <value>Erstatt vakt?</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SalaryNotSpecified" xml:space="preserve">
-    <value>Salary not specified</value>
+    <value>Lønn ikke spesifisert</value>
   </data>
   <data name="SalaryTypeInfo" xml:space="preserve">
-    <value>Salary Type</value>
+    <value>Lønnstype</value>
     <comment>Salary type information</comment>
   </data>
   <data name="SalaryType_Hourly" xml:space="preserve">
-    <value>Hourly rate</value>
+    <value>Timelønn</value>
   </data>
   <data name="SalaryType_Label" xml:space="preserve">
-    <value>Salary type</value>
+    <value>Lønnstype</value>
   </data>
   <data name="SalaryType_Monthly" xml:space="preserve">
-    <value>Monthly salary</value>
+    <value>Månadslønn</value>
   </data>
   <data name="Salary_SectionTitle" xml:space="preserve">
-    <value>💰 Salary information</value>
+    <value>💰 Lønnsinformasjon</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>Lagre</value>
     <comment>Button</comment>
   </data>
   <data name="SaveError_Generic" xml:space="preserve">
-    <value>Could not save: {0}</value>
+    <value>Kunne ikke lagre: {0}</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveError_OnCall" xml:space="preserve">
-    <value>Could not save on-call shift: {0}</value>
+    <value>Kunne ikke lagre vakt: {0}</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveError_RegularShift" xml:space="preserve">
-    <value>Could not save shift</value>
+    <value>Kunne ikke lagre vakt</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveError_SickLeave" xml:space="preserve">
-    <value>Could not save sick day</value>
+    <value>Kunne ikke lagre sykedag</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveError_Vacation" xml:space="preserve">
-    <value>Could not save vacation: {0}</value>
+    <value>Kunne ikke lagre ferie: {0}</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
-    <value>✅ Saved!</value>
+    <value>✅ Lagret!</value>
   </data>
   <data name="SaveSuccess_OnCall" xml:space="preserve">
-    <value>On-call shift registered</value>
+    <value>Vakt registrert</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveSuccess_RegularShift" xml:space="preserve">
-    <value>Regular shift registered</value>
+    <value>Vanlig vakt registrert</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="SaveSuccess_SickLeave" xml:space="preserve">
-    <value>Sick day registered</value>
+    <value>Sykedag registrert</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="Save_Error_Message" xml:space="preserve">
-    <value>Could not save unsocial hours rule: {0}</value>
+    <value>Kunne ikke lagre regel for uegnede timer: {0}</value>
   </data>
   <data name="Save_Error_Title" xml:space="preserve">
-    <value>❌ Error</value>
+    <value>❌ Feil</value>
   </data>
   <data name="Save_Success_Message" xml:space="preserve">
-    <value>Overtime rule '{0}' has been saved.</value>
+    <value>Overtidsregel '{0}' har blitt lagret.</value>
   </data>
   <data name="Save_Success_Title" xml:space="preserve">
-    <value>✅ Saved!</value>
+    <value>✅ Lagret!</value>
   </data>
   <data name="SelectShiftType_Placeholder" xml:space="preserve">
-    <value>Select Shift Type</value>
+    <value>Velg vakttype</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Innstillinger</value>
     <comment>Button text</comment>
   </data>
   <data name="ShiftPageTitle" xml:space="preserve">
-    <value>🗓️ Work Shifts</value>
+    <value>🗓️ Arbeidsvakter</value>
   </data>
   <data name="Shifts" xml:space="preserve">
-    <value>Shifts</value>
+    <value>Skift</value>
     <comment>Statistic label</comment>
   </data>
   <data name="ShiftType_Active" xml:space="preserve">
-    <value>active</value>
+    <value>aktiv</value>
   </data>
   <data name="ShiftType_Add_Regular" xml:space="preserve">
-    <value>Regular Work</value>
+    <value>Vanlig arbeid</value>
     <comment>Add shift viewmodel</comment>
   </data>
   <data name="ShiftType_AllDay" xml:space="preserve">
-    <value>All day</value>
+    <value>Heldag</value>
   </data>
   <data name="ShiftType_Day" xml:space="preserve">
-    <value>Day</value>
+    <value>Dag</value>
   </data>
   <data name="ShiftType_Evening" xml:space="preserve">
-    <value>Evening</value>
+    <value>Kveld</value>
   </data>
   <data name="ShiftType_Label" xml:space="preserve">
-    <value>📋 Shift Type</value>
+    <value>📋 Vakttype</value>
   </data>
   <data name="ShiftType_Night" xml:space="preserve">
-    <value>Night</value>
+    <value>Natt</value>
   </data>
   <data name="ShiftType_NoDescription" xml:space="preserve">
-    <value>No description</value>
+    <value>Ingen beskrivelse</value>
   </data>
   <data name="ShiftType_NoTime" xml:space="preserve">
-    <value>No time registered</value>
+    <value>Ingen tid registrert</value>
   </data>
   <data name="ShiftType_OnCall" xml:space="preserve">
-    <value>On-Call</value>
+    <value>Vakt</value>
   </data>
   <data name="ShiftType_OnCallShift" xml:space="preserve">
-    <value>On-call</value>
+    <value>Vakt</value>
   </data>
   <data name="ShiftType_Regular" xml:space="preserve">
-    <value>Shift</value>
+    <value>Vakt</value>
   </data>
   <data name="ShiftType_SickLeave" xml:space="preserve">
-    <value>Sick Leave </value>
+    <value>Sykefravær</value>
   </data>
   <data name="ShiftType_UnpaidLeave" xml:space="preserve">
-    <value>Unpaid leave</value>
+    <value>Ulønnet permisjon</value>
   </data>
   <data name="ShiftType_Vacation" xml:space="preserve">
-    <value>Vacation</value>
+    <value>Ferie</value>
   </data>
   <data name="SickDay" xml:space="preserve">
-    <value>Sick day</value>
+    <value>Sykedag</value>
     <comment>Generic sick day</comment>
   </data>
   <data name="SickDayFull" xml:space="preserve">
-    <value>Sick day (1 day) </value>
+    <value>Sykedag (1 dag)</value>
     <comment>Full sick day</comment>
   </data>
   <data name="SickDayPartial" xml:space="preserve">
-    <value>Partially sick</value>
+    <value>Delvis syk</value>
     <comment>Partial sick day</comment>
   </data>
   <data name="SickLeave" xml:space="preserve">
-    <value>Sick Leave</value>
+    <value>Sykefravær</value>
     <comment>Sick leave label</comment>
   </data>
   <data name="SickLeaveIcon" xml:space="preserve">
@@ -1224,1873 +1224,1545 @@ when employment ends (no later than one month afterwards).</value>
     <comment>Icon for sick leave</comment>
   </data>
   <data name="SickLeave_Default" xml:space="preserve">
-    <value>"Sick Leave"</value>
+    <value>"Sykefravær"</value>
   </data>
   <data name="SickLeave_Loading" xml:space="preserve">
-    <value>"Sick Leave..."</value>
+    <value>"Sykefravær..."</value>
   </data>
   <data name="SickOnDayOff" xml:space="preserve">
-    <value>Sick on day off</value>
+    <value>Syk på fridag</value>
     <comment>Sick on a day off</comment>
   </data>
   <data name="Success" xml:space="preserve">
-    <value>✅ Success</value>
+    <value>✅ Suksess</value>
   </data>
   <data name="SwipeDeleteJobHint" xml:space="preserve">
-    <value>💡 Swipe left to delete a job</value>
+    <value>💡 Sveip venstre for å slette en jobb</value>
   </data>
   <data name="SwipeDeleteOBHint" xml:space="preserve">
-    <value>💡 Swipe right to edit, swipe left to delete a rule</value>
+    <value>💡 Sveip høyre for å redigere, sveip venstre for å slette en regel</value>
     <comment>SettingsPage</comment>
   </data>
   <data name="TaxRate_Label" xml:space="preserve">
-    <value>Tax rate (%)</value>
+    <value>Skattesats (%)</value>
   </data>
   <data name="TaxRate_Placeholder" xml:space="preserve">
-    <value>e.g. 33</value>
+    <value>f.eks. 32</value>
   </data>
   <data name="Tax_SectionTitle" xml:space="preserve">
-    <value>🏛️ Tax information</value>
+    <value>🏛️ Skatteinformation</value>
   </data>
   <data name="Tax_Tip" xml:space="preserve">
-    <value>💡 Tip: Check your latest payslip for exact tax rate</value>
+    <value>💡 Tips: Sjekk din siste lønnsslipp for nøyaktig skattesats</value>
   </data>
   <data name="ThemeSaveErrorMessage" xml:space="preserve">
-    <value>Could not save theme setting</value>
+    <value>Kunne ikke lagre temainnstilling</value>
   </data>
   <data name="To" xml:space="preserve">
-    <value>To</value>
+    <value>Til</value>
   </data>
   <data name="Today" xml:space="preserve">
-    <value>Today</value>
+    <value>I dag</value>
   </data>
   <data name="TodayDate" xml:space="preserve">
-    <value>Today, {0:MMMM dd, yyyy}</value>
-    <comment>Date format with placeholder</comment>
+    <value>I dag, {0:dd MMMM yyyy}</value>
   </data>
   <data name="Vacation" xml:space="preserve">
-    <value>Vacation</value>
-    <comment>Label for vacation</comment>
+    <value>Ferie</value>
+    <comment>Vacation label</comment>
   </data>
   <data name="VacationDays_Label" xml:space="preserve">
-    <value>Vacation days per year</value>
+    <value>Feriedager per år</value>
   </data>
   <data name="VacationIcon" xml:space="preserve">
     <value>🏖️</value>
     <comment>Icon for vacation</comment>
   </data>
   <data name="Vacation_Explanation_PaidPermanent" xml:space="preserve">
-    <value>💰 Paid vacation – Salary is calculated based on current monthly wage</value>
-    <comment>Vacation viewmodel</comment>
+    <value>💰 Betalt ferie – Lønn beregnes basert på nåværende månedslønn</value>
   </data>
   <data name="Vacation_Explanation_PaidTemporary" xml:space="preserve">
-    <value>⚠️ Hourly employees cannot have paid vacation – choose 'Unpaid leave'</value>
-    <comment>Vacation viewmodel</comment>
+    <value>⚠️ Timelønnede kan ikke ha betalt ferie – velg 'Ubetalt permisjon'</value>
   </data>
   <data name="Vacation_Explanation_Unpaid" xml:space="preserve">
-    <value>🏖️ Unpaid leave – Registered without salary</value>
-    <comment>Vacation viewmodel</comment>
+    <value>🏖️ Ubetalt permisjon – Registrert uten lønn</value>
   </data>
   <data name="Vacation_PermanentInfo" xml:space="preserve">
-    <value>Permanent employee – entitled to paid vacation</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Fast ansatt – har rett til betalt ferie</value>
   </data>
   <data name="Vacation_RemainingDays" xml:space="preserve">
-    <value>📊 Vacation days: {0:F1} of {1:F1} days</value>
-    <comment>Vacation viewmodel</comment>
+    <value>📊 Feriedager: {0:F1} av {1:F1} dager</value>
   </data>
   <data name="Vacation_RemainingDaysError" xml:space="preserve">
-    <value>📊 Could not load vacation info</value>
-    <comment>Vacation viewmodel</comment>
+    <value>📊 Kunne ikke laste ferieinfo</value>
   </data>
   <data name="Vacation_Save_ErrorPrefix" xml:space="preserve">
-    <value>⚠️ Error while saving: {0}</value>
-    <comment>Vacation viewmodel</comment>
+    <value>⚠️ Feil under lagring: {0}</value>
   </data>
   <data name="Vacation_Save_ErrorTitle" xml:space="preserve">
-    <value>❌ Cannot save</value>
-    <comment>Vacation viewmodel</comment>
+    <value>❌ Kan ikke lagre</value>
   </data>
   <data name="Vacation_Save_SuccessTitle" xml:space="preserve">
-    <value>✅ Saved</value>
-    <comment>Vacation viewmodel</comment>
+    <value>✅ Lagret</value>
   </data>
   <data name="Vacation_Save_UnexpectedError" xml:space="preserve">
-    <value>❌ Error</value>
-    <comment>Vacation viewmodel</comment>
+    <value>❌ Feil</value>
   </data>
   <data name="Vacation_Save_UnexpectedErrorMessage" xml:space="preserve">
-    <value>❌ Unexpected error occurred</value>
-    <comment>Vacation viewmodel</comment>
+    <value>❌ Uventet feil oppstod</value>
   </data>
   <data name="Vacation_SectionTitle" xml:space="preserve">
-    <value>🏖️ Vacation information</value>
+    <value>🏖️ Ferieinformasjon</value>
   </data>
   <data name="Vacation_TemporaryInfo" xml:space="preserve">
-    <value>Hourly employee – Receives holiday pay as a percentage of wages</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Timelønnet ansatt – Får feriepenger som prosentandel av lønn</value>
   </data>
   <data name="Vacation_Tip" xml:space="preserve">
-    <value>💡 Enter your saved vacation days from your latest payslip</value>
+    <value>💡 Skriv inn dine lagrede feriedager fra din siste lønnsslipp</value>
   </data>
   <data name="Vacation_Type_Paid" xml:space="preserve">
-    <value>Paid vacation</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Betalt ferie</value>
   </data>
   <data name="Vacation_Type_Unpaid" xml:space="preserve">
-    <value>Unpaid leave</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Ubetalt fri</value>
   </data>
   <data name="Vacation_Error_InvalidHours" xml:space="preserve">
-    <value>Planned work hours must be a positive number</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Planlagte arbeidstimer må være et positivt tall</value>
   </data>
   <data name="Vacation_Error_InvalidKvot" xml:space="preserve">
-    <value>Vacation ratio must be a positive number</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Ferierate må være et positivt tall</value>
   </data>
   <data name="Vacation_Validation_PaidNotAllowedForHourly" xml:space="preserve">
-    <value>Hourly employees cannot have paid vacation – choose 'Unpaid leave'</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Timelønnet ansatte kan ikke ha betalt ferie – velg 'Ubetalt fri'</value>
   </data>
   <data name="Validation_HourlyRate" xml:space="preserve">
-    <value>Enter a valid hourly rate</value>
+    <value>Skriv inn en gyldig timepris</value>
   </data>
   <data name="Validation_JobTitleRequired" xml:space="preserve">
-    <value>Job title is required</value>
+    <value>Jobbtittel er påkrevd</value>
   </data>
   <data name="Validation_MonthlySalary" xml:space="preserve">
-    <value>Enter a valid monthly salary</value>
+    <value>Skriv inn en gyldig månedslønn</value>
   </data>
   <data name="Validation_OBCategoryRequired" xml:space="preserve">
-    <value>Select a category</value>
+    <value>Velg en kategori</value>
   </data>
   <data name="Validation_OBDaysRequired" xml:space="preserve">
-    <value>Select at least one day</value>
+    <value>Velg minst én dag</value>
   </data>
   <data name="Validation_OBNameRequired" xml:space="preserve">
-    <value>Enter a name for the unsocial hours rule</value>
+    <value>Skriv inn et navn for OB-regelen</value>
   </data>
   <data name="Validation_OBRateRequired" xml:space="preserve">
-    <value>Enter a valid hourly rate</value>
+    <value>Skriv inn en gyldig timepris</value>
   </data>
   <data name="Validation_VacationDays" xml:space="preserve">
-    <value>Enter valid vacation days</value>
+    <value>Skriv inn gyldige feriedager</value>
   </data>
   <data name="Validation_WorkplaceRequired" xml:space="preserve">
-    <value>Workplace is required</value>
+    <value>Arbeidssted er påkrevd</value>
   </data>
   <data name="ViewHistory" xml:space="preserve">
-    <value>View History</value>
-    <comment>Button text</comment>
+    <value>Vis historikk</value>
   </data>
   <data name="ViewModelNotInitialized" xml:space="preserve">
-    <value>{0} ViewModel not initialized</value>
-    <comment>Add shift viewmodel</comment>
+    <value>{0} ViewModel inte initialiserad</value>
   </data>
   <data name="ViewReports" xml:space="preserve">
-    <value>📊 View Reports</value>
-    <comment>Button text</comment>
+    <value>📊 Vis rapporter</value>
   </data>
   <data name="Welcome" xml:space="preserve">
-    <value>Welcome</value>
-    <comment>Welcome message on home screen</comment>
+    <value>Velkommen</value>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>Welcome to your payroll app!</value>
+    <value>Velkommen til din lønnsapp!</value>
   </data>
   <data name="WelcomeToApp" xml:space="preserve">
-    <value>Welcome to your salary app!</value>
+    <value>Velkommen til lønnsappen din!</value>
   </data>
   <data name="WorkDays" xml:space="preserve">
-    <value>Work Days</value>
-    <comment>Label for work days</comment>
+    <value>Arbeidsdager</value>
   </data>
   <data name="Workplace" xml:space="preserve">
-    <value>Workplace</value>
-    <comment>Workplace label</comment>
+    <value>Arbeidssted</value>
   </data>
   <data name="Workplace_Label" xml:space="preserve">
-    <value>Workplace *</value>
+    <value>Arbeidssted *</value>
   </data>
   <data name="Workplace_Placeholder" xml:space="preserve">
-    <value>e.g. Municipality</value>
+    <value>f.eks. Kommune</value>
   </data>
   <data name="WorkShift" xml:space="preserve">
-    <value>Work shift </value>
-    <comment>Label for work shift</comment>
+    <value>Arbeidsskift</value>
   </data>
   <data name="WorkShiftIcon" xml:space="preserve">
     <value>🕐</value>
-    <comment>Icon for work shift</comment>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Ja</value>
   </data>
   <data name="Yesterday" xml:space="preserve">
-    <value>Yesterday</value>
+    <value>I går</value>
   </data>
   <data name="Vacation_Validation_RatioPositive" xml:space="preserve">
-    <value>Vacation ratio must be a positive number</value>
-    <comment>Vacation viewmodell</comment>
+    <value>Ferierate må være et positivt tall</value>
   </data>
   <data name="Vacation_Validation_HoursPositive" xml:space="preserve">
-    <value>Planned work hours must be a positive number</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Planlagte arbeidstimer må være et positivt tall</value>
   </data>
   <data name="Vacation_Label_Type" xml:space="preserve">
-    <value>🏖️ Vacation type</value>
-    <comment>Vacation viewmodel</comment>
+    <value>🏖️ Ferietype</value>
   </data>
   <data name="Vacation_Picker_Title" xml:space="preserve">
-    <value>Select vacation type</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Velg ferietype</value>
   </data>
   <data name="Vacation_Label_Ratio" xml:space="preserve">
-    <value>🧮 Vacation ratio</value>
-    <comment>Vacation viewmodel</comment>
+    <value>🧮 Ferierate</value>
   </data>
   <data name="Vacation_Ratio_Hint" xml:space="preserve">
-    <value>💡 Enter 1.0 as default. Higher ratio for unplanned vacation (e.g. 1.5)</value>
-    <comment>Vacation viewmodel</comment>
+    <value>💡 Skriv inn 1.0 som standard. Høyere rate for planlagt ferie (f.eks. 1.5)</value>
   </data>
   <data name="Vacation_Label_PlannedHours" xml:space="preserve">
-    <value>⏰ Hours you would have worked</value>
-    <comment>Vacation viewmodel</comment>
+    <value>⏰ Timer du ville ha jobbet</value>
   </data>
   <data name="Vacation_Hours_Hint" xml:space="preserve">
-    <value>💡 Enter how many hours you would have worked this day</value>
-    <comment>Vacation viewmodel</comment>
+    <value>💡 Skriv inn hvor mange timer du ville ha jobbet denne dagen</value>
   </data>
   <data name="Vacation_Info_Title" xml:space="preserve">
-    <value>ℹ️ Information</value>
-    <comment>Vacation viewmodel</comment>
+    <value>ℹ️ Informasjon</value>
   </data>
   <data name="Vacation_Info_OneDayRegistered" xml:space="preserve">
-    <value>📅 Registers 1 day of vacation for selected date</value>
-    <comment>Vacation viewmodel</comment>
+    <value>📅 Registrerer 1 feriedag for valgt dato</value>
   </data>
   <data name="Vacation_Info_SalaryCalculated" xml:space="preserve">
-    <value>💰 Salary calculated in monthly report using current pay</value>
-    <comment>Vacation viewmodel</comment>
+    <value>💰 Lønn beregnet i månedsrapport med nåværende lønn</value>
   </data>
   <data name="Vacation_Unpaid_Title" xml:space="preserve">
-    <value>🏠 Unpaid leave</value>
-    <comment>Vacation viewmodel</comment>
+    <value>🏠 Ubetalt fri</value>
   </data>
   <data name="Vacation_Unpaid_Info" xml:space="preserve">
-    <value>No salary paid. Registered for documentation and statistics.</value>
-    <comment>Vacation viewmodel</comment>
+    <value>Ingen lønn utbetalt. Registrert for dokumentasjon og statistikk.</value>
   </data>
   <data name="ShiftType_RegularShift" xml:space="preserve">
-    <value>work shift</value>
-    <comment>VABHaandler</comment>
+    <value>arbeidsskift</value>
   </data>
   <data name="ShiftType_SickLeaveShift" xml:space="preserve">
-    <value>sick day</value>
-    <comment>VABHandler</comment>
+    <value>sykedag</value>
   </data>
   <data name="ShiftType_VacationShift" xml:space="preserve">
-    <value>vacation day</value>
-    <comment>VABHandler</comment>
+    <value>feriedag</value>
   </data>
   <data name="ShiftType_Default" xml:space="preserve">
-    <value>shift</value>
-    <comment>VAABHandler</comment>
+    <value>skift</value>
   </data>
   <data name="Dialog_YesReplace" xml:space="preserve">
-    <value>Yes, replace</value>
+    <value>Ja, bytt ut</value>
   </data>
   <data name="SickLeave_ShouldHaveWorked" xml:space="preserve">
-    <value> Should have worked (sick)</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>Skulle ha jobbet (syk)</value>
   </data>
   <data name="SickLeave_WorkedPartially" xml:space="preserve">
-    <value>Worked partially (sick)</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>Arbeidet delvis (syk)</value>
   </data>
   <data name="SickLeave_WouldBeFree" xml:space="preserve">
-    <value>Sick while on day off</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>Syk under fridag</value>
   </data>
   <data name="SickLeave_Explanation_ShouldHaveWorked" xml:space="preserve">
-    <value>🤒 Was scheduled to work — first day: waiting day, then 80% sick pay</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>🤒 Var planlagt å jobbe — første dag: ventedag, deretter 80% sykelønn</value>
   </data>
   <data name="SickLeave_Explanation_WorkedPartially" xml:space="preserve">
-    <value>⚡ Worked partially — paid for worked hours + sick pay for remainder</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>⚡ Arbeidet delvis — betalt for arbeidede timer + sykelønn for resten</value>
   </data>
   <data name="SickLeave_Explanation_WouldBeFree" xml:space="preserve">
-    <value>🏠 Sick during planned day off — no sick pay</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>🏠 Syk under planlagt fridag — ingen sykelønn</value>
   </data>
   <data name="SickLeave_Validation_WorkedMustBePositive" xml:space="preserve">
-    <value>Worked hours must be greater than 0</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>Arbeidede timer må være større enn 0</value>
   </data>
   <data name="SickLeave_Validation_WorkedLessThanScheduled" xml:space="preserve">
-    <value>Worked hours must be less than scheduled hours</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>Arbeidede timer må være mindre enn planlagte timer</value>
   </data>
   <data name="SickLeave_Karens_Prefix" xml:space="preserve">
-    <value>⚠️ Waiting day deduction: {0:C}</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>⚠️ Ventedagsavdrag: {0:C}</value>
   </data>
   <data name="SickLeave_Karens_None" xml:space="preserve">
-    <value>✅ No waiting-day deduction</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>✅ Ingen ventedagsavdrag</value>
   </data>
   <data name="SickLeave_CalcError" xml:space="preserve">
-    <value>⚠️ Calculation error occurred</value>
-    <comment>SickLeave viewwmodel</comment>
+    <value>⚠️ Beregningsfeil oppstod</value>
   </data>
   <data name="SickLeave_Save_SuccessTitle" xml:space="preserve">
-    <value>✅ Saved!</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>✅ Lagret!</value>
   </data>
   <data name="SickLeave_Save_SuccessMessage" xml:space="preserve">
-    <value>✅ Sick day registered</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>✅ Sykedag registrert</value>
   </data>
   <data name="SickLeave_Save_ErrorTitle" xml:space="preserve">
-    <value>❌ Error</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>❌ Feil</value>
   </data>
   <data name="SickLeave_Save_ErrorMessage" xml:space="preserve">
-    <value>Could not save sick day</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>Kunne ikke lagre sykedag</value>
   </data>
   <data name="SickLeave_Save_Unexpected" xml:space="preserve">
-    <value>❌ Could not save: {0}</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>❌ Kunne ikke lagre: {0}</value>
   </data>
   <data name="SickLeave_KarensDeduction" xml:space="preserve">
-    <value>⚠️ Waiting-day deduction: {0:C}</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>⚠️ Ventedagsavdrag: {0:C}</value>
   </data>
   <data name="SickLeave_NoKarens" xml:space="preserve">
-    <value>✅ No waiting-day deduction</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>✅ Ingen ventedagsavdrag</value>
   </data>
   <data name="SickLeave_Validation_WorkedTooSmall" xml:space="preserve">
-    <value>Worked hours must be greater than 0</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>Arbeidede timer må være større enn 0</value>
   </data>
   <data name="SickLeave_Validation_WorkedTooLarge" xml:space="preserve">
-    <value>Worked hours must be less than scheduled hours</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>Arbeidede timer må være mindre enn planlagte timer</value>
   </data>
   <data name="SickLeave_Save_Message" xml:space="preserve">
-    <value>✅ Sick day saved</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>✅ Sykedag lagret</value>
   </data>
   <data name="SickLeave_Save_Exception" xml:space="preserve">
-    <value>❌ Could not save: {0}</value>
-    <comment>SickLeave viewmodel</comment>
+    <value>❌ Kunne ikke lagre: {0}</value>
   </data>
   <data name="Sick_Header" xml:space="preserve">
-    <value>ℹ️ Sick Leave Info</value>
-    <comment>SickLeave form </comment>
+    <value>ℹ️ Sykefravær Info</value>
   </data>
   <data name="Sick_Label_Type" xml:space="preserve">
-    <value>🤒 Sick Type</value>
-    <comment>SickLeave form</comment>
+    <value>🤒 Syketype</value>
   </data>
   <data name="Sick_Picker_Title" xml:space="preserve">
-    <value>Select sick type</value>
-    <comment>SickLeave form</comment>
+    <value>Velg syketype</value>
   </data>
   <data name="Sick_Label_WorkedTime" xml:space="preserve">
-    <value>🕐 Worked Hours</value>
-    <comment>SickLeave form</comment>
+    <value>🕐 Arbeidede timer</value>
   </data>
   <data name="Sick_Label_ScheduledTime" xml:space="preserve">
-    <value>📋 Scheduled Hours</value>
-    <comment>SickLeave form</comment>
+    <value>📋 Planlagte timer</value>
   </data>
   <data name="Sick_Hint_ScheduledZero" xml:space="preserve">
-    <value>💡 Enter the scheduled hours according to your plan</value>
-    <comment>SickLeave form</comment>
+    <value>💡 Skriv inn planlagte timer i henhold til din plan</value>
   </data>
   <data name="Sick_Label_Notes" xml:space="preserve">
-    <value>📝 Notes (optional)</value>
-    <comment>SickLeave form</comment>
+    <value>📝 Notater (valgfritt)</value>
   </data>
   <data name="Sick_Placeholder_Notes" xml:space="preserve">
-    <value>e.g., doctor’s note, symptoms, return date</value>
-    <comment>SickLeave form</comment>
+    <value>f.eks., legens attest, symptomer, returdato</value>
   </data>
   <data name="Sick_NoJobProfile" xml:space="preserve">
-    <value>No job profile</value>
-    <comment>SickLeave Handler</comment>
+    <value>Ingen jobbprofil</value>
   </data>
   <data name="Sick_NoRightToPay" xml:space="preserve">
-    <value>No right to sick pay for this day</value>
-    <comment>SickLeave Handler</comment>
+    <value>Ingen rett til sykelønn for denne dagen</value>
   </data>
   <data name="Sick_ErrorCalculation" xml:space="preserve">
-    <value>⚠️ Error during calculation: {0}</value>
-    <comment>SickLeave Handler</comment>
+    <value>⚠️ Feil under beregning: {0}</value>
   </data>
   <data name="Sick_PartialNotes" xml:space="preserve">
-    <value>Partially sick - Worked {0:F1}h, sick {1:F1}h</value>
-    <comment>SickLeave Handler</comment>
+    <value>Delvis syk - Arbeidet {0:F1}t, syk {1:F1}t</value>
   </data>
   <data name="Sick_FullDayNotes" xml:space="preserve">
-    <value>Sick day - {0:F1}h{1}</value>
-    <comment>SickLeave Handler</comment>
+    <value>Sykedag - {0:F1}t{1}</value>
   </data>
   <data name="Sick_NoPayNotes" xml:space="preserve">
-    <value>Sick day - would have been off (no pay)</value>
-    <comment>SickLeave Handler</comment>
+    <value>Sykedag - ville vært fri (ingen lønn)</value>
   </data>
   <data name="Conflict_SickWithVacation" xml:space="preserve">
-    <value>Already approved vacation on this day</value>
-    <comment>SickLeave Handler</comment>
+    <value>Allerede godkjent ferie på denne dagen</value>
   </data>
   <data name="Conflict_AlreadySick" xml:space="preserve">
-    <value>Sick leave already exists for this day</value>
-    <comment>SickLeave Handler</comment>
+    <value>Sykefravær eksisterer allerede for denne dagen</value>
   </data>
   <data name="Conflict_ReplaceRegular" xml:space="preserve">
-    <value>Do you want to replace working hours ({0}-{1}) with {2}?</value>
-    <comment>SickLeave Handler</comment>
+    <value>Vil du erstatte arbeidstid ({0} - {1}) med {2}?</value>
   </data>
   <data name="Conflict_ReplaceOnCall" xml:space="preserve">
-    <value>Do you want to replace on-call shift with {0}?</value>
-    <comment>SickLeave Handler</comment>
+    <value>Vil du erstatte vaktskifte med {0}?</value>
   </data>
   <data name="Shift_SickLeave" xml:space="preserve">
-    <value>sick leave</value>
-    <comment>SickLeave Handler</comment>
+    <value>sykefravær</value>
   </data>
   <data name="Shift_Vacation" xml:space="preserve">
-    <value>vacation</value>
-    <comment>SickLeave Handler</comment>
+    <value>ferie</value>
   </data>
   <data name="Shift_OnCall" xml:space="preserve">
-    <value>on-call</value>
-    <comment>SickLeave Handler</comment>
+    <value>vakt</value>
   </data>
   <data name="Shift_Regular" xml:space="preserve">
-    <value>new shift</value>
-    <comment>SickLeave Handler</comment>
+    <value>nytt skift</value>
   </data>
   <data name="Sick_KarensDeduction" xml:space="preserve">
-    <value>(with deduction)</value>
-    <comment>SickLeave Handler</comment>
+    <value>(med avdrag)</value>
   </data>
   <data name="Shift_ExistingSameType" xml:space="preserve">
-    <value>Shift of type {0} already exists for {1}</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>Skift av type {0} finnes allerede for {1}</value>
   </data>
   <data name="Shift_EditExistingConfirmation" xml:space="preserve">
-    <value>Do you want to edit the existing shift?</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>Vil du redigere eksisterende skift?</value>
   </data>
   <data name="Shift_ExistingDifferentType" xml:space="preserve">
-    <value>A {0} shift already exists for {1}</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>Et {0}-skift finnes allerede for {1}</value>
   </data>
   <data name="Shift_ReplaceExistingConfirmation" xml:space="preserve">
-    <value>Do you want to replace {0} with {1}?</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>Vil du erstatte {0} med {1}?</value>
   </data>
   <data name="Shift_EnterTime" xml:space="preserve">
-    <value>Enter start and end time for the shift</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>Skriv inn start- og sluttid for skift</value>
   </data>
   <data name="Shift_SelectSickType" xml:space="preserve">
-    <value>Select type of sick day</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>Velg type sykedag</value>
   </data>
   <data name="Shift_ChooseSickType" xml:space="preserve">
-    <value>Which type of sick day do you want to register?</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>Hvilken type sykedag vil du registrere?</value>
   </data>
   <data name="Shift_SickDayRegistered" xml:space="preserve">
-    <value>Sick day registered</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>Sykedag registrert</value>
   </data>
   <data name="Shift_SickDayError" xml:space="preserve">
-    <value>⚠️ Error registering sick day: {0}</value>
-    <comment>ShiftTypeHandler</comment>
+    <value>⚠️ Feil ved registrering av sykedag: {0}</value>
   </data>
   <data name="Conflict_WorkDuringLeave_Title" xml:space="preserve">
-    <value>You have a work shift during your {0}:</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Du har et arbeidsskifte i løpet av {0}:</value>
   </data>
   <data name="Conflict_WorkDuringLeave_Body" xml:space="preserve">
-    <value>You cannot have {0} on the same day you work.</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Du kan ikke ha {0} samme dag som du jobber.</value>
   </data>
   <data name="Conflict_WorkDuringLeave_ConfirmRemove" xml:space="preserve">
-    <value>Do you want to remove the work shift?</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Vil du fjerne arbeidsskiftet?</value>
   </data>
   <data name="Conflict_OverlappingLeave" xml:space="preserve">
-    <value>Overlaps with existing {0}:</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Overlapper med eksisterende {0}:</value>
   </data>
   <data name="Conflict_Days" xml:space="preserve">
-    <value>({0} days)</value>
-    <comment>ConflictResolutionService</comment>
+    <value>({0} dagen)</value>
   </data>
   <data name="Conflict_Merge_Header" xml:space="preserve">
-    <value>You already have {0} that overlaps or is adjacent:</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Du har allerede {0} som overlapper eller er tilstøtende:</value>
   </data>
   <data name="Conflict_Merge_Question" xml:space="preserve">
-    <value>Do you want to merge into one continuous period?</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Vil du slå deg sammen i en sammenhengende periode?</value>
   </data>
   <data name="Conflict_Merge_Period" xml:space="preserve">
-    <value>{0} – {1} ({2} days)</value>
-    <comment>ConflictResolutionService</comment>
+    <value>{0} – {1} ({2} dager)</value>
   </data>
   <data name="Conflict_SickDay" xml:space="preserve">
-    <value>You are on sick leave this day:</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Du er sykmeldt denne dagen:</value>
   </data>
   <data name="Conflict_SickPeriod" xml:space="preserve">
-    <value>Sick period: {0} – {1}</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Sykefravær: {0} - {1}</value>
   </data>
   <data name="Conflict_ShortenSickLeave_Question" xml:space="preserve">
-    <value>Do you want to shorten the sick leave so you can work?</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Ønsker du å korte ned sykefraværet slik at du kan jobbe?</value>
   </data>
   <data name="Conflict_AutoRemove_Header" xml:space="preserve">
-    <value>You have {0} work shifts during the sick period:</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Du har {0} skift i løpet av sykemeldingsperioden:</value>
   </data>
   <data name="Conflict_AutoRemove_Question" xml:space="preserve">
-    <value>Do you want the system to automatically remove these shifts?</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Vil du at systemet automatisk skal fjerne disse skiftene?</value>
   </data>
   <data name="Shift_SickSaved" xml:space="preserve">
-    <value>Sick leave for {0} days has been saved!</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Sykefravær for {0} dager er lagret!</value>
   </data>
   <data name="Shift_SickSavedWithRemoved" xml:space="preserve">
-    <value>Sick leave saved! {0} work shifts were removed.</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Sykefravær lagret! {0} arbeidsskift ble fjernet.</value>
   </data>
   <data name="Shift_SickRemoved" xml:space="preserve">
-    <value>Sick leave has been completely removed.</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Sykefravær er fullstendig fjernet.</value>
   </data>
   <data name="Shift_SickShortened" xml:space="preserve">
-    <value>Sick leave shortened to {0} days (until {1})</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Sykefravær kortet til {0} dager (til {1})</value>
   </data>
   <data name="Shift_Merged" xml:space="preserve">
-    <value>{0} merged into {1} days!</value>
-    <comment>ConflictResolutionService</comment>
+    <value>{0} slått sammen til {1} dager!</value>
   </data>
   <data name="Shift_WorkRemovedAndLeaveSaved" xml:space="preserve">
-    <value>The work shift was removed and {0} was saved!</value>
-    <comment>ConflictResolutionService</comment>
+    <value>Arbeidsskiftet ble fjernet og {0} ble lagret!</value>
   </data>
   <data name="Error_NoJobProfile" xml:space="preserve">
-    <value>No job selected</value>
-    <comment>VacationHandler</comment>
+    <value>Ingen jobb valgt</value>
   </data>
   <data name="Error_SaveFailed" xml:space="preserve">
-    <value>⚠️ Error while saving: {0}</value>
-    <comment>VacationHandler</comment>
+    <value>⚠️ Feil ved lagring av data: {0}</value>
   </data>
   <data name="Error_ValidationFailed" xml:space="preserve">
-    <value>⚠️ Validation error: {0}</value>
-    <comment>VacationHandler</comment>
+    <value>⚠️ Valideringsfeil: {0}</value>
   </data>
   <data name="Error_DateValidationFailed" xml:space="preserve">
-    <value>⚠️ Error validating date</value>
-    <comment>VacationHandler</comment>
+    <value>⚠️ Feil ved validering av dato</value>
   </data>
   <data name="Vacation_NotAllowed_Temporary" xml:space="preserve">
-    <value>Temporary employees cannot have paid vacation</value>
-    <comment>VacationHandler</comment>
+    <value>Midlertid ansatte kan ikke ha betalt ferie</value>
   </data>
   <data name="Vacation_NotAllowed_Temporary_Detail" xml:space="preserve">
-    <value>Temporary employees cannot have paid vacation – choose unpaid leave</value>
-    <comment>VacationHandler</comment>
+    <value>Midlertid ansatte kan ikke ha betalt ferie – velg ubetalt fri</value>
   </data>
   <data name="Vacation_InsufficientDays" xml:space="preserve">
-    <value>Not enough vacation days remaining ({0:F1} days)</value>
-    <comment>VacationHandler</comment>
+    <value>Ikke nok feriedager igjen ({0:F1} dager)</value>
   </data>
   <data name="Vacation_Saved" xml:space="preserve">
-    <value>Vacation has been saved!</value>
-    <comment>VacationHandler</comment>
+    <value>Ferie er lagret!</value>
   </data>
   <data name="Vacation_WorkShiftNotFound" xml:space="preserve">
-    <value>Could not find saved work shift</value>
-    <comment>VacationHandler</comment>
+    <value>Kunne ikke finne lagret arbeidsskift</value>
   </data>
   <data name="Vacation_AlreadyRegistered" xml:space="preserve">
-    <value>You already have vacation registered on this date</value>
-    <comment>VacationHandler</comment>
+    <value>Du har allerede ferie registrert på denne datoen</value>
   </data>
   <data name="Vacation_Conflict_Regular" xml:space="preserve">
-    <value>You already have a work shift this day:
+    <value>Du har allerede et arbeidsskift denne dagen:
 ⏰ {0} → {1}
 
-Remove the work shift before registering vacation.</value>
-    <comment>VacationHandler</comment>
+Fjern arbeidsskiftet før du registrerer ferie.</value>
   </data>
   <data name="Vacation_Conflict_SickLeave" xml:space="preserve">
-    <value>You are already on sick leave this day:
-🤒 Sick leave ({0} days)
+    <value>Du er allerede sykmeldt denne dagen:
+🤒 Sykefravær ({0} dager)
 
-Remove the sick leave before registering vacation.</value>
-    <comment>VacationHandler</comment>
+Fjern sykefraværet før du registrerer ferie.</value>
   </data>
   <data name="Vacation_Conflict_OnCall" xml:space="preserve">
-    <value>You already have an on-call shift this day:
-📞 On-call shift
+    <value>Du har allerede et vaktskift denne dagen:
+📞 Vaktskift
 
-Remove the on-call shift before registering vacation.</value>
-    <comment>VacationHandler</comment>
+Fjern vaktskiftet før du registrerer ferie.</value>
   </data>
   <data name="Vacation_Conflict_Generic" xml:space="preserve">
-    <value>You already have a shift registered this day.
-Remove it before registering vacation.</value>
-    <comment>VacationHandler</comment>
+    <value>Du har allerede et skift registrert denne dagen.
+Fjern det før du registrerer ferie.</value>
   </data>
   <data name="Vacation_Note_Paid" xml:space="preserve">
-    <value>Paid vacation – 1 day{0}</value>
-    <comment>VacationHandler</comment>
+    <value>Betalt ferie – 1 dag{0}</value>
   </data>
   <data name="Vacation_Note_Unpaid" xml:space="preserve">
-    <value>Unpaid leave – 1 day{0}</value>
-    <comment>VacationHandler</comment>
+    <value>Ubetalt fri – 1 dag{0}</value>
   </data>
   <data name="Vacation_Note_Generic" xml:space="preserve">
-    <value>Vacation – 1 day{0}</value>
-    <comment>VacationHandler</comment>
+    <value>Ferie – 1 dag{0}</value>
   </data>
   <data name="Vacation_Note_Quota" xml:space="preserve">
-    <value>(quota: {0})</value>
-    <comment>VacationHandler</comment>
+    <value>(kvote: {0})</value>
   </data>
   <data name="Vacation_Note_PlannedHours" xml:space="preserve">
-    <value>(planned work: {0}h)</value>
-    <comment>VacationHandler</comment>
+    <value>(planlagt arbeid: {0}t)</value>
   </data>
   <data name="ShiftValidation_Vacation_AlreadyExists" xml:space="preserve">
-    <value>Vacation is already registered on this day.</value>
-    <comment>ShiftValidationService</comment>
+    <value>Ferie er allerede registrert denne dagen.</value>
   </data>
   <data name="ShiftValidation_Vacation_RemoveExisting" xml:space="preserve">
-    <value>Remove the existing vacation first.</value>
-    <comment>ShiftValidationService</comment>
+    <value>Fjern eksisterende ferie først.</value>
   </data>
   <data name="ShiftValidation_SickLeave_Exists" xml:space="preserve">
-    <value>You are on sick leave this day.</value>
-    <comment>ShiftValidationService</comment>
+    <value>Du er sykmeldt denne dagen.</value>
   </data>
   <data name="ShiftValidation_SickLeave_Remove" xml:space="preserve">
-    <value>Remove the sick leave first.</value>
-    <comment>ShiftValidationService</comment>
+    <value>Fjern sykefravær først.</value>
   </data>
   <data name="ShiftValidation_SickLeave_Info" xml:space="preserve">
-    <value>Sick leave ({0} days).</value>
-    <comment>ShiftValidationService</comment>
+    <value>Sykefravær ({0} dager).</value>
   </data>
   <data name="ShiftValidation_WorkShift_Exists" xml:space="preserve">
-    <value>A work shift is already registered on this day.</value>
-    <comment>ShiftValidationService</comment>
+    <value> Et arbeidsskift er allerede registrert denne dagen.</value>
   </data>
   <data name="ShiftValidation_WorkShift_Remove" xml:space="preserve">
-    <value>Remove the work shift first.</value>
-    <comment>ShiftValidationService</comment>
+    <value>Fjern arbeidsskift først.</value>
   </data>
   <data name="ShiftValidation_WorkShift_Time" xml:space="preserve">
     <value>{0} - {1}</value>
-    <comment>ShiftValidationService</comment>
   </data>
   <data name="ShiftValidation_WorkShift_Generic" xml:space="preserve">
-    <value>Work shift</value>
-    <comment>ShiftValidationService</comment>
+    <value>Arbeidsskift</value>
   </data>
   <data name="ShiftValidation_Date" xml:space="preserve">
-    <value>📅 Date: {0}</value>
-    <comment>ShiftValidationService</comment>
+    <value>📅 Dato: {0}</value>
   </data>
   <data name="ShiftValidation_Period" xml:space="preserve">
-    <value>📅 Period: {0} - {1}</value>
-    <comment>ShiftValidationService</comment>
+    <value>📅 Periode: {0} - {1}</value>
   </data>
   <data name="ShiftValidation_Days" xml:space="preserve">
-    <value>({0} days)</value>
-    <comment>ShiftValidationService</comment>
+    <value>({0} dager)</value>
   </data>
   <data name="ShiftValidation_FullDay_Sick_Title" xml:space="preserve">
-    <value>You are on sick leave this day (FULL DAY).</value>
-    <comment>ShiftValidationService</comment>
+    <value>Du er sykmeldt denne dagen (HELDAG).</value>
   </data>
   <data name="ShiftValidation_FullDay_Sick_CannotWork" xml:space="preserve">
-    <value>You cannot work while on sick leave.</value>
-    <comment>ShiftValidationService</comment>
+    <value>Du kan ikke jobbe mens du er sykmeldt.</value>
   </data>
   <data name="ShiftValidation_FullDay_Sick_Shorten" xml:space="preserve">
-    <value>Do you want to shorten the sick leave?</value>
-    <comment>ShiftValidationService</comment>
+    <value>Vil du korte ned sykefraværet?</value>
   </data>
   <data name="ShiftValidation_FullDay_Vacation_Title" xml:space="preserve">
-    <value>You are on vacation this day (FULL DAY).</value>
-    <comment>ShiftValidationService</comment>
+    <value>Du har ferie denne dagen (HELDAG).</value>
   </data>
   <data name="ShiftValidation_FullDay_Vacation_CannotWork" xml:space="preserve">
-    <value>You cannot work while on vacation.</value>
-    <comment>ShiftValidationService</comment>
+    <value>Du kan ikke jobbe mens du har ferie.</value>
   </data>
   <data name="ShiftValidation_FullDay_Vacation_Shorten" xml:space="preserve">
-    <value>Do you want to shorten the vacation?</value>
-    <comment>ShiftValidationService</comment>
+    <value>Vil du korte ned ferien?</value>
   </data>
   <data name="Conflict_Title_SickWork" xml:space="preserve">
-    <value>🤒 Conflict with work shift</value>
-    <comment>ConflictHandlerService</comment>
+    <value>🤒 Konflikt med arbeidsskift</value>
   </data>
   <data name="Conflict_Title_SickLeave" xml:space="preserve">
-    <value>🤒 Conflict with sick leave</value>
-    <comment>ConflictHandlerService</comment>
+    <value>🤒 Konflikt med sykefravær</value>
   </data>
   <data name="Conflict_Title_Vacation" xml:space="preserve">
-    <value>🏖️ Conflict with vacation</value>
-    <comment>ConflictHandlerService</comment>
+    <value>🏖️ Konflikt med ferie</value>
   </data>
   <data name="Conflict_Title_Merge_Sick" xml:space="preserve">
-    <value>🤒 Merge sick leave periods</value>
-    <comment>ConflictHandlerService</comment>
+    <value>🤒 Slå sammen sykmeldingsperioder</value>
   </data>
   <data name="Conflict_Title_Merge_Vacation" xml:space="preserve">
-    <value>🏖️ Merge vacation periods</value>
-    <comment>ConflictHandlerService</comment>
+    <value>🏖️ Slå sammen feriepengene dine</value>
   </data>
   <data name="Action_RemoveShifts" xml:space="preserve">
-    <value>Yes, remove shifts</value>
-    <comment>ConflictHandlerService</comment>
+    <value>Ja, fjern skift</value>
   </data>
   <data name="Action_RemoveWorkShift" xml:space="preserve">
-    <value>Yes, remove work shift</value>
-    <comment>ConflictHandlerService</comment>
+    <value>Ja, fjern arbeidsskift</value>
   </data>
   <data name="Action_ShortenSick" xml:space="preserve">
-    <value>Yes, shorten sick leave</value>
-    <comment>ConflictHandlerService</comment>
+    <value>Ja, forkorte sykefraværet</value>
   </data>
   <data name="Action_Merge" xml:space="preserve">
-    <value>Yes, merge</value>
-    <comment>ConflictHandlerService</comment>
+    <value>Ja, slå sammen</value>
   </data>
   <data name="Action_Cancel" xml:space="preserve">
-    <value>No, cancel</value>
-    <comment>ConflictHandlerService</comment>
+    <value>Nei, avbryt</value>
   </data>
   <data name="Action_OK" xml:space="preserve">
-    <value>OK</value>
-    <comment>ConflictHandlerService</comment>
+    <value>Ok</value>
   </data>
   <data name="Result_Saved" xml:space="preserve">
-    <value>✅ Saved!</value>
-    <comment>ConflictHandlerService</comment>
+    <value>✅ Lagret!</value>
   </data>
   <data name="Result_Merged" xml:space="preserve">
-    <value>✅ Merged!</value>
-    <comment>ConflictHandlerService</comment>
+    <value>✅ Slått sammen!</value>
   </data>
   <data name="Result_Error" xml:space="preserve">
-    <value>⚠️ Error</value>
-    <comment>ConflictHandlerService</comment>
+    <value>⚠️ Feil</value>
   </data>
   <data name="Conflict_WorkShiftSavedAfterShorten" xml:space="preserve">
     <value>{0}
-The work shift has been saved!</value>
-    <comment>ConflictHandlerService</comment>
+Arbeidsskiftet er reddet!</value>
   </data>
   <data name="LeaveType_Sick" xml:space="preserve">
-    <value>🤒 Sick leave</value>
-    <comment>ConflictHandlerService</comment>
+    <value>🤒 Sykefravær</value>
   </data>
   <data name="LeaveType_Vacation" xml:space="preserve">
-    <value>🏖️ Vacation</value>
-    <comment>ConflictHandlerService</comment>
+    <value>🏖️ Ferie</value>
   </data>
   <data name="WorkShift_FullDay_Sick_ConflictType" xml:space="preserve">
     <value>SICK</value>
-    <comment>WorkShiftService</comment>
   </data>
   <data name="WorkShift_FullDay_Vacation_ConflictType" xml:space="preserve">
     <value>VACATION</value>
-    <comment>WorkShiftService</comment>
   </data>
   <data name="WorkShift_Overlap_Title" xml:space="preserve">
-    <value>Shift overlaps with existing shift:</value>
-    <comment>WorkShiftService</comment>
+    <value>Skift overlapper med eksisterende skift:</value>
   </data>
   <data name="WorkShift_Overlap_ChangeTime" xml:space="preserve">
-    <value>Change the time to avoid overlap.</value>
-    <comment>WorkShiftService</comment>
+    <value>Endre tiden for å unngå overlapping.</value>
   </data>
   <data name="WorkShift_SaveSuccess_Default" xml:space="preserve">
-    <value>✅ Shift has been saved!</value>
-    <comment>WorkShiftService</comment>
+    <value>✅ Skift er lagret!</value>
   </data>
   <data name="WorkShift_SaveSuccess_Vacation" xml:space="preserve">
-    <value>✅ Vacation for {0} days has been saved!</value>
-    <comment>WorkShiftService</comment>
+    <value>✅ Ferie for {0} dager er lagret!</value>
   </data>
   <data name="WorkShift_SaveFailed" xml:space="preserve">
-    <value>❌ Error while saving: {0}</value>
-    <comment>WorkShiftService</comment>
+    <value>❌ Feil under lagring: {0}</value>
   </data>
   <data name="SickLeave_Hours_Zero" xml:space="preserve">
-    <value>0h</value>
-    <comment>WorkShiftService</comment>
+    <value>0t</value>
   </data>
   <data name="SickLeave_Description_Default" xml:space="preserve">
-    <value>Sick leave</value>
-    <comment>WorkShiftService</comment>
+    <value>Sykefravær</value>
   </data>
   <data name="SickLeave_Description_Partial" xml:space="preserve">
-    <value>Sick leave – partial ({0}h)</value>
-    <comment>WorkShiftService</comment>
+    <value>Sykefravær – delvis ({0}t)</value>
   </data>
   <data name="SickLeave_Description_FullDay" xml:space="preserve">
-    <value>Sick leave – full day</value>
-    <comment>WorkShiftService</comment>
+    <value>Sykefravær – heldag</value>
   </data>
   <data name="SickLeave_Description_FreeDay" xml:space="preserve">
-    <value>Sick leave – already free</value>
-    <comment>WorkShiftService</comment>
+    <value>Sykefravær – allerede fri</value>
   </data>
   <data name="SickLeave_Hours_Worked" xml:space="preserve">
-    <value>{0:F1}h</value>
+    <value>{0:F1}t</value>
   </data>
   <data name="ShiftTimes" xml:space="preserve">
-    <value>⏰ Shift Times</value>
-    <comment>SettingsPage</comment>
+    <value>⏰ Skifttider</value>
   </data>
   <data name="EveningStart" xml:space="preserve">
-    <value>🌇 Evening shift starts</value>
-    <comment>SettingsPage</comment>
+    <value>🌇 Kveldsskift starter</value>
   </data>
   <data name="NightStart" xml:space="preserve">
-    <value>🌙 Night shift starts</value>
-    <comment>SettingsPage</comment>
+    <value>🌙 Nattskift starter</value>
   </data>
   <data name="EveningOB" xml:space="preserve">
-    <value>Evening</value>
-    <comment>RegularShiftViewModel</comment>
+    <value>Kveld</value>
   </data>
   <data name="NightOB" xml:space="preserve">
-    <value>Night</value>
-    <comment>RegularShiftViewModel</comment>
+    <value>Natt</value>
   </data>
   <data name="EveningOBForDate" xml:space="preserve">
-    <value>Evening OB for {0}</value>
-    <comment>RegularShiftViewModel</comment>
+    <value>Kveld OB for {0}</value>
   </data>
   <data name="NightOBForDate" xml:space="preserve">
-    <value>Night OB for {0}</value>
-    <comment>RegularShiftViewModel</comment>
+    <value>Natt OB for {0}</value>
   </data>
   <data name="ErrorCreatingOBEvents" xml:space="preserve">
-    <value>❌ Error creating OB events</value>
-    <comment>RegularShiftViewModel</comment>
+    <value>❌ Feil ved opprettelse av OB-hendelser</value>
   </data>
   <data name="DayStart" xml:space="preserve">
-    <value>☀️ Day shift starts</value>
+    <value>☀️ Day shift starter</value>
   </data>
   <data name="ShiftTimesHint" xml:space="preserve">
-    <value>💡 Tip: These times should normally match your unsocial hours rules.</value>
+    <value>💡 Tips: Disse tidene skal vanligvis matche dine OB-regler.</value>
   </data>
   <data name="OBTemplates_Title" xml:space="preserve">
-    <value>Unsocial Hour Templates</value>
-    <comment>OBTemplatesPage</comment>
+    <value>OB-maler</value>
   </data>
   <data name="AddOBTemplate" xml:space="preserve">
-    <value>➕ Add Template</value>
-    <comment>Settings page</comment>
+    <value>➕ Legg til mal</value>
   </data>
   <data name="ReplaceWithTemplate" xml:space="preserve">
-    <value>Switch Template</value>
-    <comment>Settings page</comment>
+    <value>Bytt mal</value>
   </data>
   <data name="NoOBRulesTitle" xml:space="preserve">
-    <value>No unsocial hours rules yet</value>
-    <comment>Settings page</comment>
+    <value>Ingen OB-regler ennå</value>
   </data>
   <data name="NoOBRulesText" xml:space="preserve">
-    <value>Add an unsocial hour rule manually, or use a template to get started.</value>
-    <comment>Settings page</comment>
+    <value>Legg til en OB-regel manuelt, eller bruk en mal for å komme i gang.</value>
   </data>
   <data name="OBRule_BigHolidays" xml:space="preserve">
-    <value>Big Holiday</value>
-    <comment>AddOBRatePage</comment>
+    <value>Stor helligdag</value>
   </data>
   <data name="OBTemplates_InfoTitle" xml:space="preserve">
-    <value>Choose a template</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Velg en mal</value>
   </data>
   <data name="OBTemplates_InfoText" xml:space="preserve">
-    <value>ℹ️ Templates are examples. Adjust times and amounts to match your agreement.</value>
-    <comment>OBTemplatesPage</comment>
+    <value>ℹ️ Maler er eksempler. Juster tid og beløp for å matche din avtale.</value>
   </data>
   <data name="OBTemplates_ChooseTemplate" xml:space="preserve">
-    <value>Templates</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Maler</value>
   </data>
   <data name="OBTemplates_Preview" xml:space="preserve">
-    <value>Preview</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Forhåndsvisning</value>
   </data>
   <data name="OBTemplates_SelectToPreview" xml:space="preserve">
-    <value>Select a template to preview its rules.</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Velg en mal for å forhåndsvise reglene.</value>
   </data>
   <data name="OBTemplates_AddButton" xml:space="preserve">
-    <value>Add these rules</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Legg til disse reglene</value>
   </data>
   <data name="OBTemplates_ReplaceButton" xml:space="preserve">
-    <value>Replace all rules</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Erstatt alle regler</value>
   </data>
   <data name="OBTemplates_ReplaceConfirmTitle" xml:space="preserve">
-    <value>Replace OB rules?</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Erstatt OB-regler?</value>
   </data>
   <data name="OBTemplates_ReplaceConfirmMessage" xml:space="preserve">
-    <value>This will remove all existing OB rules for this job and replace them with the selected template.</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Dette vil fjerne alle eksisterende OB-regler for denne jobben og erstatte dem med den valgte malen.</value>
   </data>
   <data name="Common_Replace" xml:space="preserve">
-    <value>Replace</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Erstatte</value>
   </data>
   <data name="Common_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-    <comment>OBTemplatesPage</comment>
+    <value>Avbryte</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>✏️  Edit</value>
-    <comment>SettingsPage</comment>
+    <value>✏️  Redigere</value>
   </data>
   <data name="OBTemplates_AmountsNote" xml:space="preserve">
-    <value>📌 Template amounts are examples. After adding a template, you can edit the rates in Settings → Unsocial Hour settings.</value>
-    <comment>OBTemplatesPage</comment>
+    <value>📌 Malbeløp er eksempler. Etter å ha lagt til en mal, kan du redigere satsene i Innstillinger → OB-innstillinger.</value>
   </data>
   <data name="OBTemplate_Standard_Title" xml:space="preserve">
-    <value>Municipal – Standard </value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Kommunal – Standard</value>
   </data>
   <data name="OBTemplate_Standard_Desc" xml:space="preserve">
-    <value>Standard OB template for municipal sector with evening, night, weekend and big holidays. (editable)</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Standard OB-mal for kommunal sektor med kveld, natt, helg og store helligdager. (redigerbar)</value>
   </data>
   <data name="OBRule_WeekdayEvening_Name" xml:space="preserve">
-    <value>Weekday Evening OB</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>OB Ukedagskveld</value>
   </data>
   <data name="OBRule_WeekdayNight_Name" xml:space="preserve">
-    <value>Weekday Night OB</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>OB Ukedagsnatt</value>
   </data>
   <data name="OBRule_Weekend_Name" xml:space="preserve">
-    <value>Saturday Day OB</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>OB Lørdag dag</value>
   </data>
   <data name="OBRule_WeekendExtra_Name" xml:space="preserve">
-    <value>Weekend extra (Sunday)</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Helgetillegg (søndag)</value>
   </data>
   <data name="OBRule_BigHoliday_Name" xml:space="preserve">
-    <value>Big Holiday OB</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>OB for stor helligdag</value>
   </data>
   <data name="OBTemplate_EveningOnly_Title" xml:space="preserve">
-    <value>Evening only</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Enkel kveld</value>
   </data>
   <data name="OBTemplate_EveningOnly_Desc" xml:space="preserve">
-    <value>Weekday evening Unsocial hour (editable)</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Ukedagskveld OB (redigerbar)</value>
   </data>
   <data name="OBTemplate_EveningOnly_Name" xml:space="preserve">
-    <value>Weekday evening</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Ukedagskveld</value>
   </data>
   <data name="OBTemplate_NightOnly_Title" xml:space="preserve">
-    <value>Night only</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Enkel natt</value>
   </data>
   <data name="OBTemplate_NightOnly_Desc" xml:space="preserve">
-    <value>Weekday Night Unsocial hour (editable)</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Ukedagsnatt OB (redigerbar)</value>
   </data>
   <data name="OBTemplate_WeekendOnly_Title" xml:space="preserve">
-    <value>Weekend only</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Enkel helg</value>
   </data>
   <data name="OBTemplate_WeekendOnly_Desc" xml:space="preserve">
-    <value>Simple weekend Unsocial hour (editable)</value>
-    <comment>TemplateFactory.cs</comment>
+    <value>Enkel helg OB (redigerbar)</value>
   </data>
   <data name="OBRule_WeekendOB_Name" xml:space="preserve">
-    <value>Weekend </value>
-    <comment>TemplateFactory.cs</comment>
+    <value>OB Helg</value>
   </data>
   <data name="DayGroup_BigHolidays" xml:space="preserve">
-    <value>Big holidays</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Store helligdager</value>
   </data>
   <data name="DayGroup_Holidays" xml:space="preserve">
-    <value>Holidays</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Ferie</value>
   </data>
   <data name="Day_Mon_Short" xml:space="preserve">
-    <value>Mon</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Man</value>
   </data>
   <data name="DayGroup_NoneSelected" xml:space="preserve">
-    <value>No days selected</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Ingen dager valgt</value>
   </data>
   <data name="Day_Tue_Short" xml:space="preserve">
-    <value>Tue</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Tir</value>
   </data>
   <data name="Day_Wed_Short" xml:space="preserve">
-    <value>Wed</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Ons</value>
   </data>
   <data name="Day_Thu_Short" xml:space="preserve">
-    <value>Thu</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Tor</value>
   </data>
   <data name="Day_Fri_Short" xml:space="preserve">
-    <value>Fri</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Fre</value>
   </data>
   <data name="Day_Sat_Short" xml:space="preserve">
-    <value>Sat</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Lør</value>
   </data>
   <data name="Day_Sun_Short" xml:space="preserve">
-    <value>Sun</value>
-    <comment>OBRateTemplate.cs</comment>
+    <value>Søn</value>
   </data>
   <data name="RegularShift_DayType" xml:space="preserve">
-    <value>Day type</value>
-    <comment>AddRegularShift</comment>
+    <value>Dagstype</value>
   </data>
   <data name="RegularShift_Holiday" xml:space="preserve">
-    <value>Public holiday</value>
+    <value>Offentlig helligdag</value>
   </data>
   <data name="RegularShift_BigHoliday" xml:space="preserve">
-    <value>Big holiday (special)</value>
+    <value>Stor helligdag</value>
   </data>
   <data name="RegularShift_DayTypeHint" xml:space="preserve">
-    <value>💡 Mark this shift as a public holiday or big holiday if it applies.</value>
+    <value>💡 Merk dette skiftet som en offentlig helligdag eller stor helligdag hvis det gjelder.</value>
   </data>
   <data name="Category_Day" xml:space="preserve">
-    <value>Day</value>
+    <value>Dag</value>
   </data>
   <data name="OBTime_Day" xml:space="preserve">
-    <value>Day</value>
-    <comment>SalaryPageViewModel</comment>
+    <value>Dag</value>
   </data>
   <data name="OBTime_Evening" xml:space="preserve">
-    <value>Evening</value>
-    <comment>SalaryPageViewModel</comment>
+    <value>Kveld</value>
   </data>
   <data name="OBTime_Night" xml:space="preserve">
-    <value>Night</value>
-    <comment>SalaryPageViewModel</comment>
+    <value>Natt</value>
   </data>
   <data name="OBDay_Weekday" xml:space="preserve">
-    <value>Weekday</value>
-    <comment>SalaryPageViewModel</comment>
+    <value>Ukedag</value>
   </data>
   <data name="OBDay_Weekend" xml:space="preserve">
-    <value>Weekend</value>
-    <comment>SalaryPageViewModel</comment>
+    <value>Helg</value>
   </data>
   <data name="OBDay_Holiday" xml:space="preserve">
-    <value>Holiday</value>
-    <comment>SalaryPageViewModel</comment>
+    <value>Ferie</value>
   </data>
   <data name="OBDay_BigHoliday" xml:space="preserve">
-    <value>Big holiday</value>
-    <comment>SalaryPageViewModel</comment>
+    <value>Stor helligdag</value>
   </data>
   <data name="Salary_OB_Title" xml:space="preserve">
-    <value>Overtime Details</value>
-    <comment>SalaryPage</comment>
+    <value>Övertidsdetaljer</value>
   </data>
   <data name="Salary_OB_Total" xml:space="preserve">
-    <value>Total Overtime</value>
-    <comment>SalaryPage</comment>
+    <value>Total övertid</value>
   </data>
   <data name="OB_Table_Date" xml:space="preserve">
-    <value>Date</value>
-    <comment>SalaryPage</comment>
+    <value>Dato</value>
   </data>
   <data name="OB_Table_Hours" xml:space="preserve">
-    <value>Hours</value>
-    <comment>SalaryPage</comment>
+    <value>Timer</value>
   </data>
   <data name="OB_Table_Amount" xml:space="preserve">
-    <value>Amount</value>
-    <comment>SalaryPage</comment>
+    <value>Beløp</value>
   </data>
   <data name="GetStartedSalaryPrompt" xml:space="preserve">
-    <value>No salary report yet — create a job first.</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Ingen lønnsrapport ennå — opprett en jobb først.</value>
   </data>
   <data name="Salary_PageTitle" xml:space="preserve">
-    <value>💰 Monthly Salary Report</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>💰 Månedslønnsrapport</value>
   </data>
   <data name="Salary_Summary_Title" xml:space="preserve">
-    <value>📊 Summary</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>📊 Oppsummering</value>
   </data>
   <data name="Salary_Summary_BaseSalary" xml:space="preserve">
-    <value>Base Salary</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Grunnlønn</value>
   </data>
   <data name="Salary_Summary_HoursWorked" xml:space="preserve">
-    <value>Hours Worked</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Arbeidede timer</value>
   </data>
   <data name="Salary_Summary_OB" xml:space="preserve">
-    <value>Overtime Pay</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Övertidsbetaling</value>
   </data>
   <data name="Salary_Summary_VacationPay" xml:space="preserve">
-    <value>Vacation Pay</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Feriepenger</value>
   </data>
   <data name="Salary_Summary_Tax" xml:space="preserve">
-    <value>Tax</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Skatt</value>
   </data>
   <data name="Salary_Summary_TotalPaid" xml:space="preserve">
-    <value>Total Paid</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Total utbetalt</value>
   </data>
   <data name="Salary_Balance_Title" xml:space="preserve">
-    <value>Time Off &amp; Balance</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Fritid &amp; Balanse</value>
   </data>
   <data name="Salary_Balance_TimeBank" xml:space="preserve">
-    <value>🏦 Time Bank</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>🏦 Tidsbank</value>
   </data>
   <data name="Salary_Balance_ExpectedHours" xml:space="preserve">
-    <value>📅 Expected Hours</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>📅 Forventede timer</value>
   </data>
   <data name="Salary_Balance_SickDays" xml:space="preserve">
-    <value>🤒 Sick Days</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>🤒 Sykedager</value>
   </data>
   <data name="Salary_Balance_Vacation" xml:space="preserve">
-    <value>🌴 Vacation</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>🌴 Ferie</value>
   </data>
   <data name="Salary_Balance_OnCall" xml:space="preserve">
-    <value>🧭 On Call</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>🧭 Vakt</value>
   </data>
   <data name="Salary_BaseSalary_NotSet" xml:space="preserve">
-    <value>Salary: Not set</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>Lønn: Ikke satt</value>
   </data>
   <data name="Salary_NotSet" xml:space="preserve">
-    <value>Not set</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>Ikke satt</value>
   </data>
   <data name="Salary_Hours_Balanced" xml:space="preserve">
-    <value>Balanced schedule</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>Balansert timeplan</value>
   </data>
   <data name="Salary_Hours_Surplus" xml:space="preserve">
-    <value>Surplus: +{0:F1} h</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>Overskudd: +{0:F1} t</value>
   </data>
   <data name="Salary_Hours_Deficit" xml:space="preserve">
-    <value>Deficit: −{0:F1} h</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>Underskudd: −{0:F1} t</value>
   </data>
   <data name="Salary_TotalHours" xml:space="preserve">
     <value>{0:F1} {1}</value>
-    <comment>SalaryViewModel.cs</comment>
   </data>
   <data name="OB_NotConfigured" xml:space="preserve">
-    <value>OB is not configured.</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>OB er ikke konfigurert.</value>
   </data>
   <data name="OB_UsingFallback" xml:space="preserve">
-    <value>No events to calculate. Showing estimate from current rules.</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>Ingen hendelser å beregne. Viser estimat fra gjeldende regler.</value>
   </data>
   <data name="OB_PeriodHint" xml:space="preserve">
-    <value>Overtime for work in {0}</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>Övertid for arbeid i {0}</value>
   </data>
   <data name="Common_Current" xml:space="preserve">
-    <value>NOW</value>
-    <comment>SalaryViewModel.cs</comment>
+    <value>NÅ</value>
   </data>
   <data name="Hours_Abbreviation" xml:space="preserve">
-    <value>h</value>
+    <value>t</value>
   </data>
   <data name="RegularShift_ExtraShiftInfoTitle" xml:space="preserve">
-    <value>Extra pass</value>
-    <comment>RegularShiftFormView </comment>
+    <value>Ekstra pass</value>
   </data>
   <data name="RegularShift_ExtraShiftHint" xml:space="preserve">
-    <value>💡 Mark whether the passport is ordered / urgent extra work. May provide additional compensation depending on the rules.</value>
-    <comment>RegularShiftFormView </comment>
+    <value>💡 Merk om passet er bestilt / haste ekstraarbeid. Kan gi ekstra kompensasjon avhengig av reglene.</value>
   </data>
   <data name="Settings_ExtraShift_Title" xml:space="preserve">
-    <value>Compensation for extra shift</value>
-    <comment>RegularShiftFormView </comment>
+    <value>Kompensasjon for ekstravakt</value>
   </data>
   <data name="Settings_ExtraShift_Enable" xml:space="preserve">
-    <value>Activate</value>
-    <comment>RegularShiftFormView </comment>
+    <value>Aktiver</value>
   </data>
   <data name="Settings_ExtraShift_Type" xml:space="preserve">
     <value>Type</value>
-    <comment>RegularShiftFormView </comment>
   </data>
   <data name="Settings_ExtraShift_Amount" xml:space="preserve">
-    <value>Amount</value>
-    <comment>RegularShiftFormView </comment>
+    <value>Beløp</value>
   </data>
   <data name="ExtraShiftSettings_Title" xml:space="preserve">
-    <value>Extra shift (mandatory)</value>
-    <comment>SettingsPage</comment>
+    <value>Ekstra pass (beordrat)</value>
   </data>
   <data name="ExtraShiftSettings_Tip" xml:space="preserve">
-    <value>💡 Enable replacement for passes marked as extra passes.</value>
-    <comment>SettingsPage</comment>
+    <value>💡 Aktiver erstatning for pass merket som ekstra pass.</value>
   </data>
   <data name="ExtraShiftSettings_Enable" xml:space="preserve">
-    <value>Activate</value>
-    <comment>SettingsPage   </comment>
+    <value>Aktivere</value>
   </data>
   <data name="ExtraShiftSettings_Type" xml:space="preserve">
     <value>Type</value>
-    <comment>SettingsPage</comment>
   </data>
   <data name="ExtraShiftSettings_AmountPerHour" xml:space="preserve">
-    <value>Amount per hour</value>
-    <comment>SettingsPage   </comment>
+    <value>Beløp per time</value>
   </data>
   <data name="ExtraShiftSettings_AmountFixed" xml:space="preserve">
-    <value>Amount per pass</value>
-    <comment>SettingsPage   </comment>
+    <value>Beløp per pass</value>
   </data>
   <data name="ExtraShiftPayType_PerHour" xml:space="preserve">
-    <value>Per hour</value>
-    <comment>SettingsPage   </comment>
+    <value>Per time</value>
   </data>
   <data name="ExtraShiftPayType_FixedAmount" xml:space="preserve">
-    <value>Fixed amount</value>
-    <comment>SettingsPage   </comment>
+    <value>Fast beløp</value>
   </data>
   <data name="ExtraShiftSettings_Summary_PerHour" xml:space="preserve">
-    <value>Mandated shift bonus: {0} per hour</value>
+    <value>Pålagt lønnstillegg: {0} per time</value>
   </data>
   <data name="ExtraShiftSettings_Summary_Fixed" xml:space="preserve">
-    <value>Mandated shift bonus: {0} per shift</value>
+    <value>Pålagt lønnstillegg: {0} per vakt</value>
   </data>
   <data name="ObInfo_FallbackUsed" xml:space="preserve">
-    <value>Overtime is calculated from the current rules (no Overtime events found for this period).</value>
-    <comment>SalaryStatsHandler</comment>
+    <value>Övertid beregnes fra gjeldende regler (ingen övertidshendelser funnet for denne perioden).</value>
   </data>
   <data name="ObInfo_NoRulesConfigured" xml:space="preserve">
-    <value>Overtime is not configured. Add Unsocial hour rules in Settings.</value>
-    <comment>SalaryStatsHandler</comment>
+    <value>Övertid er ikke konfigurert. Legg til OB-regler i Innstillinger.</value>
   </data>
   <data name="Salary_Summary_ExtraShift" xml:space="preserve">
-    <value>Extra shift</value>
+    <value>Ekstravakt</value>
   </data>
   <data name="Salary_ExtraShift_Title" xml:space="preserve">
-    <value>Extra shifts</value>
+    <value>Ekstravakter</value>
   </data>
   <data name="Salary_ExtraShift_Total" xml:space="preserve">
     <value>Total</value>
   </data>
   <data name="Common_Date" xml:space="preserve">
-    <value>Date</value>
+    <value>Dato</value>
   </data>
   <data name="Common_Hours" xml:space="preserve">
-    <value>Hours</value>
+    <value>Timer</value>
   </data>
   <data name="Common_Amount" xml:space="preserve">
-    <value>Amount</value>
+    <value>Beløp</value>
   </data>
   <data name="ExtraShift_Status_Active" xml:space="preserve">
-    <value>Extra shift (mandated)</value>
-    <comment>Extra shift converter</comment>
+    <value>Ekstra pass (beordrat)</value>
   </data>
   <data name="ExtraShift_Status_DisabledInSettings" xml:space="preserve">
-    <value>Extra shift (inactive in Settings)</value>
-    <comment>Extra shift i converter</comment>
+    <value>Ekstra pass (inaktivt i innstillinger)</value>
   </data>
   <data name="OnCallSettings_Title" xml:space="preserve">
-    <value>On-call settings</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Vaktinnstillinger</value>
   </data>
   <data name="OnCallSettings_Tip" xml:space="preserve">
-    <value>💡 Set how on-call pay should be calculated.</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>💡 Still inn hvordan vaktlønn skal beregnes.</value>
   </data>
   <data name="OnCallSettings_StandbyRate" xml:space="preserve">
-    <value>Standby (per hour)</value>
-    <comment>SettingsPage.xaml </comment>
+    <value>Standby (per time)</value>
   </data>
   <data name="OnCallSettings_ActiveRate" xml:space="preserve">
-    <value>Called in / active (per hour)</value>
-    <comment>SettingsPage.xaml </comment>
+    <value>Innkalt / aktiv (per time)</value>
   </data>
   <data name="OnCallSettings_Allowance" xml:space="preserve">
-    <value>Allowance per on‑call shift</value>
-    <comment>SettingsPage.xaml </comment>
+    <value>Godtgjørelse per vakt</value>
   </data>
   <data name="OnCallSettings_RecalcMonths" xml:space="preserve">
-    <value>Recalculate last months</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Beregn om siste måneder</value>
   </data>
   <data name="OnCallSettings_Enable" xml:space="preserve">
-    <value>Enable on-call</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Aktiver vakt</value>
   </data>
   <data name="OnCallSettings_StandbyPayType" xml:space="preserve">
-    <value>Standby pay type</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Godtgjørelse for vakt (standby)</value>
   </data>
   <data name="OnCallSettings_Amount" xml:space="preserve">
-    <value>Amount</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Beløp</value>
   </data>
   <data name="OnCallSettings_AmountPerHour" xml:space="preserve">
-    <value>Amount per hour</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Beløp per time</value>
   </data>
   <data name="OnCallSettings_AmountPerShift" xml:space="preserve">
-    <value>Amount per shift</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Beløp per vakt</value>
   </data>
   <data name="OnCallSettings_ActivePayMode" xml:space="preserve">
-    <value>Active time pay</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Lønn for aktiv tid</value>
   </data>
   <data name="OnCallSettings_ActiveCustomRate" xml:space="preserve">
-    <value>Custom hourly rate</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Egendefinert timepris</value>
   </data>
   <data name="OnCallPayType_None" xml:space="preserve">
-    <value>None (0)</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Ingen (0)</value>
   </data>
   <data name="OnCallPayType_PerHour" xml:space="preserve">
-    <value>Per hour</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Per time</value>
   </data>
   <data name="OnCallPayType_PerShift" xml:space="preserve">
-    <value>Per shift</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Per vakt</value>
   </data>
   <data name="OnCallActivePay_DefaultHourly" xml:space="preserve">
-    <value>Default hourly rate</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Standard timepris</value>
   </data>
   <data name="OnCallActivePay_CustomHourly" xml:space="preserve">
-    <value>Custom hourly rate</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Egendefinert timepris</value>
   </data>
   <data name="Recalc_None" xml:space="preserve">
-    <value>None</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Ingen</value>
   </data>
   <data name="Recalc_1Month" xml:space="preserve">
-    <value>1 month</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>1 måned</value>
   </data>
   <data name="Recalc_2Months" xml:space="preserve">
-    <value>2 months</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>2 måneder</value>
   </data>
   <data name="Recalc_3Months" xml:space="preserve">
-    <value>3 months</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>3 måneder</value>
   </data>
   <data name="OnCallSettings_StandbyLabel" xml:space="preserve">
     <value>Standby</value>
-    <comment>SettingsPage.xaml</comment>
   </data>
   <data name="OnCallSettings_Standby_None" xml:space="preserve">
-    <value>None</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Ingen</value>
   </data>
   <data name="OnCallSettings_Active_DefaultHourly" xml:space="preserve">
-    <value>Active: default hourly</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Aktiv: standard timepris</value>
   </data>
   <data name="OnCallSettings_Active_CustomHourly" xml:space="preserve">
-    <value>Active: custom hourly</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Aktiv: egendefinert timepris</value>
   </data>
   <data name="OnCallSettings_Recalc_None" xml:space="preserve">
-    <value>No recalculation</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Ingen omberegning</value>
   </data>
   <data name="OnCallSettings_Recalc_LastXMonths" xml:space="preserve">
-    <value>Recalculate last {0} months</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Beregn om siste {0} måneder</value>
   </data>
   <data name="OnCallSettings_RecalcNotReadyYet" xml:space="preserve">
-    <value>Recalculation will be added soon.</value>
-    <comment>SettingsPage.xaml</comment>
+    <value>Omberegning vil bli lagt til snart.</value>
   </data>
   <data name="InfoTitle" xml:space="preserve">
     <value>Info</value>
-    <comment>SettingsPage.xaml</comment>
   </data>
   <data name="OnCall_Validation_NotEnabled" xml:space="preserve">
-    <value>On-call is not enabled in settings.</value>
-    <comment>OnCallViewModel</comment>
+    <value>Vakt er ikke aktivert i innstillinger.</value>
   </data>
   <data name="OnCall_Validation_InvalidStandbyPay" xml:space="preserve">
-    <value>Invalid standby compensation amount.</value>
-    <comment>OnCallViewModel</comment>
+    <value>Ugyldig beløp for vaktgodtgjørelse</value>
   </data>
   <data name="OnCall_Validation_InvalidActiveRate" xml:space="preserve">
-    <value>Invalid active hourly rate.</value>
-    <comment>OnCallViewModel</comment>
+    <value>Ugyldig aktiv timepris.</value>
   </data>
   <data name="OnCall_Validation_CalloutZero" xml:space="preserve">
-    <value>Each callout must have a valid time interval.</value>
-    <comment>OnCallViewModel</comment>
+    <value>Hver innkalling må ha et gyldig tidsintervall.</value>
   </data>
   <data name="OnCall_Validation_CalloutTooLong" xml:space="preserve">
-    <value>A callout interval is too long.</value>
-    <comment>OnCallViewModel</comment>
+    <value>Et innkallingsintervall er for langt.</value>
   </data>
   <data name="OnCall_TotalsTitle" xml:space="preserve">
-    <value>📊 Totals</value>
-    <comment>On-call form</comment>
+    <value>📊 Totaler</value>
   </data>
   <data name="OnCall_TotalsHint" xml:space="preserve">
-    <value>Pay and OB are calculated in Salary based on callout times.</value>
-    <comment>On-call form</comment>
+    <value>Lønn og OB beregnes i Lønn basert på innkallingstider.</value>
   </data>
   <data name="OnCall_CalloutsTitle" xml:space="preserve">
-    <value>Callouts (active work)</value>
+    <value>Innkallinger (aktivt arbeid)</value>
   </data>
   <data name="OnCall_CalloutsTip" xml:space="preserve">
-    <value>💡 Add each time interval when you were called out. Overtime will be calculated from these times.</value>
+    <value>💡 Legg til hvert tidsintervall når du ble innkalt. Övertid vil bli beregnet fra disse tidene.</value>
   </data>
   <data name="OnCall_NoCallouts" xml:space="preserve">
-    <value>No active times yet</value>
+    <value>Ingen aktive tider ennå</value>
   </data>
   <data name="Add" xml:space="preserve">
-    <value>Add</value>
+    <value>Legge</value>
   </data>
   <data name="OnCall_CalloutNotesPlaceholder" xml:space="preserve">
-    <value>Note (optional)</value>
+    <value>Notat (valgfritt)</value>
   </data>
   <data name="OnCall_ActiveTime" xml:space="preserve">
-    <value>🕐 Active time</value>
+    <value>🕐 Vakt (aktiv tid)</value>
   </data>
   <data name="OnCall_AddActiveTime" xml:space="preserve">
-    <value>Add active time</value>
+    <value>Legg til aktiv tid</value>
   </data>
   <data name="OnCall_ActiveNotesPlaceholder" xml:space="preserve">
-    <value>Note for this active period (optional)</value>
+    <value>Notat for denne aktive perioden (valgfritt)</value>
   </data>
   <data name="OnCall_ActiveTimesListTitle" xml:space="preserve">
-    <value>Added active times</value>
+    <value>La til aktive tider</value>
   </data>
   <data name="Salary_Summary_OnCall" xml:space="preserve">
-    <value>On-call</value>
-    <comment>SalaryPage.xaml</comment>
+    <value>Vakt</value>
   </data>
   <data name="Salary_OnCall_Title" xml:space="preserve">
-    <value>On-call</value>
+    <value>Vakt</value>
   </data>
   <data name="Salary_OnCall_Hint" xml:space="preserve">
-    <value>💡 Standby compensation is shown here. Premium pay for active time is shown separately.</value>
+    <value>💡 Vaktgodtgjørelse vises her. Tillegg for aktiv tid vises separat.</value>
   </data>
   <data name="Salary_OnCall_Standby" xml:space="preserve">
     <value>Standby</value>
   </data>
   <data name="Salary_OnCall_Active" xml:space="preserve">
-    <value>Active</value>
+    <value>Aktiv</value>
   </data>
   <data name="Salary_OnCall_NoItems" xml:space="preserve">
-    <value>No on-call entries this period.</value>
+    <value>Ingen vaktregistreringer denne perioden.</value>
   </data>
   <data name="Salary_OnCall_Total" xml:space="preserve">
     <value>Total</value>
   </data>
   <data name="Salary_OnCall_CalloutsTitle" xml:space="preserve">
-    <value>Active time</value>
+    <value>Aktiv tid</value>
   </data>
   <data name="Salary_OnCall_NoCalloutsForDay" xml:space="preserve">
-    <value>No active time registered.</value>
+    <value>Ingen aktiv tid registrert.</value>
   </data>
   <data name="OnCallSettings_RecalcPickMonthsFirst" xml:space="preserve">
-    <value>Select 1–3 months first.</value>
+    <value>Velg 1–3 måneder først.</value>
   </data>
   <data name="OnCallSettings_RecalcNow" xml:space="preserve">
-    <value>Recalculating</value>
+    <value>Omberegner</value>
   </data>
   <data name="OnCallSettings_RecalcRunning" xml:space="preserve">
-    <value>Recalculating…</value>
+    <value>Omberegner...</value>
   </data>
   <data name="OnCallSettings_RecalcDoneWithCount" xml:space="preserve">
-    <value>Done ✓ ({0})</value>
+    <value>Klar ✓ ({0})</value>
   </data>
   <data name="OnCall_Validation_CalloutOutsideStandby" xml:space="preserve">
-    <value>Active time must be within the on-call period.</value>
+    <value>Aktiv tid må være innenfor vaktperioden.</value>
   </data>
   <data name="OBRule_WeekendNight_Name" xml:space="preserve">
-    <value>Weekend Night OB</value>
+    <value>OB Helgenatt</value>
   </data>
   <data name="OBRule_WeekendDayExtra_Name" xml:space="preserve">
-    <value>Sunday Day OB</value>
+    <value>OB Søndag dag</value>
   </data>
   <data name="OBRule_VF_Evening_Name" xml:space="preserve">
-    <value>Evening OB (Nurses Union)</value>
+    <value>Kveld OB (Sykepleierforbundet)</value>
   </data>
   <data name="OBRule_VF_Night_Name" xml:space="preserve">
-    <value>Night OB (Nurses Union)</value>
+    <value>Natt OB (Sykepleierforbundet)</value>
   </data>
   <data name="OBRule_VF_Weekend_Name" xml:space="preserve">
-    <value>Weekend OB (Nurses Union)</value>
+    <value>Helg OB (Sykepleierforbundet)</value>
   </data>
   <data name="OBRule_VF_BigHoliday_Name" xml:space="preserve">
-    <value>Big Holiday OB (Nurses Union)</value>
+    <value> Stor helligdag OB (Sykepleierforbundet)</value>
   </data>
   <data name="OBRule_WeekendDay_Name" xml:space="preserve">
-    <value>Saturday Day OB</value>
+    <value>OB Lørdag dag</value>
   </data>
   <data name="OBRule_VF_Holiday_Name" xml:space="preserve">
-    <value>Public Holiday OB (Nurses Union)</value>
+    <value>Offentlig helligdag OB (Sykepleierforbundet)</value>
   </data>
   <data name="OBTemplate_VF_Title" xml:space="preserve">
-    <value>Nurses Union </value>
+    <value>Sykepleierforbundet</value>
   </data>
   <data name="OBTemplate_VF_Desc" xml:space="preserve">
-    <value>OB template for the Nurses Union with evening, night, weekend, holidays and big holidays.</value>
+    <value>OB-mal for Sykepleierforbundet med kveld, natt, helg, helligdager og store helligdager.</value>
   </data>
   <data name="OBTemplate_HRF_Title" xml:space="preserve">
-    <value>Hotel &amp; Restaurant Union</value>
+    <value>Hotell- og Restaurantforbundet</value>
   </data>
   <data name="OBTemplate_HRF_Desc" xml:space="preserve">
-    <value>OB template for the Hotel &amp; Restaurant Union with evening, night, weekend, holidays and big holidays.</value>
+    <value>OB-mal for Hotell- og Restaurantforbundet med kveld, natt, helg, helligdager og store helligdager.</value>
   </data>
   <data name="OBRule_HRF_Evening_Name" xml:space="preserve">
-    <value>Evening OB (HRF)</value>
+    <value>Kvelds-OB (HRF)</value>
   </data>
   <data name="OBRule_HRF_Night_Name" xml:space="preserve">
-    <value>Night OB (HRF)</value>
+    <value>Natt-OB (HRF)</value>
   </data>
   <data name="OBRule_HRF_Weekend_Name" xml:space="preserve">
-    <value>Weekend OB (HRF)</value>
+    <value>Helge-OB (HRF)</value>
   </data>
   <data name="OBRule_HRF_Holiday_Name" xml:space="preserve">
-    <value>Holiday OB (HRF)</value>
+    <value>Helligdags-OB (HRF)</value>
   </data>
   <data name="OBRule_HRF_BigHoliday_Name" xml:space="preserve">
-    <value>Big Holiday OB (HRF)</value>
+    <value>OB Stor helligdag (HRF)</value>
   </data>
   <data name="OBTemplate_Handels_Title" xml:space="preserve">
-    <value>Retail Union </value>
+    <value>Handel</value>
   </data>
   <data name="OBTemplate_Handels_Desc" xml:space="preserve">
-    <value>OB template for the Retail Union with evening, night, weekend, holidays and big holidays.</value>
+    <value>OB-mal for Handel med kveld, natt, helg, helligdager og store helligdager.</value>
   </data>
   <data name="OBRule_Handels_Evening_Name" xml:space="preserve">
-    <value>Evening OB (Retail Union)</value>
+    <value>Kvelds-OB (Handels)</value>
   </data>
   <data name="OBRule_Handels_Night_Name" xml:space="preserve">
-    <value>Night OB (Retail Union)</value>
+    <value>Natt-OB (Handels)</value>
   </data>
   <data name="OBRule_Handels_Weekend_Name" xml:space="preserve">
-    <value>Weekend OB (Retail Union)</value>
+    <value>Helge-OB (Handels)</value>
   </data>
   <data name="OBRule_Handels_Holiday_Name" xml:space="preserve">
-    <value>Holiday OB (Retail Union)</value>
+    <value>Helligdags-OB (Handels)</value>
   </data>
   <data name="OBRule_Handels_BigHoliday_Name" xml:space="preserve">
-    <value>Big Holiday OB (Retail Union)</value>
+    <value>OB Stor helligdag (Handels)</value>
   </data>
   <data name="OBRule_Handels_WeekendNight_Name" xml:space="preserve">
-    <value>Weekend Night OB (Retail Union)</value>
+    <value>Helgenatt-OB (Handels)</value>
   </data>
   <data name="OBRule_VF_WeekendNight_Name" xml:space="preserve">
-    <value>Weekend Night OB (Nurses Union)</value>
+    <value>Helgenatt OB (Sykepleierforbundet)</value>
   </data>
   <data name="OBRule_HRF_WeekendNight_Name" xml:space="preserve">
-    <value>Weekend Night OB (HRF)</value>
+    <value>Helgenatt-OB (HRF)</value>
   </data>
   <data name="OBRule_Holiday_Name" xml:space="preserve">
-    <value>Holiday OB</value>
+    <value>Helligdags-OB</value>
   </data>
   <data name="OBTemplates_FullTemplates" xml:space="preserve">
-    <value>Complete templates</value>
+    <value>Complete maler</value>
   </data>
   <data name="OBTemplates_SimpleTemplates" xml:space="preserve">
-    <value>Simple templates</value>
+    <value>Enkle maler</value>
   </data>
   <data name="JobSettings_Title" xml:space="preserve">
-    <value>🧰 Job settings</value>
+    <value>🧰 Jobbinnstillinger</value>
   </data>
   <data name="Salary_Details_SectionTitle" xml:space="preserve">
-    <value>📄 Detailed overview</value>
+    <value>📄 Detaljert oversikt</value>
   </data>
   <data name="OnCallSettings_PerHourSuffix" xml:space="preserve">
-    <value>/hour</value>
+    <value>/time</value>
   </data>
   <data name="OnCallSettings_PerShiftSuffix" xml:space="preserve">
-    <value>/shift</value>
+    <value> /vakt</value>
   </data>
   <data name="ObBeforeMonth" xml:space="preserve">
-    <value>OB prev month</value>
+    <value>OB forrige måned</value>
   </data>
   <data name="ObThisMonth" xml:space="preserve">
-    <value>OB this month</value>
+    <value>OB denne måneden</value>
   </data>
   <data name="AboutApp" xml:space="preserve">
-    <value>About the app</value>
+    <value>Om appen</value>
   </data>
   <data name="AboutAppDescription" xml:space="preserve">
-    <value>A modern salary app that helps you track hours, OB, flex and pay.</value>
+    <value>En moderne lønnsapp som hjelper deg med å spore timer, OB, flex og lønn.</value>
   </data>
   <data name="AboutDeveloper" xml:space="preserve">
-    <value>Developed by Aleh.</value>
+    <value>Utviklet Av Aleh.</value>
   </data>
   <data name="AboutContact" xml:space="preserve">
-    <value>Contact: kharo.studio@gmail.com</value>
+    <value>Kontakt oss: kharo.studio@gmail.com</value>
   </data>
   <data name="AboutPrivacyPolicy" xml:space="preserve">
-    <value>Privacy Policy</value>
+    <value>Personvernspolicy</value>
   </data>
   <data name="AboutPrivacyPolicyDescription" xml:space="preserve">
-    <value>Learn more about how we handle your data.</value>
+    <value>Lær mer om hvordan vi håndterer dataene dine.</value>
   </data>
   <data name="Startup_loading" xml:space="preserve">
-    <value>Loading your app...</value>
+    <value>Laster appen din...</value>
   </data>
   <data name="PremiumRequiredTitle" xml:space="preserve">
-    <value>🔒 Upgrade required</value>
+    <value>🔒 Oppgradering påkrevd</value>
   </data>
   <data name="PremiumRequiredAddJobMessage" xml:space="preserve">
-    <value>Free users can only have one job. Upgrade to Premium or Subscription to add more.</value>
+    <value>Gratisbrukere kan bare ha én jobb. Oppgrader til Premium eller Abonnement for å legge til flere.</value>
   </data>
   <data name="ViewUpgradeOptions" xml:space="preserve">
-    <value>View upgrade options</value>
+    <value>Vis oppgraderingsalternativer</value>
   </data>
   <data name="OnCallLocked_Description" xml:space="preserve">
-    <value>Upgrade to enable on-call shifts and access all on-call settings.</value>
+    <value>Oppgrader for å aktivere vaktskift og få tilgang til alle vaktinnstillinger.</value>
   </data>
   <data name="OnCallLocked_Title" xml:space="preserve">
-    <value>🔒 On-call is a premium feature</value>
+    <value>🔒 Vakt er en premiumfunksjon</value>
   </data>
   <data name="Premium_Title" xml:space="preserve">
-    <value>🔓 Upgrade</value>
+    <value>🔓 Oppgrader</value>
   </data>
   <data name="Premium_HeaderTitle" xml:space="preserve">
-    <value>⭐ Unlock more features</value>
+    <value>⭐ Lås opp flere funksjoner</value>
   </data>
   <data name="Premium_HeaderSubtitle" xml:space="preserve">
-    <value>Access on-call, more OB options and unlimited jobs.</value>
+    <value>Få tilgang til vakt, flere OB-alternativer og ubegrensede jobber.</value>
   </data>
   <data name="Premium_OneTime_Title" xml:space="preserve">
-    <value>💎 Premium (one‑time purchase)</value>
+    <value>💎 Premium (engangskjøp)</value>
   </data>
   <data name="Premium_OneTime_Description" xml:space="preserve">
-    <value>A single purchase that unlocks essential app features.</value>
+    <value>Et enkelt kjøp som låser opp essensielle appfunksjoner.</value>
   </data>
   <data name="Premium_Feature_UnlimitedJobs" xml:space="preserve">
-    <value>• Unlimited jobs</value>
+    <value>• Ubegrensede jobber</value>
   </data>
   <data name="Premium_Feature_OnCall" xml:space="preserve">
-    <value>• On‑call shifts and settings</value>
+    <value>• Vaktskift og innstillinger</value>
   </data>
   <data name="Premium_Feature_OBTemplates" xml:space="preserve">
-    <value>• More OB options</value>
+    <value>• Flere OB-alternativer</value>
   </data>
   <data name="Premium_Feature_Export" xml:space="preserve">
-    <value>• Export salary data (PDF/CSV)</value>
+    <value>• Eksporter lønnsdata (PDF/CSV)</value>
   </data>
   <data name="Premium_Feature_Inbeordring" xml:space="preserve">
-    <value>• Extra shift and extra compensation</value>
+    <value>• Ekstravakter og ekstra kompensasjon</value>
   </data>
   <data name="Premium_BuyButton" xml:space="preserve">
-    <value>Buy Premium</value>
+    <value>Kjøp Premium</value>
   </data>
   <data name="Premium_Subscription_Title" xml:space="preserve">
-    <value>🔔 Subscription</value>
+    <value>🔔 Abonnement</value>
   </data>
   <data name="Premium_Subscription_Description" xml:space="preserve">
-    <value>For users who want everything in Premium – plus upcoming features.</value>
+    <value>For brukere som vil ha alt i Premium – pluss kommende funksjoner.</value>
   </data>
   <data name="Premium_Feature_AllPremium" xml:space="preserve">
-    <value>• All Premium features</value>
+    <value>• Alle Premium-funksjoner</value>
   </data>
   <data name="Premium_Feature_Backup" xml:space="preserve">
-    <value>• Backup and restore (export/import)</value>
+    <value>• Sikkerhetskopiering og gjenoppretting (eksport/import)</value>
   </data>
   <data name="Premium_Feature_FutureFeatures" xml:space="preserve">
-    <value>• Upcoming features like Sick Leave and Vacation</value>
+    <value>• Kommende funksjoner som Sykefravær og Ferie</value>
   </data>
   <data name="Premium_Feature_Themes" xml:space="preserve">
-    <value>• Exclusive themes and colors</value>
+    <value>• Eksklusive temaer og farger</value>
   </data>
   <data name="Premium_SubscribeButton" xml:space="preserve">
-    <value>Start subscription</value>
+    <value>Start abonnement</value>
   </data>
   <data name="Premium_Card_Title" xml:space="preserve">
-    <value>💎 Premium &amp; Subscription</value>
+    <value>💎 Premium &amp; Abonnement</value>
   </data>
   <data name="Premium_Card_Description" xml:space="preserve">
-    <value>See what’s included and upgrade your experience.</value>
+    <value>Se hva som er inkludert og oppgrader din opplevelse.</value>
   </data>
   <data name="Premium_Card_Button" xml:space="preserve">
-    <value>View upgrade options</value>
+    <value>Vis oppgraderingsalternativer</value>
   </data>
   <data name="Premium_Status_PremiumTitle" xml:space="preserve">
-    <value>⭐ You have Premium</value>
+    <value>⭐ Du har Premium</value>
   </data>
   <data name="Premium_Status_PremiumDescription" xml:space="preserve">
-    <value>You have already unlocked all Premium features.</value>
+    <value>Du har allerede låst opp alle Premium-funksjoner.</value>
   </data>
   <data name="Premium_Status_SubscriptionTitle" xml:space="preserve">
-    <value>🔔 You have an active subscription</value>
+    <value>🔔 Du har et aktivt abonnement</value>
   </data>
   <data name="Premium_Status_SubscriptionDescription" xml:space="preserve">
-    <value>All features are unlocked.</value>
+    <value>Alle funksjoner er låst opp.</value>
   </data>
   <data name="Premium_Status_ConvertedPremium" xml:space="preserve">
-    <value>⭐ You have Premium (converted from subscription)</value>
+    <value>⭐ Du har Premium (konvertert fra abonnement)</value>
   </data>
   <data name="Premium_Subscription_StartDate" xml:space="preserve">
-    <value>Start date: {0}</value>
+    <value>Startdato: {0}</value>
   </data>
   <data name="Premium_Subscription_EndDate" xml:space="preserve">
-    <value>Ended: {0}</value>
+    <value>Avsluttet: {0}</value>
   </data>
   <data name="ExtraShift_Locked_Title" xml:space="preserve">
-    <value>🔒 Extra shift is a premium feature</value>
+    <value>🔒 Ekstra pass er en premiumfunksjon</value>
   </data>
   <data name="ExtraShift_Locked_Description" xml:space="preserve">
-    <value>Unlock Extra Shift to enable and configure compensation settings.</value>
+    <value>Lås opp Ekstra pass for å aktivere og konfigurere kompensasjonsinnstillinger.</value>
   </data>
   <data name="Holiday_AutoDetected" xml:space="preserve">
-    <value>Automatically detected</value>
+    <value>Automatisk oppdaget</value>
   </data>
   <data name="OBTemplate_Free_Title" xml:space="preserve">
-    <value>Free OB Template</value>
+    <value>Gratis OB-mal</value>
   </data>
   <data name="OBTemplate_Free_Desc" xml:space="preserve">
-    <value>Basic OB supplements for evening, night and weekend</value>
+    <value>Grunnleggende OB-tillegg for kveld, natt og helg</value>
   </data>
   <data name="OBRule_Free_Evening_Name" xml:space="preserve">
-    <value>Evening OB</value>
+    <value>Kvelds-OB</value>
   </data>
   <data name="OBRule_Free_WeekdayNight_Name" xml:space="preserve">
-    <value>Weekday Night</value>
+    <value>Ukedagsnatt</value>
   </data>
   <data name="OBRule_Free_WeekendDay_Name" xml:space="preserve">
-    <value>Weekend Day</value>
+    <value>Helgedag</value>
   </data>
   <data name="OBRule_Free_WeekendNight_Name" xml:space="preserve">
-    <value>Weekend Night</value>
+    <value>Helgenatt</value>
   </data>
   <data name="SuccessTitle" xml:space="preserve">
-    <value>✅ Done!</value>
+    <value>✅ Ferdig!</value>
   </data>
   <data name="FreeOBTemplateAddedMessage" xml:space="preserve">
-    <value>Free OB template has been added. You can now change times and rates for each rule.</value>
+    <value>Gratis OB-mal er lagt til. Du kan nå endre tider og satser for hver regel.</value>
   </data>
   <data name="FreeOBTemplateFailedMessage" xml:space="preserve">
-    <value>Could not add OB template. Please try again.</value>
+    <value>Kunne ikke legge til OB-mal. Prøv igjen.</value>
   </data>
   <data name="AddFreeOBTemplate" xml:space="preserve">
-    <value>Add Free Template</value>
+    <value>Legg Til Gratis Mal</value>
   </data>
   <data name="ReplaceWithFreeTemplate" xml:space="preserve">
-    <value>Replace with Free Template</value>
+    <value>Erstatt med gratis mal</value>
   </data>
   <data name="ReplaceFreeTemplate" xml:space="preserve">
-    <value>Replace Template</value>
+    <value>Erstatt mal</value>
   </data>
   <data name="OBLocked_Title" xml:space="preserve">
-    <value>🔒 OB Settings Locked</value>
+    <value>🔒 OB-innstillinger låst</value>
   </data>
   <data name="OBLocked_Description" xml:space="preserve">
-    <value>Upgrade to premium to access advanced OB features like red days, big holidays and union templates.</value>
+    <value>Oppgrader til premium for å få tilgang til avanserte OB-funksjoner som røde dager, store helligdager og fagforeningsmaler.</value>
   </data>
   <data name="OBDaysLocked_Title" xml:space="preserve">
-    <value>🔒 Day Settings Locked</value>
+    <value>🔒 Dagsinnstillinger låst</value>
   </data>
   <data name="OBDaysLocked_Description" xml:space="preserve">
-    <value>Upgrade to premium to choose which days OB rules should apply to.</value>
+    <value>Oppgrader til premium for å velge hvilke dager OB-regler skal gjelde for.</value>
   </data>
   <data name="JobSettings_Description" xml:space="preserve">
-    <value>Configure OB, jour, and other job-related settings</value>
+    <value>Konfigurere OB, jour og andre jobbrelaterte innstillinger</value>
   </data>
   <data name="AboutApp_Description" xml:space="preserve">
-    <value>See version, license and other information about the application</value>
+    <value>Se versjon, lisens og annen informasjon om programmet</value>
   </data>
   <data name="Premium_Card_Benefits" xml:space="preserve">
-    <value>Get access to advanced features like OB templates, call handling and much more</value>
+    <value>Få tilgang til avanserte funksjoner som OB-maler, vaktbehandling og mye mer</value>
   </data>
   <data name="GetStartedShiftPrompt" xml:space="preserve">
-    <value>You need to create a job before adding shifts</value>
+    <value>Du må opprette en jobb før du kan legge til skift</value>
   </data>
   <data name="LanguageNorwegian" xml:space="preserve">
-    <value>Norwegian</value>
+    <value>Norsk</value>
   </data>
   <data name="ThemeSelection" xml:space="preserve">
-    <value>Theme Selection</value>
+    <value>Temavalg</value>
   </data>
   <data name="Theme_Light" xml:space="preserve">
-    <value>Light Theme</value>
+    <value>Lyst tema</value>
   </data>
   <data name="Theme_Dark" xml:space="preserve">
-    <value>Dark theme</value>
+    <value>Mørkt tema</value>
   </data>
   <data name="Theme_System" xml:space="preserve">
-    <value>System Theme</value>
+    <value>Følg system</value>
   </data>
   <data name="VacationDays" xml:space="preserve">
-    <value>Vacation Days</value>
+    <value>Feriedager</value>
   </data>
   <data name="VacationDaysRemaining" xml:space="preserve">
-    <value>{0} Vacation Days Remaining</value>
+    <value>{0} feriedager gjenstår</value>
   </data>
   <data name="VacationDaysUsed" xml:space="preserve">
-    <value>{0} Vacation Days Used</value>
+    <value>{0} feriedager brukt</value>
   </data>
   <data name="Vacation_Default" xml:space="preserve">
-    <value>"Vacation"</value>
+    <value>"Ferie"</value>
   </data>
   <data name="Vacation_Loading" xml:space="preserve">
-    <value>Loading vacation...</value>
+    <value>"Ferie..."</value>
   </data>
 </root>

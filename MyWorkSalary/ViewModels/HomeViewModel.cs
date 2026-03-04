@@ -435,15 +435,41 @@ namespace MyWorkSalary.ViewModels
                         LoadActiveJob();
                         if (HasActiveJob)
                         {
-                            LoadMonthlyStats();
-                            LoadRecentActivities();
-                            LoadFlexTimeData();
+                            try
+                            {
+                                LoadMonthlyStats();
+                            }
+                            catch (Exception statsEx)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"🚨 LoadMonthlyStats error: {statsEx}");
+                                // Fortsätt utan statistik
+                            }
+
+                            try
+                            {
+                                LoadRecentActivities();
+                            }
+                            catch (Exception activitiesEx)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"🚨 LoadRecentActivities error: {activitiesEx}");
+                                // Fortsätt utan aktiviteter
+                            }
+
+                            try
+                            {
+                                LoadFlexTimeData();
+                            }
+                            catch (Exception flexEx)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"🚨 LoadFlexTimeData error: {flexEx}");
+                                // Fortsätt utan flex-data
+                            }
                         }
                     }
                     catch (Exception dataEx)
                     {
                         System.Diagnostics.Debug.WriteLine($"🚨 Data loading error: {dataEx}");
-                        throw; // Kasta vidare för att hanteras i yttre catch
+                        // Kasta INTE vidare - hantera graciöst
                     }
                 });
                 
@@ -462,7 +488,7 @@ namespace MyWorkSalary.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine($"🚨 RefreshDataAsync Error: {ex}");
                 System.Diagnostics.Debug.WriteLine($"🚨 Stack Trace: {ex.StackTrace}");
-                throw; // Kasta vidare för att hanteras i HomePage
+                // Kasta INTE vidare - hantera graciöst
             }
             finally
             {

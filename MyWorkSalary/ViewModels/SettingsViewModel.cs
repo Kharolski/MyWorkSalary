@@ -123,6 +123,7 @@ namespace MyWorkSalary.ViewModels
                 _allJobs = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasMultipleJobs));
+                OnPropertyChanged(nameof(HasNoJobs));
             }
         }
 

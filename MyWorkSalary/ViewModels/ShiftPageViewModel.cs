@@ -147,6 +147,8 @@ namespace MyWorkSalary.ViewModels
                             OnPropertyChanged(nameof(ActiveJobTitle));
                             OnPropertyChanged(nameof(Workplace));
                             OnPropertyChanged(nameof(SalaryDisplayText));
+                            OnPropertyChanged(nameof(HasActiveJob));
+                            OnPropertyChanged(nameof(HasNoActiveJob));
                         });
 
                         // Ladda pass för aktivt jobb

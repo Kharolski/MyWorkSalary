@@ -42,6 +42,7 @@ namespace MyWorkSalary.ViewModels
                 _activeJob = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasActiveJob));
+                OnPropertyChanged(nameof(HasNoActiveJob));
                 OnPropertyChanged(nameof(WelcomeText));
 
                 if (_activeJob != null)

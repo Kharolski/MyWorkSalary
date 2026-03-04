@@ -31,7 +31,7 @@ public partial class StartupPage : ContentPage
         await Loader.FadeTo(1, 400);
         
         // Vänta länge så du kan titta noga på designen
-        await Task.Delay(1000);
+        await Task.Delay(800);
         
         // Navigera till AppShell (som innehåller hemskärmen och alla tabs)
         Application.Current.MainPage = new AppShell();

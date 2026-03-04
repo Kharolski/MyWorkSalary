@@ -88,7 +88,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact: support@myworksalary.com.
+        ///   Looks up a localized string similar to Contact: kharo.studio@gmail.com.
         /// </summary>
         internal static string AboutContact {
             get {
@@ -2420,6 +2420,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string LanguageEnglish {
             get {
                 return ResourceManager.GetString("LanguageEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Norwegian.
+        /// </summary>
+        internal static string LanguageNorwegian {
+            get {
+                return ResourceManager.GetString("LanguageNorwegian", resourceCulture);
             }
         }
         
@@ -6501,7 +6510,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not save: {0}.
+        ///   Looks up a localized string similar to ❌ Could not save: {0}.
         /// </summary>
         internal static string SickLeave_Save_Exception {
             get {
@@ -6510,7 +6519,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sick day saved.
+        ///   Looks up a localized string similar to ✅ Sick day saved.
         /// </summary>
         internal static string SickLeave_Save_Message {
             get {
@@ -6537,7 +6546,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not save: {0}.
+        ///   Looks up a localized string similar to ❌ Could not save: {0}.
         /// </summary>
         internal static string SickLeave_Save_Unexpected {
             get {
@@ -6708,11 +6717,47 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dark theme.
+        /// </summary>
+        internal static string Theme_Dark {
+            get {
+                return ResourceManager.GetString("Theme_Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Theme.
+        /// </summary>
+        internal static string Theme_Light {
+            get {
+                return ResourceManager.GetString("Theme_Light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Theme.
+        /// </summary>
+        internal static string Theme_System {
+            get {
+                return ResourceManager.GetString("Theme_System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not save theme setting.
         /// </summary>
         internal static string ThemeSaveErrorMessage {
             get {
                 return ResourceManager.GetString("ThemeSaveErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Selection.
+        /// </summary>
+        internal static string ThemeSelection {
+            get {
+                return ResourceManager.GetString("ThemeSelection", resourceCulture);
             }
         }
         
@@ -6804,6 +6849,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Vacation_Conflict_SickLeave {
             get {
                 return ResourceManager.GetString("Vacation_Conflict_SickLeave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Vacation&quot;.
+        /// </summary>
+        internal static string Vacation_Default {
+            get {
+                return ResourceManager.GetString("Vacation_Default", resourceCulture);
             }
         }
         
@@ -6921,6 +6975,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string Vacation_Label_Type {
             get {
                 return ResourceManager.GetString("Vacation_Label_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading vacation....
+        /// </summary>
+        internal static string Vacation_Loading {
+            get {
+                return ResourceManager.GetString("Vacation_Loading", resourceCulture);
             }
         }
         
@@ -7186,11 +7249,38 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vacation Days.
+        /// </summary>
+        internal static string VacationDays {
+            get {
+                return ResourceManager.GetString("VacationDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vacation days per year.
         /// </summary>
         internal static string VacationDays_Label {
             get {
                 return ResourceManager.GetString("VacationDays_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Vacation Days Remaining.
+        /// </summary>
+        internal static string VacationDaysRemaining {
+            get {
+                return ResourceManager.GetString("VacationDaysRemaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Vacation Days Used.
+        /// </summary>
+        internal static string VacationDaysUsed {
+            get {
+                return ResourceManager.GetString("VacationDaysUsed", resourceCulture);
             }
         }
         
