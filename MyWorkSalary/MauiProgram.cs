@@ -22,6 +22,9 @@ using MyWorkSalary.Services.Handlers.Ads;
 #if ANDROID
 using MyWorkSalary.Platforms.Android.Handlers.Ads;
 #endif
+#if IOS
+using MyWorkSalary.Platforms.iOS.Handlers.Ads;
+#endif
 
 namespace MyWorkSalary
 {
@@ -146,6 +149,13 @@ namespace MyWorkSalary
             builder.Services.AddTransient<PremiumInfoPage>();
 
 #if ANDROID
+builder.ConfigureMauiHandlers(handlers =>
+{
+    handlers.AddHandler(typeof(AdBannerView), typeof(AdBannerViewHandler));
+});
+#endif
+
+#if IOS
 builder.ConfigureMauiHandlers(handlers =>
 {
     handlers.AddHandler(typeof(AdBannerView), typeof(AdBannerViewHandler));
