@@ -21,21 +21,28 @@ namespace MyWorkSalary.Platforms.iOS.Handlers.Ads
 
         protected override BannerView CreatePlatformView()
         {
-            var bannerView = new BannerView(AdSizeCons.Banner)
+            return new BannerView(AdSizeCons.Banner)
             {
                 AdUnitId = VirtualView.AdUnitId
             };
-
-            // Load ad
-            var request = Request.GetDefaultRequest();
-            bannerView.LoadRequest(request);
-            
-            return bannerView;
         }
 
         protected override void ConnectHandler(BannerView platformView)
         {
             base.ConnectHandler(platformView);
+
+            var root = UIKit.UIApplication.SharedApplication
+                .ConnectedScenes
+                .OfType<UIKit.UIWindowScene>()
+                .FirstOrDefault()?
+                .Windows
+                .FirstOrDefault()?
+                .RootViewController;
+
+            platformView.RootViewController = root;
+
+            var request = Request.GetDefaultRequest();
+            platformView.LoadRequest(request);
         }
 
         protected override void DisconnectHandler(BannerView platformView)
