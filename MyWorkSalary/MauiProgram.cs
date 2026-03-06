@@ -19,7 +19,9 @@ using MyWorkSalary.Views.Pages;
 using MyWorkSalary.Views.Pages.Templates;
 using MyWorkSalary.Views.Settings;
 using MyWorkSalary.Services.Handlers.Ads;
+#if ANDROID
 using MyWorkSalary.Platforms.Android.Handlers.Ads;
+#endif
 
 namespace MyWorkSalary
 {
