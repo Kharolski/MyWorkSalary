@@ -41,13 +41,13 @@
                             Style="{StaticResource ThemedPicker}" />
 
                     <!-- Land -->
-                    <HorizontalStackLayout HorizontalOptions="Center">
+                    <HorizontalStackLayout>
                         <Label Text="{x:Static resx:Resources.Country_Label}"
-                               Style="{StaticResource SecondaryLabel}" />
-                        <Label Text="{Binding CountryDisplayName}" 
+                               Style="{StaticResource SecondaryLabel}" 
                                FontAttributes="Bold"
-                               FontSize="16"
-                               Margin="5,0,0,0" />
+                               FontSize="16" />
+                        <Label Text="{Binding CountryDisplayName}" FontAttributes="Italic"
+                               Margin="15,0,0,0" />
                     </HorizontalStackLayout>
 
                 </VerticalStackLayout>

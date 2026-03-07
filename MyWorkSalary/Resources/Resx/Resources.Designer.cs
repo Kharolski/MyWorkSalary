@@ -1064,7 +1064,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Country.
+        ///   Looks up a localized string similar to Country:.
         /// </summary>
         internal static string Country_Label {
             get {

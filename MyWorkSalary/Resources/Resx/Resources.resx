@@ -350,7 +350,7 @@ when employment ends (no later than one month afterwards).</value>
     <value>Ireland</value>
   </data>
   <data name="Country_Label" xml:space="preserve">
-    <value>Country</value>
+    <value>Country:</value>
   </data>
   <data name="Country_Norway" xml:space="preserve">
     <value>Norway</value>

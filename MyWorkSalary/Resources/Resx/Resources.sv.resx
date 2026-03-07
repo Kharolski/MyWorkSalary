@@ -316,7 +316,7 @@ när anställningen upphör (senast en månad efteråt).</value>
     <value>Irland</value>
   </data>
   <data name="Country_Label" xml:space="preserve">
-    <value>Land</value>
+    <value>Land:</value>
   </data>
   <data name="Country_Norway" xml:space="preserve">
     <value>Norge</value>
