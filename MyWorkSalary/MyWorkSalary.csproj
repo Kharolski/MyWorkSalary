@@ -46,7 +46,8 @@
 	<!-- Debug PropertyGroup -->
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android35.0|AnyCPU'">
 		<AndroidManifestMerger>manifestmerger.jar</AndroidManifestMerger>
-		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+		<Optimize>False</Optimize>
 	</PropertyGroup>
 
 	<!-- Release PropertyGroup -->
@@ -59,6 +60,7 @@
 		<AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
 		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
 		<AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+		<Optimize>True</Optimize>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -146,6 +148,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\Pages\AddJobPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\AddMultipleShiftsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\AddOBRatePage.xaml">

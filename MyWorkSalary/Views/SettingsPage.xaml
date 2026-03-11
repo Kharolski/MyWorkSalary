@@ -145,23 +145,23 @@
             <!-- Jobbinställningar-knapp -->
             <Border Style="{StaticResource CardBorder}" IsVisible="{Binding HasActiveJob}">
                 <VerticalStackLayout Padding="12" Spacing="8">
-                    <Grid ColumnDefinitions="*,40">
-                        <Label Text="{resx:Translate JobSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
-                        <Label Grid.Column="1"
-                                Text="▶" FontSize="22" Margin="8,0,0,0" FontAttributes="Bold"
-                                VerticalOptions="Center"
-                               HorizontalOptions="End"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                            Dark={StaticResource TextPrimaryDark}}" />
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenJobSettingsCommand}" />
-                        </Grid.GestureRecognizers>
-                    </Grid>
+                    <!-- Titel -->
+                    <Label Text="{resx:Translate JobSettings_Title}" Style="{StaticResource SectionTitleLabel}" />
+                    
                     <!-- Beskrivning -->
                     <Label Text="{resx:Translate JobSettings_Description}"
                             FontSize="12"
                             Style="{StaticResource TipsLabel}"
                             Margin="0,4,0,0" />
+                    
+                    <!-- Knapp -->
+                    <Button Text="{resx:Translate JobSettings_ButtonText}"
+                            Command="{Binding OpenJobSettingsCommand}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="0,12"
+                            HorizontalOptions="FillAndExpand" />
                 </VerticalStackLayout>
             </Border>
 
@@ -261,35 +261,23 @@
             <!-- Om appen-knapp -->
             <Border Style="{StaticResource CardBorder}">
                 <VerticalStackLayout Padding="12" Spacing="8">
-                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
-                        <!-- Ikon -->
-                        <Label Grid.Column="0"
-                                Text="ℹ️"
-                                FontSize="22"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                            Dark={StaticResource TextPrimaryDark}}" />
-                        <!-- Titel -->
-                        <Label Grid.Column="1" Text="{resx:Translate AboutApp}" Style="{StaticResource SectionTitleLabel}" />
-                        <!-- Pil -->
-                        <Label Grid.Column="2"
-                                Text="▶"
-                                FontSize="22"
-                                Margin="0,-3,0,0"
-                                FontAttributes="Bold"
-                                VerticalOptions="Center"
-                                TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
-                                                            Dark={StaticResource TextPrimaryDark}}" />
-                        <!-- Klick -->
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenAboutAppCommand}" />
-                        </Grid.GestureRecognizers>
-                    </Grid>
+                    <!-- Titel -->
+                    <Label Text="{resx:Translate AboutApp}" Style="{StaticResource SectionTitleLabel}" />
+                    
                     <!-- Beskrivning -->
                     <Label Text="{resx:Translate AboutApp_Description}"
                             FontSize="12"
                             Style="{StaticResource TipsLabel}"
                             Margin="0,4,0,0" />
+                    
+                    <!-- Knapp -->
+                    <Button Text="{resx:Translate AboutApp_ButtonText}"
+                            Command="{Binding OpenAboutAppCommand}"
+                            BackgroundColor="{StaticResource ButtonPrimary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="0,12"
+                            HorizontalOptions="FillAndExpand" />
                 </VerticalStackLayout>
             </Border>
             </VerticalStackLayout>

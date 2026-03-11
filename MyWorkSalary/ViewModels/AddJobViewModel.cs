@@ -152,9 +152,11 @@ namespace MyWorkSalary.ViewModels
                 {
                     _selectedCountry = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(ShowCountryWarning));
                 }
             }
         }
+        public bool ShowCountryWarning => SelectedCountry?.Country == SupportedCountry.Other;
 
         public DateTime EmploymentStartDate
         {

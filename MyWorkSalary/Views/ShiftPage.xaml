@@ -39,14 +39,19 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <!-- Lägg till pass knapp -->
-                <Button Text="{resx:Translate AddShiftButton}"
-                        Command="{Binding AddShiftCommand}"
-                        IsVisible="{Binding HasActiveJob}"
-                        Style="{StaticResource ButtonAdd}"
-                        Padding="0,15"
-                        FontSize="16" />
-
+                <!-- Knappar för att lägga till pass -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,10" IsVisible="{Binding HasActiveJob}">
+                    <Button Text="{resx:Translate AddShiftButton}"
+                            Command="{Binding AddShiftCommand}"
+                            Style="{StaticResource ButtonAdd}"
+                            Padding="0,15"
+                            FontSize="16" />
+                    <Button Grid.Column="1"
+                            Text="{resx:Translate AddMultipleButton}"
+                            Command="{Binding AddMultipleShiftsCommand}"
+                            Style="{StaticResource ButtonAdd}" />
+                </Grid>
+                                
                 <!-- Lista med pass -->
                 <Label Text="{resx:Translate MyShiftsHeader}"
                        Style="{StaticResource SectionHeaderLabel}"

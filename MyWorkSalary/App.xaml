@@ -17,6 +17,7 @@
             <!-- Registrera Converters -->
             <converters:BoolToTextColorConverter x:Key="BoolToTextColorConverter" />
             <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <converters:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter" />
 
             <!-- Nya job converters från JobConverters.cs -->

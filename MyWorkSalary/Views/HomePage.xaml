@@ -173,10 +173,10 @@
 
                                          <!--Beskrivning--> 
                                         <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                            <Label Text="{Binding Description}"
+                                                <Label Text="{Binding Description}"
                                                    FontAttributes="Bold"
                                                    FontSize="14" />
-                                            <Label Text="{Binding TimeText}"
+                                                <Label Text="{Binding TimeText}"
                                                    Style="{StaticResource SecondaryLabel}"
                                                    FontSize="14" />
                                         </StackLayout>

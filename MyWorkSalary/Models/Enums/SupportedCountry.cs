@@ -4,7 +4,8 @@
     {
         Sweden,
         Norway,
-        Denmark
+        Denmark,
+        Other,          // For unsupported countries, will use EUR as default currency
         //Finland,
         //France,
         //Ireland
@@ -23,6 +24,7 @@
             SupportedCountry.Sweden => "SE",
             SupportedCountry.Norway => "NO",
             SupportedCountry.Denmark => "DK",
+            SupportedCountry.Other => "INT",     // International
             //SupportedCountry.Finland => "FI",
             //SupportedCountry.France => "FR",
             //SupportedCountry.Ireland => "IE",
@@ -34,6 +36,7 @@
             SupportedCountry.Sweden => Resources.Resx.Resources.Country_Sweden,
             SupportedCountry.Norway => Resources.Resx.Resources.Country_Norway,
             SupportedCountry.Denmark => Resources.Resx.Resources.Country_Denmark,
+            SupportedCountry.Other => Resources.Resx.Resources.Country_Other,
             //SupportedCountry.Finland => Resources.Resx.Resources.Country_Finland,
             //SupportedCountry.France => Resources.Resx.Resources.Country_France,
             //SupportedCountry.Ireland => Resources.Resx.Resources.Country_Ireland,
@@ -45,6 +48,7 @@
             SupportedCountry.Sweden => "SEK",
             SupportedCountry.Norway => "NOK",
             SupportedCountry.Denmark => "DKK",
+            SupportedCountry.Other => "EUR",    // Default to EUR for unsupported countries
             _ => "EUR" // fallback 
         };
     }

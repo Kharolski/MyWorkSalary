@@ -187,7 +187,7 @@ namespace MyWorkSalary.Services.Handlers
         private (DateTime start, DateTime end) GetCalendarMonth(DateTime month)
         {
             var start = new DateTime(month.Year, month.Month, 1);
-            var end = start.AddMonths(1);
+            var end = start.AddMonths(1);  // endExclusive: första dagen nästa månad
             return (start, end);
         }
 
@@ -199,9 +199,9 @@ namespace MyWorkSalary.Services.Handlers
             var shiftStart = s.StartTime.Value;
             var shiftEnd = s.EndTime.Value;
 
-            // säkerhet
+            // Hantera nattpass (sluttid < starttid)
             if (shiftEnd <= shiftStart)
-                return 0m;
+                shiftEnd = shiftEnd.AddDays(1);
 
             // Klipp segmentet till perioden
             var from = shiftStart < periodStart ? periodStart : shiftStart;

@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Helpers.Localization;
+﻿using MyWorkSalary.Helpers;
+using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Specialized;
 using MyWorkSalary.Services;
@@ -345,6 +346,9 @@ namespace MyWorkSalary.ViewModels
 
                 // Uppdatera ActiveJob property
                 ActiveJob = selectedJob;
+
+                // Uppdatera global active job provider så alla pages vet om bytet
+                ActiveJobProvider.Current = selectedJob;
 
                 // Uppdatera OB property för aktiv job
                 LoadOBRates();

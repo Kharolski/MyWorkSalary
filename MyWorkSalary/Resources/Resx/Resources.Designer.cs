@@ -61,11 +61,20 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About the app.
+        ///   Looks up a localized string similar to 📱 About the app.
         /// </summary>
         internal static string AboutApp {
             get {
                 return ResourceManager.GetString("AboutApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About This App.
+        /// </summary>
+        internal static string AboutApp_ButtonText {
+            get {
+                return ResourceManager.GetString("AboutApp_ButtonText", resourceCulture);
             }
         }
         
@@ -286,6 +295,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current time bank balance.
+        /// </summary>
+        internal static string AddJobPage_CurrentTimeBank {
+            get {
+                return ResourceManager.GetString("AddJobPage_CurrentTimeBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employment start date *.
         /// </summary>
         internal static string AddJobPage_EmploymentDate {
@@ -349,6 +367,15 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 28500.
+        /// </summary>
+        internal static string AddJobPage_MonthlySalaryPlaceholder {
+            get {
+                return ResourceManager.GetString("AddJobPage_MonthlySalaryPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 💰 Salary information.
         /// </summary>
         internal static string AddJobPage_SalarySection {
@@ -381,6 +408,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string AddJobPage_SavedVacationTip {
             get {
                 return ResourceManager.GetString("AddJobPage_SavedVacationTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select country.
+        /// </summary>
+        internal static string AddJobPage_SelectCountry {
+            get {
+                return ResourceManager.GetString("AddJobPage_SelectCountry", resourceCulture);
             }
         }
         
@@ -420,6 +456,24 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string AddJobPage_TemporaryInfo {
             get {
                 return ResourceManager.GetString("AddJobPage_TemporaryInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Bank.
+        /// </summary>
+        internal static string AddJobPage_TimeBankSection {
+            get {
+                return ResourceManager.GetString("AddJobPage_TimeBankSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positive value = saved overtime, negative value = debt.
+        /// </summary>
+        internal static string AddJobPage_TimeBankTip {
+            get {
+                return ResourceManager.GetString("AddJobPage_TimeBankTip", resourceCulture);
             }
         }
         
@@ -465,6 +519,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string AddJobPage_Workplace_Placeholder {
             get {
                 return ResourceManager.GetString("AddJobPage_Workplace_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add multiple shifts.
+        /// </summary>
+        internal static string AddMultipleButton {
+            get {
+                return ResourceManager.GetString("AddMultipleButton", resourceCulture);
             }
         }
         
@@ -1082,11 +1145,38 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other Countries.
+        /// </summary>
+        internal static string Country_Other {
+            get {
+                return ResourceManager.GetString("Country_Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sweden.
         /// </summary>
         internal static string Country_Sweden {
             get {
                 return ResourceManager.GetString("Country_Sweden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currently: Basic features (hours, salary) work. Support for holidays and advanced features for other countries coming later..
+        /// </summary>
+        internal static string CountryWarning_Message {
+            get {
+                return ResourceManager.GetString("CountryWarning_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⚠️ Limited Support.
+        /// </summary>
+        internal static string CountryWarning_Title {
+            get {
+                return ResourceManager.GetString("CountryWarning_Title", resourceCulture);
             }
         }
         
@@ -2366,6 +2456,15 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string JobDeletedTitle {
             get {
                 return ResourceManager.GetString("JobDeletedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Job Settings.
+        /// </summary>
+        internal static string JobSettings_ButtonText {
+            get {
+                return ResourceManager.GetString("JobSettings_ButtonText", resourceCulture);
             }
         }
         

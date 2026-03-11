@@ -2547,7 +2547,7 @@ Arbeidsskiftet er reddet!</value>
     <value>OB denne måneden</value>
   </data>
   <data name="AboutApp" xml:space="preserve">
-    <value>Om appen</value>
+    <value>📱  Om appen</value>
   </data>
   <data name="AboutAppDescription" xml:space="preserve">
     <value>En moderne lønnsapp som hjelper deg med å spore timer, OB, flex og lønn.</value>
@@ -2764,5 +2764,38 @@ Arbeidsskiftet er reddet!</value>
   </data>
   <data name="Vacation_Loading" xml:space="preserve">
     <value>"Ferie..."</value>
+  </data>
+  <data name="JobSettings_ButtonText" xml:space="preserve">
+    <value>Administrer jobbinnstillinger</value>
+  </data>
+  <data name="AboutApp_ButtonText" xml:space="preserve">
+    <value>Om appen</value>
+  </data>
+  <data name="Country_Other" xml:space="preserve">
+    <value>Andre land</value>
+  </data>
+  <data name="AddJobPage_SelectCountry" xml:space="preserve">
+    <value>Velg land</value>
+  </data>
+  <data name="AddJobPage_MonthlySalaryPlaceholder" xml:space="preserve">
+    <value>28500</value>
+  </data>
+  <data name="AddJobPage_TimeBankSection" xml:space="preserve">
+    <value>Timebank</value>
+  </data>
+  <data name="AddJobPage_CurrentTimeBank" xml:space="preserve">
+    <value>Nåværende timebanksaldo</value>
+  </data>
+  <data name="AddJobPage_TimeBankTip" xml:space="preserve">
+    <value>Positiv verdi = spart overtid, negativ verdi = gjeld</value>
+  </data>
+  <data name="CountryWarning_Title" xml:space="preserve">
+    <value>⚠️ Begrenset støtte</value>
+  </data>
+  <data name="CountryWarning_Message" xml:space="preserve">
+    <value>Aktuelt: Grunnleggende funksjoner (timer, lønn) fungerer. Støtte for helligdager og avanserte funksjoner for andre land kommer senere.</value>
+  </data>
+  <data name="AddMultipleButton" xml:space="preserve">
+    <value>Legg til flere vakter</value>
   </data>
 </root>

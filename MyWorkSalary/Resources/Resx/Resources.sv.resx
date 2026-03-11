@@ -2413,7 +2413,7 @@ Arbetspasset har sparats!</value>
     <value>OB denna mån</value>
   </data>
   <data name="AboutApp" xml:space="preserve">
-    <value>Om appen</value>
+    <value>📱 Om appen</value>
   </data>
   <data name="AboutAppDescription" xml:space="preserve">
     <value>En modern löneapp som hjälper dig hålla koll på arbetstid, OB, flex och lön.</value>
@@ -2630,5 +2630,38 @@ Arbetspasset har sparats!</value>
   </data>
   <data name="Vacation_Loading" xml:space="preserve">
     <value>Semester...</value>
+  </data>
+  <data name="JobSettings_ButtonText" xml:space="preserve">
+    <value>Hantera jobbinställningar</value>
+  </data>
+  <data name="AboutApp_ButtonText" xml:space="preserve">
+    <value>Om appen</value>
+  </data>
+  <data name="Country_Other" xml:space="preserve">
+    <value>Andra länder</value>
+  </data>
+  <data name="AddJobPage_SelectCountry" xml:space="preserve">
+    <value>Välj land</value>
+  </data>
+  <data name="AddJobPage_MonthlySalaryPlaceholder" xml:space="preserve">
+    <value>28500</value>
+  </data>
+  <data name="AddJobPage_TimeBankSection" xml:space="preserve">
+    <value>Timbank</value>
+  </data>
+  <data name="AddJobPage_CurrentTimeBank" xml:space="preserve">
+    <value>Nuvarande timbankssaldo</value>
+  </data>
+  <data name="AddJobPage_TimeBankTip" xml:space="preserve">
+    <value>Positivt värde = sparad övertid, negativt värde = skuld</value>
+  </data>
+  <data name="CountryWarning_Title" xml:space="preserve">
+    <value>⚠️ Begränsad support</value>
+  </data>
+  <data name="CountryWarning_Message" xml:space="preserve">
+    <value>Just nu: Grundläggande funktioner (timmar, lön) fungerar. Stöd för helgdagar och avancerade funktioner för andra länder kommer senare.</value>
+  </data>
+  <data name="AddMultipleButton" xml:space="preserve">
+    <value>Lägg till flera pass</value>
   </data>
 </root>

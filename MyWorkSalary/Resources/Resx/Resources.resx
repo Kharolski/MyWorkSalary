@@ -2875,7 +2875,7 @@ The work shift has been saved!</value>
     <value>OB this month</value>
   </data>
   <data name="AboutApp" xml:space="preserve">
-    <value>About the app</value>
+    <value>📱 About the app</value>
   </data>
   <data name="AboutAppDescription" xml:space="preserve">
     <value>A modern salary app that helps you track hours, OB, flex and pay.</value>
@@ -3092,5 +3092,38 @@ The work shift has been saved!</value>
   </data>
   <data name="Vacation_Loading" xml:space="preserve">
     <value>Loading vacation...</value>
+  </data>
+  <data name="JobSettings_ButtonText" xml:space="preserve">
+    <value>Manage Job Settings</value>
+  </data>
+  <data name="AboutApp_ButtonText" xml:space="preserve">
+    <value>About This App</value>
+  </data>
+  <data name="Country_Other" xml:space="preserve">
+    <value>Other Countries</value>
+  </data>
+  <data name="AddJobPage_SelectCountry" xml:space="preserve">
+    <value>Select country</value>
+  </data>
+  <data name="AddJobPage_MonthlySalaryPlaceholder" xml:space="preserve">
+    <value>28500</value>
+  </data>
+  <data name="AddJobPage_TimeBankSection" xml:space="preserve">
+    <value>Time Bank</value>
+  </data>
+  <data name="AddJobPage_CurrentTimeBank" xml:space="preserve">
+    <value>Current time bank balance</value>
+  </data>
+  <data name="AddJobPage_TimeBankTip" xml:space="preserve">
+    <value>Positive value = saved overtime, negative value = debt</value>
+  </data>
+  <data name="CountryWarning_Title" xml:space="preserve">
+    <value>⚠️ Limited Support</value>
+  </data>
+  <data name="CountryWarning_Message" xml:space="preserve">
+    <value>Currently: Basic features (hours, salary) work. Support for holidays and advanced features for other countries coming later.</value>
+  </data>
+  <data name="AddMultipleButton" xml:space="preserve">
+    <value>Add multiple shifts</value>
   </data>
 </root>

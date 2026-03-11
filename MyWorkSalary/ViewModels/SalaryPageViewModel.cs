@@ -1,4 +1,5 @@
-﻿using MyWorkSalary.Helpers.Localization;
+﻿using MyWorkSalary.Helpers;
+using MyWorkSalary.Helpers.Localization;
 using MyWorkSalary.Models.Core;
 using MyWorkSalary.Models.Enums;
 using MyWorkSalary.Models.Reports;
@@ -44,6 +45,7 @@ namespace MyWorkSalary.ViewModels
                 OnPropertyChanged(nameof(HasActiveJob));
                 OnPropertyChanged(nameof(HasNoActiveJob));
                 OnPropertyChanged(nameof(WelcomeText));
+                OnPropertyChanged(nameof(BaseSalaryText));
 
                 if (_activeJob != null)
                 {
@@ -587,6 +589,15 @@ namespace MyWorkSalary.ViewModels
         {
             var now = DateTime.Now;
             SelectedMonth = new DateTime(now.Year, now.Month, 1);
+        }
+
+        public void RefreshActiveJob()
+        {
+            var freshActiveJob = _jobProfileRepository.GetActiveJob();
+            ActiveJob = freshActiveJob;
+            
+            // Synka med global provider
+            ActiveJobProvider.Current = freshActiveJob;
         }
         private async void OnCreateJob()
         {

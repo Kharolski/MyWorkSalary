@@ -53,6 +53,7 @@ namespace MyWorkSalary.ViewModels
 
             // Commands
             AddShiftCommand = new Command(OnAddShift);
+            AddMultipleShiftsCommand = new Command(OnAddMultipleShifts);
             DeleteShiftCommand = new Command<WorkShift>(OnDeleteShift);
             CreateJobCommand = new Command(OnCreateJob);
 
@@ -121,6 +122,7 @@ namespace MyWorkSalary.ViewModels
 
         #region Commands
         public ICommand AddShiftCommand { get; }
+        public ICommand AddMultipleShiftsCommand { get; }
         public ICommand DeleteShiftCommand { get; }
         public ICommand CreateJobCommand { get; }
         #endregion
@@ -241,6 +243,18 @@ namespace MyWorkSalary.ViewModels
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        private async void OnAddMultipleShifts()
+        {
+            try
+            {
+                await Shell.Current.GoToAsync(nameof(AddMultipleShiftsPage));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error navigating to AddMultipleShiftsPage: {ex.Message}");
             }
         }
 
@@ -427,7 +441,6 @@ namespace MyWorkSalary.ViewModels
             }
         }
         #endregion
-
 
         #region Expand/Collapse
         private bool _isExpanded = true; // Default: öppen

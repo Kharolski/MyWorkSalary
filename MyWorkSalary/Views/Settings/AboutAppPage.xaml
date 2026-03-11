@@ -47,6 +47,10 @@
                 <VerticalStackLayout Spacing="8" Padding="15">
                     <Label Text="{resx:Translate AboutPrivacyPolicy}" FontSize="16" />
                     <Label Text="{resx:Translate AboutPrivacyPolicyDescription}" FontSize="14" />
+                    <Button Text="📄 Läs integritetspolicy"
+                            Clicked="OnPrivacyPolicyClicked"
+                            HorizontalOptions="Center"
+                            WidthRequest="200" />
                 </VerticalStackLayout>
             </Border>
 

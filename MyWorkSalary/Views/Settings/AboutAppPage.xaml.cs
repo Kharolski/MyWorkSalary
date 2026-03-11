@@ -22,6 +22,11 @@ public partial class AboutAppPage : ContentPage
         NavigationHelper.UseNoAnimationBackButton(this);
     }
 
+    private async void OnPrivacyPolicyClicked(object sender, EventArgs e)
+    {
+        await Launcher.OpenAsync("https://kharolski.github.io/MyWorkSalary/PRIVACY_POLICY.html");
+    }
+
     private void OnActivatePremiumClicked(object sender, EventArgs e)
     {
         _premiumService.SetPremium(true);

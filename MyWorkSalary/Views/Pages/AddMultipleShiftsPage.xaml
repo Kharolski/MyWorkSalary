@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             x:Class="MyWorkSalary.Views.Pages.AddMultipleShiftsPage"
+             Title="Lägg till flera pass">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Rubrik -->
+            <Label Text="Lägg till flera pass"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <!-- Kalender (plats för senare) -->
+            <Border BackgroundColor="LightGray"
+                    HeightRequest="300"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="10">
+                <Label Text="Kalender kommer här..."
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="Gray" />
+            </Border>
+
+            <!-- Tidsväljare -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Border Grid.Column="0" StrokeShape="RoundRectangle 10" Padding="10">
+                    <VerticalStackLayout>
+                        <Label Text="Starttid" FontSize="12" />
+                        <TimePicker Time="{Binding StartTime}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="1" StrokeShape="RoundRectangle 10" Padding="10">
+                    <VerticalStackLayout>
+                        <Label Text="Sluttid" FontSize="12" />
+                        <TimePicker Time="{Binding EndTime}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Info om valda dagar -->
+            <Label Text="{Binding SelectedDaysText}"
+                   HorizontalOptions="Center" />
+
+            <!-- Knappar -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,20,0,0">
+                <!-- Avbryt -->
+                <Button Text="{resx:Translate Button_Cancel}"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource SecondaryButton}"
+                        Padding="0,15" />
+                <!-- Spara -->
+                <Button Text="{resx:Translate Button_SaveShift}" Grid.Column="1"
+                        Command="{Binding SaveCommand}"
+                        Opacity="{Binding CanSave, Converter={StaticResource BoolToOpacityConverter}}"
+                        IsEnabled="{Binding CanSave}" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

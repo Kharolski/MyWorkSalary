@@ -177,15 +177,18 @@ namespace MyWorkSalary.Services
         #region Recent Activities
         public List<RecentActivityItem> GetRecentActivities(int jobProfileId, int count = 4)
         {
-            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId)
-                .OrderByDescending(s => s.ShiftDate)
-                .ThenByDescending(s => s.StartTime)
-                .Take(count)
-                .ToList();
+            var shifts = _databaseService.WorkShifts.GetWorkShifts(jobProfileId);
+            
+            // Säkerställ att vi alltid har en lista (aldrig null)
+            if (shifts == null || !shifts.Any())
+                return new List<RecentActivityItem>();
 
             var activities = new List<RecentActivityItem>();
 
-            foreach (var shift in shifts)
+            foreach (var shift in shifts
+                .OrderByDescending(s => s.ShiftDate)
+                .ThenByDescending(s => s.StartTime)
+                .Take(count))
             {
                 var activity = new RecentActivityItem
                 {
