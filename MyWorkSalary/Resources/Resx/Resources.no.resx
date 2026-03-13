@@ -2796,6 +2796,30 @@ Arbeidsskiftet er reddet!</value>
     <value>Aktuelt: Grunnleggende funksjoner (timer, lønn) fungerer. Støtte for helligdager og avanserte funksjoner for andre land kommer senere.</value>
   </data>
   <data name="AddMultipleButton" xml:space="preserve">
-    <value>Legg til flere vakter</value>
+    <value>➕ Legg til flere vakter</value>
+  </data>
+  <data name="CalendarWeekAbbreviation" xml:space="preserve">
+    <value>u</value>
+  </data>
+  <data name="CalendarColorToday" xml:space="preserve">
+    <value>I dag</value>
+  </data>
+  <data name="CalendarColorTodayDesc" xml:space="preserve">
+    <value>Dagens dato</value>
+  </data>
+  <data name="CalendarColorSelected" xml:space="preserve">
+    <value>Valgt</value>
+  </data>
+  <data name="CalendarColorSelectedDesc" xml:space="preserve">
+    <value>Markert dag</value>
+  </data>
+  <data name="CalendarColorBooked" xml:space="preserve">
+    <value>Opptatt</value>
+  </data>
+  <data name="CalendarColorBookedDesc" xml:space="preserve">
+    <value>Tidskonflikt</value>
+  </data>
+  <data name="Calendar_SelectedDays" xml:space="preserve">
+    <value>Valgte dager</value>
   </data>
 </root>

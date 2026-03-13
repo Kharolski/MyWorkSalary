@@ -3124,6 +3124,30 @@ The work shift has been saved!</value>
     <value>Currently: Basic features (hours, salary) work. Support for holidays and advanced features for other countries coming later.</value>
   </data>
   <data name="AddMultipleButton" xml:space="preserve">
-    <value>Add multiple shifts</value>
+    <value>➕ Add multiple shifts</value>
+  </data>
+  <data name="CalendarWeekAbbreviation" xml:space="preserve">
+    <value>w</value>
+  </data>
+  <data name="CalendarColorToday" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="CalendarColorTodayDesc" xml:space="preserve">
+    <value>Today's date</value>
+  </data>
+  <data name="CalendarColorSelected" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="CalendarColorSelectedDesc" xml:space="preserve">
+    <value>Marked day</value>
+  </data>
+  <data name="CalendarColorBooked" xml:space="preserve">
+    <value>Booked</value>
+  </data>
+  <data name="CalendarColorBookedDesc" xml:space="preserve">
+    <value>Time conflict</value>
+  </data>
+  <data name="Calendar_SelectedDays" xml:space="preserve">
+    <value>Selected days</value>
   </data>
 </root>

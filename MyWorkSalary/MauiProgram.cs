@@ -121,6 +121,10 @@ namespace MyWorkSalary
             builder.Services.AddTransient<ShiftPageViewModel>();
             builder.Services.AddTransient<AddShiftViewModel>();
             builder.Services.AddTransient<AddMultipleShiftsViewModel>();
+            builder.Services.AddTransient<AddMultipleShiftsPage>(provider =>
+                new AddMultipleShiftsPage(
+                    provider.GetRequiredService<AddMultipleShiftsViewModel>(),
+                    provider.GetRequiredService<Services.Premium.AdService>()));
             builder.Services.AddTransient<RegularShiftViewModel>();
             builder.Services.AddTransient<SickLeaveViewModel>();
             builder.Services.AddTransient<OnCallViewModel>();

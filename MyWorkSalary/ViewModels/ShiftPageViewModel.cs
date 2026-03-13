@@ -250,11 +250,16 @@ namespace MyWorkSalary.ViewModels
         {
             try
             {
+                IsBusy = true; // Starta loading
                 await Shell.Current.GoToAsync(nameof(AddMultipleShiftsPage));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error navigating to AddMultipleShiftsPage: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false; // Stoppa loading
             }
         }
 

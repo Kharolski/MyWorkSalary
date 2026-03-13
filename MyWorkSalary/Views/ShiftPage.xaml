@@ -45,11 +45,11 @@
                             Command="{Binding AddShiftCommand}"
                             Style="{StaticResource ButtonAdd}"
                             Padding="0,15"
-                            FontSize="16" />
+                            FontSize="14" />
                     <Button Grid.Column="1"
                             Text="{resx:Translate AddMultipleButton}"
                             Command="{Binding AddMultipleShiftsCommand}"
-                            Style="{StaticResource ButtonAdd}" />
+                            Style="{StaticResource ButtonAdd}" FontSize="14" />
                 </Grid>
                                 
                 <!-- Lista med pass -->

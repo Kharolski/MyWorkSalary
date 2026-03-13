@@ -523,7 +523,7 @@ namespace MyWorkSalary.Resources.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add multiple shifts.
+        ///   Looks up a localized string similar to ➕ Add multiple shifts.
         /// </summary>
         internal static string AddMultipleButton {
             get {
@@ -672,6 +672,78 @@ namespace MyWorkSalary.Resources.Resx {
         internal static string CalculateSalary {
             get {
                 return ResourceManager.GetString("CalculateSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected days.
+        /// </summary>
+        internal static string Calendar_SelectedDays {
+            get {
+                return ResourceManager.GetString("Calendar_SelectedDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Booked.
+        /// </summary>
+        internal static string CalendarColorBooked {
+            get {
+                return ResourceManager.GetString("CalendarColorBooked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time conflict.
+        /// </summary>
+        internal static string CalendarColorBookedDesc {
+            get {
+                return ResourceManager.GetString("CalendarColorBookedDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected.
+        /// </summary>
+        internal static string CalendarColorSelected {
+            get {
+                return ResourceManager.GetString("CalendarColorSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Marked day.
+        /// </summary>
+        internal static string CalendarColorSelectedDesc {
+            get {
+                return ResourceManager.GetString("CalendarColorSelectedDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today.
+        /// </summary>
+        internal static string CalendarColorToday {
+            get {
+                return ResourceManager.GetString("CalendarColorToday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today&apos;s date.
+        /// </summary>
+        internal static string CalendarColorTodayDesc {
+            get {
+                return ResourceManager.GetString("CalendarColorTodayDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to w.
+        /// </summary>
+        internal static string CalendarWeekAbbreviation {
+            get {
+                return ResourceManager.GetString("CalendarWeekAbbreviation", resourceCulture);
             }
         }
         

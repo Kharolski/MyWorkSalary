@@ -2,65 +2,417 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resx="clr-namespace:MyWorkSalary.Helpers.Localization"
+             xmlns:components="clr-namespace:MyWorkSalary.Views.Components"
              x:Class="MyWorkSalary.Views.Pages.AddMultipleShiftsPage"
              Title="Lägg till flera pass">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
+    <Grid>
+        <ScrollView IsVisible="{Binding IsNotBusy}">
+            <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!-- Rubrik -->
-            <Label Text="Lägg till flera pass"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
-
-            <!-- Kalender (plats för senare) -->
-            <Border BackgroundColor="LightGray"
-                    HeightRequest="300"
-                    StrokeShape="RoundRectangle 10"
-                    Padding="10">
-                <Label Text="Kalender kommer här..."
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="Gray" />
-            </Border>
-
-            <!-- Tidsväljare -->
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                <Border Grid.Column="0" StrokeShape="RoundRectangle 10" Padding="10">
-                    <VerticalStackLayout>
-                        <Label Text="Starttid" FontSize="12" />
-                        <TimePicker Time="{Binding StartTime}" />
+                <!-- Aktivt jobb info -->
+                <Border Style="{StaticResource ActiveJobBorder}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="{resx:Translate Job_Label}" Style="{StaticResource ActiveJobTitleLabel}" FontSize="14" />
+                        <Label Text="{Binding ActiveJobTitle}" FontSize="16"
+                               TextColor="{AppThemeBinding Light={StaticResource TextPrimary},
+                                                           Dark={StaticResource White}}" />
                     </VerticalStackLayout>
                 </Border>
 
-                <Border Grid.Column="1" StrokeShape="RoundRectangle 10" Padding="10">
-                    <VerticalStackLayout>
-                        <Label Text="Sluttid" FontSize="12" />
-                        <TimePicker Time="{Binding EndTime}" />
+                <!-- Arbetstid och rast -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="15">
+
+                        <!-- Arbetstid -->
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="{resx:Translate RegularShift_WorkTime}" Style="{StaticResource FieldLabel}" />
+                            <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                                <!-- Starttid -->
+                                <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                    <Label Text="{resx:Translate RegularShift_From}" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                                    <TimePicker Time="{Binding StartTime}" Style="{StaticResource ThemedTimePicker}" Format="HH:mm" />
+                                </VerticalStackLayout>
+                                <!-- Separator -->
+                                <Label Grid.Column="1" Text="→" FontSize="20" VerticalOptions="Center" TextColor="Gray" />
+                                <!-- Sluttid -->
+                                <VerticalStackLayout Grid.Column="2" Spacing="3">
+                                    <Label Text="{resx:Translate RegularShift_To}" FontSize="12" TextColor="Gray" HorizontalOptions="Center" />
+                                    <TimePicker Time="{Binding EndTime}" Style="{StaticResource ThemedTimePicker}" Format="HH:mm" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+
+                        <!-- Rast -->
+                        <VerticalStackLayout Spacing="0">
+                            <Label Text="{resx:Translate RegularShift_Break}" Style="{StaticResource FieldLabel}" />
+                            <Entry Text="{Binding BreakMinutes}" Placeholder="0" Keyboard="Numeric" Style="{StaticResource ThemedEntry}" />
+                        </VerticalStackLayout>
+
                     </VerticalStackLayout>
                 </Border>
-            </Grid>
 
-            <!-- Info om valda dagar -->
-            <Label Text="{Binding SelectedDaysText}"
-                   HorizontalOptions="Center" />
+                <!-- Kalender -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="0">
 
-            <!-- Knappar -->
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,20,0,0">
-                <!-- Avbryt -->
-                <Button Text="{resx:Translate Button_Cancel}"
+                        <!-- Månad -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Button Grid.Column="0" Text="◀" Command="{Binding PreviousMonthCommand}" WidthRequest="40"/>
+                            <Label Grid.Column="1"
+                               Text="{Binding MonthText}" Style="{StaticResource SectionHeaderLabel}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                            <Button Grid.Column="2" Text="▶" Command="{Binding NextMonthCommand}" WidthRequest="40"/>
+                        </Grid>
+
+                        <!-- Veckodagar -->
+                        <Grid ColumnDefinitions="40,*,*,*,*,*,*,*" Margin="0,5">
+                            <Label Grid.Column="0"
+                                   Text="{resx:Translate CalendarWeekAbbreviation}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   FontSize="12"
+                                   Opacity="0.7">
+                                <Label.TextColor>
+                                    <AppThemeBinding Light="{StaticResource TextSecondary}"
+                                                     Dark="{StaticResource TextSecondaryDark}" />
+                                </Label.TextColor>
+                            </Label>
+
+                            <Label Grid.Column="1" Text="{Binding WeekDays[0]}" HorizontalOptions="Center"/>
+                            <Label Grid.Column="2" Text="{Binding WeekDays[1]}" HorizontalOptions="Center"/>
+                            <Label Grid.Column="3" Text="{Binding WeekDays[2]}" HorizontalOptions="Center"/>
+                            <Label Grid.Column="4" Text="{Binding WeekDays[3]}" HorizontalOptions="Center"/>
+                            <Label Grid.Column="5" Text="{Binding WeekDays[4]}" HorizontalOptions="Center"/>
+                            <Label Grid.Column="6" Text="{Binding WeekDays[5]}" HorizontalOptions="Center"/>
+                            <Label Grid.Column="7" Text="{Binding WeekDays[6]}" HorizontalOptions="Center"/>
+
+                        </Grid>
+
+                        <!-- Kalender -->
+                        <CollectionView ItemsSource="{Binding CalendarWeeks}" SelectionMode="None" Margin="0,5">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="40,*,*,*,*,*,*,*" ColumnSpacing="4" RowSpacing="4">
+
+                                        <!-- Veckonummer -->
+                                        <Label Grid.Column="0"
+                                               Text="{Binding WeekNumber}"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               FontSize="12"
+                                               Opacity="0.7">
+                                            <Label.TextColor>
+                                                <AppThemeBinding Light="{StaticResource TextSecondary}"
+                                                             Dark="{StaticResource TextSecondaryDark}" />
+                                            </Label.TextColor>
+                                        </Label>
+
+                                        <!-- Dag 1 -->
+                                        <Frame Grid.Column="1"
+                                                BackgroundColor="{Binding Days[0].BackgroundColor}"
+                                                BorderColor="{Binding Days[0].BorderColor}"
+                                                CornerRadius="8"
+                                                Padding="0"
+                                                HasShadow="False">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleDayCommand}"
+                                                            CommandParameter="{Binding Days[0]}"/>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding Days[0].DayNumber}"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center"
+                                                    HeightRequest="36"
+                                                    VerticalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[0].IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[0].IsToday}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[0].HasConflict}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.TextColor>
+                                                    <AppThemeBinding Light="{StaticResource TextPrimary}" Dark="{StaticResource TextPrimaryDark}"/>
+                                                </Label.TextColor>
+                                            </Label>
+                                        </Frame>
+
+                                        <!-- Dag 2 -->
+                                        <Frame Grid.Column="2"
+                                                BackgroundColor="{Binding Days[1].BackgroundColor}"
+                                                BorderColor="{Binding Days[1].BorderColor}"
+                                                CornerRadius="8"
+                                                Padding="0"
+                                                HasShadow="False">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleDayCommand}"
+                                                            CommandParameter="{Binding Days[1]}"/>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding Days[1].DayNumber}"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center"
+                                                    HeightRequest="36"
+                                                    VerticalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[1].IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[1].IsToday}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[1].HasConflict}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.TextColor>
+                                                    <AppThemeBinding Light="{StaticResource TextPrimary}" Dark="{StaticResource TextPrimaryDark}"/>
+                                                </Label.TextColor>
+                                            </Label>
+                                        </Frame>
+
+                                        <!-- Dag 3 -->
+                                        <Frame Grid.Column="3"
+                                            BackgroundColor="{Binding Days[2].BackgroundColor}"
+                                            BorderColor="{Binding Days[2].BorderColor}"
+                                            CornerRadius="8"
+                                            Padding="0"
+                                            HasShadow="False">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleDayCommand}"
+                                                            CommandParameter="{Binding Days[2]}"/>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding Days[2].DayNumber}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                HeightRequest="36"
+                                                VerticalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[2].IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[2].IsToday}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[2].HasConflict}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.TextColor>
+                                                    <AppThemeBinding Light="{StaticResource TextPrimary}" Dark="{StaticResource TextPrimaryDark}"/>
+                                                </Label.TextColor>
+                                            </Label>
+                                        </Frame>
+
+                                        <!-- Dag 4 -->
+                                        <Frame Grid.Column="4"
+                                            BackgroundColor="{Binding Days[3].BackgroundColor}"
+                                            BorderColor="{Binding Days[3].BorderColor}"
+                                            CornerRadius="8"
+                                            Padding="0"
+                                            HasShadow="False">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleDayCommand}"
+                                                            CommandParameter="{Binding Days[3]}"/>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding Days[3].DayNumber}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                HeightRequest="36"
+                                                VerticalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[3].IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[3].IsToday}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[3].HasConflict}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.TextColor>
+                                                    <AppThemeBinding Light="{StaticResource TextPrimary}" Dark="{StaticResource TextPrimaryDark}"/>
+                                                </Label.TextColor>
+                                            </Label>
+                                        </Frame>
+
+                                        <!-- Dag 5 -->
+                                        <Frame Grid.Column="5"
+                                            BackgroundColor="{Binding Days[4].BackgroundColor}"
+                                            BorderColor="{Binding Days[4].BorderColor}"
+                                            CornerRadius="8"
+                                            Padding="0"
+                                            HasShadow="False">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleDayCommand}"
+                                                            CommandParameter="{Binding Days[4]}"/>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding Days[4].DayNumber}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                HeightRequest="36"
+                                                VerticalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[4].IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[4].IsToday}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[4].HasConflict}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.TextColor>
+                                                    <AppThemeBinding Light="{StaticResource TextPrimary}" Dark="{StaticResource TextPrimaryDark}"/>
+                                                </Label.TextColor>
+                                            </Label>
+                                        </Frame>
+
+                                        <!-- Dag 6 -->
+                                        <Frame Grid.Column="6"
+                                            BackgroundColor="{Binding Days[5].BackgroundColor}"
+                                            BorderColor="{Binding Days[5].BorderColor}"
+                                            CornerRadius="8"
+                                            Padding="0"
+                                            HasShadow="False">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleDayCommand}"
+                                                            CommandParameter="{Binding Days[5]}"/>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding Days[5].DayNumber}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                HeightRequest="36"
+                                                VerticalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[5].IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[5].IsToday}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[5].HasConflict}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.TextColor>
+                                                    <AppThemeBinding Light="{StaticResource TextPrimary}" Dark="{StaticResource TextPrimaryDark}"/>
+                                                </Label.TextColor>
+                                            </Label>
+                                        </Frame>
+
+                                        <!-- Dag 7 -->
+                                        <Frame Grid.Column="7"
+                                            BackgroundColor="{Binding Days[6].BackgroundColor}"
+                                            BorderColor="{Binding Days[6].BorderColor}"
+                                            CornerRadius="8"
+                                            Padding="0"
+                                            HasShadow="False">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleDayCommand}"
+                                                            CommandParameter="{Binding Days[6]}"/>
+                                            </Frame.GestureRecognizers>
+                                            <Label Text="{Binding Days[6].DayNumber}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                HeightRequest="36"
+                                                VerticalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[6].IsSelected}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[6].IsToday}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Days[6].HasConflict}" Value="True">
+                                                        <Setter Property="TextColor" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.TextColor>
+                                                    <AppThemeBinding Light="{StaticResource TextPrimary}" Dark="{StaticResource TextPrimaryDark}"/>
+                                                </Label.TextColor>
+                                            </Label>
+                                        </Frame>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Färgförklaring -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                    <VerticalStackLayout Spacing="2">
+                        <Border BackgroundColor="#ADD8E6" StrokeShape="RoundRectangle 4" Stroke="DarkBlue" Padding="8,4">
+                            <Label Text="{resx:Translate CalendarColorToday}" FontSize="12" TextColor="DarkBlue" HorizontalTextAlignment="Center"/>
+                        </Border>
+                        <Label Text="{resx:Translate CalendarColorTodayDesc}" FontSize="10" TextColor="Gray" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="2">
+                        <Border BackgroundColor="#90EE90" StrokeShape="RoundRectangle 4" Stroke="DarkGreen" Padding="8,4">
+                            <Label Text="{resx:Translate CalendarColorSelected}" FontSize="12" TextColor="DarkGreen" HorizontalTextAlignment="Center"/>
+                        </Border>
+                        <Label Text="{resx:Translate CalendarColorSelectedDesc}" FontSize="10" TextColor="Gray" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="2">
+                        <Border BackgroundColor="#FFCCCC" StrokeShape="RoundRectangle 4" Stroke="Red" Padding="8,4">
+                            <Label Text="{resx:Translate CalendarColorBooked}" FontSize="12" TextColor="Red" HorizontalTextAlignment="Center"/>
+                        </Border>
+                        <Label Text="{resx:Translate CalendarColorBookedDesc}" FontSize="10" TextColor="Gray" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <!-- Anteckningar -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="{resx:Translate RegularShift_Notes}" Style="{StaticResource FieldLabel}" />
+                    <Editor Text="{Binding Notes}" Placeholder="{resx:Translate RegularShift_NotesPlaceholder}" Style="{StaticResource ThemedEditor}" HeightRequest="80" />
+                </VerticalStackLayout>
+
+                <!-- Info om valda dagar -->
+                <Label Text="{Binding SelectedDaysText}" HorizontalOptions="Center" />
+
+                <!-- Knappar -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,20,0,0">
+                    <!-- Avbryt -->
+                    <Button Text="{resx:Translate Button_Cancel}"
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource SecondaryButton}"
                         Padding="0,15" />
-                <!-- Spara -->
-                <Button Text="{resx:Translate Button_SaveShift}" Grid.Column="1"
+                    <!-- Spara -->
+                    <Button Text="{resx:Translate Button_SaveShift}" Grid.Column="1"
                         Command="{Binding SaveCommand}"
                         Opacity="{Binding CanSave, Converter={StaticResource BoolToOpacityConverter}}"
                         IsEnabled="{Binding CanSave}" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Loading Overlay -->
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1A1A1A}">
+            <Grid HorizontalOptions="Center" VerticalOptions="Center">
+                <!-- Skeleton cards (valfritt) -->
+                <VerticalStackLayout Spacing="20">
+                    <components:SkeletonCard />
+                    <components:SkeletonCard />
+                    <components:SkeletonCard />
+                </VerticalStackLayout>
+
+                <!-- Loading indicator -->
+                <components:LoadingIndicator HorizontalOptions="Center" VerticalOptions="Center" />
             </Grid>
+        </Grid>
 
-        </VerticalStackLayout>
-    </ScrollView>
-
+        <!-- Ad Banner Layer (överst, alltid synlig) -->
+        <Grid x:Name="AdBannerContainer" VerticalOptions="Start" HorizontalOptions="Fill" HeightRequest="50" />
+    </Grid>
 </ContentPage>

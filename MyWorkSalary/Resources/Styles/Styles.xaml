@@ -258,6 +258,14 @@
         Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
                                Dark={StaticResource TextPrimaryDark}}" />
     </Style>
+    <Style TargetType="TimePicker" x:Key="TransparantPicker">
+        <Setter Property="BackgroundColor" 
+                Value="{AppThemeBinding Light={StaticResource Transparant}, 
+                           Dark={StaticResource Transparant}}" />
+        <Setter Property="TextColor" 
+                Value="{AppThemeBinding Light={StaticResource TextPrimary}, 
+                           Dark={StaticResource TextPrimaryDark}}" />
+    </Style>
 
     <Style TargetType="Editor" x:Key="ThemedEditor">
         <Setter Property="BackgroundColor" 
@@ -539,6 +547,19 @@
             </Setter.Value>
         </Setter>
         <Setter Property="Padding" Value="16" />
+    </Style>
+
+    <!-- Legend Frame Style for color indicators -->
+    <Style TargetType="Frame" x:Key="LegendFrame">
+        <Setter Property="Background" 
+            Value="{AppThemeBinding Light={StaticResource White}, 
+                                   Dark={StaticResource BackgroundDark}}" />
+        <Setter Property="BorderColor" 
+            Value="{AppThemeBinding Light={StaticResource BorderColor}, 
+                                   Dark={StaticResource BorderColorDark}}" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="HasShadow" Value="False" />
     </Style>
 
     <Style TargetType="Label" x:Key="CardTitleLabel">

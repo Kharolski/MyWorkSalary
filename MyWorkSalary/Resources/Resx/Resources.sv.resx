@@ -2662,6 +2662,30 @@ Arbetspasset har sparats!</value>
     <value>Just nu: Grundläggande funktioner (timmar, lön) fungerar. Stöd för helgdagar och avancerade funktioner för andra länder kommer senare.</value>
   </data>
   <data name="AddMultipleButton" xml:space="preserve">
-    <value>Lägg till flera pass</value>
+    <value>➕ Lägg till flera pass</value>
+  </data>
+  <data name="CalendarWeekAbbreviation" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="CalendarColorToday" xml:space="preserve">
+    <value>Idag</value>
+  </data>
+  <data name="CalendarColorTodayDesc" xml:space="preserve">
+    <value>Dagens datum</value>
+  </data>
+  <data name="CalendarColorSelected" xml:space="preserve">
+    <value>Vald</value>
+  </data>
+  <data name="CalendarColorSelectedDesc" xml:space="preserve">
+    <value>Markerad dag</value>
+  </data>
+  <data name="CalendarColorBooked" xml:space="preserve">
+    <value>Bokat</value>
+  </data>
+  <data name="CalendarColorBookedDesc" xml:space="preserve">
+    <value>Tidskonflikt</value>
+  </data>
+  <data name="Calendar_SelectedDays" xml:space="preserve">
+    <value>Valda dagar</value>
   </data>
 </root>
